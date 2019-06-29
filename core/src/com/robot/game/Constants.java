@@ -1,8 +1,10 @@
 package com.robot.game;
 
-public class Constants {
+public final class Constants {
 
-    // Camera
+    // Screen - Camera
     public static final float WIDTH = 768;
     public static final float HEIGHT = 432;
+    public static final float PPM = 32;
+
 }

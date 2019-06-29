@@ -26,6 +26,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        System.out.println("show");
         this.batch = new SpriteBatch();
 
         // create camera
@@ -37,10 +38,11 @@ public class PlayScreen extends ScreenAdapter {
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
     }
 
-    public void update(float dt) {
+    public void update(float delta) {
 //        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0); // not needed(?) if I set viewport update centercamera to true
         camera.update(); // update camera at every render cycle
         mapRenderer.setView(camera); // only render what the gameCam can see (could be in the render method probably)
+        batch.setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -51,7 +53,6 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
 
         // render the map
         mapRenderer.render();
@@ -60,6 +61,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        System.out.println("resize");
         viewport.update(width, height, true);
         camera.update(); // update camera at every render cycle
     }
@@ -67,11 +69,15 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void hide() {
+        System.out.println("hide");
         this.dispose();
     }
 
     @Override
     public void dispose() {
+        System.out.println("dispose");
         batch.dispose();
+        tiledMap.dispose();
+        mapRenderer.dispose();
     }
 }

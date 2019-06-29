@@ -20,7 +20,11 @@ public class RobotGame extends Game {
 	public void render () {
 		super.render();
 	}
-	
+
+	@Override
+	public void resize(int width, int height) {
+	}
+
 	@Override
 	public void dispose () {
 		super.dispose();
