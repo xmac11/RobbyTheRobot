@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,8 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.util.B2dWorld;
 import com.robot.game.util.Constants;
 
-import static com.robot.game.util.Constants.LADDER_OBJECT;
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
 
@@ -52,15 +52,20 @@ public class PlayScreen extends ScreenAdapter {
         this.world = new World(new Vector2(0, 0), true);
         this.debugRenderer = new Box2DDebugRenderer();
 
-        // create ladder object
+        // create tiled objects
+        B2dWorld.createTiledObjects(world, tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         B2dWorld.createTiledObjects(world, tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+
     }
 
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
+        handleInput(delta);
+
 //        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0); // not needed(?) if I set viewport update centercamera to true
         camera.update(); // update camera at every render cycle
+
         mapRenderer.setView(camera); // only render what the gameCam can see (could be in the render method probably)
         batch.setProjectionMatrix(camera.combined);
     }
@@ -101,6 +106,23 @@ public class PlayScreen extends ScreenAdapter {
         batch.dispose();
         tiledMap.dispose();
         mapRenderer.dispose();
+        world.dispose();
+        debugRenderer.dispose();
+    }
+
+    public void handleInput(float dt) {
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            camera.position.x += 5 * dt;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            camera.position.x -= 5 * dt;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            camera.position.y += 5 * dt;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            camera.position.y -= 5 * dt;
+        }
     }
 
 }

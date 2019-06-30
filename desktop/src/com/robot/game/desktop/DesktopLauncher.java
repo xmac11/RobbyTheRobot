@@ -7,7 +7,6 @@ import com.robot.game.RobotGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		//test comment
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = (int) Constants.WIDTH;
 		config.height = (int) Constants.HEIGHT;

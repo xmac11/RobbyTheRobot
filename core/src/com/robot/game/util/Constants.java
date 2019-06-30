@@ -10,7 +10,6 @@ public final class Constants {
     // Tiled map editor
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
-    public static final String[] OBJECTS = new String[]{GROUND_OBJECT, LADDER_OBJECT};
 
 
 }
