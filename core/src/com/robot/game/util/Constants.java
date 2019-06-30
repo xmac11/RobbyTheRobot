@@ -14,12 +14,12 @@ public final class Constants {
 
 
     // Tiled map editor
-    /*private static TiledMap tiledMap = new TmxMapLoader().load("level1.tmx");
-    private static MapProperties mapProperties = tiledMap.getProperties()*/;
+    private static TiledMap tiledMap = new TmxMapLoader().load("level1.tmx");
+    private static MapProperties mapProperties = tiledMap.getProperties();
 //    public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
     public static final int TILE_SIZE = 16;
-    /*public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
-    public static final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;*/
+    public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
+    public static final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
 

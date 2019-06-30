@@ -31,7 +31,7 @@ public class PlayScreen extends ScreenAdapter {
     // camera variables
     private OrthographicCamera camera;
     private Viewport viewport;
-//    private DebugCamera debugCamera;
+    private DebugCamera debugCamera;
 
     // Tiled map variables
     private TiledMap tiledMap;
@@ -49,13 +49,10 @@ public class PlayScreen extends ScreenAdapter {
         // create camera
         this.camera = new OrthographicCamera();
         this.viewport = new ExtendViewport(Constants.WIDTH / PPM, Constants.HEIGHT / PPM, camera);
-//        camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0); // not needed(?) if I set viewport update centercamera to true
 
         // load map and set up map renderer
         this.tiledMap = new TmxMapLoader().load("level1.tmx");
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
-
-
 
         // create box2d world
         this.world = new World(new Vector2(0, -9.81f), true);
@@ -66,36 +63,26 @@ public class PlayScreen extends ScreenAdapter {
         B2dWorld.createTiledObjects(world, tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 
         // create robot
-        this.robot = new Robot(this);
+        this.robot = new Robot(world);
 
         // create debug camera
-//        this.debugCamera = new DebugCamera(viewport.getCamera(), robot);
-
+        this.debugCamera = new DebugCamera(viewport, robot);
     }
 
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
+        // first handle input
         handleInput(delta);
 
+        // update robot
         robot.update(delta);
 
-        // camera updates (maybe new method)
-        // camera follows robot
-        camera.position.x = robot.getBody().getPosition().x;
+        // update camera
+        debugCamera.update(delta);
 
-        // clamp camera within map
-        MapProperties mapProperties = tiledMap.getProperties();
-        final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
-        final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;
-        camera.position.x = MathUtils.clamp(camera.position.x,
-                                       viewport.getWorldWidth() / 2,
-                                      MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
-
-        camera.update(); // update camera at every render cycle
-//        debugCamera.update(delta);
-
-        mapRenderer.setView(camera); // only render what the gameCam can see (could be in the render method probably)
+        // only render what the camera can see
+        mapRenderer.setView(camera);
         batch.setProjectionMatrix(camera.combined);
     }
 
@@ -119,7 +106,7 @@ public class PlayScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         System.out.println("resize");
         viewport.update(width, height, true);
-        camera.update(); // update camera at every render cycle
+        camera.update();
     }
 
 
@@ -136,10 +123,10 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
-//        debugRenderer.dispose();
+        debugRenderer.dispose();
     }
 
-    public void handleInput(float dt) {
+    public void handleInput(float delta) {
         int horizontalForce = 0; // reset every time
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
@@ -151,12 +138,9 @@ public class PlayScreen extends ScreenAdapter {
             //            gameCam.position.x -= 5 * dt;
             horizontalForce -= 2;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             //            gameCam.position.y += 5 * dt;
-            robot.getBody().applyForceToCenter(0, 60, false);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            //            gameCam.position.y -= 5 * dt;
+            robot.getBody().applyForceToCenter(0, 300, true);
         }
         robot.getBody().setLinearVelocity(horizontalForce * 5, robot.getBody().getLinearVelocity().y);
     }

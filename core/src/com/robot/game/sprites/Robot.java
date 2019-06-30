@@ -11,13 +11,11 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot {
 
-    private PlayScreen playScreen;
     private World world;
     private Body body;
 
-    public Robot(PlayScreen playScreen) {
-        this.playScreen = playScreen;
-        this.world = playScreen.getWorld();
+    public Robot(World world) {
+        this.world = world;
         createRobotB2d();
     }
 
@@ -57,7 +55,6 @@ public class Robot {
     }
 
     public void dispose() {
-        world.dispose();
     }
 
     // getter for the Body
