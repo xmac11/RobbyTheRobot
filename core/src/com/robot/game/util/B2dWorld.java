@@ -2,9 +2,11 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 import static com.robot.game.util.Constants.PPM;
@@ -53,16 +55,38 @@ public class B2dWorld {
 
                 shape.dispose();
             }
+            else if(object instanceof PolygonMapObject) {
+                Shape shape =  createPolygon((PolygonMapObject) object);
+                body = world.createBody(bodyDef);
+                fixtureDef.shape = shape;
+                body.createFixture(fixtureDef);
+
+                shape.dispose();
+            }
             else continue;
         }
     }
 
     private static ChainShape createPolyline(PolylineMapObject polyline) {
         float[] vertices =  polyline.getPolyline().getTransformedVertices();
-        float[] worldVertices =  new float[vertices.length];
+        Vector2[] worldVertices =  new Vector2[vertices.length / 2];
 
         for(int i = 0; i < worldVertices.length; i++) {
-            worldVertices[i] = vertices[i] / PPM;
+            worldVertices[i] = new Vector2(vertices[2*i] / PPM, vertices[2*i+1] / PPM);
+        }
+
+        ChainShape chainShape = new ChainShape();
+        chainShape.createChain(worldVertices);
+
+        return chainShape;
+    }
+
+    private static ChainShape createPolygon(PolygonMapObject polygon) {
+        float[] vertices =  polygon.getPolygon().getTransformedVertices();
+        Vector2[] worldVertices =  new Vector2[vertices.length / 2];
+
+        for(int i = 0; i < worldVertices.length; i++) {
+            worldVertices[i] = new Vector2(vertices[2*i] / PPM, vertices[2*i+1] / PPM);
         }
 
         ChainShape chainShape = new ChainShape();
