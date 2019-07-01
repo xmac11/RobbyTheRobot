@@ -6,8 +6,8 @@ import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.robot.game.interactiveObjects.Ladder;
 
 import static com.robot.game.util.Constants.*;
 
@@ -29,6 +29,7 @@ public class B2dWorld {
             Body body;
 
             if(object instanceof RectangleMapObject) {
+
                 Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
                 // create body
@@ -44,25 +45,29 @@ public class B2dWorld {
                 // create fixture
                 fixtureDef.shape = polygonShape;
                 assignFilterBits(fixtureDef, object);
-                body.createFixture(fixtureDef);
+                createFixture(body, fixtureDef, object);
 
                 polygonShape.dispose();
             }
             else if(object instanceof PolylineMapObject) {
-                Shape shape =  createPolyline((PolylineMapObject) object);
                 body = world.createBody(bodyDef);
+                Shape shape =  createPolyline((PolylineMapObject) object);
+
+                // create fixture
                 fixtureDef.shape = shape;
                 assignFilterBits(fixtureDef, object);
-                body.createFixture(fixtureDef);
+                createFixture(body, fixtureDef, object);
 
                 shape.dispose();
             }
             else if(object instanceof PolygonMapObject) {
-                Shape shape =  createPolygon((PolygonMapObject) object);
                 body = world.createBody(bodyDef);
+                Shape shape =  createPolygon((PolygonMapObject) object);
+
+                // create fixture
                 fixtureDef.shape = shape;
                 assignFilterBits(fixtureDef, object);
-                body.createFixture(fixtureDef);
+                createFixture(body, fixtureDef, object);
 
                 shape.dispose();
             }
@@ -105,10 +110,20 @@ public class B2dWorld {
         if(object.getProperties().containsKey("ladder")) {
             fixtureDef.filter.categoryBits = LADDER_CATEGORY;
             fixtureDef.filter.maskBits = LADDER_MASK;
+            fixtureDef.isSensor = true;
         }
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
             fixtureDef.filter.maskBits = GROUND_MASK;
+        }
+    }
+
+    private static void createFixture(Body body, FixtureDef fixtureDef, MapObject object) {
+        if(object.getProperties().containsKey("ladder")) {
+            new Ladder(body, fixtureDef);
+        }
+        else {
+            body.createFixture(fixtureDef);
         }
     }
 
