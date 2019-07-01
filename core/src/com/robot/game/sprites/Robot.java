@@ -1,5 +1,8 @@
 package com.robot.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -11,12 +14,21 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot {
 
+    private Sprite robotSprite;
     private World world;
     private Body body;
 
     public Robot(World world) {
         this.world = world;
         createRobotB2d();
+
+
+        Texture texture = new Texture("robot.png");
+//        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        this.robotSprite = new Sprite(texture);
+        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
+//        this.robotSprite.setSize(32 / PPM, 64 / PPM);
+        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
     }
 
     public void createRobotB2d() {
@@ -32,33 +44,51 @@ public class Robot {
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(ROBOT_RADIUS / PPM);
         fixtureDef.shape = circleShape;
-        body.createFixture(fixtureDef);
+        fixtureDef.filter.categoryBits = ROBOT_CATEGORY;
+        fixtureDef.filter.maskBits = ROBOT_MASK;
+        body.createFixture(fixtureDef).setUserData(this);
 
         circleShape.dispose();
     }
 
     public void update(float delta) {
-       /* Vector2 position = body.getPosition();
-        position.x = MathUtils.clamp( position.x,
-                                          0,
-                                         MAP_WIDTH / PPM - playScreen.getViewport().getWorldWidth() / 2);
+        // first handle input
+        handleInput(delta);
 
-        // clamp position of robot within the map
-        if(body.getPosition().x < ROBOT_RADIUS / PPM)
-            body.setTransform(body.getFixtureList().first().getShape().getRadius(), body.getPosition().y, 0);
-        if(body.getPosition().x > MAP_WIDTH / PPM - ROBOT_RADIUS / PPM)
-            body.setTransform(MAP_WIDTH / PPM - ROBOT_RADIUS / PPM, body.getPosition().y, 0);
-        if(body.getPosition().y > MAP_HEIGHT / PPM - ROBOT_RADIUS / PPM) {
-            //            body.setTransform(body.getPosition().x, MAP_HEIGHT / PPM - ROBOT_RADIUS / PPM , 0);
-        }*/
+        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
+
 
     }
 
+    public void handleInput(float delta) {
+        int horizontalForce = 0; // reset every time
+
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            //            gameCam.position.x += 5 * dt;
+            horizontalForce += 2;
+            body.applyLinearImpulse(new Vector2(0.1f, 0), body.getWorldCenter(), true);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            //            gameCam.position.x -= 5 * dt;
+            horizontalForce -= 2;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            //            gameCam.position.y += 5 * dt;
+            body.applyForceToCenter(0, 350, true);
+        }
+        body.setLinearVelocity(horizontalForce * 2.5f, body.getLinearVelocity().y);
+    }
+
     public void dispose() {
+        robotSprite.getTexture().dispose();
     }
 
     // getter for the Body
     public Body getBody() {
         return body;
+    }
+
+    public Sprite getRobotSprite() {
+        return robotSprite;
     }
 }

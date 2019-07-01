@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -72,9 +73,6 @@ public class PlayScreen extends ScreenAdapter {
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
-        // first handle input
-        handleInput(delta);
-
         // update robot
         robot.update(delta);
 
@@ -96,6 +94,11 @@ public class PlayScreen extends ScreenAdapter {
 
         // render the map
         mapRenderer.render();
+
+        batch.begin();
+        Sprite robotSprite = robot.getRobotSprite();
+        robotSprite.draw(batch);
+        batch.end();
 
         //render box2d debug rectangles
         debugRenderer.render(world, viewport.getCamera().combined);
@@ -124,26 +127,10 @@ public class PlayScreen extends ScreenAdapter {
         mapRenderer.dispose();
         world.dispose();
         debugRenderer.dispose();
+        robot.dispose();
     }
 
-    public void handleInput(float delta) {
-        int horizontalForce = 0; // reset every time
 
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            //            gameCam.position.x += 5 * dt;
-            horizontalForce += 2;
-            robot.getBody().applyLinearImpulse(new Vector2(0.1f, 0), robot.getBody().getWorldCenter(), true);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            //            gameCam.position.x -= 5 * dt;
-            horizontalForce -= 2;
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            //            gameCam.position.y += 5 * dt;
-            robot.getBody().applyForceToCenter(0, 300, true);
-        }
-        robot.getBody().setLinearVelocity(horizontalForce * 5, robot.getBody().getLinearVelocity().y);
-    }
 
     public Robot getRobot() {
         return robot;

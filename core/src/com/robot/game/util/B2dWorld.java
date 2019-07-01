@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 
 public class B2dWorld {
@@ -39,10 +39,11 @@ public class B2dWorld {
                 // create shape
                 PolygonShape polygonShape =  new PolygonShape();
                 polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM,
-                               rectangle.getHeight() / 2 / PPM);
+                                      rectangle.getHeight() / 2 / PPM);
 
                 // create fixture
                 fixtureDef.shape = polygonShape;
+                assignFilterBits(fixtureDef, object);
                 body.createFixture(fixtureDef);
 
                 polygonShape.dispose();
@@ -51,6 +52,7 @@ public class B2dWorld {
                 Shape shape =  createPolyline((PolylineMapObject) object);
                 body = world.createBody(bodyDef);
                 fixtureDef.shape = shape;
+                assignFilterBits(fixtureDef, object);
                 body.createFixture(fixtureDef);
 
                 shape.dispose();
@@ -59,6 +61,7 @@ public class B2dWorld {
                 Shape shape =  createPolygon((PolygonMapObject) object);
                 body = world.createBody(bodyDef);
                 fixtureDef.shape = shape;
+                assignFilterBits(fixtureDef, object);
                 body.createFixture(fixtureDef);
 
                 shape.dispose();
@@ -69,10 +72,10 @@ public class B2dWorld {
 
     private static ChainShape createPolyline(PolylineMapObject polyline) {
         float[] vertices =  polyline.getPolyline().getTransformedVertices();
-        Vector2[] worldVertices =  new Vector2[vertices.length / 2];
+        float[] worldVertices = new float[vertices.length];
 
         for(int i = 0; i < worldVertices.length; i++) {
-            worldVertices[i] = new Vector2(vertices[2*i] / PPM, vertices[2*i+1] / PPM);
+            worldVertices[i] = vertices[i] / PPM;
         }
 
         ChainShape chainShape = new ChainShape();
@@ -83,16 +86,30 @@ public class B2dWorld {
 
     private static ChainShape createPolygon(PolygonMapObject polygon) {
         float[] vertices =  polygon.getPolygon().getTransformedVertices();
-        Vector2[] worldVertices =  new Vector2[vertices.length / 2];
+        float[] worldVertices = new float[vertices.length + 2]; // +2 to close the polyline
 
-        for(int i = 0; i < worldVertices.length; i++) {
-            worldVertices[i] = new Vector2(vertices[2*i] / PPM, vertices[2*i+1] / PPM);
+        for(int i = 0; i < worldVertices.length-2; i++) {
+            worldVertices[i] = vertices[i] / PPM;
         }
+        worldVertices[vertices.length] = vertices[0] / PPM;
+        worldVertices[vertices.length + 1] = vertices[1] / PPM;
 
         ChainShape chainShape = new ChainShape();
         chainShape.createChain(worldVertices);
 
         return chainShape;
+    }
+
+    // assign filter bits to bodies
+    private static void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
+        if(object.getProperties().containsKey("ladder")) {
+            fixtureDef.filter.categoryBits = LADDER_CATEGORY;
+            fixtureDef.filter.maskBits = LADDER_MASK;
+        }
+        else {
+            fixtureDef.filter.categoryBits = GROUND_CATEGORY;
+            fixtureDef.filter.maskBits = GROUND_MASK;
+        }
     }
 
 }

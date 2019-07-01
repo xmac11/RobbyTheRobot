@@ -32,8 +32,10 @@ public class DebugCamera {
 
         // if following, follow robot, else move camera according to input
         if(following) {
-            camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-            camera.position.y =  viewport.getWorldHeight() / 2; // keep camera always centered vertically
+            //camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
+            camera.position.x =  camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * .1f; // camera follows the robot horizontally with interpolation
+            camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
+            //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * .1f
         }
         else {
             if(Gdx.input.isKeyPressed(Input.Keys.A))
@@ -45,10 +47,13 @@ public class DebugCamera {
             if(Gdx.input.isKeyPressed(Input.Keys.S))
                 camera.position.y -= delta * DEBUG_CAM_SPEED;
         }
-        // finally clamp the position of the camera
+        // finally clamp the position of the camera within the map
         camera.position.x = MathUtils.clamp(camera.position.x,
-                viewport.getWorldWidth() / 2,
-                MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
+                                       viewport.getWorldWidth() / 2,
+                                      MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
+        /*camera.position.y = MathUtils.clamp(camera.position.y,
+                viewport.getWorldHeight() / 2,
+                MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);*/
 
         camera.update();
     }
