@@ -19,13 +19,14 @@ public class DebugCamera {
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
+        camera.position.x =  robot.getBody().getPosition().x;
         this.robot = robot;
         this.following = true;
     }
 
     public void update(float delta) {
 
-        // reverse boolean when C is pressed
+        // reverse boolean when 'C' is pressed
         if(Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             following = !following;
         }
@@ -33,9 +34,9 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
             //camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-            camera.position.x =  camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * .1f; // camera follows the robot horizontally with interpolation
+            camera.position.x =  camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
             camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
-            //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * .1f
+            //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f
         }
         else {
             if(Gdx.input.isKeyPressed(Input.Keys.A))

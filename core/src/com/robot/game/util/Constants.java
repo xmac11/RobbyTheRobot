@@ -34,7 +34,7 @@ public final class Constants {
     // Box2D filter mask bits
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY;
     public static final short GROUND_MASK = ROBOT_CATEGORY;
-    public static final short LADDER_MASK = /*ROBOT_CATEGORY*/ 0;
+    public static final short LADDER_MASK = ROBOT_CATEGORY;
 
 
     // Robot
