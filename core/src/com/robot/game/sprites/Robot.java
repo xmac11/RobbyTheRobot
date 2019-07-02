@@ -117,8 +117,9 @@ public class Robot extends InputAdapter {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
-        if(onLadder)
+        if(onLadder) {
             body.setLinearVelocity(0, 0);
+        }
         Gdx.input.setInputProcessor(onLadder ? this : null);
     }
 

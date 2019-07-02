@@ -85,7 +85,7 @@
   </object>
  </objectgroup>
  <objectgroup id="23" name="Ladder obj">
-  <object id="63" x="733" y="96">
+  <object id="63" x="734" y="96">
    <properties>
     <property name="ladder" value=""/>
    </properties>
