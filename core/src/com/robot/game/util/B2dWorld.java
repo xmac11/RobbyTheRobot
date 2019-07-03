@@ -24,7 +24,10 @@ public class B2dWorld {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            bodyDef.type = BodyDef.BodyType.StaticBody;
+            if(object.getProperties().containsKey("moving"))
+                bodyDef.type = BodyDef.BodyType.KinematicBody;
+            else
+                bodyDef.type = BodyDef.BodyType.StaticBody;
             FixtureDef fixtureDef = new FixtureDef();
             Body body;
 
@@ -50,6 +53,7 @@ public class B2dWorld {
                 polygonShape.dispose();
             }
             else if(object instanceof PolylineMapObject) {
+
                 body = world.createBody(bodyDef);
                 Shape shape =  createPolyline((PolylineMapObject) object);
 
@@ -61,6 +65,7 @@ public class B2dWorld {
                 shape.dispose();
             }
             else if(object instanceof PolygonMapObject) {
+
                 body = world.createBody(bodyDef);
                 Shape shape =  createPolygon((PolygonMapObject) object);
 

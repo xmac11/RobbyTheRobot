@@ -9,8 +9,9 @@ public class Ladder {
     private Body body;
 
     public Ladder(Body body, FixtureDef fixtureDef) {
-
         this.body = body;
         body.createFixture(fixtureDef).setUserData(this);
     }
+
+
 }

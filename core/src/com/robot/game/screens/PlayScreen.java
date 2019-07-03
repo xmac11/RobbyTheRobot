@@ -100,6 +100,7 @@ public class PlayScreen extends ScreenAdapter {
 
         game.getBatch().begin();
         Sprite robotSprite = robot.getRobotSprite();
+        robotSprite.setSize(32 / PPM, 64 / PPM);
         robotSprite.draw(game.getBatch());
         game.getBatch().end();
 

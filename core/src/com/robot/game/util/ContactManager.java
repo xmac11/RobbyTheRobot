@@ -1,7 +1,11 @@
 package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.sprites.Robot;
 
 import static com.robot.game.util.Constants.*;
@@ -22,15 +26,22 @@ public class ContactManager implements ContactListener {
 
         switch(collisionID) {
             case ROBOT_CATEGORY | LADDER_CATEGORY:
+                Texture texture = new Texture("blue.png");
                 Robot robot;
-                if(fixA.getUserData() instanceof Robot)
+                Ladder ladder;
+                if(fixA.getUserData() instanceof Robot) {
                     robot = (Robot) fixA.getUserData();
-                else
+                    ladder = (Ladder) fixB.getUserData();
+                }
+                else {
                     robot = (Robot) fixB.getUserData();
-                Gdx.app.log("ContactManager", "On ladder");
-                robot.setOnLadder(true);
-                break;
+                    ladder = (Ladder) fixA.getUserData();
+                }
 
+                robot.setRobotSprite(new Sprite(texture));
+                robot.setOnLadder(ladder, true);
+                Gdx.app.log("ContactManager", "On ladder");
+                break;
         }
 
 
@@ -50,13 +61,20 @@ public class ContactManager implements ContactListener {
 
         switch(collisionID) {
             case ROBOT_CATEGORY | LADDER_CATEGORY:
+                Texture texture = new Texture("sf.png");
                 Robot robot;
-                if(fixA.getUserData() instanceof Robot)
+                Ladder ladder;
+                if(fixA.getUserData() instanceof Robot) {
                     robot = (Robot) fixA.getUserData();
-                else
+                    ladder = (Ladder) fixB.getUserData();
+                }
+                else {
                     robot = (Robot) fixB.getUserData();
+                    ladder = (Ladder) fixA.getUserData();
+                }
                 Gdx.app.log("ContactManager", "Off ladder");
-                robot.setOnLadder(false);
+                robot.setRobotSprite(new Sprite(texture));
+                robot.setOnLadder(ladder, false);
                 break;
         }
 
