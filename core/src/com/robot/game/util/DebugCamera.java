@@ -19,7 +19,7 @@ public class DebugCamera {
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
-        camera.position.x =  robot.getBody().getPosition().x;
+//        camera.position.x =  robot.getBody().getPosition().x;
         this.robot = robot;
         this.following = true;
     }

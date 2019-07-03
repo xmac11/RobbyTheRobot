@@ -10,9 +10,12 @@ import com.robot.game.screens.PlayScreen;
 
 public class RobotGame extends Game {
 
+	private SpriteBatch batch;
+
 	@Override
 	public void create () {
-		super.setScreen(new PlayScreen());
+		this.batch = new SpriteBatch();
+		super.setScreen(new PlayScreen(this));
 		super.render();
 	}
 
@@ -28,5 +31,10 @@ public class RobotGame extends Game {
 	@Override
 	public void dispose () {
 		super.dispose();
+		batch.dispose();
+	}
+
+	public SpriteBatch getBatch() {
+		return batch;
 	}
 }

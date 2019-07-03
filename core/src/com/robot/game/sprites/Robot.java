@@ -27,15 +27,16 @@ public class Robot extends InputAdapter {
         createRobotB2d();
 
 
-        Texture texture = new Texture("robot.png");
+        Texture texture = new Texture("sf.png");
 //        Texture texture = new Texture("robot2164.png");
 //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         this.robotSprite = new Sprite(texture);
 
-        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
-//        this.robotSprite.setSize(32 / PPM, 64 / PPM);
+//        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
+        this.robotSprite.setSize(32 / PPM, 64 / PPM);
+        this.robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
 
-//        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
+        //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
     }
 
     public void createRobotB2d() {
@@ -45,7 +46,6 @@ public class Robot extends InputAdapter {
         bodyDef.position.set(32 / PPM, 160 / PPM);
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
-        this.body.getPosition().set(bodyDef.position);
 
         // create fixture
         FixtureDef fixtureDef = new FixtureDef();
@@ -65,6 +65,7 @@ public class Robot extends InputAdapter {
         // first handle input
         handleInput(delta);
 
+        // attach robot sprite to circle body
         robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
 
 

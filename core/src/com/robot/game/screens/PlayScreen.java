@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.robot.game.RobotGame;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.B2dWorld;
 import com.robot.game.util.Constants;
@@ -24,7 +25,7 @@ import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
 
-    private SpriteBatch batch;
+    private RobotGame game;
     private Robot robot;
 
     // camera variables
@@ -40,10 +41,13 @@ public class PlayScreen extends ScreenAdapter {
     private World world;
     private Box2DDebugRenderer debugRenderer;
 
+    public PlayScreen(RobotGame game) {
+        this.game = game;
+    }
+
     @Override
     public void show() {
         System.out.println("show");
-        this.batch = new SpriteBatch();
 
         // create camera
         this.camera = new OrthographicCamera();
@@ -80,7 +84,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // only render what the camera can see
         mapRenderer.setView(camera);
-        batch.setProjectionMatrix(camera.combined);
+        game.getBatch().setProjectionMatrix(camera.combined);
     }
 
     @Override
@@ -94,10 +98,10 @@ public class PlayScreen extends ScreenAdapter {
         // render the map
         mapRenderer.render();
 
-        batch.begin();
+        game.getBatch().begin();
         Sprite robotSprite = robot.getRobotSprite();
-        robotSprite.draw(batch);
-        batch.end();
+        robotSprite.draw(game.getBatch());
+        game.getBatch().end();
 
         //render box2d debug rectangles
         debugRenderer.render(world, viewport.getCamera().combined);
@@ -111,7 +115,6 @@ public class PlayScreen extends ScreenAdapter {
         camera.update();
     }
 
-
     @Override
     public void hide() {
         System.out.println("hide");
@@ -121,7 +124,7 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         System.out.println("dispose");
-        batch.dispose();
+//        batch.dispose();
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
