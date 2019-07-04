@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="72">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="80">
  <tileset firstgid="1" source="ground.tsx"/>
  <tileset firstgid="1281" name="my_tiles" tilewidth="16" tileheight="16" spacing="1" tilecount="45" columns="15">
   <image source="my_tiles.png" width="256" height="64"/>
@@ -32,7 +32,8 @@
   <object id="14" x="1472" y="128" width="384" height="48"/>
   <object id="15" x="1216" y="104" width="64" height="8">
    <properties>
-    <property name="moving" value=""/>
+    <property name="delay" type="float" value="0"/>
+    <property name="falling" value=""/>
    </properties>
   </object>
   <object id="17" x="2016" y="256" width="32" height="32"/>
@@ -86,6 +87,26 @@
   </object>
   <object id="62" x="912" y="144">
    <polygon points="0,0 0,-32 80,-32 80,0"/>
+  </object>
+  <object id="73" x="1312" y="104" width="64" height="8">
+   <properties>
+    <property name="moving" value=""/>
+    <property name="vX" type="float" value="0"/>
+    <property name="vY" type="float" value="-3"/>
+   </properties>
+  </object>
+  <object id="74" x="1392" y="192" width="64" height="8">
+   <properties>
+    <property name="moving" value=""/>
+    <property name="vX" type="float" value="0"/>
+    <property name="vY" type="float" value="-3"/>
+   </properties>
+  </object>
+  <object id="79" x="1008" y="96" width="48" height="8">
+   <properties>
+    <property name="delay" type="float" value="2"/>
+    <property name="falling" value=""/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="23" name="Ladder obj">

@@ -5,13 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
-import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
 
@@ -103,8 +99,7 @@ public class Robot extends InputAdapter {
             //            body.applyLinearImpulse(new Vector2(-0.1f, 0), body.getWorldCenter(), true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-//            body.applyForceToCenter(0, 350, true);
-
+            // robot jumps off ladder
             if(onLadder) {
                 body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
                 body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);

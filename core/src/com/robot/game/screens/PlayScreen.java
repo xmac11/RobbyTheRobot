@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
+import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
@@ -29,7 +29,8 @@ public class PlayScreen extends ScreenAdapter {
 
     // entities
     private Robot robot;
-    private MovingPlatform movingPlatform;
+    private Array<FallingPlatform> fallingPlatforms;
+    private Array<MovingPlatform> movingPlatforms;
 
     // camera variables
     private OrthographicCamera camera;
@@ -73,14 +74,15 @@ public class PlayScreen extends ScreenAdapter {
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 
         this.b2dWorldCreator = new B2dWorldCreator(world, layersArray);
-//        B2dWorldCreator.createTiledObjects(world, tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
-//        B2dWorldCreator.createTiledObjects(world, tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 
         // create robot
         this.robot = new Robot(world);
 
+        // create falling platform
+        this.fallingPlatforms = b2dWorldCreator.getFallingPlatforms();
+
         // create moving platform
-        this.movingPlatform = b2dWorldCreator.getMovingPlatform();
+        this.movingPlatforms = b2dWorldCreator.getMovingPlatforms();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -89,8 +91,13 @@ public class PlayScreen extends ScreenAdapter {
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
-        // update moving platform (do this first if robot should be moving along with it)
-        movingPlatform.update();
+        // update falling platforms (do this first if robot should be moving along with it)
+        for(FallingPlatform fallingPlatform: fallingPlatforms)
+            fallingPlatform.update(delta);
+
+        // update moving platforms
+        for(MovingPlatform movingPlatform: movingPlatforms)
+            movingPlatform.update(delta);
 
         // update robot
         robot.update(delta);

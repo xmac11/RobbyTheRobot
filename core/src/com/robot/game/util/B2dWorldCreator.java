@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
 
@@ -17,10 +18,13 @@ import static com.robot.game.util.Constants.*;
 public class B2dWorldCreator {
 
     private World world;
-    private MovingPlatform movingPlatform;
+    private Array<FallingPlatform> fallingPlatforms;
+    private Array<MovingPlatform> movingPlatforms;
 
     public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
         this.world = world;
+        this.fallingPlatforms = new Array<>();
+        this.movingPlatforms = new Array<>();
         for(MapObjects objects: layersArray)
             createTiledObjects(world, objects);
     }
@@ -35,7 +39,7 @@ public class B2dWorldCreator {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            if(object.getProperties().containsKey("moving"))
+            if(object.getProperties().containsKey(FALLING_PROPERTY) || object.getProperties().containsKey(MOVING_PROPERTY))
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
             else
                 bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -123,15 +127,23 @@ public class B2dWorldCreator {
 
     // assign filter bits to bodies
     private void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
-        if(object.getProperties().containsKey("ladder")) {
+        // ladder
+        if(object.getProperties().containsKey(LADDER_PROPERTY)) {
             fixtureDef.filter.categoryBits = LADDER_CATEGORY;
             fixtureDef.filter.maskBits = LADDER_MASK;
             fixtureDef.isSensor = true;
         }
-        else if(object.getProperties().containsKey("moving")) {
+        // falling platform
+        else if(object.getProperties().containsKey(FALLING_PROPERTY)) {
+            fixtureDef.filter.categoryBits = FALLING_PLATFORM_CATEGORY;
+            fixtureDef.filter.maskBits = FALLING_PLATFORM_MASK;
+        }
+        // moving platform
+        else if(object.getProperties().containsKey(MOVING_PROPERTY)) {
             fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
+        // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
             fixtureDef.filter.maskBits = GROUND_MASK;
@@ -139,18 +151,36 @@ public class B2dWorldCreator {
     }
 
     private void createFixture(Body body, FixtureDef fixtureDef, MapObject object) {
-        if(object.getProperties().containsKey("ladder")) {
+        // create ladder
+        if(object.getProperties().containsKey(LADDER_PROPERTY)) {
             new Ladder(body, fixtureDef);
         }
-        else if(object.getProperties().containsKey("moving")) {
-            this.movingPlatform = new MovingPlatform(world, body, fixtureDef);
+        // create falling platform
+        else if(object.getProperties().containsKey(FALLING_PROPERTY)) {
+            float delay = (float) object.getProperties().get("delay");
+            FallingPlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, delay);
+            this.fallingPlatforms.add(fallingPlatform);
         }
+        // create moving platform
+        else if(object.getProperties().containsKey(MOVING_PROPERTY)) {
+            float vX = (float) object.getProperties().get("vX");
+            float vY = (float) object.getProperties().get("vY");
+            MovingPlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
+            this.movingPlatforms.add(movingPlatform);
+        }
+        // create all other objects
         else {
             body.createFixture(fixtureDef);
         }
     }
 
-    public MovingPlatform getMovingPlatform() {
-        return movingPlatform;
+    // getter for the falling platforms
+    public Array<FallingPlatform> getFallingPlatforms() {
+        return fallingPlatforms;
+    }
+
+    // getter for the moving platforms
+    public Array<MovingPlatform> getMovingPlatforms() {
+        return movingPlatforms;
     }
 }
