@@ -66,9 +66,9 @@ public class DebugCamera {
             camera.position.x = MathUtils.clamp(camera.position.x,
                     viewport.getWorldWidth() / 2,
                     MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
-            camera.position.y = MathUtils.clamp(camera.position.y,
+            /*camera.position.y = MathUtils.clamp(camera.position.y,
                     viewport.getWorldHeight() / 2,
-                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);
+                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);*/
         }
 
         camera.update();

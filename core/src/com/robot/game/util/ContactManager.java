@@ -98,7 +98,7 @@ public class ContactManager implements ContactListener {
                 break;
             // robot - moving platform
             case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                robotMovPlatEnd(fixA, fixB);
+                robotMovPlatEnd(fixA, fixB); // this does nothing right now
                 break;
         }
 

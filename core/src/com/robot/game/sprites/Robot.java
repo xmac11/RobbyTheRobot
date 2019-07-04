@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.Ladder;
+import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
@@ -44,7 +45,7 @@ public class Robot extends InputAdapter {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1092 / PPM, 384 / PPM); // 32, 160
+        bodyDef.position.set(1092 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
 
@@ -97,6 +98,10 @@ public class Robot extends InputAdapter {
 //            body.applyForceToCenter(0, 350, true);
             if(!onLadder)
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
+            else {
+                body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
+                body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);
+            }
         }
         /*if(Gdx.input.isKeyPressed(Input.Keys.UP) && onLadder) {
             vY = 2;
@@ -131,7 +136,8 @@ public class Robot extends InputAdapter {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
-        body.setLinearVelocity(body.getLinearVelocity().x, 0);
+        if(onLadder)
+            body.setLinearVelocity(body.getLinearVelocity().x, 0);
         Gdx.input.setInputProcessor(onLadder ? this : null);
     }
 
@@ -145,9 +151,9 @@ public class Robot extends InputAdapter {
             body.setLinearVelocity(0, 2);
         if(keycode == Input.Keys.DOWN)
             body.setLinearVelocity(0, -2);
-        if(keycode == Input.Keys.SPACE) {
+        /*if(keycode == Input.Keys.SPACE) {
             body.applyLinearImpulse(new Vector2(0, 0.1f), body.getWorldCenter(), true);
-        }
+        }*/
 
         return true;
     }
@@ -156,9 +162,9 @@ public class Robot extends InputAdapter {
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN)
             body.setLinearVelocity(0, 0);
-        if(keycode == Input.Keys.SPACE) {
-            body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
-        }
+//        if(keycode == Input.Keys.SPACE) {
+//            body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
+//        }
 
         return true;
     }

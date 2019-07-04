@@ -8,8 +8,13 @@ import com.robot.game.RobotGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+
+		/*config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
+		config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;*/
+
 		config.width = (int) Constants.WIDTH;
 		config.height = (int) Constants.HEIGHT;
+
 		new LwjglApplication(new RobotGame(), config);
 	}
 }
