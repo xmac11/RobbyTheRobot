@@ -7,14 +7,23 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.robot.game.interactiveObjects.Ladder;
+import com.robot.game.interactiveObjects.MovingPlatform;
 
 import static com.robot.game.util.Constants.*;
 
 
-public class B2dWorld {
+public class B2dWorldCreator {
 
-    public static void createTiledObjects(World world, MapObjects objects) {
+    private MovingPlatform movingPlatform;
+
+    public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
+        for(MapObjects objects: layersArray)
+            createTiledObjects(world, objects);
+    }
+
+    private void createTiledObjects(World world, MapObjects objects) {
 
         /* ChainShapes are meant as you use them, for terrain and other static stuff.
         If you create a body with ChainShape and make it dynamic, it won't behave well.
@@ -80,7 +89,7 @@ public class B2dWorld {
         }
     }
 
-    private static ChainShape createPolyline(PolylineMapObject polyline) {
+    private ChainShape createPolyline(PolylineMapObject polyline) {
         float[] vertices =  polyline.getPolyline().getTransformedVertices();
         float[] worldVertices = new float[vertices.length];
 
@@ -94,7 +103,7 @@ public class B2dWorld {
         return chainShape;
     }
 
-    private static ChainShape createPolygon(PolygonMapObject polygon) {
+    private ChainShape createPolygon(PolygonMapObject polygon) {
         float[] vertices =  polygon.getPolygon().getTransformedVertices();
         float[] worldVertices = new float[vertices.length + 2]; // +2 to close the polyline
 
@@ -111,11 +120,15 @@ public class B2dWorld {
     }
 
     // assign filter bits to bodies
-    private static void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
+    private void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
         if(object.getProperties().containsKey("ladder")) {
             fixtureDef.filter.categoryBits = LADDER_CATEGORY;
             fixtureDef.filter.maskBits = LADDER_MASK;
             fixtureDef.isSensor = true;
+        }
+        else if(object.getProperties().containsKey("moving")) {
+            fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
+            fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
@@ -123,9 +136,12 @@ public class B2dWorld {
         }
     }
 
-    private static void createFixture(Body body, FixtureDef fixtureDef, MapObject object) {
+    private void createFixture(Body body, FixtureDef fixtureDef, MapObject object) {
         if(object.getProperties().containsKey("ladder")) {
             new Ladder(body, fixtureDef);
+        }
+        else if(object.getProperties().containsKey("moving")) {
+            this.movingPlatform = new MovingPlatform(body, fixtureDef);
         }
         else {
             body.createFixture(fixtureDef);

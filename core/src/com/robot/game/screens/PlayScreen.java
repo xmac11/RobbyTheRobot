@@ -5,18 +5,21 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
+import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.sprites.Robot;
-import com.robot.game.util.B2dWorld;
+import com.robot.game.util.B2dWorldCreator;
 import com.robot.game.util.Constants;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.DebugCamera;
@@ -27,6 +30,7 @@ public class PlayScreen extends ScreenAdapter {
 
     private RobotGame game;
     private Robot robot;
+    private MovingPlatform movingPlatform;
 
     // camera variables
     private OrthographicCamera camera;
@@ -36,10 +40,12 @@ public class PlayScreen extends ScreenAdapter {
     // Tiled map variables
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
+    private Array<MapObjects> layersArray;
 
     // Box2d variables
     private World world;
     private Box2DDebugRenderer debugRenderer;
+    private B2dWorldCreator b2dWorldCreator;
 
     public PlayScreen(RobotGame game) {
         this.game = game;
@@ -63,8 +69,13 @@ public class PlayScreen extends ScreenAdapter {
         this.debugRenderer = new Box2DDebugRenderer();
 
         // create tiled objects
-        B2dWorld.createTiledObjects(world, tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
-        B2dWorld.createTiledObjects(world, tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+        this.layersArray = new Array<>();
+        layersArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
+        layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+
+        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray);
+//        B2dWorldCreator.createTiledObjects(world, tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
+//        B2dWorldCreator.createTiledObjects(world, tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 
         // create robot
         this.robot = new Robot(world);

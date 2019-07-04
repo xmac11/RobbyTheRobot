@@ -45,7 +45,7 @@ public class Robot extends InputAdapter {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(432 / PPM, 160 / PPM);
+        bodyDef.position.set(1092 / PPM, 384 / PPM); // 32, 160
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
 
