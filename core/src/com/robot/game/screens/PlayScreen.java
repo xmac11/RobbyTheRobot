@@ -29,6 +29,8 @@ import static com.robot.game.util.Constants.*;
 public class PlayScreen extends ScreenAdapter {
 
     private RobotGame game;
+
+    // entities
     private Robot robot;
     private MovingPlatform movingPlatform;
 
@@ -80,6 +82,9 @@ public class PlayScreen extends ScreenAdapter {
         // create robot
         this.robot = new Robot(world);
 
+        // create moving platform
+        this.movingPlatform = b2dWorldCreator.getMovingPlatform();
+
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
     }
@@ -89,6 +94,9 @@ public class PlayScreen extends ScreenAdapter {
 
         // update robot
         robot.update(delta);
+
+        // update moving platform
+        movingPlatform.update();
 
         // update camera
         debugCamera.update(delta);

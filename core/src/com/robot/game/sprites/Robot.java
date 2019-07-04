@@ -19,7 +19,6 @@ public class Robot extends InputAdapter {
     private Sprite robotSprite;
     private World world;
     private Body body;
-    // ladder
     private boolean onLadder;
 
     public Robot(World world) {

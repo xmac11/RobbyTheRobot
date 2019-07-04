@@ -14,7 +14,6 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-
         // Get the two fixtures that contact
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
@@ -38,9 +37,9 @@ public class ContactManager implements ContactListener {
         }
 
 
-
     }
 
+    // robot - ladder collision begins
     private static void robotLadderBegin(Fixture fixA, Fixture fixB) {
         Texture texture = new Texture("blue.png");
         Robot robot;
@@ -59,6 +58,7 @@ public class ContactManager implements ContactListener {
         Gdx.app.log("ContactManager", "On ladder");
     }
 
+    // robot - moving platform collision begins
     private static void robotMovPlatBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
         MovingPlatform movingPlatform;
@@ -72,7 +72,10 @@ public class ContactManager implements ContactListener {
             movingPlatform = (MovingPlatform) fixA.getUserData();
         }
 
-        movingPlatform.movePlatform(0, -7f);
+        // move platform vertically
+        movingPlatform.movePlatform(0, -8f);
+        // make robot stop on platform
+        robot.getBody().setLinearVelocity( robot.getBody().getLinearVelocity().x, movingPlatform.getBody().getLinearVelocity().y );
         Gdx.app.log("ContactManager", "On moving");
     }
 
@@ -102,6 +105,7 @@ public class ContactManager implements ContactListener {
 
     }
 
+    // robot - ladder collision ends
     private static void robotLadderEnd(Fixture fixA, Fixture fixB) {
         Texture texture = new Texture("sf.png");
         Robot robot;
@@ -119,6 +123,8 @@ public class ContactManager implements ContactListener {
         robot.setOnLadder(ladder, false);
     }
 
+    // this does nothing right now
+    // robot - moving platform collision ends
     private static void robotMovPlatEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
         MovingPlatform movingPlatform;
@@ -131,8 +137,6 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
         }
-
-//        movingPlatform.getBody().setLinearVelocity(0, 0);
         Gdx.app.log("ContactManager", "Off moving");
     }
 

@@ -2,14 +2,16 @@ package com.robot.game.interactiveObjects;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-
-import static com.robot.game.util.Constants.MAP_HEIGHT;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class MovingPlatform {
 
+    private World world;
     private Body body;
+    private boolean destroyed;
 
-    public MovingPlatform(Body body, FixtureDef fixtureDef) {
+    public MovingPlatform(World world, Body body, FixtureDef fixtureDef) {
+        this.world = world;
         this.body = body;
         body.createFixture(fixtureDef).setUserData(this);
     }
@@ -19,8 +21,9 @@ public class MovingPlatform {
     }
 
     public void update() {
-        if(body.getPosition().y < MAP_HEIGHT) {
-            body.destroyFixture(body.getFixtureList().first());
+        if(body.getPosition().y < 0 && !destroyed) {
+            world.destroyBody(body);
+            destroyed = true;
         }
     }
 

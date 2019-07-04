@@ -16,9 +16,11 @@ import static com.robot.game.util.Constants.*;
 
 public class B2dWorldCreator {
 
+    private World world;
     private MovingPlatform movingPlatform;
 
     public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
+        this.world = world;
         for(MapObjects objects: layersArray)
             createTiledObjects(world, objects);
     }
@@ -141,11 +143,14 @@ public class B2dWorldCreator {
             new Ladder(body, fixtureDef);
         }
         else if(object.getProperties().containsKey("moving")) {
-            this.movingPlatform = new MovingPlatform(body, fixtureDef);
+            this.movingPlatform = new MovingPlatform(world, body, fixtureDef);
         }
         else {
             body.createFixture(fixtureDef);
         }
     }
 
+    public MovingPlatform getMovingPlatform() {
+        return movingPlatform;
+    }
 }
