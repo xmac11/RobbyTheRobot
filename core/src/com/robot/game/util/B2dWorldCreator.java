@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
@@ -18,12 +19,12 @@ import static com.robot.game.util.Constants.*;
 public class B2dWorldCreator {
 
     private World world;
-    private Array<FallingPlatform> fallingPlatforms;
+    private DelayedRemovalArray<FallingPlatform> fallingPlatforms;
     private Array<MovingPlatform> movingPlatforms;
 
     public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
         this.world = world;
-        this.fallingPlatforms = new Array<>();
+        this.fallingPlatforms = new DelayedRemovalArray<>();
         this.movingPlatforms = new Array<>();
         for(MapObjects objects: layersArray)
             createTiledObjects(world, objects);
@@ -175,7 +176,7 @@ public class B2dWorldCreator {
     }
 
     // getter for the falling platforms
-    public Array<FallingPlatform> getFallingPlatforms() {
+    public DelayedRemovalArray<FallingPlatform> getFallingPlatforms() {
         return fallingPlatforms;
     }
 

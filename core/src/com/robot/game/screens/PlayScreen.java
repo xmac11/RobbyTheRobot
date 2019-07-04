@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -29,7 +30,7 @@ public class PlayScreen extends ScreenAdapter {
 
     // entities
     private Robot robot;
-    private Array<FallingPlatform> fallingPlatforms;
+    private DelayedRemovalArray<FallingPlatform> fallingPlatforms;
     private Array<MovingPlatform> movingPlatforms;
 
     // camera variables
@@ -92,8 +93,12 @@ public class PlayScreen extends ScreenAdapter {
         world.step(1 / 60f, 8, 3);
 
         // update falling platforms (do this first if robot should be moving along with it)
-        for(FallingPlatform fallingPlatform: fallingPlatforms)
-            fallingPlatform.update(delta);
+        for(int i = 0; i < fallingPlatforms.size; i++) {
+            fallingPlatforms.get(i).update(delta);
+            // if platform is destroyed, remove from array
+            if(fallingPlatforms.get(i).isDestroyed())
+                fallingPlatforms.removeIndex(i);
+        }
 
         // update moving platforms
         for(MovingPlatform movingPlatform: movingPlatforms)
@@ -108,6 +113,7 @@ public class PlayScreen extends ScreenAdapter {
         // only render what the camera can see
         mapRenderer.setView(camera);
         game.getBatch().setProjectionMatrix(camera.combined);
+
     }
 
     @Override

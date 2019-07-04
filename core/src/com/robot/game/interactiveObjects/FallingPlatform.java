@@ -53,4 +53,8 @@ public class FallingPlatform {
     public void setFlagToMove(boolean flagToMove) {
         this.flagToMove = flagToMove;
     }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 }
