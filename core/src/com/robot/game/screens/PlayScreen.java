@@ -89,11 +89,11 @@ public class PlayScreen extends ScreenAdapter {
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
+        // update moving platform (do this first if robot should be moving along with it)
+        movingPlatform.update();
+
         // update robot
         robot.update(delta);
-
-        // update moving platform
-        movingPlatform.update();
 
         // update camera
         debugCamera.update(delta);

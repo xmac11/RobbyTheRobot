@@ -74,6 +74,11 @@ public class ContactManager implements ContactListener {
 
         // move platform vertically
         movingPlatform.movePlatform(0, -8f);
+
+        // this is used for constantly moving platforms
+        //robot.setOnMovingPlatform(movingPlatform, true);
+
+
         // make robot stop on platform
         robot.getBody().setLinearVelocity( robot.getBody().getLinearVelocity().x, movingPlatform.getBody().getLinearVelocity().y );
         Gdx.app.log("ContactManager", "On moving");
@@ -137,6 +142,9 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
         }
+
+        // this is used for constantly moving platforms
+        //robot.setOnMovingPlatform(null, false);
         Gdx.app.log("ContactManager", "Off moving");
     }
 

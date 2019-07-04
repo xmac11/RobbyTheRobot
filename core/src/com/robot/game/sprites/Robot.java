@@ -22,6 +22,10 @@ public class Robot extends InputAdapter {
     private Body body;
     private boolean onLadder;
 
+    // this is used for constantly moving platforms
+    private MovingPlatform movingPlatform;
+    private boolean isOnMovingPlatform;
+
     public Robot(World world) {
         this.world = world;
         this.onLadder = false;
@@ -74,6 +78,10 @@ public class Robot extends InputAdapter {
         // first handle input
         handleInput(delta);
 
+        if(isOnMovingPlatform) {
+            body.setLinearVelocity(body.getLinearVelocity().x, movingPlatform.getBody().getLinearVelocity().y);
+        }
+
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
         robotSprite.setPosition(body.getPosition().x - 16 / PPM, body.getPosition().y - 32 / PPM); // for rectangle
@@ -96,12 +104,17 @@ public class Robot extends InputAdapter {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
 //            body.applyForceToCenter(0, 350, true);
-            if(!onLadder)
-                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
-            else {
+
+            if(onLadder) {
                 body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
                 body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);
             }
+            else if(isOnMovingPlatform) {
+                isOnMovingPlatform = false;
+                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
+            }
+            else
+                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
         }
         /*if(Gdx.input.isKeyPressed(Input.Keys.UP) && onLadder) {
             vY = 2;
@@ -141,8 +154,10 @@ public class Robot extends InputAdapter {
         Gdx.input.setInputProcessor(onLadder ? this : null);
     }
 
-    public boolean isOnLadder() {
-        return onLadder;
+    // this is used for constantly moving platforms
+    public void setOnMovingPlatform(MovingPlatform movingPlatform, boolean isOnMovingPlatform) {
+        this.movingPlatform = movingPlatform;
+        this.isOnMovingPlatform = isOnMovingPlatform;
     }
 
     @Override
@@ -151,9 +166,6 @@ public class Robot extends InputAdapter {
             body.setLinearVelocity(0, 2);
         if(keycode == Input.Keys.DOWN)
             body.setLinearVelocity(0, -2);
-        /*if(keycode == Input.Keys.SPACE) {
-            body.applyLinearImpulse(new Vector2(0, 0.1f), body.getWorldCenter(), true);
-        }*/
 
         return true;
     }
@@ -162,9 +174,6 @@ public class Robot extends InputAdapter {
     public boolean keyUp(int keycode) {
         if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN)
             body.setLinearVelocity(0, 0);
-//        if(keycode == Input.Keys.SPACE) {
-//            body.applyLinearImpulse(new Vector2(0, -2f), body.getWorldCenter(), true);
-//        }
 
         return true;
     }
