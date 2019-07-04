@@ -54,7 +54,7 @@ public class ContactManager implements ContactListener {
         }
 
         robot.setRobotSprite(new Sprite(texture));
-        robot.setOnLadder(ladder, true);
+        robot.setOnLadder(true);
         Gdx.app.log("ContactManager", "On ladder");
     }
 
@@ -120,7 +120,7 @@ public class ContactManager implements ContactListener {
         }
         Gdx.app.log("ContactManager", "Off ladder");
         robot.setRobotSprite(new Sprite(texture));
-        robot.setOnLadder(ladder, false);
+        robot.setOnLadder(false);
     }
 
     // this does nothing right now

@@ -19,10 +19,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.sprites.Robot;
-import com.robot.game.util.B2dWorldCreator;
-import com.robot.game.util.Constants;
-import com.robot.game.util.ContactManager;
-import com.robot.game.util.DebugCamera;
+import com.robot.game.util.*;
 
 import static com.robot.game.util.Constants.*;
 
@@ -151,8 +148,6 @@ public class PlayScreen extends ScreenAdapter {
         debugRenderer.dispose();
         robot.dispose();
     }
-
-
 
     public Robot getRobot() {
         return robot;

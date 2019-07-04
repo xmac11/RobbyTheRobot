@@ -128,7 +128,7 @@ public class Robot extends InputAdapter {
         this.robotSprite = robotSprite;
     }
 
-    public void setOnLadder(Ladder ladder, boolean onLadder) {
+    public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
         body.setLinearVelocity(body.getLinearVelocity().x, 0);

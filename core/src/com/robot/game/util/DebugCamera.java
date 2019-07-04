@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.sprites.Robot;
 
@@ -33,10 +34,22 @@ public class DebugCamera {
 
         // if following, follow robot, else move camera according to input
         if(following) {
+            if(ShakeEffect.getTimeLeft() > 0) {
+                ShakeEffect.update(delta);
+                //camera.rotate(Vector3.Z, ShakeEffect.randomRotation());
+                camera.translate(ShakeEffect.getPosition());
+            }
+            // in case of rotation
+            /*else {
+                camera.direction.set(0, 0, -1);
+                camera.up.set(0, 1, 0);
+            }*/
+
             //camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-            camera.position.x =  camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
+            camera.position.x = camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
             camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
             //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f
+
         }
         else {
             if(Gdx.input.isKeyPressed(Input.Keys.A))
@@ -49,12 +62,14 @@ public class DebugCamera {
                 camera.position.y -= delta * DEBUG_CAM_SPEED;
         }
         // finally clamp the position of the camera within the map
-        camera.position.x = MathUtils.clamp(camera.position.x,
-                                       viewport.getWorldWidth() / 2,
-                                      MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
-        /*camera.position.y = MathUtils.clamp(camera.position.y,
-                viewport.getWorldHeight() / 2,
-                MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);*/
+        if(following) {
+            camera.position.x = MathUtils.clamp(camera.position.x,
+                    viewport.getWorldWidth() / 2,
+                    MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
+            camera.position.y = MathUtils.clamp(camera.position.y,
+                    viewport.getWorldHeight() / 2,
+                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);
+        }
 
         camera.update();
     }
