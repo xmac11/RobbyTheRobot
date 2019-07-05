@@ -6,23 +6,26 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import static com.robot.game.util.Constants.PPM;
 
-public class MovingPlatform {
-
-    private World world;
-    private Body body;
+public class MovingPlatform extends InteractivePlatform {
 
     public MovingPlatform(World world, Body body, FixtureDef fixtureDef, float vX, float vY) {
-        this.world = world;
-        this.body = body;
+        super(world, body);
         body.createFixture(fixtureDef).setUserData(this);
 
         body.setLinearVelocity(vX, vY);
     }
 
+    @Override
     public void update(float delta) {
         // this is used for constantly moving platforms (probably make these variables in properties)
         if(body.getPosition().y < 110 / PPM || body.getPosition().y > 324 / PPM)
             this.reverseVelocity(false, true);
+    }
+
+
+    @Override
+    public boolean isDestroyed() {
+        return false;
     }
 
     // reverse velocity of a moving platform
@@ -31,9 +34,5 @@ public class MovingPlatform {
             body.setLinearVelocity(-body.getLinearVelocity().x, body.getLinearVelocity().y);
         if(reverseVy)
             body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
-    }
-
-    public Body getBody() {
-        return body;
     }
 }

@@ -17,10 +17,12 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
-import com.robot.game.interactiveObjects.FallingPlatform;
-import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.sprites.Robot;
-import com.robot.game.util.*;
+import com.robot.game.util.B2dWorldCreator;
+import com.robot.game.util.Constants;
+import com.robot.game.util.ContactManager;
+import com.robot.game.util.DebugCamera;
 
 import static com.robot.game.util.Constants.*;
 
@@ -30,8 +32,9 @@ public class PlayScreen extends ScreenAdapter {
 
     // entities
     private Robot robot;
-    private DelayedRemovalArray<FallingPlatform> fallingPlatforms;
-    private Array<MovingPlatform> movingPlatforms;
+
+    // interactive platforms
+    private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
 
     // camera variables
     private OrthographicCamera camera;
@@ -79,11 +82,8 @@ public class PlayScreen extends ScreenAdapter {
         // create robot
         this.robot = new Robot(world);
 
-        // create falling platform
-        this.fallingPlatforms = b2dWorldCreator.getFallingPlatforms();
-
-        // create moving platform
-        this.movingPlatforms = b2dWorldCreator.getMovingPlatforms();
+        // create interactive platforms
+        this.interactivePlatforms = b2dWorldCreator.getInteractivePlatforms();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -92,17 +92,13 @@ public class PlayScreen extends ScreenAdapter {
     public void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
-        // update falling platforms (do this first if robot should be moving along with it)
-        for(int i = 0; i < fallingPlatforms.size; i++) {
-            fallingPlatforms.get(i).update(delta);
+        // update interactive platforms (do this first if robot should be moving along with it)
+        for(int i = 0; i < interactivePlatforms.size; i++) {
+            interactivePlatforms.get(i).update(delta);
             // if platform is destroyed, remove from array
-            if(fallingPlatforms.get(i).isDestroyed())
-                fallingPlatforms.removeIndex(i);
+            if(interactivePlatforms.get(i).isDestroyed())
+                interactivePlatforms.removeIndex(i);
         }
-
-        // update moving platforms
-        for(MovingPlatform movingPlatform: movingPlatforms)
-            movingPlatform.update(delta);
 
         // update robot
         robot.update(delta);
@@ -154,7 +150,6 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         System.out.println("dispose");
-//        batch.dispose();
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();

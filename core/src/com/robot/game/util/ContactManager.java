@@ -80,14 +80,15 @@ public class ContactManager implements ContactListener {
             if(normal.y <= -1/Math.sqrt(2)) {
                 // move platform vertically
                 fallingPlatform.setFlagToMove(true);
+                robot.setOnInteractivePlatform(fallingPlatform, true);
                 Gdx.app.log("ContactManager", "On falling platform");
             }
             else if(normal.y >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from below");
+                Gdx.app.log("ContactManager","Robot hit platform from below");
             else if(normal.x <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the right");
+                Gdx.app.log("ContactManager","Robot hit platform from the right");
             else if(normal.x >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the left");
+                Gdx.app.log("ContactManager","Robot hit platform from the left");
         }
         else {
             robot = (Robot) fixB.getUserData();
@@ -95,14 +96,15 @@ public class ContactManager implements ContactListener {
 
             if(normal.y >= 1/Math.sqrt(2)) {
                 fallingPlatform.setFlagToMove(true);
+                robot.setOnInteractivePlatform(fallingPlatform, true);
                 Gdx.app.log("ContactManager", "On falling platform");
             }
             else if(normal.y <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from below");
+                Gdx.app.log("ContactManager","Robot hit platform from below");
             else if(normal.x >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the right");
+                Gdx.app.log("ContactManager","Robot hit platform from the right");
             else if(normal.x <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the left");
+                Gdx.app.log("ContactManager","Robot hit platform from the left");
         }
 
         // make robot stop on platform
@@ -118,30 +120,30 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixA.getUserData();
             movingPlatform = (MovingPlatform) fixB.getUserData();
             if(normal.y <= -1/Math.sqrt(2)) {
-                robot.setOnMovingPlatform(movingPlatform, true);
+                robot.setOnInteractivePlatform(movingPlatform, true);
                 Gdx.app.log("ContactManager", "On moving platform");
             }
             else if(normal.y >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from below");
+                Gdx.app.log("ContactManager","Robot hit platform from below");
             else if(normal.x <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the right");
+                Gdx.app.log("ContactManager","Robot hit platform from the right");
             else if(normal.x >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the left");
+                Gdx.app.log("ContactManager","Robot hit platform from the left");
 
         }
         else {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
             if(normal.y >= 1/Math.sqrt(2)) {
-                robot.setOnMovingPlatform(movingPlatform, true);
+                robot.setOnInteractivePlatform(movingPlatform, true);
                 Gdx.app.log("ContactManager", "On moving platform");
             }
             else if(normal.y <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from below");
+                Gdx.app.log("ContactManager","Robot hit platform from below");
             else if(normal.x >= 1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the right");
+                Gdx.app.log("ContactManager","Robot hit platform from the right");
             else if(normal.x <= -1/Math.sqrt(2))
-                System.out.println("Robot hit platform from the left");
+                Gdx.app.log("ContactManager","Robot hit platform from the left");
         }
 
     }
@@ -208,6 +210,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             fallingPlatform = (FallingPlatform) fixA.getUserData();
         }
+        robot.setOnInteractivePlatform(fallingPlatform, false);
         Gdx.app.log("ContactManager", "Off falling platform");
     }
 
@@ -224,7 +227,9 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
         }
-        robot.setOnMovingPlatform(null, false);
+
+        // remove the robot from the moving platform
+        robot.setOnInteractivePlatform(null, false);
         Gdx.app.log("ContactManager", "Off moving platform");
     }
 

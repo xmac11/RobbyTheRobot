@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.FallingPlatform;
+import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
 
@@ -19,13 +20,11 @@ import static com.robot.game.util.Constants.*;
 public class B2dWorldCreator {
 
     private World world;
-    private DelayedRemovalArray<FallingPlatform> fallingPlatforms;
-    private Array<MovingPlatform> movingPlatforms;
+    private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
 
     public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
         this.world = world;
-        this.fallingPlatforms = new DelayedRemovalArray<>();
-        this.movingPlatforms = new Array<>();
+        this.interactivePlatforms = new DelayedRemovalArray<>();
         for(MapObjects objects: layersArray)
             createTiledObjects(world, objects);
     }
@@ -159,15 +158,15 @@ public class B2dWorldCreator {
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PROPERTY)) {
             float delay = (float) object.getProperties().get("delay");
-            FallingPlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, delay);
-            this.fallingPlatforms.add(fallingPlatform);
+            InteractivePlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, delay);
+            this.interactivePlatforms.add(fallingPlatform);
         }
         // create moving platform
         else if(object.getProperties().containsKey(MOVING_PROPERTY)) {
             float vX = (float) object.getProperties().get("vX");
             float vY = (float) object.getProperties().get("vY");
-            MovingPlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
-            this.movingPlatforms.add(movingPlatform);
+            InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
+            this.interactivePlatforms.add(movingPlatform);
         }
         // create all other objects
         else {
@@ -175,13 +174,9 @@ public class B2dWorldCreator {
         }
     }
 
-    // getter for the falling platforms
-    public DelayedRemovalArray<FallingPlatform> getFallingPlatforms() {
-        return fallingPlatforms;
+    // getter for the interactive platforms
+    public DelayedRemovalArray<InteractivePlatform> getInteractivePlatforms() {
+        return interactivePlatforms;
     }
 
-    // getter for the moving platforms
-    public Array<MovingPlatform> getMovingPlatforms() {
-        return movingPlatforms;
-    }
 }

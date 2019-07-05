@@ -6,37 +6,32 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class FallingPlatform {
+public class FallingPlatform extends InteractivePlatform {
 
-    private World world;
-    private Body body;
-    private boolean destroyed;
-
+    private boolean isDestroyed;
     private boolean flagToMove;
     private float delay;
     private float startTime; // time the player jumped on the falling platform
     private float elapsed;
 
     public FallingPlatform(World world, Body body, FixtureDef fixtureDef, float delay) {
-        this.world = world;
-        this.body = body;
+        super(world, body);
         body.createFixture(fixtureDef).setUserData(this);
 
         this.delay = delay;
         this.elapsed = 0;
-
-
     }
 
-    public void movePlatform(float vX, float vY) {
+    private void movePlatform(float vX, float vY) {
         body.setLinearVelocity(vX, vY);
     }
 
+    @Override
     public void update(float delta) {
         // if body is out of bounds, destroy it
-        if(body.getPosition().y < 0 && !destroyed) {
+        if(body.getPosition().y < 0 && !isDestroyed) {
             world.destroyBody(body);
-            destroyed = true;
+            isDestroyed = true;
         }
 
         if(flagToMove) {
@@ -49,8 +44,9 @@ public class FallingPlatform {
         }
     }
 
-    public Body getBody() {
-        return body;
+    @Override
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 
     public void setFlagToMove(boolean flagToMove) {
@@ -59,7 +55,5 @@ public class FallingPlatform {
         this.flagToMove = flagToMove;
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
-    }
+
 }

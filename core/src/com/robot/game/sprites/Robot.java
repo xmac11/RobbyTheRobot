@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.interactiveObjects.InteractivePlatform;
 
 import static com.robot.game.util.Constants.*;
 
@@ -18,9 +18,9 @@ public class Robot extends InputAdapter {
     private Body body;
     private boolean onLadder;
 
-    // this is used for constantly moving platforms
-    private MovingPlatform movingPlatform;
-    private boolean isOnMovingPlatform;
+    // interactive platforms
+    private InteractivePlatform interactivePlatform;
+    private boolean isOnInteractivePlatform;
 
     public Robot(World world) {
         this.world = world;
@@ -66,27 +66,16 @@ public class Robot extends InputAdapter {
         fixtureDef.filter.maskBits = ROBOT_MASK;
         this.body.createFixture(fixtureDef).setUserData(this);
 
-        // create feet
-        /*EdgeShape feetShape = new EdgeShape();
-        feetShape.set(new Vector2(-40f / 2 / PPM, -64f / 2 / PPM), new Vector2(40f / 2 / PPM, -64f / 2 / PPM));
-        fixtureDef.shape = feetShape;
-        fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
-        fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
-        body.createFixture(fixtureDef).setUserData(this);*/
-
         recShape.dispose();
 //        circleShape.dispose();
-//        feetShape.dispose();
     }
 
     public void update(float delta) {
         // first handle input
         handleInput(delta);
 
-        // if robot is on moving platform, make it move along with  it
-        if(isOnMovingPlatform) {
-            body.setLinearVelocity(body.getLinearVelocity().x, movingPlatform.getBody().getLinearVelocity().y);
-        }
+        if(isOnInteractivePlatform)
+            body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
@@ -114,8 +103,8 @@ public class Robot extends InputAdapter {
                 body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
                 body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);
             }
-            else if(isOnMovingPlatform) {
-                isOnMovingPlatform = false;
+            else if(/*isOnMovingPlatform*/isOnInteractivePlatform) {
+                /*isOnMovingPlatform*/isOnInteractivePlatform = false;
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
             }
             else
@@ -159,14 +148,9 @@ public class Robot extends InputAdapter {
         Gdx.input.setInputProcessor(onLadder ? this : null);
     }
 
-    public boolean isOnMovingPlatform() {
-        return isOnMovingPlatform;
-    }
-
-    // this is used for constantly moving platforms
-    public void setOnMovingPlatform(MovingPlatform movingPlatform, boolean isOnMovingPlatform) {
-        this.movingPlatform = movingPlatform;
-        this.isOnMovingPlatform = isOnMovingPlatform;
+    public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {
+        this.interactivePlatform = interactivePlatform;
+        this.isOnInteractivePlatform = isOnInteractivePlatform;
     }
 
     @Override
