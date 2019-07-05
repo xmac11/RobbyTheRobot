@@ -1,8 +1,10 @@
 package com.robot.game.interactiveObjects;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class FallingPlatform {
 
@@ -12,6 +14,7 @@ public class FallingPlatform {
 
     private boolean flagToMove;
     private float delay;
+    private float startTime; // time the player jumped on the falling platform
     private float elapsed;
 
     public FallingPlatform(World world, Body body, FixtureDef fixtureDef, float delay) {
@@ -42,7 +45,7 @@ public class FallingPlatform {
                 flagToMove = false;
             }
             else
-                elapsed += delta;
+                elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
         }
     }
 
@@ -51,6 +54,8 @@ public class FallingPlatform {
     }
 
     public void setFlagToMove(boolean flagToMove) {
+        // keep track of the time the robot jumped on the falling platform
+        this.startTime = TimeUtils.nanoTime();
         this.flagToMove = flagToMove;
     }
 

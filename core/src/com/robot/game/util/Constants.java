@@ -28,17 +28,19 @@ public final class Constants {
     // Box2D filter category bits
     public static final short NOTHING_CATEGORY = 0;
     public static final short ROBOT_CATEGORY = 1;
-    public static final short GROUND_CATEGORY = 2;
-    public static final short LADDER_CATEGORY = 4;
-    public static final short FALLING_PLATFORM_CATEGORY = 8;
-    public static final short MOVING_PLATFORM_CATEGORY = 16;
+    public static final short ROBOT_FEET_CATEGORY = 2;
+    public static final short GROUND_CATEGORY = 4;
+    public static final short LADDER_CATEGORY = 8;
+    public static final short FALLING_PLATFORM_CATEGORY = 16;
+    public static final short MOVING_PLATFORM_CATEGORY = 32;
 
     // Box2D filter mask bits
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY;
+    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
-    public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY;
-    public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY;
+    public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
 
 
 

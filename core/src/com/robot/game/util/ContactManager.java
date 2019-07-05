@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
@@ -13,11 +14,14 @@ import static com.robot.game.util.Constants.*;
 
 public class ContactManager implements ContactListener {
 
+//    private Robot robot;
+
     @Override
     public void beginContact(Contact contact) {
         // Get the two fixtures that contact
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+        Vector2 normal = contact.getWorldManifold().getNormal();
 
         if(fixA == null || fixB == null) return;
         if(fixA.getUserData() == null || fixB.getUserData() ==  null) return;
@@ -33,12 +37,12 @@ public class ContactManager implements ContactListener {
 
             // robot - falling platform
             case ROBOT_CATEGORY | FALLING_PLATFORM_CATEGORY:
-                robotFallPlatBegin(fixA, fixB);
+                robotFallPlatBegin(normal, fixA, fixB);
                 break;
 
             // robot - moving platform
             case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                robotMovingPlatBegin(fixA, fixB);
+                robotMovingPlatBegin(normal, fixA, fixB);
                 break;
         }
 
@@ -46,7 +50,7 @@ public class ContactManager implements ContactListener {
     }
 
     // robot - ladder collision begins
-    private static void robotLadderBegin(Fixture fixA, Fixture fixB) {
+    private void robotLadderBegin(Fixture fixA, Fixture fixB) {
         Texture texture = new Texture("blue.png");
         Robot robot;
         Ladder ladder;
@@ -65,45 +69,81 @@ public class ContactManager implements ContactListener {
     }
 
     // robot - falling platform collision begins
-    private static void robotFallPlatBegin(Fixture fixA, Fixture fixB) {
+    private void robotFallPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         FallingPlatform fallingPlatform;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
             fallingPlatform = (FallingPlatform) fixB.getUserData();
+
+            if(normal.y <= -1/Math.sqrt(2)) {
+                // move platform vertically
+                fallingPlatform.setFlagToMove(true);
+                Gdx.app.log("ContactManager", "On falling platform");
+            }
+            else if(normal.y >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from below");
+            else if(normal.x <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the right");
+            else if(normal.x >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the left");
         }
         else {
             robot = (Robot) fixB.getUserData();
             fallingPlatform = (FallingPlatform) fixA.getUserData();
+
+            if(normal.y >= 1/Math.sqrt(2)) {
+                fallingPlatform.setFlagToMove(true);
+                Gdx.app.log("ContactManager", "On falling platform");
+            }
+            else if(normal.y <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from below");
+            else if(normal.x >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the right");
+            else if(normal.x <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the left");
         }
 
-        // move platform vertically
-        fallingPlatform.setFlagToMove(true);
-
-
         // make robot stop on platform
-        robot.getBody().setLinearVelocity( robot.getBody().getLinearVelocity().x, fallingPlatform.getBody().getLinearVelocity().y );
-        Gdx.app.log("ContactManager", "On falling");
+//        robot.getBody().setLinearVelocity( robot.getBody().getLinearVelocity().x, fallingPlatform.getBody().getLinearVelocity().y );
     }
 
     // robot - moving platform collision begins
-    private static void robotMovingPlatBegin(Fixture fixA, Fixture fixB) {
+    private void robotMovingPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         MovingPlatform movingPlatform;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
             movingPlatform = (MovingPlatform) fixB.getUserData();
+            if(normal.y <= -1/Math.sqrt(2)) {
+                robot.setOnMovingPlatform(movingPlatform, true);
+                Gdx.app.log("ContactManager", "On moving platform");
+            }
+            else if(normal.y >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from below");
+            else if(normal.x <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the right");
+            else if(normal.x >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the left");
+
         }
         else {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
+            if(normal.y >= 1/Math.sqrt(2)) {
+                robot.setOnMovingPlatform(movingPlatform, true);
+                Gdx.app.log("ContactManager", "On moving platform");
+            }
+            else if(normal.y <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from below");
+            else if(normal.x >= 1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the right");
+            else if(normal.x <= -1/Math.sqrt(2))
+                System.out.println("Robot hit platform from the left");
         }
 
-        // this is used for constantly moving platforms
-        robot.setOnMovingPlatform(movingPlatform, true);
-        Gdx.app.log("ContactManager", "On moving");
     }
 
     @Override
@@ -137,7 +177,7 @@ public class ContactManager implements ContactListener {
     }
 
     // robot - ladder collision ends
-    private static void robotLadderEnd(Fixture fixA, Fixture fixB) {
+    private void robotLadderEnd(Fixture fixA, Fixture fixB) {
         Texture texture = new Texture("sf.png");
         Robot robot;
         Ladder ladder;
@@ -156,7 +196,7 @@ public class ContactManager implements ContactListener {
 
     // this does nothing right now
     // robot - falling platform collision ends
-    private static void robotFallPlatEnd(Fixture fixA, Fixture fixB) {
+    private void robotFallPlatEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
         FallingPlatform fallingPlatform;
 
@@ -168,14 +208,11 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             fallingPlatform = (FallingPlatform) fixA.getUserData();
         }
-
-        // this is used for constantly moving platforms
-        //robot.setOnMovingPlatform(null, false);
-        Gdx.app.log("ContactManager", "Off falling");
+        Gdx.app.log("ContactManager", "Off falling platform");
     }
 
     // robot - moving platform collision ends
-    private static void robotMovingPlatEnd(Fixture fixA, Fixture fixB) {
+    private void robotMovingPlatEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
         MovingPlatform movingPlatform;
 
@@ -187,9 +224,8 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
         }
-
         robot.setOnMovingPlatform(null, false);
-        Gdx.app.log("ContactManager", "Off moving");
+        Gdx.app.log("ContactManager", "Off moving platform");
     }
 
     @Override

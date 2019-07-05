@@ -45,7 +45,7 @@ public class Robot extends InputAdapter {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1092 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
+        bodyDef.position.set(1092 / PPM, 400 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
 
@@ -57,7 +57,7 @@ public class Robot extends InputAdapter {
         fixtureDef.shape = circleShape;*/
 
         PolygonShape recShape = new PolygonShape();
-        recShape.setAsBox(32/ 2 / PPM, 64 / 2 / PPM);
+        recShape.setAsBox(32f / 2 / PPM, 64f / 2 / PPM);
         fixtureDef.shape = recShape;
 
         fixtureDef.friction = 0.4f;
@@ -66,14 +66,24 @@ public class Robot extends InputAdapter {
         fixtureDef.filter.maskBits = ROBOT_MASK;
         this.body.createFixture(fixtureDef).setUserData(this);
 
+        // create feet
+        /*EdgeShape feetShape = new EdgeShape();
+        feetShape.set(new Vector2(-40f / 2 / PPM, -64f / 2 / PPM), new Vector2(40f / 2 / PPM, -64f / 2 / PPM));
+        fixtureDef.shape = feetShape;
+        fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
+        fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
+        body.createFixture(fixtureDef).setUserData(this);*/
+
         recShape.dispose();
 //        circleShape.dispose();
+//        feetShape.dispose();
     }
 
     public void update(float delta) {
         // first handle input
         handleInput(delta);
 
+        // if robot is on moving platform, make it move along with  it
         if(isOnMovingPlatform) {
             body.setLinearVelocity(body.getLinearVelocity().x, movingPlatform.getBody().getLinearVelocity().y);
         }
@@ -147,6 +157,10 @@ public class Robot extends InputAdapter {
         if(onLadder)
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
         Gdx.input.setInputProcessor(onLadder ? this : null);
+    }
+
+    public boolean isOnMovingPlatform() {
+        return isOnMovingPlatform;
     }
 
     // this is used for constantly moving platforms
