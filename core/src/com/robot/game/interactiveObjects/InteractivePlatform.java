@@ -8,7 +8,7 @@ public abstract class InteractivePlatform {
     protected World world;
     protected Body body;
 
-    public InteractivePlatform(World world, Body body) {
+    protected InteractivePlatform(World world, Body body) {
         this.world = world;
         this.body = body;
     }

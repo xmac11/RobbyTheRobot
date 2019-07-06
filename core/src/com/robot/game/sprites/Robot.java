@@ -18,15 +18,19 @@ public class Robot extends InputAdapter {
     private Body body;
     private boolean onLadder;
 
+    //CONSTANT SPEED
+    private final Vector2 ROBOT_IMPULSE;
+    private Vector2 temp = new Vector2();
+
     // interactive platforms
     private InteractivePlatform interactivePlatform;
     private boolean isOnInteractivePlatform;
 
     public Robot(World world) {
         this.world = world;
-        this.onLadder = false;
         createRobotB2d();
 
+        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_SPEED, 0);
 
         Texture texture = new Texture("sf.png");
 //        Texture texture = new Texture("robot2164.png");
@@ -35,8 +39,8 @@ public class Robot extends InputAdapter {
         this.robotSprite = new Sprite(texture);
 
 //        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
-        this.robotSprite.setSize(32 / PPM, 64 / PPM);
-        this.robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
+        robotSprite.setSize(ROBOT_WIDTH / PPM, ROBOT_HEIGHT / PPM);
+        robotSprite.setPosition(body.getPosition().x - ROBOT_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
 
         //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
     }
@@ -45,7 +49,7 @@ public class Robot extends InputAdapter {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1092 / PPM, 400 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
+        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
 
@@ -57,7 +61,7 @@ public class Robot extends InputAdapter {
         fixtureDef.shape = circleShape;*/
 
         PolygonShape recShape = new PolygonShape();
-        recShape.setAsBox(32f / 2 / PPM, 64f / 2 / PPM);
+        recShape.setAsBox(ROBOT_WIDTH / 2 / PPM, ROBOT_HEIGHT / 2 / PPM);
         fixtureDef.shape = recShape;
 
         fixtureDef.friction = 0.4f;
@@ -79,48 +83,61 @@ public class Robot extends InputAdapter {
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
-        robotSprite.setPosition(body.getPosition().x - 16 / PPM, body.getPosition().y - 32 / PPM); // for rectangle
+        robotSprite.setPosition(body.getPosition().x - ROBOT_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle
 
     }
 
     public void handleInput(float delta) {
-        float vX = 0; // reset every time
-        float vY = 0;
+
+        // CONSTANT SPEED
+//        temp.x = ROBOT_IMPULSE.x; // reset every frame
+//        temp.y = ROBOT_IMPULSE.y;
+
+        // CONSTANT SPEED OR GRADUAL ACCELERATION
+        float currentVelocity = body.getLinearVelocity().x;
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//            vX = 4;
-            body.applyForceToCenter(12.0f, 0, true);
-//            body.applyLinearImpulse(new Vector2(0.1f, 0), body.getWorldCenter(), true); //NOTE: shouldn't create vector here
+            // GRADUAL ACCELERATION
+            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_SPEED);
+            temp.x = body.getMass() * (targetVelocity - currentVelocity);
+
+            // CONSTANT SPEED OR GRADUAL ACCELERATION
+            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
+            System.out.println(body.getLinearVelocity());
+
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-//            vX = -4;
-            body.applyForceToCenter(-12.0f, 0, true);
-            //            body.applyLinearImpulse(new Vector2(-0.1f, 0), body.getWorldCenter(), true);
+        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            // GRADUAL ACCELERATION
+            float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_SPEED);
+            temp.x = body.getMass() * (targetVelocity - currentVelocity);
+            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+
+            // CONSTANT SPEED
+//            body.applyLinearImpulse(temp.scl(-1).sub(body.getMass() * currentVelocity, 0), body.getWorldCenter(), true);
+            System.out.println(body.getLinearVelocity());
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
+
         }
+        else {
+            float targetVelocity = body.getLinearVelocity().x * 0.98f;
+            temp.x = body.getMass() * (targetVelocity - currentVelocity);
+            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+        }
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             // robot jumps off ladder
             if(onLadder) {
                 body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
                 body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);
             }
-            else if(/*isOnMovingPlatform*/isOnInteractivePlatform) {
-                /*isOnMovingPlatform*/isOnInteractivePlatform = false;
-                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
+            else if(isOnInteractivePlatform) {
+                isOnInteractivePlatform = false;
+                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true); // make this constant
             }
             else
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
         }
-        /*if(Gdx.input.isKeyPressed(Input.Keys.UP) && onLadder) {
-            vY = 2;
-//            body.applyForceToCenter(0, 0.05f, true);
-//            body.applyLinearImpulse(new Vector2(0, 0.1f), body.getWorldCenter(), true);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && onLadder) {
-            vY = -2;
-            //            body.applyForceToCenter(0, 0.05f, true);
-            //            body.applyLinearImpulse(new Vector2(0, 0.1f), body.getWorldCenter(), true);
-        }*/
-//        body.setLinearVelocity(vX, vY);
     }
 
     public void dispose() {
@@ -143,9 +160,9 @@ public class Robot extends InputAdapter {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
+        Gdx.input.setInputProcessor(onLadder ? this : null);
         if(onLadder)
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
-        Gdx.input.setInputProcessor(onLadder ? this : null);
     }
 
     public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {

@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
@@ -44,8 +45,12 @@ public final class Constants {
 
     // Robot
     public static final float ROBOT_RADIUS = 16;
+    public static final float ROBOT_WIDTH = 32;
+    public static final float ROBOT_HEIGHT = 64;
+    public static final float ROBOT_SPEED = 5;
 
-    // Interactive platforms\
+
+    // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";
     public static final String FALLING_PROPERTY = "falling";
     public static final String MOVING_PROPERTY = "moving";
