@@ -89,7 +89,7 @@ public class PlayScreen extends ScreenAdapter {
         this.debugCamera = new DebugCamera(viewport, robot);
     }
 
-    public void update(float delta) {
+    private void update(float delta) {
         world.step(1 / 60f, 8, 3);
 
         // update interactive platforms (do this first if robot should be moving along with it)

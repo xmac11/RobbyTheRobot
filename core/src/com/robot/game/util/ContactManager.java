@@ -62,10 +62,17 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             ladder = (Ladder) fixA.getUserData();
         }
-
-        robot.setRobotSprite(new Sprite(texture));
-        robot.setOnLadder(true);
-        Gdx.app.log("ContactManager", "On ladder");
+        // every time robot is hits the bottom of the ladder, turn off gravity
+        // this mimics the case where the robot is on the ladder and falls down to the bottom
+        if(ladder.getDescription().equals(LADDER_BOTTOM_DESCRIPTION)) {
+            robot.getBody().setGravityScale(0);
+            Gdx.app.log("ContactManager", "On bottom ladder");
+        }
+        else {
+            robot.setRobotSprite(new Sprite(texture));
+            robot.setOnLadder(true);
+            Gdx.app.log("ContactManager", "On ladder");
+        }
     }
 
     // robot - falling platform collision begins
@@ -191,9 +198,12 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             ladder = (Ladder) fixA.getUserData();
         }
-        Gdx.app.log("ContactManager", "Off ladder");
-        robot.setRobotSprite(new Sprite(texture));
-        robot.setOnLadder(false);
+        // remove robot from ladder only if it lets go of the core
+        if(ladder.getDescription().equals(LADDER_CORE_DESCRIPTION)) {
+            Gdx.app.log("ContactManager", "Off ladder");
+            robot.setRobotSprite(new Sprite(texture));
+            robot.setOnLadder(false);
+        }
     }
 
     // this does nothing right now

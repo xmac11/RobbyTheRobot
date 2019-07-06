@@ -153,7 +153,8 @@ public class B2dWorldCreator {
     private void createFixture(Body body, FixtureDef fixtureDef, MapObject object) {
         // create ladder
         if(object.getProperties().containsKey(LADDER_PROPERTY)) {
-            new Ladder(body, fixtureDef);
+            String description = (String) object.getProperties().get(LADDER_PROPERTY);
+            new Ladder(body, fixtureDef, description);
         }
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PROPERTY)) {

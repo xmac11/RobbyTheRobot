@@ -47,11 +47,15 @@ public final class Constants {
     public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_WIDTH = 32;
     public static final float ROBOT_HEIGHT = 64;
-    public static final float ROBOT_SPEED = 5;
+    public static final float ROBOT_MAX_SPEED = 5;
+    public static final float ROBOT_CLIMB_SPEED = 3;
+
 
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";
+    public static final String LADDER_CORE_DESCRIPTION = "core";
+    public static final String LADDER_BOTTOM_DESCRIPTION = "bottom";
     public static final String FALLING_PROPERTY = "falling";
     public static final String MOVING_PROPERTY = "moving";
 

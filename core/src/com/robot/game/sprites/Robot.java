@@ -19,7 +19,7 @@ public class Robot extends InputAdapter {
     private boolean onLadder;
 
     //CONSTANT SPEED
-    private final Vector2 ROBOT_IMPULSE;
+//    private final Vector2 ROBOT_IMPULSE;
     private Vector2 temp = new Vector2();
 
     // interactive platforms
@@ -30,7 +30,7 @@ public class Robot extends InputAdapter {
         this.world = world;
         createRobotB2d();
 
-        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_SPEED, 0);
+//        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_SPEED, 0);
 
         Texture texture = new Texture("sf.png");
 //        Texture texture = new Texture("robot2164.png");
@@ -45,7 +45,7 @@ public class Robot extends InputAdapter {
         //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
     }
 
-    public void createRobotB2d() {
+    private void createRobotB2d() {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -87,7 +87,7 @@ public class Robot extends InputAdapter {
 
     }
 
-    public void handleInput(float delta) {
+    private void handleInput(float delta) {
 
         // CONSTANT SPEED
 //        temp.x = ROBOT_IMPULSE.x; // reset every frame
@@ -98,25 +98,22 @@ public class Robot extends InputAdapter {
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             // GRADUAL ACCELERATION
-            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_SPEED);
+            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
 
             // CONSTANT SPEED OR GRADUAL ACCELERATION
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
-//            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
-            System.out.println(body.getLinearVelocity());
-
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
         }
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             // GRADUAL ACCELERATION
-            float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_SPEED);
+            float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
 
             // CONSTANT SPEED
 //            body.applyLinearImpulse(temp.scl(-1).sub(body.getMass() * currentVelocity, 0), body.getWorldCenter(), true);
-            System.out.println(body.getLinearVelocity());
-//            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
 
         }
         else {
@@ -128,8 +125,8 @@ public class Robot extends InputAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             // robot jumps off ladder
             if(onLadder) {
-                body.setTransform(body.getPosition().x, body.getPosition().y * 1.05f, 0);
-                body.applyLinearImpulse(new Vector2(0, -10.0f), body.getWorldCenter(), true);
+                body.setGravityScale(1); // first turn on gravity, then jump
+                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
             }
             else if(isOnInteractivePlatform) {
                 isOnInteractivePlatform = false;
@@ -173,9 +170,9 @@ public class Robot extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.UP)
-            body.setLinearVelocity(0, 2);
+            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
         if(keycode == Input.Keys.DOWN)
-            body.setLinearVelocity(0, -2);
+            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
 
         return true;
     }
