@@ -104,7 +104,7 @@
   </object>
   <object id="79" x="1008" y="96" width="48" height="8">
    <properties>
-    <property name="delay" type="float" value="2"/>
+    <property name="delay" type="float" value="0.25"/>
     <property name="falling" value=""/>
    </properties>
   </object>

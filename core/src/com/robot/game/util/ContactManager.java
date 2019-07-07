@@ -15,6 +15,7 @@ import static com.robot.game.util.Constants.*;
 public class ContactManager implements ContactListener {
 
 //    private Robot robot;
+    public static int footContactCounter = 0;
 
     @Override
     public void beginContact(Contact contact) {
@@ -25,6 +26,11 @@ public class ContactManager implements ContactListener {
 
         if(fixA == null || fixB == null) return;
         if(fixA.getUserData() == null || fixB.getUserData() ==  null) return;
+
+        if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
+            footContactCounter++;
+            System.out.println(footContactCounter);
+        }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
@@ -44,6 +50,13 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
                 robotMovingPlatBegin(normal, fixA, fixB);
                 break;
+
+            // feet
+            /*case ROBOT_FEET_CATEGORY | GROUND_CATEGORY:
+            case ROBOT_FEET_CATEGORY | FALLING_PLATFORM_CATEGORY:
+            case ROBOT_FEET_CATEGORY | MOVING_PLATFORM_CATEGORY:
+                feetOnObject(fixA, fixB);
+                break;*/
         }
 
 
@@ -62,9 +75,10 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             ladder = (Ladder) fixA.getUserData();
         }
-        // every time robot is hits the bottom of the ladder, turn off gravity
+        // every time robot is hits the bottom of the ladder, turn off gravity and enable up-down keys
         // this mimics the case where the robot is on the ladder and falls down to the bottom
         if(ladder.getDescription().equals(LADDER_BOTTOM_DESCRIPTION)) {
+            Gdx.input.setInputProcessor(new LadderClimbHandler(robot.getBody()));
             robot.getBody().setGravityScale(0);
             Gdx.app.log("ContactManager", "On bottom ladder");
         }
@@ -155,6 +169,20 @@ public class ContactManager implements ContactListener {
 
     }
 
+    private void feetOnObject(Fixture fixA, Fixture fixB) {
+        /*Robot robot;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+        }*/
+        Gdx.app.log("ContactManager","FEET on object");
+    }
+
+
     @Override
     public void endContact(Contact contact) {
         // Get the two fixtures that contact
@@ -163,6 +191,11 @@ public class ContactManager implements ContactListener {
 
         if(fixA == null || fixB == null) return;
         if(fixA.getUserData() == null || fixB.getUserData() ==  null) return;
+
+        if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
+            footContactCounter--;
+            System.out.println(footContactCounter);
+        }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
@@ -180,6 +213,13 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
                 robotMovingPlatEnd(fixA, fixB);
                 break;
+
+            /*// feet
+            case ROBOT_FEET_CATEGORY | GROUND_CATEGORY:
+            case ROBOT_FEET_CATEGORY | FALLING_PLATFORM_CATEGORY:
+            case ROBOT_FEET_CATEGORY | MOVING_PLATFORM_CATEGORY:
+                feetOffObject(fixA, fixB);
+                break;*/
         }
 
 
@@ -241,6 +281,19 @@ public class ContactManager implements ContactListener {
         // remove the robot from the moving platform
         robot.setOnInteractivePlatform(null, false);
         Gdx.app.log("ContactManager", "Off moving platform");
+    }
+
+    private void feetOffObject(Fixture fixA, Fixture fixB) {
+        /*Robot robot;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+        }*/
+        Gdx.app.log("ContactManager","FEET off object");
     }
 
     @Override

@@ -8,11 +8,11 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class FallingPlatform extends InteractivePlatform {
 
-    private boolean isDestroyed;
-    private boolean flagToMove;
     private float delay;
     private float startTime; // time the player jumped on the falling platform
     private float elapsed;
+    private boolean flagToMove;
+    private boolean isDestroyed;
 
     public FallingPlatform(World world, Body body, FixtureDef fixtureDef, float delay) {
         super(world, body);

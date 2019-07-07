@@ -8,6 +8,7 @@ import static com.robot.game.util.Constants.PPM;
 
 public class MovingPlatform extends InteractivePlatform {
 
+    // will probably need to pass the whole map object
     public MovingPlatform(World world, Body body, FixtureDef fixtureDef, float vX, float vY) {
         super(world, body);
         body.createFixture(fixtureDef).setUserData(this);

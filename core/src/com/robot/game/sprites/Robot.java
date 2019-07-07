@@ -8,15 +8,18 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.util.ContactManager;
+import com.robot.game.util.LadderClimbHandler;
 
 import static com.robot.game.util.Constants.*;
 
-public class Robot extends InputAdapter {
+public class Robot {
 
     private Sprite robotSprite;
     private World world;
     private Body body;
     private boolean onLadder;
+    private float jumpTimer;
 
     //CONSTANT SPEED
 //    private final Vector2 ROBOT_IMPULSE;
@@ -49,7 +52,7 @@ public class Robot extends InputAdapter {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 for moving platform
+        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         this.body = world.createBody(bodyDef);
 
@@ -68,6 +71,14 @@ public class Robot extends InputAdapter {
         fixtureDef.density = 1.0f;
         fixtureDef.filter.categoryBits = ROBOT_CATEGORY;
         fixtureDef.filter.maskBits = ROBOT_MASK;
+        this.body.createFixture(fixtureDef).setUserData(this);
+
+        // sensor feet
+        recShape.setAsBox(16f / 2 / PPM, 8f / 2 / PPM, new Vector2(0, -64f / 2 / PPM), 0);
+        fixtureDef.density = 0;
+        fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
+        fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
+        fixtureDef.isSensor = true;
         this.body.createFixture(fixtureDef).setUserData(this);
 
         recShape.dispose();
@@ -96,6 +107,7 @@ public class Robot extends InputAdapter {
         // CONSTANT SPEED OR GRADUAL ACCELERATION
         float currentVelocity = body.getLinearVelocity().x;
 
+        // moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             // GRADUAL ACCELERATION
             float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_SPEED);
@@ -105,6 +117,7 @@ public class Robot extends InputAdapter {
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
 //            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
         }
+        // moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             // GRADUAL ACCELERATION
             float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
@@ -116,24 +129,45 @@ public class Robot extends InputAdapter {
 //            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
 
         }
+        // left-right keys released -> break
         else {
             float targetVelocity = body.getLinearVelocity().x * 0.98f;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
         }
 
+        // jumping
+        jumpTimer -= delta;
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            // robot jumps off ladder
+            jumpTimer = 0.2f; // start timer
+            System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
+
+            // robot jumps off ladder (separate logic for ladder)
             if(onLadder) {
-                body.setGravityScale(1); // first turn on gravity, then jump
+                Gdx.input.setInputProcessor(null); // disable up-down keys
+                body.setGravityScale(1); // turn on gravity, then jump
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
             }
-            else if(isOnInteractivePlatform) {
+        }
+
+        // if there has been a timer set and is a foot contact
+        if(jumpTimer > 0 && ContactManager.footContactCounter > 0) {
+
+            jumpTimer = 0; // reset timer
+
+            // robot jumps off interactive platform
+            if(isOnInteractivePlatform) {
                 isOnInteractivePlatform = false;
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true); // make this constant
             }
+            // robot jumps from the ground
             else
-                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
+                body.setLinearVelocity(body.getLinearVelocity().x, 5f);
+            //  body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
+            System.out.println(body.getLinearVelocity());
+
+
         }
     }
 
@@ -157,7 +191,7 @@ public class Robot extends InputAdapter {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
-        Gdx.input.setInputProcessor(onLadder ? this : null);
+        Gdx.input.setInputProcessor(onLadder ? new LadderClimbHandler(body) : null);
         if(onLadder)
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
     }
@@ -167,23 +201,6 @@ public class Robot extends InputAdapter {
         this.isOnInteractivePlatform = isOnInteractivePlatform;
     }
 
-    @Override
-    public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.UP)
-            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
-        if(keycode == Input.Keys.DOWN)
-            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
-
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.UP || keycode == Input.Keys.DOWN)
-            body.setLinearVelocity(0, 0);
-
-        return true;
-    }
 
 
 }

@@ -39,7 +39,7 @@ public class B2dWorldCreator {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            if(object.getProperties().containsKey(FALLING_PROPERTY) || object.getProperties().containsKey(MOVING_PROPERTY))
+            if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY))
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
             else
                 bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -134,12 +134,12 @@ public class B2dWorldCreator {
             fixtureDef.isSensor = true;
         }
         // falling platform
-        else if(object.getProperties().containsKey(FALLING_PROPERTY)) {
+        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
             fixtureDef.filter.categoryBits = FALLING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = FALLING_PLATFORM_MASK;
         }
         // moving platform
-        else if(object.getProperties().containsKey(MOVING_PROPERTY)) {
+        else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
             fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
@@ -157,21 +157,21 @@ public class B2dWorldCreator {
             new Ladder(body, fixtureDef, description);
         }
         // create falling platform
-        else if(object.getProperties().containsKey(FALLING_PROPERTY)) {
+        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
             float delay = (float) object.getProperties().get("delay");
             InteractivePlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, delay);
             this.interactivePlatforms.add(fallingPlatform);
         }
         // create moving platform
-        else if(object.getProperties().containsKey(MOVING_PROPERTY)) {
+        else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
             float vX = (float) object.getProperties().get("vX");
             float vY = (float) object.getProperties().get("vY");
             InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
             this.interactivePlatforms.add(movingPlatform);
         }
-        // create all other objects
+        // create ground objects
         else {
-            body.createFixture(fixtureDef);
+            body.createFixture(fixtureDef).setUserData("ground");
         }
     }
 

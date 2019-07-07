@@ -33,13 +33,15 @@ public final class Constants {
     public static final short LADDER_CATEGORY = 4;
     public static final short FALLING_PLATFORM_CATEGORY = 8;
     public static final short MOVING_PLATFORM_CATEGORY = 16;
+    public static final short ROBOT_FEET_CATEGORY = 32;
 
     // Box2D filter mask bits
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
-    public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY;
-    public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY;
+    public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
 
 
 
@@ -56,8 +58,8 @@ public final class Constants {
     public static final String LADDER_PROPERTY = "ladder";
     public static final String LADDER_CORE_DESCRIPTION = "core";
     public static final String LADDER_BOTTOM_DESCRIPTION = "bottom";
-    public static final String FALLING_PROPERTY = "falling";
-    public static final String MOVING_PROPERTY = "moving";
+    public static final String FALLING_PLATFORM_PROPERTY = "falling";
+    public static final String MOVING_PLATFORM_PROPERTY = "moving";
 
 
 }
