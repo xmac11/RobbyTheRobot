@@ -51,6 +51,7 @@ public final class Constants {
     public static final float ROBOT_HEIGHT = 64;
     public static final float ROBOT_MAX_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
+    public static final float ROBOT_JUMP_TIMER = 0.2f;
 
 
 

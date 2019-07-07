@@ -19,6 +19,7 @@ public class Robot {
     private World world;
     private Body body;
     private boolean onLadder;
+    private boolean fallingOffLadder;
     private float jumpTimer;
 
     //CONSTANT SPEED
@@ -140,11 +141,12 @@ public class Robot {
         jumpTimer -= delta;
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            jumpTimer = 0.2f; // start timer
+            jumpTimer = ROBOT_JUMP_TIMER; // start timer
             System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
 
             // robot jumps off ladder (separate logic for ladder)
-            if(onLadder) {
+            if(onLadder && !fallingOffLadder) {
+                fallingOffLadder = true;
                 Gdx.input.setInputProcessor(null); // disable up-down keys
                 body.setGravityScale(1); // turn on gravity, then jump
                 body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
@@ -152,7 +154,7 @@ public class Robot {
         }
 
         // if there has been a timer set and is a foot contact
-        if(jumpTimer > 0 && ContactManager.footContactCounter > 0) {
+        if(jumpTimer > 0 && ContactManager.footContactCounter > 0 && !onLadder) {
 
             jumpTimer = 0; // reset timer
 
@@ -163,10 +165,8 @@ public class Robot {
             }
             // robot jumps from the ground
             else
-                body.setLinearVelocity(body.getLinearVelocity().x, 5f);
+                body.setLinearVelocity(body.getLinearVelocity().x, 5.0f); // here I set the velocity since the impulse did not have impact when the player was falling
             //  body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
-            System.out.println(body.getLinearVelocity());
-
 
         }
     }
@@ -201,6 +201,7 @@ public class Robot {
         this.isOnInteractivePlatform = isOnInteractivePlatform;
     }
 
-
-
+    public void setFallingOffLadder(boolean fallingOffLadder) {
+        this.fallingOffLadder = fallingOffLadder;
+    }
 }
