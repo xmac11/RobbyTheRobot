@@ -13,7 +13,19 @@ import com.robot.game.util.LadderClimbHandler;
 
 import static com.robot.game.util.Constants.*;
 
-public class Robot {
+public class Robot /*extends InputAdapter*/ {
+
+    public static final float jumpVelocity = 2 * JUMP_HEIGHT / TIME_UNTIL_JUMP_HEIGHT;
+    public static final float jumpGravity = - jumpVelocity / TIME_UNTIL_JUMP_HEIGHT;
+    private float temporary;
+
+    public static float IMPULSE;
+
+    int remainingJumpSteps;
+
+    float vY;
+
+    private boolean jumping;
 
     private Sprite robotSprite;
     private World world;
@@ -47,6 +59,10 @@ public class Robot {
         robotSprite.setPosition(body.getPosition().x - ROBOT_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
 
         //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
+
+        //Gdx.input.setInputProcessor(this);
+
+        this.IMPULSE = body.getMass() * (float) Math.sqrt(-2 * world.getGravity().y * 32 / PPM);
     }
 
     private void createRobotB2d() {
@@ -55,6 +71,7 @@ public class Robot {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
+        bodyDef.linearDamping = 0.1f;
         this.body = world.createBody(bodyDef);
 
         // create fixture
@@ -75,7 +92,7 @@ public class Robot {
         this.body.createFixture(fixtureDef).setUserData(this);
 
         // sensor feet
-        recShape.setAsBox(16f / 2 / PPM, 8f / 2 / PPM, new Vector2(0, -64f / 2 / PPM), 0);
+        recShape.setAsBox(ROBOT_FEET_WIDTH / 2 / PPM, ROBOT_FEET_HEIGHT / 2 / PPM, new Vector2(0, -ROBOT_HEIGHT / 2 / PPM), 0);
         fixtureDef.density = 0;
         fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
         fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
@@ -87,8 +104,17 @@ public class Robot {
     }
 
     public void update(float delta) {
+
         // first handle input
         handleInput(delta);
+
+        //verlet testing
+        /*if(!onLadder) {
+            float f = body.getPosition().y + body.getLinearVelocity().y * delta + 0.5f * jumpGravity * delta * delta;
+            body.getPosition().set(body.getPosition().x, f);
+            float v = body.getLinearVelocity().y + jumpGravity * delta;
+            body.setLinearVelocity(body.getLinearVelocity().x, v);
+        }*/
 
         if(isOnInteractivePlatform)
             body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
@@ -108,7 +134,7 @@ public class Robot {
         // CONSTANT SPEED OR GRADUAL ACCELERATION
         float currentVelocity = body.getLinearVelocity().x;
 
-        // moving right
+        // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             // GRADUAL ACCELERATION
             float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_SPEED);
@@ -118,7 +144,8 @@ public class Robot {
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
 //            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
         }
-        // moving left
+
+        // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             // GRADUAL ACCELERATION
             float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
@@ -130,27 +157,23 @@ public class Robot {
 //            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
 
         }
-        // left-right keys released -> break
-        else {
+
+        // left-right keys released -> if body is moving, break
+        else if(body.getLinearVelocity().x != 0) {
             float targetVelocity = body.getLinearVelocity().x * 0.98f;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
         }
 
-        // jumping
+        // Jumping
         jumpTimer -= delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
+            //remainingJumpSteps = 6;
+//            verletTest(delta);
+
             jumpTimer = ROBOT_JUMP_TIMER; // start timer
             System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
-
-            // robot jumps off ladder (separate logic for ladder)
-            if(onLadder && !fallingOffLadder) {
-                fallingOffLadder = true;
-                Gdx.input.setInputProcessor(null); // disable up-down keys
-                body.setGravityScale(1); // turn on gravity, then jump
-                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
-            }
         }
 
         // if there has been a timer set and is a foot contact
@@ -161,14 +184,23 @@ public class Robot {
             // robot jumps off interactive platform
             if(isOnInteractivePlatform) {
                 isOnInteractivePlatform = false;
-                body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true); // make this constant
+                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true); // make this constant
             }
             // robot jumps from the ground
-            else
-                body.setLinearVelocity(body.getLinearVelocity().x, 5.0f); // here I set the velocity since the impulse did not have impact when the player was falling
-            //  body.applyLinearImpulse(new Vector2(0, 10.0f), body.getWorldCenter(), true);
-
+            else {
+                body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
+//                if(body.getLinearVelocity().y > 0) body.setLinearVelocity(body.getLinearVelocity().x, vY);
+//                  body.applyLinearImpulse(new Vector2(0, IMPULSE), body.getWorldCenter(), true);
+//                  body.applyLinearImpulse(new Vector2(0, 5f), body.getWorldCenter(), true);
+            }
         }
+
+        /*if(remainingJumpSteps > 0) {
+            float force = body.getMass() * 5 * 60;
+            force /= 6;
+            body.applyForceToCenter(0, force, true);
+            remainingJumpSteps--;
+        }*/
     }
 
     public void dispose() {
@@ -191,7 +223,7 @@ public class Robot {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         body.setGravityScale(onLadder ? 0 : 1);
-        Gdx.input.setInputProcessor(onLadder ? new LadderClimbHandler(body) : null);
+        Gdx.input.setInputProcessor(onLadder ? new LadderClimbHandler(this) : null/*this*/);
         if(onLadder)
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
     }
@@ -201,7 +233,41 @@ public class Robot {
         this.isOnInteractivePlatform = isOnInteractivePlatform;
     }
 
+    public boolean isFallingOffLadder() {
+        return fallingOffLadder;
+    }
+
     public void setFallingOffLadder(boolean fallingOffLadder) {
         this.fallingOffLadder = fallingOffLadder;
     }
+
+    private void verletTest(float delta) {
+        body.setLinearVelocity(body.getLinearVelocity().x, jumpVelocity);
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    /*@Override
+    public boolean keyDown(int keycode) {
+
+        if(keycode == Input.Keys.SPACE) {
+            jumpTimer = ROBOT_JUMP_TIMER; // start timer
+            System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+
+        if(keycode == Input.Keys.SPACE) {
+            if(body.getLinearVelocity().y > 0)
+                body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y * 0.5f);
+
+        }
+        return true;
+    }*/
+
 }

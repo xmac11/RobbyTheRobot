@@ -79,13 +79,14 @@ public class ContactManager implements ContactListener {
         // this mimics the case where the robot is on the ladder and falls down to the bottom
         if(ladder.getDescription().equals(LADDER_BOTTOM_DESCRIPTION)) {
             robot.setFallingOffLadder(false);
-            Gdx.input.setInputProcessor(new LadderClimbHandler(robot.getBody()));
+            Gdx.input.setInputProcessor(new LadderClimbHandler(robot));
             robot.getBody().setGravityScale(0);
             Gdx.app.log("ContactManager", "On bottom ladder");
         }
         else {
             robot.setRobotSprite(new Sprite(texture));
             robot.setOnLadder(true);
+            robot.setFallingOffLadder(false);
             Gdx.app.log("ContactManager", "On ladder");
         }
     }

@@ -46,12 +46,21 @@ public final class Constants {
 
 
     // Robot
+        // Dimensions
     public static final float ROBOT_RADIUS = 16;
-    public static final float ROBOT_WIDTH = 32;
-    public static final float ROBOT_HEIGHT = 64;
+    public static final float ROBOT_WIDTH = 20;
+    public static final float ROBOT_HEIGHT = 56;
+
+    // Sensor feet
+    public static final float ROBOT_FEET_WIDTH = 8;
+    public static final float ROBOT_FEET_HEIGHT = 8;
+        // Movement
     public static final float ROBOT_MAX_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
+    public static final float ROBOT_JUMP_SPEED = 5f; // when on ground
+    public static final Vector2 ROBOT_JUMP_IMPULSE = new Vector2(0, 5f); // when on interactive platform
+
 
 
 
@@ -61,6 +70,11 @@ public final class Constants {
     public static final String LADDER_BOTTOM_DESCRIPTION = "bottom";
     public static final String FALLING_PLATFORM_PROPERTY = "falling";
     public static final String MOVING_PLATFORM_PROPERTY = "moving";
+
+    public static final float JUMP_HEIGHT = 34 / PPM;
+    public static final float TIME_UNTIL_JUMP_HEIGHT = .5f;
+
+    public static final float DISTANCE_TO_PEAK = 32;
 
 
 }
