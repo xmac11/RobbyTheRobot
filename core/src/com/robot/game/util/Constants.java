@@ -80,6 +80,6 @@ public final class Constants {
     // Enemies
     public static final String ENEMY_PROPERTY = "enemy";
 
-
+    public static boolean aiON = true;
 
 }

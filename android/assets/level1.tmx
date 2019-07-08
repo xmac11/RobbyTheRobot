@@ -124,7 +124,7 @@
   </object>
  </objectgroup>
  <objectgroup id="27" name="Enemy obj">
-  <object id="86" x="166.667" y="182.667" width="16" height="16">
+  <object id="86" x="432" y="80" width="16" height="16">
    <properties>
     <property name="enemy" value=""/>
    </properties>

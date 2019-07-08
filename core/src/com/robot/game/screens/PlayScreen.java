@@ -159,38 +159,42 @@ public class PlayScreen extends ScreenAdapter {
         //render box2d debug rectangles
         debugRenderer.render(world, viewport.getCamera().combined);
 
+        if(aiON) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            int k = enemies.get(0).wayPoints.size;
+            Vector2[] points = new Vector2[k];
+
+            for (int i = 0; i < k; i++) {
+                points[i] = enemies.get(0).wayPoints.get(i);
+            }
+
+            for (int i = 0; i < k - 1; i++) {
+                points[i] = enemies.get(0).wayPoints.get(i);
+                shapeRenderer.line(points[i], points[i + 1]);
+            }
+            shapeRenderer.end();
+
+        }
         // Debug draw the path of the bat
-        /*int k = 100;
-        Vector2[] points = new Vector2[k];
-        for(int i = 0; i < k; ++i) {
-            points[i] = new Vector2();
-            enemies.get(0).path.valueAt(points[i], ((float) i) / ((float) k - 1));
+        else {
+            int k = 100;
+            Vector2[] points = new Vector2[k];
+            for (int i = 0; i < k; ++i) {
+                points[i] = new Vector2();
+                enemies.get(0).splinePath.valueAt(points[i], ((float) i) / ((float) k - 1));
+            }
+
+
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            for (int i = 0; i < k - 1; ++i) {
+                shapeRenderer.line(points[i], points[i + 1]);
+            }
+
+            //        shapeRenderer.circle(enemies.get(0).target.x, enemies.get(0).target.y, 1.0f);
+            shapeRenderer.end();
         }
-
-
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(int i = 0; i < k - 1; ++i) {
-            shapeRenderer.line(points[i], points[i + 1]);
-        }
-
-//        shapeRenderer.circle(enemies.get(0).target.x, enemies.get(0).target.y, 1.0f);
-        shapeRenderer.end();*/
-
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        int k = enemies.get(0).wayPoints.size;
-        Vector2[] points = new Vector2[k];
-
-        for(int i = 0; i < k; i++) {
-            points[i] = enemies.get(0).wayPoints.get(i);
-        }
-
-        for(int i = 0; i < k-1; i++) {
-            points[i] = enemies.get(0).wayPoints.get(i);
-            shapeRenderer.line(points[i], points[i + 1]);
-        }
-        shapeRenderer.end();
 
     }
 
