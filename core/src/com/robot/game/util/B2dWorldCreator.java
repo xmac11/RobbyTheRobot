@@ -13,6 +13,7 @@ import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.sprites.Enemy;
 
 import static com.robot.game.util.Constants.*;
 
@@ -21,10 +22,13 @@ public class B2dWorldCreator {
 
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
+    private DelayedRemovalArray<Enemy> enemies;
+
 
     public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
+        this.enemies = new DelayedRemovalArray<>();
         for(MapObjects objects: layersArray)
             createTiledObjects(world, objects);
     }
@@ -39,7 +43,7 @@ public class B2dWorldCreator {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY))
+            if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY))
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
             else
                 bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -143,6 +147,8 @@ public class B2dWorldCreator {
             fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
+        else if(object.getProperties().containsKey(ENEMY_PROPERTY))
+            fixtureDef.filter.maskBits = NOTHING_CATEGORY;
         // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
@@ -169,6 +175,9 @@ public class B2dWorldCreator {
             InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
             this.interactivePlatforms.add(movingPlatform);
         }
+        else if( object.getProperties().containsKey(ENEMY_PROPERTY)) {
+            this.enemies.add(new Enemy(body, fixtureDef));
+        }
         // create ground objects
         else {
             body.createFixture(fixtureDef).setUserData("ground");
@@ -180,4 +189,8 @@ public class B2dWorldCreator {
         return interactivePlatforms;
     }
 
+    // getter for enemies
+    public DelayedRemovalArray<Enemy> getEnemies() {
+        return enemies;
+    }
 }

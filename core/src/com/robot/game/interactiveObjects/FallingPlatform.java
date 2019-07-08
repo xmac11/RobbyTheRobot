@@ -13,6 +13,7 @@ public class FallingPlatform extends InteractivePlatform {
     private float elapsed;
     private boolean flagToMove;
     private boolean isDestroyed;
+    private boolean toggle;
 
     public FallingPlatform(World world, Body body, FixtureDef fixtureDef, float delay) {
         super(world, body);
@@ -28,6 +29,7 @@ public class FallingPlatform extends InteractivePlatform {
 
     @Override
     public void update(float delta) {
+
         // if body is out of bounds, destroy it
         if(body.getPosition().y < 0 && !isDestroyed) {
             world.destroyBody(body);
@@ -39,8 +41,15 @@ public class FallingPlatform extends InteractivePlatform {
                 movePlatform(0, -8);
                 flagToMove = false;
             }
-            else
+            else {
+                if(toggle)
+                    body.setLinearVelocity(3, 3);
+                else
+                    body.setLinearVelocity(-3, -3);
+
+                toggle = !toggle;
                 elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
+            }
         }
     }
 

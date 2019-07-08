@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="85">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="86">
  <tileset firstgid="1" source="ground.tsx"/>
  <tileset firstgid="1281" name="my_tiles" tilewidth="16" tileheight="16" spacing="1" tilecount="45" columns="15">
   <image source="my_tiles.png" width="256" height="64"/>
@@ -104,7 +104,7 @@
   </object>
   <object id="79" x="1008" y="96" width="48" height="8">
    <properties>
-    <property name="delay" type="float" value="0.25"/>
+    <property name="delay" type="float" value="1"/>
     <property name="falling" value=""/>
    </properties>
   </object>
@@ -121,6 +121,13 @@
     <property name="ladder" value="bottom"/>
    </properties>
    <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="27" name="Enemy obj">
+  <object id="85" x="1632" y="256" width="16" height="16">
+   <properties>
+    <property name="enemy" value=""/>
+   </properties>
   </object>
  </objectgroup>
 </map>

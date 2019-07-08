@@ -11,6 +11,7 @@ public abstract class InteractivePlatform {
     protected InteractivePlatform(World world, Body body) {
         this.world = world;
         this.body = body;
+        //body.setActive(false);
     }
 
     public abstract void update(float delta);

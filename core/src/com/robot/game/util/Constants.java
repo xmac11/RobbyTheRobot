@@ -23,6 +23,7 @@ public final class Constants {
     public static final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
+    public static final String ENEMY_OBJECT = "Enemy obj";
 
     // COLLISIONS
 
@@ -75,6 +76,10 @@ public final class Constants {
     public static final float TIME_UNTIL_JUMP_HEIGHT = .5f;
 
     public static final float DISTANCE_TO_PEAK = 32;
+
+    // Enemies
+    public static final String ENEMY_PROPERTY = "enemy";
+
 
 
 }
