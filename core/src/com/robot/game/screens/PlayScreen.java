@@ -2,6 +2,7 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -127,7 +128,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // update enemies
         for(int i = 0; i < enemies.size; i++)
-            enemies.get(i).update(delta);
+            enemies.get(i).update(/*GdxAI.getTimepiece().getDeltaTime()*/delta);
 
         // update camera
         debugCamera.update(delta);
@@ -159,7 +160,7 @@ public class PlayScreen extends ScreenAdapter {
         debugRenderer.render(world, viewport.getCamera().combined);
 
         // Debug draw the path of the bat
-        int k = 100;
+        /*int k = 100;
         Vector2[] points = new Vector2[k];
         for(int i = 0; i < k; ++i) {
             points[i] = new Vector2();
@@ -174,7 +175,23 @@ public class PlayScreen extends ScreenAdapter {
         }
 
 //        shapeRenderer.circle(enemies.get(0).target.x, enemies.get(0).target.y, 1.0f);
+        shapeRenderer.end();*/
+
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        int k = enemies.get(0).wayPoints.size;
+        Vector2[] points = new Vector2[k];
+
+        for(int i = 0; i < k; i++) {
+            points[i] = enemies.get(0).wayPoints.get(i);
+        }
+
+        for(int i = 0; i < k-1; i++) {
+            points[i] = enemies.get(0).wayPoints.get(i);
+            shapeRenderer.line(points[i], points[i + 1]);
+        }
         shapeRenderer.end();
+
     }
 
     @Override
