@@ -5,7 +5,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -14,7 +13,9 @@ import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
+import com.robot.game.sprites.Spider;
 
 import static com.robot.game.util.Constants.*;
 
@@ -24,11 +25,9 @@ public class B2dWorldCreator {
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
-    private TiledMap tiledMap;
 
-    public B2dWorldCreator(World world, Array<MapObjects> layersArray, TiledMap tiledMap) {
+    public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
         this.world = world;
-        this.tiledMap = tiledMap;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         for(MapObjects objects: layersArray)
@@ -149,8 +148,10 @@ public class B2dWorldCreator {
             fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
-        else if(object.getProperties().containsKey(ENEMY_PROPERTY))
-            fixtureDef.filter.maskBits = NOTHING_CATEGORY;
+        else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
+            fixtureDef.filter.categoryBits = ENEMY_CATEGORY;
+            fixtureDef.filter.maskBits = ENEMY_MASK;
+        }
         // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
@@ -178,13 +179,22 @@ public class B2dWorldCreator {
             this.interactivePlatforms.add(movingPlatform);
         }
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
+            Enemy enemy;
             String platformID = null;
             float offset = 0;
+            boolean aiPathFollowing = (boolean) object.getProperties().get("aiPathFollowing");
+
             if(object.getProperties().get("platformID") != null) {
                 platformID = (String) object.getProperties().get("platformID");
                 offset = (float) object.getProperties().get("offset");
             }
-            this.enemies.add(new Enemy(body, fixtureDef, tiledMap, offset, platformID, object));
+
+            if(object.getProperties().containsKey(BAT_PROPERTY))
+                enemy = new Bat(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+
+            else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
+                enemy = new Spider(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+            this.enemies.add(enemy);
         }
         // create ground objects
         else {

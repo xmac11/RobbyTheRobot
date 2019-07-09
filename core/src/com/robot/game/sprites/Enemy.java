@@ -8,198 +8,79 @@ import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.XmlReader;
 
-import javax.xml.bind.Element;
+import static com.robot.game.util.Constants.MAP_HEIGHT;
+import static com.robot.game.util.Constants.PPM;
 
-import static com.robot.game.util.Constants.*;
+public abstract class Enemy implements Steerable<Vector2> {
 
-public class Enemy implements Steerable<Vector2> {
+    protected Body body;
+    protected FixtureDef fixtureDef;
 
-    // AI
-    private SteeringBehavior<Vector2> steeringBehavior;
-    private SteeringAcceleration<Vector2> steeringOutput;
-    private FollowPath<Vector2, LinePath.LinePathParam> followPath;
-    public Array<Vector2> wayPoints;
-    private LinePath<Vector2> linePath;
+    protected SteeringBehavior<Vector2> steeringBehavior;
+    protected SteeringAcceleration<Vector2> steeringOutput;
+    protected FollowPath<Vector2, LinePath.LinePathParam> followPath;
+    protected Array<Vector2> wayPoints;
+    protected LinePath<Vector2> linePath;
 
-    private float maxLinearSpeed, maxLinearAcceleration;
-    private float maxAngularSpeed, maxAngularAcceleration;
-    private float boundingRadius;
+    protected float maxLinearSpeed, maxLinearAcceleration;
+    protected float maxAngularSpeed, maxAngularAcceleration;
+    protected float boundingRadius;
 
+    protected String platformID;
+    protected float x;
+    protected float y;
+    protected float width;
+    protected float height;
+    protected float offset;
+    protected MapObject object;
 
-    private Body body;
-    private FixtureDef fixtureDef;
-    private TiledMap tiledMap;
-    private String platformID;
-    private float x;
-    private float y;
-    private float width;
-    private float height;
-    private float offset;
-    private MapObject object;
-    private float startX;
-    private float startY;
-    private float endX;
-    private float endY;
+    protected boolean aiPathFollowing;
 
-    // spline
-    public CatmullRomSpline<Vector2> splinePath;
-    public Vector2 target;
-    public float timer;
-
-    public Enemy(Body body, FixtureDef fixtureDef, TiledMap tiledMap, float offset, String platformID, MapObject object) {
+    public Enemy(Body body, FixtureDef fixtureDef, float offset, String platformID, MapObject object, boolean aiPathFollowing) {
         this.body = body;
         this.fixtureDef = fixtureDef;
-        this.tiledMap = tiledMap;
-        this.offset = offset;
-        this.platformID = platformID;
-        this.object = object;
 
-        if(object.getProperties().containsKey("patrol")) {
-            this.startX = (float) object.getProperties().get("startX");
-            this.startY = (float) object.getProperties().get("startY");
-            this.endX = (float) object.getProperties().get("endX");
-            this.endY = (float) object.getProperties().get("endY");
-        }
-        body.createFixture(fixtureDef).setUserData(this);
+        this.aiPathFollowing = aiPathFollowing;
 
-        // parse xml tile map to find dimensions of each patrolling platform
-        if(platformID != null) {
-            parseXml();
-        }
+        if(aiPathFollowing) {
+            this.offset = offset;
+            this.platformID = platformID;
+            this.object = object;
 
 
-//        System.out.println(e.getAttribute("id"));
+            if(platformID != null) {
+                parseXml();
 
-        /*if(platformID != null) {
-            MapObject object = tiledMap.getLayers().get(GROUND_OBJECT).getObjects().get(platformID);
-            if(object instanceof RectangleMapObject) {
-                Rectangle rec = ((RectangleMapObject) object).getRectangle();
+                this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offset) / PPM, (y - offset) / PPM),
+                        new Vector2((x - offset) / PPM, (y + height + offset) / PPM),
+                        new Vector2((x + width + offset) / PPM, (y + height + offset) / PPM),
+                        new Vector2((x + width + offset) / PPM, (y - offset) / PPM),
+                        new Vector2((x - offset) / PPM, (y - offset) / PPM)});
 
-                float x = rec.x;
-                float y = rec.y;
-                float width = rec.width;
-                float height = rec.height;
+                this.linePath = new LinePath<>(wayPoints, false);
+                this.followPath = new FollowPath<>(this, linePath, 0.1f).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
+                this.setSteeringBehavior(followPath);
+                this.steeringOutput = new SteeringAcceleration<>(new Vector2());
 
-                System.out.println("x " + x + " width " + width);
+                this.maxLinearSpeed = 3.5f;
+                this.maxLinearAcceleration = 500f;
+                this.maxAngularSpeed = 3;
+                this.maxAngularAcceleration = 3;
+                this.boundingRadius = 1f;
             }
-        }*/
-
-
-        if(aiON && platformID != null) {
-            this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offset) / PPM, (y - offset) / PPM),
-                    new Vector2((x - offset) / PPM, (y + height + offset) / PPM),
-                    new Vector2((x + width + offset) / PPM, (y + height + offset) / PPM),
-                    new Vector2((x + width + offset) / PPM, (y - offset) / PPM),
-                    new Vector2((x - offset) / PPM, (y - offset) / PPM)});
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2(176 / PPM, 176 / PPM),
-                    new Vector2(176 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 176 / PPM),
-                    new Vector2(176 / PPM, 176 / PPM)});*/
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2(250 / PPM, 176 / PPM),
-                    new Vector2(45 / PPM, 75 / PPM),
-                    new Vector2(80 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 65 / PPM),
-                    new Vector2(176 / PPM, 30 / PPM)});*/
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2(176 / PPM, 176 / PPM),
-                    new Vector2(176 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 75 / PPM),
-                    new Vector2(600 / PPM, 300 / PPM),
-                    new Vector2(176 / PPM, 176 / PPM)});*/
-
-            this.linePath = new LinePath<>(wayPoints, false);
-            this.followPath = new FollowPath<>(this, linePath, 0.1f).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
-            this.setSteeringBehavior(followPath);
-            this.steeringOutput = new SteeringAcceleration<>(new Vector2());
-
-            this.maxLinearSpeed = 3.5f;
-            this.maxLinearAcceleration = 500f;
-            this.maxAngularSpeed = 3;
-            this.maxAngularAcceleration = 3;
-            this.boundingRadius = 1f;
         }
-        else if (aiON) {
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2(startX / PPM, startY / PPM),
-                    new Vector2(endX / PPM, endY / PPM),
-                    new Vector2(endX / PPM, (endY + 1) / PPM),
-                    new Vector2(startX / PPM, (endY + 1) / PPM),
-                    new Vector2(startX / PPM, startY / PPM)});
 
-            this.linePath = new LinePath<>(wayPoints, false);
-            this.followPath = new FollowPath<>(this, linePath, -0.1f).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
-            followPath.setArriveEnabled(false);
-            this.setSteeringBehavior(followPath);
-            this.steeringOutput = new SteeringAcceleration<>(new Vector2());
 
-            this.maxLinearSpeed = 1f;
-            this.maxLinearAcceleration = 500f;
-            this.maxAngularSpeed = 3;
-            this.maxAngularAcceleration = 3;
-            this.boundingRadius = 1f;*/
-            body.setLinearVelocity(2f, 0);
-        }
-        else {
-            this.target = new Vector2();
-            this.splinePath = new CatmullRomSpline<>(new Vector2[] { new Vector2(176 / PPM, 176 / PPM),
-                    new Vector2(176 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 75 / PPM),
-                    new Vector2(50 / PPM, 176 / PPM) }, true);
-        }
     }
 
-    public void update(float delta) {
+    public abstract void update(float delta);
 
-        if(aiON) {
-            if(steeringBehavior != null) {
-                steeringBehavior.calculateSteering(steeringOutput);
-                applySteering(steeringOutput, delta);
-            }
-            else if(getPosition().x < startX / PPM || getPosition().x > endX / PPM)
-                    this.reverseVelocity(true, false);
-        }
-        else {
-            timer += delta;
-            float f = timer / 4f;
-            if(f <= 1) {
-                Vector2 enemyPosition = body.getWorldCenter();
-                splinePath.valueAt(target, f); // this method sets the value of target
-
-                Vector2 positionDelta = new Vector2(target).sub(enemyPosition);
-
-                if(delta > 0.01f)
-                    body.setLinearVelocity(positionDelta.scl(1/delta));
-            }
-            else
-                timer = 0;
-        }
-    }
-
-    private void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
-//        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
-
-        if(!steeringOutput.linear.isZero())
-            body.setLinearVelocity(getLinearVelocity().mulAdd(steeringOutput.linear, delta).limit(getMaxLinearSpeed()));
-
-//        System.out.println(body.getLinearVelocity());
-    }
-
-    // reverse velocity of an enemy
-    private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
-        if(reverseVx)
-            body.setLinearVelocity(-getLinearVelocity().x, getLinearVelocity().y);
-        if(reverseVy)
-            body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
-    }
 
     private void parseXml() {
         XmlReader reader = new XmlReader();
@@ -230,6 +111,22 @@ public class Enemy implements Steerable<Vector2> {
         }
     }
 
+    protected void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
+        //        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
+
+        if(!steeringOutput.linear.isZero())
+            body.setLinearVelocity(getLinearVelocity().mulAdd(steeringOutput.linear, delta).limit(getMaxLinearSpeed()));
+
+        //        System.out.println(body.getLinearVelocity());
+    }
+
+    // reverse velocity of an enemy
+    protected void reverseVelocity(boolean reverseVx, boolean reverseVy) {
+        if(reverseVx)
+            body.setLinearVelocity(-getLinearVelocity().x, getLinearVelocity().y);
+        if(reverseVy)
+            body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
+    }
 
     @Override
     public Vector2 getLinearVelocity() {
@@ -349,6 +246,8 @@ public class Enemy implements Steerable<Vector2> {
     public String getPlatformID() {
         return platformID;
     }
+
+    public Array<Vector2> getWayPoints() {
+        return wayPoints;
+    }
 }
-
-

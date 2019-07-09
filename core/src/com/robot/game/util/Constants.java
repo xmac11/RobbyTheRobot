@@ -23,7 +23,8 @@ public final class Constants {
     public static final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
-    public static final String ENEMY_OBJECT = "Enemy obj";
+    public static final String BAT_OBJECT = "Bat obj";
+    public static final String SPIDER_OBJECT = "Spider obj";
 
     // COLLISIONS
 
@@ -35,14 +36,16 @@ public final class Constants {
     public static final short FALLING_PLATFORM_CATEGORY = 8;
     public static final short MOVING_PLATFORM_CATEGORY = 16;
     public static final short ROBOT_FEET_CATEGORY = 32;
+    public static final short ENEMY_CATEGORY = 64;
 
     // Box2D filter mask bits
-    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | ENEMY_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
+    public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
 
 
 
@@ -53,7 +56,7 @@ public final class Constants {
     public static final float ROBOT_HEIGHT = 56;
 
     // Sensor feet
-    public static final float ROBOT_FEET_WIDTH = 8;
+    public static final float ROBOT_FEET_WIDTH = 20;
     public static final float ROBOT_FEET_HEIGHT = 8;
         // Movement
     public static final float ROBOT_MAX_SPEED = 5;
@@ -79,7 +82,7 @@ public final class Constants {
 
     // Enemies
     public static final String ENEMY_PROPERTY = "enemy";
-
-    public static boolean aiON = true;
+    public static final String BAT_PROPERTY = "bat";
+    public static final String SPIDER_PROPERTY = "spider";
 
 }

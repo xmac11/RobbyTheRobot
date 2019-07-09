@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.sprites.Robot;
 
@@ -16,6 +15,7 @@ public class DebugCamera {
     private Camera camera;
     private Robot robot;
     private boolean following;
+    private boolean shakeActive;
 
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
@@ -34,11 +34,20 @@ public class DebugCamera {
 
         // if following, follow robot, else move camera according to input
         if(following) {
+
+            if(robot.getBody().getPosition().x > 2048 / PPM && robot.getBody().getPosition().x < 2976 / PPM  && !shakeActive) {
+                ShakeEffect.shake(0.35f, 5.0f);
+                shakeActive = true;
+            }
+
             if(ShakeEffect.getTimeLeft() > 0) {
-                ShakeEffect.update(delta);
+                ShakeEffect.update();
                 //camera.rotate(Vector3.Z, ShakeEffect.randomRotation());
                 camera.translate(ShakeEffect.getPosition());
             }
+            else
+                shakeActive = false;
+
             // in case of rotation
             /*else {
                 camera.direction.set(0, 0, -1);

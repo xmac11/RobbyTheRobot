@@ -1,11 +1,14 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.Random;
 
 public class ShakeEffect {
 
+    private static float startTime;
     private static float timeLeft;
     private static float elapsed;
     private static float intensity;
@@ -14,6 +17,7 @@ public class ShakeEffect {
     private static Vector3 position;
 
     public static void shake(float shakeIntensity, float shakeTime) {
+        startTime = TimeUtils.nanoTime();
         random = new Random();
         intensity = shakeIntensity;
         timeLeft = shakeTime;
@@ -21,14 +25,14 @@ public class ShakeEffect {
         position = new Vector3();
     }
 
-    public static void update(float delta) {
-        if (elapsed <= timeLeft) {
-            currentIntensity = intensity * (timeLeft - elapsed) / timeLeft;
+    public static void update() {
+        if(elapsed <= timeLeft) {
+            currentIntensity = intensity/* * (timeLeft - elapsed) / timeLeft*/;
 
-            position.x = (random.nextFloat() - 0.5f) * 4 * currentIntensity;
-            //                position.y = (random.nextFloat() - 0.5f) * 4 * currentPower;
+            position.x = (random.nextFloat() - 0.5f) * currentIntensity;
+            //position.y = (random.nextFloat() - 0.5f) * currentPower;
 
-            elapsed += delta;
+            elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
         }
         else
             timeLeft = 0;

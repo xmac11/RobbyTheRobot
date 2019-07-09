@@ -15,7 +15,7 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot /*extends InputAdapter*/ {
 
-    public static final float jumpVelocity = 2 * JUMP_HEIGHT / TIME_UNTIL_JUMP_HEIGHT;
+    /*public static final float jumpVelocity = 2 * JUMP_HEIGHT / TIME_UNTIL_JUMP_HEIGHT;
     public static final float jumpGravity = - jumpVelocity / TIME_UNTIL_JUMP_HEIGHT;
     private float temporary;
 
@@ -25,7 +25,7 @@ public class Robot /*extends InputAdapter*/ {
 
     float vY;
 
-    private boolean jumping;
+    private boolean jumping;*/
 
     private Sprite robotSprite;
     private World world;
@@ -69,7 +69,7 @@ public class Robot /*extends InputAdapter*/ {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(1092 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.1f;
         this.body = world.createBody(bodyDef);
@@ -121,7 +121,7 @@ public class Robot /*extends InputAdapter*/ {
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
-        robotSprite.setPosition(body.getPosition().x - ROBOT_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle
+        robotSprite.setPosition(body.getPosition().x - (ROBOT_WIDTH / 2 + 5) / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle
 
     }
 
@@ -241,13 +241,13 @@ public class Robot /*extends InputAdapter*/ {
         this.fallingOffLadder = fallingOffLadder;
     }
 
-    private void verletTest(float delta) {
+    /*private void verletTest(float delta) {
         body.setLinearVelocity(body.getLinearVelocity().x, jumpVelocity);
     }
 
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
-    }
+    }*/
 
     /*@Override
     public boolean keyDown(int keycode) {

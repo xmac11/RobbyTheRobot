@@ -29,7 +29,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter++;
-            System.out.println(footContactCounter);
+            System.out.println("Foot contacts " + footContactCounter);
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -196,7 +196,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter--;
-            System.out.println(footContactCounter);
+            System.out.println("Foot contacts " + footContactCounter);
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;

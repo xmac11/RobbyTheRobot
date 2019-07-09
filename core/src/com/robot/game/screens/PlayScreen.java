@@ -2,7 +2,6 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -87,9 +85,10 @@ public class PlayScreen extends ScreenAdapter {
         this.layersArray = new Array<>();
         layersArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(ENEMY_OBJECT).getObjects());
+        layersArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
+        layersArray.add(tiledMap.getLayers().get(SPIDER_OBJECT).getObjects());
 
-        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray, tiledMap);
+        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray);
 
         // create robot
         this.robot = new Robot(world);
@@ -128,7 +127,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // update enemies
         for(int i = 0; i < enemies.size; i++)
-            enemies.get(i).update(/*GdxAI.getTimepiece().getDeltaTime()*/delta);
+            enemies.get(i).update(delta);
 
         // update camera
         debugCamera.update(delta);
@@ -159,20 +158,19 @@ public class PlayScreen extends ScreenAdapter {
         //render box2d debug rectangles
         debugRenderer.render(world, viewport.getCamera().combined);
 
-        if(aiON) {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             for(int i = 0; i < enemies.size; i++) {
                 if(enemies.get(i).getPlatformID() != null) {
-                    int k = enemies.get(i).wayPoints.size;
+                    int k = enemies.get(i).getWayPoints().size;
                     Vector2[] points = new Vector2[k];
 
                     for (int j = 0; j < k; j++) {
-                        points[j] = enemies.get(i).wayPoints.get(j);
+                        points[j] = enemies.get(i).getWayPoints().get(j);
                     }
 
                     for (int j = 0; j < k - 1; j++) {
-                        points[j] = enemies.get(i).wayPoints.get(j);
+                        points[j] = enemies.get(i).getWayPoints().get(j);
                         shapeRenderer.line(points[j], points[j + 1]);
                     }
                 }
@@ -180,26 +178,6 @@ public class PlayScreen extends ScreenAdapter {
             }
 
             shapeRenderer.end();
-
-        }
-        // Debug draw the path of the bat
-        else {
-            int k = 100;
-            Vector2[] points = new Vector2[k];
-            for (int i = 0; i < k; ++i) {
-                points[i] = new Vector2();
-                enemies.get(0).splinePath.valueAt(points[i], ((float) i) / ((float) k - 1));
-            }
-
-
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (int i = 0; i < k - 1; ++i) {
-                shapeRenderer.line(points[i], points[i + 1]);
-            }
-            shapeRenderer.end();
-        }
-
     }
 
     @Override

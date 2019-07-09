@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="28" nextobjectid="95">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="240" height="27" tilewidth="16" tileheight="16" infinite="0" nextlayerid="30" nextobjectid="101">
  <tileset firstgid="1" source="ground.tsx"/>
  <tileset firstgid="1281" name="my_tiles" tilewidth="16" tileheight="16" spacing="1" tilecount="45" columns="15">
   <image source="my_tiles.png" width="256" height="64"/>
@@ -123,29 +123,53 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="27" name="Enemy obj">
-  <object id="89" x="1632" y="240" width="16" height="16">
+ <objectgroup id="27" name="Bat obj">
+  <object id="89" x="1664" y="176" width="16" height="16">
    <properties>
+    <property name="aiPathFollowing" type="bool" value="false"/>
+    <property name="bat" value=""/>
+    <property name="endX" type="float" value="1656"/>
+    <property name="endY" type="float" value="248"/>
     <property name="enemy" value=""/>
     <property name="offset" type="float" value="8"/>
     <property name="platformID" value="49"/>
+    <property name="startX" type="float" value="1656"/>
+    <property name="startY" type="float" value="80"/>
+    <property name="vX" type="float" value="0"/>
+    <property name="vY" type="float" value="-3"/>
    </properties>
   </object>
   <object id="92" x="1744" y="272" width="16" height="16">
    <properties>
+    <property name="aiPathFollowing" type="bool" value="true"/>
+    <property name="bat" value=""/>
     <property name="enemy" value=""/>
     <property name="offset" type="float" value="24"/>
     <property name="platformID" value="50"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup id="29" name="Spider obj">
   <object id="94" x="1344" y="320" width="16" height="16">
    <properties>
+    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="endX" type="float" value="1424"/>
     <property name="endY" type="float" value="104"/>
     <property name="enemy" value=""/>
-    <property name="patrol" value=""/>
+    <property name="spider" value=""/>
     <property name="startX" type="float" value="1328"/>
     <property name="startY" type="float" value="104"/>
+    <property name="vX" type="float" value="2"/>
+    <property name="vY" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="95" x="1504" y="272" width="16" height="16">
+   <properties>
+    <property name="aiPathFollowing" type="bool" value="true"/>
+    <property name="enemy" value=""/>
+    <property name="offset" type="float" value="8"/>
+    <property name="platformID" value="48"/>
+    <property name="spider" value=""/>
    </properties>
   </object>
  </objectgroup>
