@@ -26,7 +26,7 @@ public class Enemy implements Steerable<Vector2> {
 
     // AI
     private SteeringBehavior<Vector2> steeringBehavior;
-    private SteeringAcceleration steeringOutput;
+    private SteeringAcceleration<Vector2> steeringOutput;
     private FollowPath<Vector2, LinePath.LinePathParam> followPath;
     public Array<Vector2> wayPoints;
     private LinePath<Vector2> linePath;
@@ -45,48 +45,36 @@ public class Enemy implements Steerable<Vector2> {
     private float width;
     private float height;
     private float offset;
+    private MapObject object;
+    private float startX;
+    private float startY;
+    private float endX;
+    private float endY;
 
     // spline
     public CatmullRomSpline<Vector2> splinePath;
     public Vector2 target;
     public float timer;
 
-    public Enemy(Body body, FixtureDef fixtureDef, TiledMap tiledMap, float offset, String platformID) {
+    public Enemy(Body body, FixtureDef fixtureDef, TiledMap tiledMap, float offset, String platformID, MapObject object) {
         this.body = body;
         this.fixtureDef = fixtureDef;
         this.tiledMap = tiledMap;
         this.offset = offset;
         this.platformID = platformID;
+        this.object = object;
+
+        if(object.getProperties().containsKey("patrol")) {
+            this.startX = (float) object.getProperties().get("startX");
+            this.startY = (float) object.getProperties().get("startY");
+            this.endX = (float) object.getProperties().get("endX");
+            this.endY = (float) object.getProperties().get("endY");
+        }
         body.createFixture(fixtureDef).setUserData(this);
 
         // parse xml tile map to find dimensions of each patrolling platform
         if(platformID != null) {
-            XmlReader reader = new XmlReader();
-            XmlReader.Element root = reader.parse(Gdx.files.internal("level1.tmx"));
-            Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
-
-            for(int i = 0; i < child1.size; i++) {
-                Array<XmlReader.Element> child2 = child1.get(i).getChildrenByNameRecursively("object");
-
-                for(int j = 0; j < child2.size; j++){
-                    if(child2.get(j).getAttributes().get("id").equals(platformID)) {
-
-                        this.x = Float.valueOf(child2.get(j).getAttributes().get("x"));
-                        this.y = MAP_HEIGHT - Float.valueOf(child2.get(j).getAttributes().get("y"));
-
-                        XmlReader.Element child = child2.get(j).getChildByName("polygon");
-                        String points = child.getAttributes().get("points");
-                        String[] pointsArr = points.split(",| ");
-
-                        if(pointsArr.length == 8) {
-                            this.width = Float.valueOf(pointsArr[6]) - Float.valueOf(pointsArr[0]);
-                            this.height = Math.abs(Float.valueOf(pointsArr[1]) - Float.valueOf(pointsArr[3]));
-                        }
-                        else
-                            throw new IllegalArgumentException("Tile not rectangular");
-                    }
-                }
-            }
+            parseXml();
         }
 
 
@@ -140,6 +128,26 @@ public class Enemy implements Steerable<Vector2> {
             this.maxAngularAcceleration = 3;
             this.boundingRadius = 1f;
         }
+        else if (aiON) {
+            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2(startX / PPM, startY / PPM),
+                    new Vector2(endX / PPM, endY / PPM),
+                    new Vector2(endX / PPM, (endY + 1) / PPM),
+                    new Vector2(startX / PPM, (endY + 1) / PPM),
+                    new Vector2(startX / PPM, startY / PPM)});
+
+            this.linePath = new LinePath<>(wayPoints, false);
+            this.followPath = new FollowPath<>(this, linePath, -0.1f).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
+            followPath.setArriveEnabled(false);
+            this.setSteeringBehavior(followPath);
+            this.steeringOutput = new SteeringAcceleration<>(new Vector2());
+
+            this.maxLinearSpeed = 1f;
+            this.maxLinearAcceleration = 500f;
+            this.maxAngularSpeed = 3;
+            this.maxAngularAcceleration = 3;
+            this.boundingRadius = 1f;*/
+            body.setLinearVelocity(2f, 0);
+        }
         else {
             this.target = new Vector2();
             this.splinePath = new CatmullRomSpline<>(new Vector2[] { new Vector2(176 / PPM, 176 / PPM),
@@ -156,6 +164,8 @@ public class Enemy implements Steerable<Vector2> {
                 steeringBehavior.calculateSteering(steeringOutput);
                 applySteering(steeringOutput, delta);
             }
+            else if(getPosition().x < startX / PPM || getPosition().x > endX / PPM)
+                    this.reverseVelocity(true, false);
         }
         else {
             timer += delta;
@@ -181,6 +191,43 @@ public class Enemy implements Steerable<Vector2> {
             body.setLinearVelocity(getLinearVelocity().mulAdd(steeringOutput.linear, delta).limit(getMaxLinearSpeed()));
 
 //        System.out.println(body.getLinearVelocity());
+    }
+
+    // reverse velocity of an enemy
+    private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
+        if(reverseVx)
+            body.setLinearVelocity(-getLinearVelocity().x, getLinearVelocity().y);
+        if(reverseVy)
+            body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
+    }
+
+    private void parseXml() {
+        XmlReader reader = new XmlReader();
+        XmlReader.Element root = reader.parse(Gdx.files.internal("level1.tmx"));
+        Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
+
+        for(int i = 0; i < child1.size; i++) {
+            Array<XmlReader.Element> child2 = child1.get(i).getChildrenByNameRecursively("object");
+
+            for(int j = 0; j < child2.size; j++){
+                if(child2.get(j).getAttributes().get("id").equals(platformID)) {
+
+                    this.x = Float.valueOf(child2.get(j).getAttributes().get("x"));
+                    this.y = MAP_HEIGHT - Float.valueOf(child2.get(j).getAttributes().get("y"));
+
+                    XmlReader.Element child = child2.get(j).getChildByName("polygon");
+                    String points = child.getAttributes().get("points");
+                    String[] pointsArr = points.split(",| ");
+
+                    if(pointsArr.length == 8) {
+                        this.width = Float.valueOf(pointsArr[6]) - Float.valueOf(pointsArr[0]);
+                        this.height = Math.abs(Float.valueOf(pointsArr[1]) - Float.valueOf(pointsArr[3]));
+                    }
+                    else
+                        throw new IllegalArgumentException("Tile not rectangular");
+                }
+            }
+        }
     }
 
 

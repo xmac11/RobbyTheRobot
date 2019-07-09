@@ -184,7 +184,7 @@ public class B2dWorldCreator {
                 platformID = (String) object.getProperties().get("platformID");
                 offset = (float) object.getProperties().get("offset");
             }
-            this.enemies.add(new Enemy(body, fixtureDef, tiledMap, offset, platformID));
+            this.enemies.add(new Enemy(body, fixtureDef, tiledMap, offset, platformID, object));
         }
         // create ground objects
         else {
