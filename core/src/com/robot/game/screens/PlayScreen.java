@@ -89,7 +89,7 @@ public class PlayScreen extends ScreenAdapter {
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(ENEMY_OBJECT).getObjects());
 
-        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray);
+        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray, tiledMap);
 
         // create robot
         this.robot = new Robot(world);
@@ -162,17 +162,23 @@ public class PlayScreen extends ScreenAdapter {
         if(aiON) {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            int k = enemies.get(0).wayPoints.size;
-            Vector2[] points = new Vector2[k];
+            for(int i = 0; i < enemies.size; i++) {
+                if(enemies.get(i).getPlatformID() != null) {
+                    int k = enemies.get(i).wayPoints.size;
+                    Vector2[] points = new Vector2[k];
 
-            for (int i = 0; i < k; i++) {
-                points[i] = enemies.get(0).wayPoints.get(i);
+                    for (int j = 0; j < k; j++) {
+                        points[j] = enemies.get(i).wayPoints.get(j);
+                    }
+
+                    for (int j = 0; j < k - 1; j++) {
+                        points[j] = enemies.get(i).wayPoints.get(j);
+                        shapeRenderer.line(points[j], points[j + 1]);
+                    }
+                }
+
             }
 
-            for (int i = 0; i < k - 1; i++) {
-                points[i] = enemies.get(0).wayPoints.get(i);
-                shapeRenderer.line(points[i], points[i + 1]);
-            }
             shapeRenderer.end();
 
         }
@@ -191,8 +197,6 @@ public class PlayScreen extends ScreenAdapter {
             for (int i = 0; i < k - 1; ++i) {
                 shapeRenderer.line(points[i], points[i + 1]);
             }
-
-            //        shapeRenderer.circle(enemies.get(0).target.x, enemies.get(0).target.y, 1.0f);
             shapeRenderer.end();
         }
 

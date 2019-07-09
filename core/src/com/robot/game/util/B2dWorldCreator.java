@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -23,10 +24,11 @@ public class B2dWorldCreator {
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
+    private TiledMap tiledMap;
 
-
-    public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
+    public B2dWorldCreator(World world, Array<MapObjects> layersArray, TiledMap tiledMap) {
         this.world = world;
+        this.tiledMap = tiledMap;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         for(MapObjects objects: layersArray)
@@ -175,8 +177,14 @@ public class B2dWorldCreator {
             InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
             this.interactivePlatforms.add(movingPlatform);
         }
-        else if( object.getProperties().containsKey(ENEMY_PROPERTY)) {
-            this.enemies.add(new Enemy(body, fixtureDef));
+        else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
+            String platformID = null;
+            float offset = 0;
+            if(object.getProperties().get("platformID") != null) {
+                platformID = (String) object.getProperties().get("platformID");
+                offset = (float) object.getProperties().get("offset");
+            }
+            this.enemies.add(new Enemy(body, fixtureDef, tiledMap, offset, platformID));
         }
         // create ground objects
         else {
