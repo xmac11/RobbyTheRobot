@@ -12,6 +12,7 @@ public class FallingPlatform extends InteractivePlatform {
     private float startTime; // time the player jumped on the falling platform
     private float elapsed;
     private boolean flagToMove;
+    private boolean falling;
     private boolean isDestroyed;
     private boolean toggle;
 
@@ -40,6 +41,7 @@ public class FallingPlatform extends InteractivePlatform {
             if(elapsed >= delay) {
                 movePlatform(0, -8);
                 flagToMove = false;
+                falling = true;
             }
             else {
                 if(toggle)
@@ -64,5 +66,7 @@ public class FallingPlatform extends InteractivePlatform {
         this.flagToMove = flagToMove;
     }
 
-
+    public boolean isFalling() {
+        return falling;
+    }
 }

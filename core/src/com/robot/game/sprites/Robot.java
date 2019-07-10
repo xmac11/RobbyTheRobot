@@ -2,11 +2,11 @@ package com.robot.game.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.LadderClimbHandler;
@@ -184,7 +184,11 @@ public class Robot /*extends InputAdapter*/ {
             // robot jumps off interactive platform
             if(isOnInteractivePlatform) {
                 isOnInteractivePlatform = false;
-                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true); // make this constant
+                if(interactivePlatform instanceof FallingPlatform && ((FallingPlatform)interactivePlatform).isFalling())
+                    body.applyLinearImpulse(ROBOT_JUMP_IMPULSE_FALLING_PLAT, body.getWorldCenter(), true); // make this constant
+                else
+                    body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true); // make this constant
+
             }
             // robot jumps from the ground
             else {

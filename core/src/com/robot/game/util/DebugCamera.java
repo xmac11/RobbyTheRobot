@@ -36,7 +36,7 @@ public class DebugCamera {
         if(following) {
 
             if(robot.getBody().getPosition().x > 2048 / PPM && robot.getBody().getPosition().x < 2976 / PPM  && !shakeActive) {
-                ShakeEffect.shake(0.35f, 5.0f);
+                ShakeEffect.shake(0.35f, 0.1f);
                 shakeActive = true;
             }
 

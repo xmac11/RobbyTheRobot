@@ -12,6 +12,8 @@ public class Spider extends Enemy {
     private float startY;
     private float endX;
     private float endY;
+    private float vX;
+    private float vY;
 
     public Spider(Body body, FixtureDef fixtureDef, float offset, String platformID, MapObject object, boolean aiPathFollowing) {
         super(body, fixtureDef, offset, platformID, object, aiPathFollowing);
@@ -23,7 +25,11 @@ public class Spider extends Enemy {
             this.startY = (float) object.getProperties().get("startY");
             this.endX = (float) object.getProperties().get("endX");
             this.endY = (float) object.getProperties().get("endY");
-            body.setLinearVelocity(2f, 0);
+
+            this.vX = (float) object.getProperties().get("vX");
+            this.vY = (float) object.getProperties().get("vY");
+
+            body.setLinearVelocity(vX, vY);
         }
     }
 
