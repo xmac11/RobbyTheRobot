@@ -84,7 +84,7 @@ public abstract class Enemy implements Steerable<Vector2> {
 
     private void parseXml() {
         XmlReader reader = new XmlReader();
-        XmlReader.Element root = reader.parse(Gdx.files.internal("level1.tmx"));
+        XmlReader.Element root = reader.parse(Gdx.files.internal("level1.1.tmx"));
         Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
 
         for(int i = 0; i < child1.size; i++) {

@@ -35,7 +35,7 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            if(robot.getBody().getPosition().x > 2048 / PPM && robot.getBody().getPosition().x < 2976 / PPM  && !shakeActive) {
+            /*if(robot.getBody().getPosition().x > 2048 / PPM && robot.getBody().getPosition().x < 2976 / PPM  && !shakeActive) {
                 ShakeEffect.shake(0.35f, 0.1f);
                 shakeActive = true;
             }
@@ -46,7 +46,7 @@ public class DebugCamera {
                 camera.translate(ShakeEffect.getPosition());
             }
             else
-                shakeActive = false;
+                shakeActive = false;*/
 
             // in case of rotation
             /*else {
@@ -54,8 +54,8 @@ public class DebugCamera {
                 camera.up.set(0, 1, 0);
             }*/
 
-            //camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-            camera.position.x = camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
+            camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
+//            camera.position.x = camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
             camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
             //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f
 

@@ -12,8 +12,8 @@ public class DesktopLauncher {
 		/*config.width = LwjglApplicationConfiguration.getDesktopDisplayMode().width;
 		config.height = LwjglApplicationConfiguration.getDesktopDisplayMode().height;*/
 
-		config.width = (int) Constants.WIDTH;
-		config.height = (int) Constants.HEIGHT;
+		config.width = (int) Constants.SCREEN_WIDTH;
+		config.height = (int) Constants.SCREEN_HEIGHT;
 
 		new LwjglApplication(new RobotGame(), config);
 	}

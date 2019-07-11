@@ -43,7 +43,7 @@ public class ContactManager implements ContactListener {
 
             // robot - falling platform
             case ROBOT_CATEGORY | FALLING_PLATFORM_CATEGORY:
-                robotFallPlatBegin(normal, fixA, fixB);
+                robotFallingPlatBegin(normal, fixA, fixB);
                 break;
 
             // robot - moving platform
@@ -92,7 +92,7 @@ public class ContactManager implements ContactListener {
     }
 
     // robot - falling platform collision begins
-    private void robotFallPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
+    private void robotFallingPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         FallingPlatform fallingPlatform;
 
@@ -144,6 +144,9 @@ public class ContactManager implements ContactListener {
             movingPlatform = (MovingPlatform) fixB.getUserData();
             if(normal.y <= -1/Math.sqrt(2)) {
                 robot.setOnInteractivePlatform(movingPlatform, true);
+                if(movingPlatform.isWaiting())
+                    movingPlatform.movePlatform();
+
                 Gdx.app.log("ContactManager", "On moving platform");
             }
             else if(normal.y >= 1/Math.sqrt(2))
@@ -157,8 +160,12 @@ public class ContactManager implements ContactListener {
         else {
             robot = (Robot) fixB.getUserData();
             movingPlatform = (MovingPlatform) fixA.getUserData();
+
             if(normal.y >= 1/Math.sqrt(2)) {
                 robot.setOnInteractivePlatform(movingPlatform, true);
+                if(movingPlatform.isWaiting())
+                    movingPlatform.movePlatform();
+
                 Gdx.app.log("ContactManager", "On moving platform");
             }
             else if(normal.y <= -1/Math.sqrt(2))
@@ -209,7 +216,7 @@ public class ContactManager implements ContactListener {
                 break;
             // robot - falling platform
             case ROBOT_CATEGORY | FALLING_PLATFORM_CATEGORY:
-                robotFallPlatEnd(fixA, fixB); // this does nothing right now
+                robotFallingPlatEnd(fixA, fixB); // this does nothing right now
                 break;
             // robot - moving platform
             case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
@@ -248,9 +255,8 @@ public class ContactManager implements ContactListener {
         }
     }
 
-    // this does nothing right now
     // robot - falling platform collision ends
-    private void robotFallPlatEnd(Fixture fixA, Fixture fixB) {
+    private void robotFallingPlatEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
         FallingPlatform fallingPlatform;
 

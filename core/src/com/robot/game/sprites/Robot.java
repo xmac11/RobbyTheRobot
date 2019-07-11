@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.LadderClimbHandler;
 
@@ -69,7 +70,7 @@ public class Robot /*extends InputAdapter*/ {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.1f;
         this.body = world.createBody(bodyDef);
@@ -116,8 +117,16 @@ public class Robot /*extends InputAdapter*/ {
             body.setLinearVelocity(body.getLinearVelocity().x, v);
         }*/
 
-        if(isOnInteractivePlatform)
-            body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
+        if(isOnInteractivePlatform) {
+
+            // platform moving vertically
+            if(interactivePlatform.getBody().getLinearVelocity().y != 0)
+                body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
+
+            // platform moving horizontally
+            else if(interactivePlatform.getBody().getLinearVelocity().x != 0 )
+                body.applyForceToCenter(-0.4f * body.getMass() * world.getGravity().y, 0, true);
+        }
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
@@ -235,6 +244,12 @@ public class Robot /*extends InputAdapter*/ {
     public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {
         this.interactivePlatform = interactivePlatform;
         this.isOnInteractivePlatform = isOnInteractivePlatform;
+
+        /*if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform) {
+            MovingPlatform movingPlatform = (MovingPlatform) interactivePlatform;
+            if(movingPlatform.getEndX() != -1)
+                body.setLinearVelocity(interactivePlatform.getvX(), interactivePlatform.getvY());
+        }*/
     }
 
     public boolean isFallingOffLadder() {
@@ -243,6 +258,13 @@ public class Robot /*extends InputAdapter*/ {
 
     public void setFallingOffLadder(boolean fallingOffLadder) {
         this.fallingOffLadder = fallingOffLadder;
+    }
+
+    private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
+        if(reverseVx)
+            body.setLinearVelocity(-body.getLinearVelocity().x, body.getLinearVelocity().y);
+        if(reverseVy)
+            body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
     }
 
     /*private void verletTest(float delta) {

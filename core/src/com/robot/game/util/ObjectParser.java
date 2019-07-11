@@ -20,13 +20,13 @@ import com.robot.game.sprites.Spider;
 import static com.robot.game.util.Constants.*;
 
 
-public class B2dWorldCreator {
+public class ObjectParser {
 
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
 
-    public B2dWorldCreator(World world, Array<MapObjects> layersArray) {
+    public ObjectParser(World world, Array<MapObjects> layersArray) {
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
@@ -167,17 +167,15 @@ public class B2dWorldCreator {
         }
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            float delay = (float) object.getProperties().get("delay");
-            InteractivePlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, delay);
+            InteractivePlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, object);
             this.interactivePlatforms.add(fallingPlatform);
         }
         // create moving platform
         else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            float vX = (float) object.getProperties().get("vX");
-            float vY = (float) object.getProperties().get("vY");
-            InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, vX, vY);
+            InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, object);
             this.interactivePlatforms.add(movingPlatform);
         }
+        // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
             Enemy enemy;
             String platformID = null;
@@ -196,7 +194,10 @@ public class B2dWorldCreator {
                 enemy = new Spider(body, fixtureDef, offset, platformID, object, aiPathFollowing);
             this.enemies.add(enemy);
         }
-        // create ground objects
+        // create spikes
+        else if(object.getProperties().containsKey(SPIKE_PROPERTY))
+            body.createFixture(fixtureDef).setUserData(SPIKE_PROPERTY);
+        // create ground
         else {
             body.createFixture(fixtureDef).setUserData("ground");
         }
