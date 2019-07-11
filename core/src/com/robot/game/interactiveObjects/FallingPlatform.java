@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -16,16 +17,12 @@ public class FallingPlatform extends InteractivePlatform {
     private boolean isDestroyed;
     private boolean toggle;
 
-    public FallingPlatform(World world, Body body, FixtureDef fixtureDef, float delay) {
-        super(world, body);
+    public FallingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(world, body, (float) object.getProperties().get("vX"), (float) object.getProperties().get("vY"));
         body.createFixture(fixtureDef).setUserData(this);
 
-        this.delay = delay;
+        this.delay = (float) object.getProperties().get("delay");
         this.elapsed = 0;
-    }
-
-    private void movePlatform(float vX, float vY) {
-        body.setLinearVelocity(vX, vY);
     }
 
     @Override
@@ -39,7 +36,7 @@ public class FallingPlatform extends InteractivePlatform {
 
         if(flagToMove) {
             if(elapsed >= delay) {
-                movePlatform(0, -8);
+                movePlatform();
                 flagToMove = false;
                 falling = true;
             }

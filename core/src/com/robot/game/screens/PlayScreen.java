@@ -21,8 +21,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
-import com.robot.game.util.B2dWorldCreator;
-import com.robot.game.util.Constants;
+import com.robot.game.util.ObjectParser;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.DebugCamera;
 
@@ -56,7 +55,7 @@ public class PlayScreen extends ScreenAdapter {
     // Box2d variables
     private World world;
     private Box2DDebugRenderer debugRenderer;
-    private B2dWorldCreator b2dWorldCreator;
+    private ObjectParser objectParser;
 
     public PlayScreen(RobotGame game) {
         this.game = game;
@@ -70,10 +69,10 @@ public class PlayScreen extends ScreenAdapter {
 
         // create camera
         this.camera = new OrthographicCamera();
-        this.viewport = new ExtendViewport(Constants.WIDTH / PPM, Constants.HEIGHT / PPM, camera);
+        this.viewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
 
         // load map and set up map renderer
-        this.tiledMap = new TmxMapLoader().load("level1.tmx");
+        this.tiledMap = new TmxMapLoader().load("level1.1.tmx");
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // create box2d world
@@ -87,17 +86,18 @@ public class PlayScreen extends ScreenAdapter {
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(SPIDER_OBJECT).getObjects());
+        layersArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
-        this.b2dWorldCreator = new B2dWorldCreator(world, layersArray);
+        this.objectParser = new ObjectParser(world, layersArray);
 
         // create robot
         this.robot = new Robot(world);
 
         // create interactive platforms
-        this.interactivePlatforms = b2dWorldCreator.getInteractivePlatforms();
+        this.interactivePlatforms = objectParser.getInteractivePlatforms();
 
         // create enemy
-        this.enemies = b2dWorldCreator.getEnemies();
+        this.enemies = objectParser.getEnemies();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);

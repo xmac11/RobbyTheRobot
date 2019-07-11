@@ -8,14 +8,14 @@ import com.badlogic.gdx.math.Vector2;
 public final class Constants {
 
     // Screen - Camera
-    public static final float WIDTH = 768;
-    public static final float HEIGHT = 432;
+    public static final float SCREEN_WIDTH = 768;
+    public static final float SCREEN_HEIGHT = 432;
     public static final float PPM = 32;
     public static final float DEBUG_CAM_SPEED = 32;
 
 
     // Tiled map editor
-    private static TiledMap tiledMap = new TmxMapLoader().load("level1.tmx");
+    private static TiledMap tiledMap = new TmxMapLoader().load("level1.1.tmx");
     private static MapProperties mapProperties = tiledMap.getProperties();
     public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
 //    public static final int TILE_SIZE = 16;
@@ -25,6 +25,7 @@ public final class Constants {
     public static final String LADDER_OBJECT = "Ladder obj";
     public static final String BAT_OBJECT = "Bat obj";
     public static final String SPIDER_OBJECT = "Spider obj";
+    public static final String SPIKE_OBJECT = "Spike obj";
 
     // COLLISIONS
 
@@ -50,13 +51,14 @@ public final class Constants {
 
 
     // Robot
+
         // Dimensions
     public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_WIDTH = 20;
     public static final float ROBOT_HEIGHT = 56;
 
-    // Sensor feet
-    public static final float ROBOT_FEET_WIDTH = 20;
+        // Sensor feet
+    public static final float ROBOT_FEET_WIDTH = 19;
     public static final float ROBOT_FEET_HEIGHT = 8;
         // Movement
     public static final float ROBOT_MAX_SPEED = 5;
@@ -85,5 +87,6 @@ public final class Constants {
     public static final String ENEMY_PROPERTY = "enemy";
     public static final String BAT_PROPERTY = "bat";
     public static final String SPIDER_PROPERTY = "spider";
+    public static final String SPIKE_PROPERTY = "spike";
 
 }

@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects;
 
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -8,25 +9,55 @@ import static com.robot.game.util.Constants.PPM;
 
 public class MovingPlatform extends InteractivePlatform {
 
+    private float startX;
+    private float startY;
+    private float endX;
+    private float endY;
+    private boolean waiting;
+    private boolean shouldStop;
+
     // will probably need to pass the whole map object
-    public MovingPlatform(World world, Body body, FixtureDef fixtureDef, float vX, float vY) {
-        super(world, body);
+    public MovingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(world, body, (float) object.getProperties().get("vX"), (float) object.getProperties().get("vY"));
         body.createFixture(fixtureDef).setUserData(this);
 
-        body.setLinearVelocity(vX, vY);
+        this.startX = (float) object.getProperties().get("startX");
+        this.startY = (float) object.getProperties().get("startY");
+        this.endX = (float) object.getProperties().get("endX");
+        this.endY = (float) object.getProperties().get("endY");
+
+        this.waiting = (boolean) object.getProperties().get("waiting");
+        this.shouldStop = (boolean) object.getProperties().get("shouldStop");
+
+        if(!waiting)
+            body.setLinearVelocity(vX, vY);
     }
 
     @Override
     public void update(float delta) {
-        // this is used for constantly moving platforms (probably make these variables in properties)
-        if(body.getPosition().y < 110 / PPM || body.getPosition().y > 324 / PPM)
-            this.reverseVelocity(false, true);
-    }
+        // in case I need moving diagonally, I'll have an if statement first checking if both are != -1
 
+        // moving vertically
+        if(startY != -1) {
+            if(body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM)
+                this.reverseVelocity(false, true);
+        }
+        // moving horizontally
+        else if(startX != -1 /*&& endX != -1*/) {
+            if(shouldStop && body.getPosition().x > endX / PPM)
+                stop();
+            else if(body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM)
+                reverseVelocity(true, false);
+        }
+    }
 
     @Override
     public boolean isDestroyed() {
         return false;
+    }
+
+    public void movePlatform() {
+        body.setLinearVelocity(vX, vY);
     }
 
     // reverse velocity of a moving platform
@@ -36,4 +67,14 @@ public class MovingPlatform extends InteractivePlatform {
         if(reverseVy)
             body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
     }
+
+    // stop platform
+    private void stop() {
+        body.setLinearVelocity(0, 0);
+    }
+
+    public boolean isWaiting() {
+        return waiting;
+    }
+
 }
