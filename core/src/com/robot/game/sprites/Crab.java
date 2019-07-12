@@ -1,12 +1,17 @@
 package com.robot.game.sprites;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
-public class Spider extends Enemy {
+public class Crab extends Enemy {
+
+    public Sprite spiderSprite;
+
 
     private float startX;
     private float startY;
@@ -15,8 +20,8 @@ public class Spider extends Enemy {
     private float vX;
     private float vY;
 
-    public Spider(Body body, FixtureDef fixtureDef, float offset, String platformID, MapObject object, boolean aiPathFollowing) {
-        super(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+    public Crab(Body body, FixtureDef fixtureDef, MapObject object) {
+        super(body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -31,6 +36,9 @@ public class Spider extends Enemy {
 
             body.setLinearVelocity(vX, vY);
         }
+
+        this.spiderSprite = new Sprite(new Texture("crab.png"));
+
     }
 
     public void update(float delta) {
@@ -40,6 +48,9 @@ public class Spider extends Enemy {
         }
         else if(!aiPathFollowing && getPosition().x < startX / PPM || getPosition().x > endX / PPM)
             reverseVelocity(true, false);
+
+        // attach sprite to body
+        spiderSprite.setPosition(body.getPosition().x - (CRAB_WIDTH / 2) / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
     }
 
 }

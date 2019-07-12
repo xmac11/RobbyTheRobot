@@ -51,12 +51,10 @@ public class ContactManager implements ContactListener {
                 robotMovingPlatBegin(normal, fixA, fixB);
                 break;
 
-            // feet
-            /*case ROBOT_FEET_CATEGORY | GROUND_CATEGORY:
-            case ROBOT_FEET_CATEGORY | FALLING_PLATFORM_CATEGORY:
-            case ROBOT_FEET_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                feetOnObject(fixA, fixB);
-                break;*/
+            // robot - spikes
+            case ROBOT_CATEGORY | SPIKE_CATEGORY:
+                robotSpikesBegin(fixA, fixB);
+                break;
         }
 
 
@@ -175,8 +173,21 @@ public class ContactManager implements ContactListener {
             else if(normal.x <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from the left");
         }
-
     }
+
+    private void robotSpikesBegin(Fixture fixA, Fixture fixB) {
+        Robot robot;
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            Gdx.app.log("ContactManager","Robot died from spikes");
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            Gdx.app.log("ContactManager","Robot died from spikes");
+        }
+    }
+
+
 
     private void feetOnObject(Fixture fixA, Fixture fixB) {
         /*Robot robot;

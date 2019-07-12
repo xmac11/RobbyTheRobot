@@ -37,38 +37,41 @@ public abstract class Enemy implements Steerable<Vector2> {
     protected float y;
     protected float width;
     protected float height;
-    protected float offset;
+    protected float offsetX;
+    protected float offsetY;
     protected MapObject object;
 
     protected boolean aiPathFollowing;
 
-    public Enemy(Body body, FixtureDef fixtureDef, float offset, String platformID, MapObject object, boolean aiPathFollowing) {
+    public Enemy(Body body, FixtureDef fixtureDef, MapObject object) {
         this.body = body;
         this.fixtureDef = fixtureDef;
+        fixtureDef.restitution = 0.5f;
 
-        this.aiPathFollowing = aiPathFollowing;
+        this.aiPathFollowing = (boolean) object.getProperties().get("aiPathFollowing");
 
         if(aiPathFollowing) {
-            this.offset = offset;
-            this.platformID = platformID;
+            this.offsetX = (float) object.getProperties().get("offsetX");
+            this.offsetY = (float) object.getProperties().get("offsetY");
+            this.platformID = (String) object.getProperties().get("platformID");
             this.object = object;
-
 
             if(platformID != null) {
                 parseXml();
 
-                this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offset) / PPM, (y - offset) / PPM),
-                        new Vector2((x - offset) / PPM, (y + height + offset) / PPM),
-                        new Vector2((x + width + offset) / PPM, (y + height + offset) / PPM),
-                        new Vector2((x + width + offset) / PPM, (y - offset) / PPM),
-                        new Vector2((x - offset) / PPM, (y - offset) / PPM)});
+                this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
+                        new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
+                        new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
+                        new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
+                        new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM)});
 
                 this.linePath = new LinePath<>(wayPoints, false);
-                this.followPath = new FollowPath<>(this, linePath, 0.1f).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
+                float pathOffset = (float) object.getProperties().get("pathOffset");
+                this.followPath = new FollowPath<>(this, linePath, pathOffset).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
                 this.setSteeringBehavior(followPath);
                 this.steeringOutput = new SteeringAcceleration<>(new Vector2());
 
-                this.maxLinearSpeed = 3.5f;
+                this.maxLinearSpeed = (float) object.getProperties().get("aiSpeed");
                 this.maxLinearAcceleration = 500f;
                 this.maxAngularSpeed = 3;
                 this.maxAngularAcceleration = 3;

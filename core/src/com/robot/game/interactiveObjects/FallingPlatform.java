@@ -41,12 +41,12 @@ public class FallingPlatform extends InteractivePlatform {
                 falling = true;
             }
             else {
-                if(toggle)
+                /*if(toggle)
                     body.setLinearVelocity(3, 3);
                 else
                     body.setLinearVelocity(-3, -3);
 
-                toggle = !toggle;
+                toggle = !toggle;*/
                 elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
             }
         }

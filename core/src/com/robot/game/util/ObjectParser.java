@@ -15,7 +15,7 @@ import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
-import com.robot.game.sprites.Spider;
+import com.robot.game.sprites.Crab;
 
 import static com.robot.game.util.Constants.*;
 
@@ -148,9 +148,14 @@ public class ObjectParser {
             fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
             fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
         }
+        // enemy
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
             fixtureDef.filter.categoryBits = ENEMY_CATEGORY;
             fixtureDef.filter.maskBits = ENEMY_MASK;
+        }
+        else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
+            fixtureDef.filter.categoryBits = SPIKE_CATEGORY;
+            fixtureDef.filter.maskBits = SPIKE_MASK;
         }
         // ground
         else {
@@ -178,20 +183,12 @@ public class ObjectParser {
         // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
             Enemy enemy;
-            String platformID = null;
-            float offset = 0;
-            boolean aiPathFollowing = (boolean) object.getProperties().get("aiPathFollowing");
-
-            if(object.getProperties().get("platformID") != null) {
-                platformID = (String) object.getProperties().get("platformID");
-                offset = (float) object.getProperties().get("offset");
-            }
 
             if(object.getProperties().containsKey(BAT_PROPERTY))
-                enemy = new Bat(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+                enemy = new Bat(body, fixtureDef, object);
 
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
-                enemy = new Spider(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+                enemy = new Crab(body, fixtureDef, object);
             this.enemies.add(enemy);
         }
         // create spikes

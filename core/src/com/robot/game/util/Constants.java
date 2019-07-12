@@ -24,7 +24,7 @@ public final class Constants {
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
     public static final String BAT_OBJECT = "Bat obj";
-    public static final String SPIDER_OBJECT = "Spider obj";
+    public static final String CRAB_OBJECT = "Crab obj";
     public static final String SPIKE_OBJECT = "Spike obj";
 
     // COLLISIONS
@@ -38,15 +38,17 @@ public final class Constants {
     public static final short MOVING_PLATFORM_CATEGORY = 16;
     public static final short ROBOT_FEET_CATEGORY = 32;
     public static final short ENEMY_CATEGORY = 64;
+    public static final short SPIKE_CATEGORY = 128;
 
     // Box2D filter mask bits
-    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | ENEMY_CATEGORY;
+    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | ENEMY_CATEGORY | SPIKE_CATEGORY;
     public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
+    public static final short SPIKE_MASK = ROBOT_CATEGORY;
 
 
 
@@ -54,19 +56,23 @@ public final class Constants {
 
         // Dimensions
     public static final float ROBOT_RADIUS = 16;
-    public static final float ROBOT_WIDTH = 20;
-    public static final float ROBOT_HEIGHT = 56;
+    public static final float ROBOT_BODY_WIDTH = 18;
+    public static final float ROBOT_BODY_HEIGHT = 50;
+    public static final float ROBOT_OFFSET_X = 10;
+    public static final float ROBOT_OFFSET_Y = 5;
+    public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
+    public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
 
         // Sensor feet
-    public static final float ROBOT_FEET_WIDTH = 19;
-    public static final float ROBOT_FEET_HEIGHT = 8;
+    public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
+    public static final float ROBOT_FEET_HEIGHT = 4;
         // Movement
     public static final float ROBOT_MAX_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
     public static final float ROBOT_JUMP_SPEED = 5.2f; // when on ground
-    public static final Vector2 ROBOT_JUMP_IMPULSE = new Vector2(0, 5f); // when on interactive platform
-    public static final Vector2 ROBOT_JUMP_IMPULSE_FALLING_PLAT = new Vector2(0, 10f); // when on interactive platform
+    public static final Vector2 ROBOT_JUMP_IMPULSE = new Vector2(0, 5.1f); // when on interactive platform
+    public static final Vector2 ROBOT_JUMP_IMPULSE_FALLING_PLAT = new Vector2(0, 10f); // when platform is falling
 
 
 
@@ -86,7 +92,15 @@ public final class Constants {
     // Enemies
     public static final String ENEMY_PROPERTY = "enemy";
     public static final String BAT_PROPERTY = "bat";
-    public static final String SPIDER_PROPERTY = "spider";
+    public static final String CRAB_PROPERTY = "crab";
     public static final String SPIKE_PROPERTY = "spike";
+
+        // Bat
+    public static final float BAT_WIDTH = 28;
+    public static final float BAT_HEIGHT = 16;
+
+        // Crab
+    public static final float CRAB_WIDTH = 24;
+    public static final float CRAB_HEIGHT = 16;
 
 }

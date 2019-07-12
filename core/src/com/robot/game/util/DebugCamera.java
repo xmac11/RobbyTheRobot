@@ -56,8 +56,9 @@ public class DebugCamera {
 
             camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
 //            camera.position.x = camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
-            camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
-            //camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f
+//            camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
+//            camera.position.y =  robot.getBody().getPosition().y; // camera follows the robot vertically
+            camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f;
 
         }
         else {
@@ -75,9 +76,9 @@ public class DebugCamera {
             camera.position.x = MathUtils.clamp(camera.position.x,
                     viewport.getWorldWidth() / 2,
                     MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
-            /*camera.position.y = MathUtils.clamp(camera.position.y,
+            camera.position.y = MathUtils.clamp(camera.position.y,
                     viewport.getWorldHeight() / 2,
-                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);*/
+                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);
         }
 
         camera.update();

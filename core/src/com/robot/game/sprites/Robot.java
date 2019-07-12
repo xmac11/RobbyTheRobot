@@ -56,8 +56,8 @@ public class Robot /*extends InputAdapter*/ {
         this.robotSprite = new Sprite(texture);
 
 //        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
-        robotSprite.setSize(ROBOT_WIDTH / PPM, ROBOT_HEIGHT / PPM);
-        robotSprite.setPosition(body.getPosition().x - ROBOT_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
+//        robotSprite.setSize(32 / PPM, 64 / PPM);
+        robotSprite.setPosition(body.getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
 
         //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
 
@@ -70,9 +70,9 @@ public class Robot /*extends InputAdapter*/ {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform, 2790, 400 for multiple plats
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 0.1f;
+        bodyDef.linearDamping = 0.2f;
         this.body = world.createBody(bodyDef);
 
         // create fixture
@@ -83,7 +83,7 @@ public class Robot /*extends InputAdapter*/ {
         fixtureDef.shape = circleShape;*/
 
         PolygonShape recShape = new PolygonShape();
-        recShape.setAsBox(ROBOT_WIDTH / 2 / PPM, ROBOT_HEIGHT / 2 / PPM);
+        recShape.setAsBox(ROBOT_BODY_WIDTH / 2 / PPM, ROBOT_BODY_HEIGHT / 2 / PPM);
         fixtureDef.shape = recShape;
 
         fixtureDef.friction = 0.4f;
@@ -93,7 +93,7 @@ public class Robot /*extends InputAdapter*/ {
         this.body.createFixture(fixtureDef).setUserData(this);
 
         // sensor feet
-        recShape.setAsBox(ROBOT_FEET_WIDTH / 2 / PPM, ROBOT_FEET_HEIGHT / 2 / PPM, new Vector2(0, -ROBOT_HEIGHT / 2 / PPM), 0);
+        recShape.setAsBox(ROBOT_FEET_WIDTH / 2 / PPM, ROBOT_FEET_HEIGHT / 2 / PPM, new Vector2(0, -ROBOT_BODY_HEIGHT / 2 / PPM), 0);
         fixtureDef.density = 0;
         fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
         fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
@@ -130,7 +130,15 @@ public class Robot /*extends InputAdapter*/ {
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
-        robotSprite.setPosition(body.getPosition().x - (ROBOT_WIDTH / 2 + 5) / PPM, body.getPosition().y - ROBOT_HEIGHT / 2 / PPM); // for rectangle
+        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
+
+        /*if(body.getLinearVelocity().y < -0.1f)
+            world.setGravity(new Vector2(0, -9.81f * 1.5f));
+        else
+            world.setGravity(new Vector2(0, -9.81f));
+
+        System.out.println(world.getGravity().y);*/
+//        System.out.println(body.getLinearVelocity());
 
     }
 
@@ -156,10 +164,18 @@ public class Robot /*extends InputAdapter*/ {
 
         // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            // GRADUAL ACCELERATION
-            float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
-            temp.x = body.getMass() * (targetVelocity - currentVelocity);
-            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+            // this is for the case of the horizontally moving platform that will stop under the ladder
+            // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
+            // this will be used at most once, so a new Vector is created instead of keeping a variable in the Constant class
+            if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop()) {
+                body.applyLinearImpulse(new Vector2(-0.15f, 0), body.getWorldCenter(), true);
+            }
+            else {
+                // GRADUAL ACCELERATION
+                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
+                temp.x = body.getMass() * (targetVelocity - currentVelocity);
+                body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+            }
 
             // CONSTANT SPEED
 //            body.applyLinearImpulse(temp.scl(-1).sub(body.getMass() * currentVelocity, 0), body.getWorldCenter(), true);

@@ -1,12 +1,17 @@
 package com.robot.game.sprites;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
+
+    public Sprite batSprite;
+
 
     private float startX;
     private float startY;
@@ -14,10 +19,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
     private float endY;
     private float vX;
     private float vY;
-    private  boolean horizontal;
+    private boolean horizontal;
 
-    public Bat(Body body, FixtureDef fixtureDef, float offset, String platformID, MapObject object, boolean aiPathFollowing) {
-        super(body, fixtureDef, offset, platformID, object, aiPathFollowing);
+    public Bat(Body body, FixtureDef fixtureDef, MapObject object) {
+        super(body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -34,6 +39,8 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
 
             body.setLinearVelocity(vX, vY);
         }
+
+        this.batSprite = new Sprite(new Texture("000.png"));
     }
 
     public void update(float delta) {
@@ -41,13 +48,19 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
                 steeringBehavior.calculateSteering(steeringOutput);
                 applySteering(steeringOutput, delta);
             }
+            // bat moving horizontally
             else if(horizontal) {
                 if(getPosition().x < startX / PPM || getPosition().x > endX / PPM)
                     reverseVelocity(true, false);
             }
+            // bat moving vertically
             else if(getPosition().y < startY / PPM || getPosition().y > endY / PPM)
                     reverseVelocity(false, true);
+
+        // attach sprite to body
+        batSprite.setPosition(body.getPosition().x - (BAT_WIDTH / 2) / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM); // for rectangle
     }
+
 
 }
 

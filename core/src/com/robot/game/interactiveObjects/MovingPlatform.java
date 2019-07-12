@@ -15,6 +15,7 @@ public class MovingPlatform extends InteractivePlatform {
     private float endY;
     private boolean waiting;
     private boolean shouldStop;
+    private boolean horizontal;
 
     // will probably need to pass the whole map object
     public MovingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
@@ -29,26 +30,25 @@ public class MovingPlatform extends InteractivePlatform {
         this.waiting = (boolean) object.getProperties().get("waiting");
         this.shouldStop = (boolean) object.getProperties().get("shouldStop");
 
+        this.horizontal = vX != 0;
+
         if(!waiting)
             body.setLinearVelocity(vX, vY);
     }
 
     @Override
     public void update(float delta) {
-        // in case I need moving diagonally, I'll have an if statement first checking if both are != -1
 
-        // moving vertically
-        if(startY != -1) {
-            if(body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM)
-                this.reverseVelocity(false, true);
-        }
         // moving horizontally
-        else if(startX != -1 /*&& endX != -1*/) {
+        if(horizontal) {
             if(shouldStop && body.getPosition().x > endX / PPM)
                 stop();
             else if(body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM)
                 reverseVelocity(true, false);
         }
+        // moving vertically
+        else if(body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM)
+                this.reverseVelocity(false, true);
     }
 
     @Override
@@ -77,4 +77,7 @@ public class MovingPlatform extends InteractivePlatform {
         return waiting;
     }
 
+    public boolean shouldStop() {
+        return shouldStop;
+    }
 }

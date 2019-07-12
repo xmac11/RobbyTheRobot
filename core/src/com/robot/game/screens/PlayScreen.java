@@ -19,8 +19,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
+import com.robot.game.sprites.Crab;
 import com.robot.game.util.ObjectParser;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.DebugCamera;
@@ -85,7 +87,7 @@ public class PlayScreen extends ScreenAdapter {
         layersArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(SPIDER_OBJECT).getObjects());
+        layersArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
         this.objectParser = new ObjectParser(world, layersArray);
@@ -136,6 +138,8 @@ public class PlayScreen extends ScreenAdapter {
         mapRenderer.setView(camera);
         game.getBatch().setProjectionMatrix(camera.combined);
 
+//        System.out.println("Interactive platforms: " + interactivePlatforms.size);
+
     }
 
     @Override
@@ -151,8 +155,20 @@ public class PlayScreen extends ScreenAdapter {
 
         game.getBatch().begin();
         Sprite robotSprite = robot.getRobotSprite();
-        robotSprite.setSize(32 / PPM, 64 / PPM);
+        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.draw(game.getBatch());
+        for(Enemy enemy: enemies) {
+            if(enemy instanceof Bat) {
+                Sprite batSprite = ((Bat) enemy).batSprite;
+                batSprite.setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
+                batSprite.draw(game.getBatch());
+            }
+            else {
+                Sprite spiderSprite = ((Crab) enemy).spiderSprite;
+                spiderSprite.setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
+                spiderSprite.draw(game.getBatch());
+            }
+        }
         game.getBatch().end();
 
         //render box2d debug rectangles
