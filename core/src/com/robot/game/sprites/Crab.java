@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 
 import static com.robot.game.util.Constants.*;
 
@@ -12,36 +13,23 @@ public class Crab extends Enemy {
 
     public Sprite spiderSprite;
 
-
-    private float startX;
-    private float startY;
-    private float endX;
-    private float endY;
-    private float vX;
-    private float vY;
-
-    public Crab(Body body, FixtureDef fixtureDef, MapObject object) {
-        super(body, fixtureDef, object);
+    public Crab(World world, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(world, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
-
-        if(!aiPathFollowing) {
-            this.startX = (float) object.getProperties().get("startX");
-            this.startY = (float) object.getProperties().get("startY");
-            this.endX = (float) object.getProperties().get("endX");
-            this.endY = (float) object.getProperties().get("endY");
-
-            this.vX = (float) object.getProperties().get("vX");
-            this.vY = (float) object.getProperties().get("vY");
-
-            body.setLinearVelocity(vX, vY);
-        }
 
         this.spiderSprite = new Sprite(new Texture("crab.png"));
 
     }
 
+    @Override
     public void update(float delta) {
+        if(flagToKill) {
+            dead = true;
+            destroyBody();
+            flagToKill = false;
+        }
+
         if(aiPathFollowing && steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
             applySteering(steeringOutput, delta);

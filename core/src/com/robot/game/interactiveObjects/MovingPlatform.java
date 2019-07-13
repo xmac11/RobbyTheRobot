@@ -41,16 +41,21 @@ public class MovingPlatform extends InteractivePlatform {
 
         // moving horizontally
         if(horizontal) {
-            if(shouldStop && body.getPosition().x > endX / PPM)
+            if(shouldStop && outOfRangeX())
                 stop();
-            else if(body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM)
+            else if(outOfRangeX())
                 reverseVelocity(true, false);
         }
         // moving vertically
-        else if(body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM)
+        else {
+            if(shouldStop && outOfRangeY())
+                stop();
+            else if (outOfRangeY())
                 this.reverseVelocity(false, true);
+        }
     }
 
+    // moving platforms are never destroyed
     @Override
     public boolean isDestroyed() {
         return false;
@@ -66,6 +71,16 @@ public class MovingPlatform extends InteractivePlatform {
             body.setLinearVelocity(-body.getLinearVelocity().x, body.getLinearVelocity().y);
         if(reverseVy)
             body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
+    }
+
+    // check if moving platform is outside its moving range in x-direction
+    private boolean outOfRangeX() {
+        return body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM;
+    }
+
+    // check if moving platform is outside its moving range in y-direction
+    private boolean outOfRangeY() {
+        return body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM;
     }
 
     // stop platform

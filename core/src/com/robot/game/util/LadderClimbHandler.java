@@ -1,12 +1,12 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.robot.game.sprites.Robot;
 
-import static com.robot.game.util.Constants.ROBOT_CLIMB_SPEED;
-import static com.robot.game.util.Constants.ROBOT_JUMP_IMPULSE;
+import static com.robot.game.util.Constants.*;
 
 public class LadderClimbHandler extends InputAdapter {
 
@@ -22,7 +22,7 @@ public class LadderClimbHandler extends InputAdapter {
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.UP && !robot.isFallingOffLadder()) {
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
-            System.out.println("climb");
+            Gdx.app.log("LadderClimbHandler", "climbing");
         }
         if(keycode == Input.Keys.DOWN && !robot.isFallingOffLadder())
             body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
@@ -30,7 +30,9 @@ public class LadderClimbHandler extends InputAdapter {
         if(keycode == Input.Keys.SPACE && !robot.isFallingOffLadder()) {
             robot.setFallingOffLadder(true);
             body.setGravityScale(1); // turn on gravity, then jump
-            body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
+//            body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
+            body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED);
+
         }
 
         return true;

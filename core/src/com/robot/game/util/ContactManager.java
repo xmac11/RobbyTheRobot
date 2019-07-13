@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 
 import static com.robot.game.util.Constants.*;
@@ -54,6 +55,11 @@ public class ContactManager implements ContactListener {
             // robot - spikes
             case ROBOT_CATEGORY | SPIKE_CATEGORY:
                 robotSpikesBegin(fixA, fixB);
+                break;
+
+            // robot - spikes
+            case ROBOT_CATEGORY | ENEMY_CATEGORY:
+                robotEnemyBegin(normal, fixA, fixB);
                 break;
         }
 
@@ -184,6 +190,63 @@ public class ContactManager implements ContactListener {
         else {
             robot = (Robot) fixB.getUserData();
             Gdx.app.log("ContactManager","Robot died from spikes");
+        }
+    }
+
+    private void robotEnemyBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
+        Robot robot;
+        Enemy enemy;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            enemy = (Enemy) fixB.getUserData();
+
+            if(normal.y <= -1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot stepped on enemy");
+                enemy.setFlagToKill();
+                // if following a path, disable it
+                if(enemy.isAiPathFollowing()) {
+                    enemy.getFollowPath().setEnabled(false);
+                }
+                enemy.getBody().setLinearVelocity(0, 0);
+                /*Filter filter = new Filter();
+                filter.maskBits = NOTHING_MASK;
+                enemy.getBody().getFixtureList().first().setFilterData(filter);*/
+                setMaskBit(enemy.getBody(), NOTHING_MASK);
+
+            }
+            else if(normal.y >= 1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from below");
+            else if(normal.x <= -1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from the right");
+            else if(normal.x >= 1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from the left");
+
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            enemy = (Enemy) fixA.getUserData();
+
+            if(normal.y >= 1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot stepped on enemy");
+                enemy.setFlagToKill();
+                // if following a path, disable it
+                if(enemy.isAiPathFollowing()) {
+                    enemy.getFollowPath().setEnabled(false);
+                }
+                enemy.getBody().setLinearVelocity(0, 0);
+
+                /*Filter filter = new Filter();
+                filter.maskBits = NOTHING_MASK;
+                enemy.getBody().getFixtureList().first().setFilterData(filter);*/
+                setMaskBit(enemy.getBody(), NOTHING_MASK);
+            }
+            else if(normal.y <= -1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from below");
+            else if(normal.x >= 1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from the right");
+            else if(normal.x <= -1/Math.sqrt(2))
+                Gdx.app.log("ContactManager","Robot hit enemy from the left");
         }
     }
 
@@ -323,6 +386,13 @@ public class ContactManager implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    public static void setMaskBit(Body body, short maskBit) {
+        Filter filter = new Filter();
+        filter.maskBits = maskBit;
+        for(Fixture fixture: body.getFixtureList())
+            fixture.setFilterData(filter);
     }
 
 }

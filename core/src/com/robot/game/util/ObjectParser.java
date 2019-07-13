@@ -185,10 +185,10 @@ public class ObjectParser {
             Enemy enemy;
 
             if(object.getProperties().containsKey(BAT_PROPERTY))
-                enemy = new Bat(body, fixtureDef, object);
+                enemy = new Bat(world, body, fixtureDef, object);
 
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
-                enemy = new Crab(body, fixtureDef, object);
+                enemy = new Crab(world, body, fixtureDef, object);
             this.enemies.add(enemy);
         }
         // create spikes

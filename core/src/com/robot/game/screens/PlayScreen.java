@@ -67,7 +67,8 @@ public class PlayScreen extends ScreenAdapter {
     public void show() {
         System.out.println("show");
 
-        this.shapeRenderer = new ShapeRenderer();
+        if(debug_on)
+            this.shapeRenderer = new ShapeRenderer();
 
         // create camera
         this.camera = new OrthographicCamera();
@@ -80,7 +81,8 @@ public class PlayScreen extends ScreenAdapter {
         // create box2d world
         this.world = new World(new Vector2(0, -9.81f), true);
         world.setContactListener(new ContactManager());
-        this.debugRenderer = new Box2DDebugRenderer();
+        if(debug_on)
+            this.debugRenderer = new Box2DDebugRenderer();
 
         // create tiled objects
         this.layersArray = new Array<>();
@@ -116,6 +118,7 @@ public class PlayScreen extends ScreenAdapter {
 //                platform.getBody().setActive(true);
 //            else
 //                platform.getBody().setActive(false);
+
             // if platform is active, update it
             if(platform.getBody().isActive())
                 platform.update(delta);
@@ -128,8 +131,13 @@ public class PlayScreen extends ScreenAdapter {
         robot.update(delta);
 
         // update enemies
-        for(int i = 0; i < enemies.size; i++)
-            enemies.get(i).update(delta);
+        for(int i = 0; i < enemies.size; i++) {
+            Enemy enemy = enemies.get(i);
+            if(enemy.getBody().isActive())
+                enemy.update(delta);
+            if(enemy.isDestroyed())
+                enemies.removeIndex(i);
+        }
 
         // update camera
         debugCamera.update(delta);
@@ -139,6 +147,7 @@ public class PlayScreen extends ScreenAdapter {
         game.getBatch().setProjectionMatrix(camera.combined);
 
 //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
+//        System.out.println("Number of enemies: " + enemies.size);
 
     }
 
@@ -158,12 +167,12 @@ public class PlayScreen extends ScreenAdapter {
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.draw(game.getBatch());
         for(Enemy enemy: enemies) {
-            if(enemy instanceof Bat) {
+            if(!enemy.isDestroyed() && enemy instanceof Bat) {
                 Sprite batSprite = ((Bat) enemy).batSprite;
                 batSprite.setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
                 batSprite.draw(game.getBatch());
             }
-            else {
+            else if(!enemy.isDestroyed()){
                 Sprite spiderSprite = ((Crab) enemy).spiderSprite;
                 spiderSprite.setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
                 spiderSprite.draw(game.getBatch());
@@ -172,12 +181,13 @@ public class PlayScreen extends ScreenAdapter {
         game.getBatch().end();
 
         //render box2d debug rectangles
-        debugRenderer.render(world, viewport.getCamera().combined);
+        if(debug_on) {
+            debugRenderer.render(world, viewport.getCamera().combined);
 
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for(int i = 0; i < enemies.size; i++) {
-                if(enemies.get(i).getPlatformID() != null) {
+            for (int i = 0; i < enemies.size; i++) {
+                if (enemies.get(i).getPlatformID() != null) {
                     int k = enemies.get(i).getWayPoints().size;
                     Vector2[] points = new Vector2[k];
 
@@ -194,6 +204,7 @@ public class PlayScreen extends ScreenAdapter {
             }
 
             shapeRenderer.end();
+        }
     }
 
     @Override
@@ -215,7 +226,8 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
-        debugRenderer.dispose();
+        if(debug_on)
+            debugRenderer.dispose();
         robot.dispose();
     }
 

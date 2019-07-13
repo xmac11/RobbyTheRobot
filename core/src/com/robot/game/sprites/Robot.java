@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.util.ContactManager;
@@ -47,7 +46,7 @@ public class Robot /*extends InputAdapter*/ {
         this.world = world;
         createRobotB2d();
 
-//        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_SPEED, 0);
+//        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
 
         Texture texture = new Texture("sf.png");
 //        Texture texture = new Texture("robot2164.png");
@@ -70,9 +69,10 @@ public class Robot /*extends InputAdapter*/ {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 1092, 384 or 1500, 390 for moving platform, 2790, 400 for multiple plats
+        //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
+        bodyDef.position.set(2790 / PPM, 400 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
-        bodyDef.linearDamping = 0.2f;
+        bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
 
         // create fixture
@@ -109,36 +109,36 @@ public class Robot /*extends InputAdapter*/ {
         // first handle input
         handleInput(delta);
 
-        //verlet testing
-        /*if(!onLadder) {
-            float f = body.getPosition().y + body.getLinearVelocity().y * delta + 0.5f * jumpGravity * delta * delta;
-            body.getPosition().set(body.getPosition().x, f);
-            float v = body.getLinearVelocity().y + jumpGravity * delta;
-            body.setLinearVelocity(body.getLinearVelocity().x, v);
-        }*/
-
         if(isOnInteractivePlatform) {
 
-            // platform moving vertically
+            // platform moving vertically, set robot's vY to platform's vY
             if(interactivePlatform.getBody().getLinearVelocity().y != 0)
                 body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
 
-            // platform moving horizontally
+            // platform moving horizontally to the right, apply force to robot so it moves with it
             else if(interactivePlatform.getBody().getLinearVelocity().x != 0 )
                 body.applyForceToCenter(-0.4f * body.getMass() * world.getGravity().y, 0, true);
         }
+
+        // apply aditional force when object is falling in order to land faster
+        if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform)
+            body.applyForceToCenter(0, -7.5f, true);
+
+        // clamp velocity vector
+        /*if(body.getLinearVelocity().len() > 7.0f)
+            body.setLinearVelocity(body.getLinearVelocity().limit(7.0f));*/
+
+        // clamp vY
+        /*if(body.getLinearVelocity().y > 5f)
+            body.setLinearVelocity(body.getLinearVelocity().x, 5f);
+        if(body.getLinearVelocity().y < -5f)
+            body.setLinearVelocity(body.getLinearVelocity().x, -5f);*/
 
         // attach robot sprite to circle body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
-        /*if(body.getLinearVelocity().y < -0.1f)
-            world.setGravity(new Vector2(0, -9.81f * 1.5f));
-        else
-            world.setGravity(new Vector2(0, -9.81f));
-
-        System.out.println(world.getGravity().y);*/
-//        System.out.println(body.getLinearVelocity());
+        System.out.println(body.getLinearVelocity());
 
     }
 
@@ -154,12 +154,12 @@ public class Robot /*extends InputAdapter*/ {
         // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             // GRADUAL ACCELERATION
-            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_SPEED);
+            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_HOR_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
 
             // CONSTANT SPEED OR GRADUAL ACCELERATION
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
-//            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_HOR_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
         }
 
         // Moving left
@@ -172,14 +172,14 @@ public class Robot /*extends InputAdapter*/ {
             }
             else {
                 // GRADUAL ACCELERATION
-                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_SPEED);
+                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_HOR_SPEED);
                 temp.x = body.getMass() * (targetVelocity - currentVelocity);
                 body.applyLinearImpulse(temp, body.getWorldCenter(), true);
             }
 
             // CONSTANT SPEED
 //            body.applyLinearImpulse(temp.scl(-1).sub(body.getMass() * currentVelocity, 0), body.getWorldCenter(), true);
-//            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
+//            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_HOR_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
 
         }
 
@@ -203,22 +203,20 @@ public class Robot /*extends InputAdapter*/ {
 
         // if there has been a timer set and is a foot contact
         if(jumpTimer > 0 && ContactManager.footContactCounter > 0 && !onLadder) {
-
             jumpTimer = 0; // reset timer
 
             // robot jumps off interactive platform
             if(isOnInteractivePlatform) {
                 isOnInteractivePlatform = false;
-                if(interactivePlatform instanceof FallingPlatform && ((FallingPlatform)interactivePlatform).isFalling())
-                    body.applyLinearImpulse(ROBOT_JUMP_IMPULSE_FALLING_PLAT, body.getWorldCenter(), true); // make this constant
-                else
-                    body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true); // make this constant
-
+                // when platform is moving upwards, the velocity is not sufficient to make the player jump, so the velocity of the platform is also added
+                body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED + interactivePlatform.getBody().getLinearVelocity().y);
             }
             // robot jumps from the ground
             else {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
-//                if(body.getLinearVelocity().y > 0) body.setLinearVelocity(body.getLinearVelocity().x, vY);
+//                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
+
+                //                if(body.getLinearVelocity().y > 0) body.setLinearVelocity(body.getLinearVelocity().x, vY);
 //                  body.applyLinearImpulse(new Vector2(0, IMPULSE), body.getWorldCenter(), true);
 //                  body.applyLinearImpulse(new Vector2(0, 5f), body.getWorldCenter(), true);
             }

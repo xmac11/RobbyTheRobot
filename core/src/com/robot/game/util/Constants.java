@@ -4,8 +4,11 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Filter;
 
 public final class Constants {
+
+    public static boolean debug_on = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -30,7 +33,6 @@ public final class Constants {
     // COLLISIONS
 
     // Box2D filter category bits
-    public static final short NOTHING_CATEGORY = 0;
     public static final short ROBOT_CATEGORY = 1;
     public static final short GROUND_CATEGORY = 2;
     public static final short LADDER_CATEGORY = 4;
@@ -41,6 +43,7 @@ public final class Constants {
     public static final short SPIKE_CATEGORY = 128;
 
     // Box2D filter mask bits
+    public static final short NOTHING_MASK = 0;
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | ENEMY_CATEGORY | SPIKE_CATEGORY;
     public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
@@ -49,7 +52,6 @@ public final class Constants {
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
-
 
 
     // Robot
@@ -67,14 +69,12 @@ public final class Constants {
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
     public static final float ROBOT_FEET_HEIGHT = 4;
         // Movement
-    public static final float ROBOT_MAX_SPEED = 5;
+    public static final float ROBOT_MAX_HOR_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
-    public static final float ROBOT_JUMP_SPEED = 5.2f; // when on ground
+    public static final float ROBOT_JUMP_SPEED = 5.0f; // when on ground
     public static final Vector2 ROBOT_JUMP_IMPULSE = new Vector2(0, 5.1f); // when on interactive platform
-    public static final Vector2 ROBOT_JUMP_IMPULSE_FALLING_PLAT = new Vector2(0, 10f); // when platform is falling
-
-
+//    public static final Vector2 ROBOT_JUMP_IMPULSE_FALLING_PLAT = new Vector2(0, 10f); // when platform is falling
 
 
     // Interactive platforms

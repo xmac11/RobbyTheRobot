@@ -10,8 +10,11 @@ import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader;
 
 import static com.robot.game.util.Constants.MAP_HEIGHT;
@@ -19,9 +22,13 @@ import static com.robot.game.util.Constants.PPM;
 
 public abstract class Enemy implements Steerable<Vector2> {
 
+    // Box2D
+    protected World world;
     protected Body body;
     protected FixtureDef fixtureDef;
+    protected MapObject object;
 
+    // AI
     protected SteeringBehavior<Vector2> steeringBehavior;
     protected SteeringAcceleration<Vector2> steeringOutput;
     protected FollowPath<Vector2, LinePath.LinePathParam> followPath;
@@ -32,6 +39,7 @@ public abstract class Enemy implements Steerable<Vector2> {
     protected float maxAngularSpeed, maxAngularAcceleration;
     protected float boundingRadius;
 
+    // Patrolling platform (ai)
     protected String platformID;
     protected float x;
     protected float y;
@@ -39,11 +47,23 @@ public abstract class Enemy implements Steerable<Vector2> {
     protected float height;
     protected float offsetX;
     protected float offsetY;
-    protected MapObject object;
+
+    // Patrolling range (non-ai)
+    protected float startX;
+    protected float startY;
+    protected float endX;
+    protected float endY;
+    protected float vX;
+    protected float vY;
+    protected boolean horizontal;
 
     protected boolean aiPathFollowing;
+    protected boolean flagToKill;
+    protected boolean dead; // for drawing the sprite at the moment
+    protected boolean isDestroyed;
 
-    public Enemy(Body body, FixtureDef fixtureDef, MapObject object) {
+    public Enemy(World world, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.world = world;
         this.body = body;
         this.fixtureDef = fixtureDef;
         fixtureDef.restitution = 0.5f;
@@ -78,13 +98,28 @@ public abstract class Enemy implements Steerable<Vector2> {
                 this.boundingRadius = 1f;
             }
         }
+        else {
+            this.startX = (float) object.getProperties().get("startX");
+            this.startY = (float) object.getProperties().get("startY");
+            this.endX = (float) object.getProperties().get("endX");
+            this.endY = (float) object.getProperties().get("endY");
 
+            this.vX = (float) object.getProperties().get("vX");
+            this.vY = (float) object.getProperties().get("vY");
 
+            this.horizontal = vX != 0;
+
+            body.setLinearVelocity(vX, vY);
+        }
     }
 
     public abstract void update(float delta);
 
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
 
+    // parse xml to get the waypoints of the platform the enemy should follow
     private void parseXml() {
         XmlReader reader = new XmlReader();
         XmlReader.Element root = reader.parse(Gdx.files.internal("level1.1.tmx"));
@@ -129,6 +164,41 @@ public abstract class Enemy implements Steerable<Vector2> {
             body.setLinearVelocity(-getLinearVelocity().x, getLinearVelocity().y);
         if(reverseVy)
             body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
+    }
+
+    // check if enemy is outside its moving range in x-direction
+    protected boolean outOfRangeX() {
+        return body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM;
+    }
+
+    // check if enemy is outside its moving range in y-direction
+    protected boolean outOfRangeY() {
+        return body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM;
+    }
+
+    public void setFlagToKill() {
+        this.flagToKill = true;
+
+        // for bats, set a timer
+        if(this instanceof  Bat)
+            ((Bat) this).setStartTime(TimeUtils.nanoTime());
+    }
+
+    protected void destroyBody() {
+        world.destroyBody(body);
+        isDestroyed = true;
+    }
+
+    public boolean isAiPathFollowing() {
+        return aiPathFollowing;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public FollowPath<Vector2, LinePath.LinePathParam> getFollowPath() {
+        return followPath;
     }
 
     @Override
