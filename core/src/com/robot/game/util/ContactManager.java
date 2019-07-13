@@ -16,7 +16,7 @@ import static com.robot.game.util.Constants.*;
 public class ContactManager implements ContactListener {
 
 //    private Robot robot;
-    public static int footContactCounter = 0;
+    private static int footContactCounter = 0;
 
     @Override
     public void beginContact(Contact contact) {
@@ -30,7 +30,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter++;
-            System.out.println("Foot contacts " + footContactCounter);
+            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter);
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -277,7 +277,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter--;
-            System.out.println("Foot contacts " + footContactCounter);
+            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter);
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -395,4 +395,7 @@ public class ContactManager implements ContactListener {
             fixture.setFilterData(filter);
     }
 
+    public static int getFootContactCounter() {
+        return footContactCounter;
+    }
 }

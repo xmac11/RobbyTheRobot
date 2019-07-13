@@ -90,7 +90,6 @@ public class PlayScreen extends ScreenAdapter {
         layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
         this.objectParser = new ObjectParser(world, layersArray);
 

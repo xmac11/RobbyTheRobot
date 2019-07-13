@@ -15,24 +15,15 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot /*extends InputAdapter*/ {
 
-    /*public static final float jumpVelocity = 2 * JUMP_HEIGHT / TIME_UNTIL_JUMP_HEIGHT;
-    public static final float jumpGravity = - jumpVelocity / TIME_UNTIL_JUMP_HEIGHT;
-    private float temporary;
-
-    public static float IMPULSE;
-
-    int remainingJumpSteps;
-
-    float vY;
-
-    private boolean jumping;*/
-
     private Sprite robotSprite;
     private World world;
     private Body body;
     private boolean onLadder;
     private boolean fallingOffLadder;
+
+    private float jumpTimeout;
     private float jumpTimer;
+    private float coyoteTimer;
 
     //CONSTANT SPEED
 //    private final Vector2 ROBOT_IMPULSE;
@@ -49,7 +40,6 @@ public class Robot /*extends InputAdapter*/ {
 //        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
 
         Texture texture = new Texture("sf.png");
-//        Texture texture = new Texture("robot2164.png");
 //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         this.robotSprite = new Sprite(texture);
@@ -70,7 +60,7 @@ public class Robot /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(2790 / PPM, 400 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(6200 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -120,8 +110,8 @@ public class Robot /*extends InputAdapter*/ {
                 body.applyForceToCenter(-0.4f * body.getMass() * world.getGravity().y, 0, true);
         }
 
-        // apply aditional force when object is falling in order to land faster
-        if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform)
+        // apply additional force when object is falling in order to land faster
+        if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform && !onLadder)
             body.applyForceToCenter(0, -7.5f, true);
 
         // clamp velocity vector
@@ -138,7 +128,7 @@ public class Robot /*extends InputAdapter*/ {
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
-        System.out.println(body.getLinearVelocity());
+//        System.out.println(body.getLinearVelocity());
 
     }
 
@@ -185,25 +175,55 @@ public class Robot /*extends InputAdapter*/ {
 
         // left-right keys released -> if body is moving, break
         else if(body.getLinearVelocity().x != 0) {
-            float targetVelocity = body.getLinearVelocity().x * 0.98f;
+            float targetVelocity = body.getLinearVelocity().x * 0.96f;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
         }
 
         // Jumping
+        /* I use three timers:
+        *  jumpTimer is used to enable jumping if not having landed yet.
+        *  It is reduced by "delta" at every frame.
+        *  When the player presses SPACE, jumpTimer is set to a value, e.g. 0.2 seconds.
+        *  When the player reaches the ground, it is checked if SPACE was pressed within the last 0.2 seconds.
+        *  If yes, the player jumps even though it was not grounded when SPACE was pressed. At this point the timer
+        *  is reset to zero.
+        *
+        *  coyoteTimer is used to enable jumping off an edge if not fully grounded
+        *  It is reduced by "delta" at every frame.
+        *  When the player is grounded, coyoteTimer is set to a value, e.g. 0.2 seconds.
+        *  When the player presses SPACE, in addition to the previous checks, it is checked whether the player
+        *  was grounded within the last 0.2 seconds.
+        *  If yes, the player jumps evey though it is not grounded right now. At this point the timer is reset to zero.
+        *
+        *  jumpTimeout is used to disable jumping immediately after jumping
+        *  Since the player can jump while not fully grounded, it would be able to jump immediately after jumping.
+        *  jumpTimeout is increased by "delta" at every frame.
+        *  In addition to the previous checks, it is checked whether the time out period has expired, in particular,
+        *  whether jumpTimeout is higher than a certain value, e.g. 0.3 seconds.
+        *  If yes the player jumps and the timeout is reset to zero */
         jumpTimer -= delta;
+        coyoteTimer -= delta;
+        jumpTimeout += delta;
 
+        // when the robot is grounded, start coyote timer
+        if(ContactManager.getFootContactCounter() > 0)
+            coyoteTimer = ROBOT_COYOTE_TIMER;
+
+        // when space is pressed, start jump timer
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
-            //remainingJumpSteps = 6;
-//            verletTest(delta);
 
-            jumpTimer = ROBOT_JUMP_TIMER; // start timer
-            System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
+            jumpTimer = ROBOT_JUMP_TIMER; // start jumping timer
+            System.out.println("space pressed -> " + ContactManager.getFootContactCounter() + " contacts");
         }
 
-        // if there has been a timer set and is a foot contact
-        if(jumpTimer > 0 && ContactManager.footContactCounter > 0 && !onLadder) {
-            jumpTimer = 0; // reset timer
+        // if the timers have been set and robot not on ladder, jump
+        if(jumpTimer > 0 && coyoteTimer > 0 && jumpTimeout > ROBOT_JUMP_TIMEOUT && !onLadder) {
+            System.out.println("jumpTimeout: " + jumpTimeout);
+            // reset timers
+            jumpTimer = 0;
+            coyoteTimer = 0;
+            jumpTimeout = 0;
 
             // robot jumps off interactive platform
             if(isOnInteractivePlatform) {
@@ -214,20 +234,10 @@ public class Robot /*extends InputAdapter*/ {
             // robot jumps from the ground
             else {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
+                System.out.println("Just jumped: " + ContactManager.getFootContactCounter() + " contacts");
 //                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
-
-                //                if(body.getLinearVelocity().y > 0) body.setLinearVelocity(body.getLinearVelocity().x, vY);
-//                  body.applyLinearImpulse(new Vector2(0, IMPULSE), body.getWorldCenter(), true);
-//                  body.applyLinearImpulse(new Vector2(0, 5f), body.getWorldCenter(), true);
             }
         }
-
-        /*if(remainingJumpSteps > 0) {
-            float force = body.getMass() * 5 * 60;
-            force /= 6;
-            body.applyForceToCenter(0, force, true);
-            remainingJumpSteps--;
-        }*/
     }
 
     public void dispose() {
@@ -258,12 +268,6 @@ public class Robot /*extends InputAdapter*/ {
     public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {
         this.interactivePlatform = interactivePlatform;
         this.isOnInteractivePlatform = isOnInteractivePlatform;
-
-        /*if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform) {
-            MovingPlatform movingPlatform = (MovingPlatform) interactivePlatform;
-            if(movingPlatform.getEndX() != -1)
-                body.setLinearVelocity(interactivePlatform.getvX(), interactivePlatform.getvY());
-        }*/
     }
 
     public boolean isFallingOffLadder() {
@@ -273,21 +277,6 @@ public class Robot /*extends InputAdapter*/ {
     public void setFallingOffLadder(boolean fallingOffLadder) {
         this.fallingOffLadder = fallingOffLadder;
     }
-
-    private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
-        if(reverseVx)
-            body.setLinearVelocity(-body.getLinearVelocity().x, body.getLinearVelocity().y);
-        if(reverseVy)
-            body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
-    }
-
-    /*private void verletTest(float delta) {
-        body.setLinearVelocity(body.getLinearVelocity().x, jumpVelocity);
-    }
-
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
-    }*/
 
     /*@Override
     public boolean keyDown(int keycode) {
