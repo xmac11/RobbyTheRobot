@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -26,10 +28,15 @@ import com.robot.game.sprites.Crab;
 import com.robot.game.util.ObjectParser;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.DebugCamera;
+import com.robot.game.util.Parallax;
 
 import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
+
+    public Texture background;
+    private Vector2 positionCache = new Vector2();
+    private Stage stage;
 
     private ShapeRenderer shapeRenderer;
 
@@ -61,6 +68,28 @@ public class PlayScreen extends ScreenAdapter {
 
     public PlayScreen(RobotGame game) {
         this.game = game;
+    }
+
+    private Vector2 wrapPosition(Vector2 pos) {
+        float w = Gdx.graphics.getWidth();
+        if (pos.x < 0) {
+            float n = (float)Math.floor((-pos.x) / w);
+            pos.x += (1 + n) * w;
+        } else if (pos.x > 0) {
+            pos.x %= w;
+        }
+
+        return pos;
+    }
+
+    public void drawWrapped(Texture image, float x, float y) {
+        positionCache.set(x,y);
+        wrapPosition(positionCache);
+
+        float w = Gdx.graphics.getWidth();
+        // Have to draw the background twice for continuous scrolling.
+        game.getBatch().draw(image, positionCache.x,   positionCache.y);
+        game.getBatch().draw(image, positionCache.x-w, positionCache.y);
     }
 
     @Override
@@ -104,6 +133,14 @@ public class PlayScreen extends ScreenAdapter {
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
+
+        this.stage = new Stage(viewport, game.getBatch());
+        Array<Texture> textures = new Array<>();
+        Texture texture = new Texture(Gdx.files.internal("bg768x432.png"));
+        textures.add(texture);
+
+        Parallax parallax = new Parallax(viewport, robot, textures);
+        stage.addActor(parallax);
     }
 
     private void update(float delta) {
@@ -157,6 +194,8 @@ public class PlayScreen extends ScreenAdapter {
         // clear game screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.draw();
 
         // render the map
         mapRenderer.render();

@@ -52,6 +52,8 @@ public final class Constants {
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
+    public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
+
 
 
     // Robot
