@@ -107,4 +107,7 @@ public final class Constants {
     public static final float CRAB_WIDTH = 24;
     public static final float CRAB_HEIGHT = 16;
 
+    // Asset files
+//    public static final String
+
 }

@@ -119,8 +119,8 @@ public class PlayScreen extends ScreenAdapter {
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
-        this.parallaxBackground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("background2.png")), 0.5f, 192, 260, false);
-        this.parallaxBarrels = new Parallax(viewport, robot, new Texture(Gdx.files.internal("barrels.png")), 1.0f, 0, 75, true);
+        this.parallaxBackground = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
+        this.parallaxBarrels = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
     }
 
     private void update(float delta) {

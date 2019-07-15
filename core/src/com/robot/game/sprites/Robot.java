@@ -2,7 +2,6 @@ package com.robot.game.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -45,7 +44,7 @@ public class Robot /*extends InputAdapter*/ {
 //        Texture texture = new Texture("sf.png");
 //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        this.robotSprite = new Sprite(Assets.getInstance().robotAssets.region);
+        this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
 
 //        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
 //        robotSprite.setSize(32 / PPM, 64 / PPM);
