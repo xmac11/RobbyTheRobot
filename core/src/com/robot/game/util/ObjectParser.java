@@ -26,11 +26,11 @@ public class ObjectParser {
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
 
-    public ObjectParser(World world, Array<MapObjects> layersArray) {
+    public ObjectParser(World world, Array<MapObjects> layersObjectArray) {
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
-        for(MapObjects objects: layersArray)
+        for(MapObjects objects: layersObjectArray)
             createTiledObjects(world, objects);
     }
 

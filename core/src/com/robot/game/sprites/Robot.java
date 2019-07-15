@@ -79,7 +79,7 @@ public class Robot /*extends InputAdapter*/ {
         fixtureDef.friction = 0.4f;
         fixtureDef.density = 1.0f;
         fixtureDef.filter.categoryBits = ROBOT_CATEGORY;
-        fixtureDef.filter.maskBits = /*ROBOT_MASK*/ DEBUG_MASK;
+        fixtureDef.filter.maskBits = ROBOT_MASK /*NOTHING_MASK*/;
         this.body.createFixture(fixtureDef).setUserData(this);
 
         // sensor feet

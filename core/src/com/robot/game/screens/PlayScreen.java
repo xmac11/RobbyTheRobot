@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -36,7 +35,8 @@ public class PlayScreen extends ScreenAdapter {
 
     public Texture background;
     private Vector2 positionCache = new Vector2();
-    private Stage stage;
+    private Parallax parallaxBackground;
+    private Parallax parallaxForeground;
 
     private ShapeRenderer shapeRenderer;
 
@@ -59,7 +59,9 @@ public class PlayScreen extends ScreenAdapter {
     // Tiled map variables
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private Array<MapObjects> layersArray;
+    private Array<MapObjects> layersObjectArray;
+    private int[] backgroundLayers;
+    private int[] foregroundLayers;
 
     // Box2d variables
     private World world;
@@ -68,28 +70,6 @@ public class PlayScreen extends ScreenAdapter {
 
     public PlayScreen(RobotGame game) {
         this.game = game;
-    }
-
-    private Vector2 wrapPosition(Vector2 pos) {
-        float w = Gdx.graphics.getWidth();
-        if (pos.x < 0) {
-            float n = (float)Math.floor((-pos.x) / w);
-            pos.x += (1 + n) * w;
-        } else if (pos.x > 0) {
-            pos.x %= w;
-        }
-
-        return pos;
-    }
-
-    public void drawWrapped(Texture image, float x, float y) {
-        positionCache.set(x,y);
-        wrapPosition(positionCache);
-
-        float w = Gdx.graphics.getWidth();
-        // Have to draw the background twice for continuous scrolling.
-        game.getBatch().draw(image, positionCache.x,   positionCache.y);
-        game.getBatch().draw(image, positionCache.x-w, positionCache.y);
     }
 
     @Override
@@ -108,19 +88,22 @@ public class PlayScreen extends ScreenAdapter {
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // create box2d world
-        this.world = new World(new Vector2(0, -9.81f), true);
+        this.world = new World(new Vector2(0, -9.81f /*0*/), true);
         world.setContactListener(new ContactManager());
         if(debug_on)
             this.debugRenderer = new Box2DDebugRenderer();
 
         // create tiled objects
-        this.layersArray = new Array<>();
-        layersArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
-        layersArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
+        this.layersObjectArray = new Array<>();
+        layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
 
-        this.objectParser = new ObjectParser(world, layersArray);
+        this.backgroundLayers = new int[] {1,2,3,4,5,6,7};
+        this.foregroundLayers = new int[] {9};
+
+        this.objectParser = new ObjectParser(world, layersObjectArray);
 
         // create robot
         this.robot = new Robot(world);
@@ -134,13 +117,8 @@ public class PlayScreen extends ScreenAdapter {
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
-        this.stage = new Stage(viewport, game.getBatch());
-        Array<Texture> textures = new Array<>();
-        Texture texture = new Texture(Gdx.files.internal("bg768x432.png"));
-        textures.add(texture);
-
-        Parallax parallax = new Parallax(viewport, robot, textures);
-        stage.addActor(parallax);
+        this.parallaxBackground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("background2.png")), 0.5f, 156, 292, false);
+        this.parallaxForeground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("water2.png")), 1.0f, 0, 75, true);
     }
 
     private void update(float delta) {
@@ -195,12 +173,23 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.draw();
+        // FIRST BATCH
 
-        // render the map
-        mapRenderer.render();
-
+        game.getBatch().disableBlending();
         game.getBatch().begin();
+        // draw background
+        parallaxBackground.draw(game.getBatch());
+        game.getBatch().end();
+//        System.out.println("render1: " + game.getBatch().renderCalls);
+
+        // RENDER MAP
+        mapRenderer.render(backgroundLayers);
+
+        // SECOND BATCH
+
+        game.getBatch().enableBlending();
+        game.getBatch().begin();
+
         Sprite robotSprite = robot.getRobotSprite();
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.draw(game.getBatch());
@@ -216,7 +205,13 @@ public class PlayScreen extends ScreenAdapter {
                 spiderSprite.draw(game.getBatch());
             }
         }
+        // draw foreground
+        parallaxForeground.draw(game.getBatch());
         game.getBatch().end();
+
+//        System.out.println("render2: " + game.getBatch().renderCalls);
+
+        mapRenderer.render(foregroundLayers);
 
         //render box2d debug rectangles
         if(debug_on) {
