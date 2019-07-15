@@ -209,9 +209,6 @@ public class ContactManager implements ContactListener {
                     enemy.getFollowPath().setEnabled(false);
                 }
                 enemy.getBody().setLinearVelocity(0, 0);
-                /*Filter filter = new Filter();
-                filter.maskBits = NOTHING_MASK;
-                enemy.getBody().getFixtureList().first().setFilterData(filter);*/
                 setMaskBit(enemy.getBody(), NOTHING_MASK);
 
             }
@@ -388,7 +385,7 @@ public class ContactManager implements ContactListener {
 
     }
 
-    public static void setMaskBit(Body body, short maskBit) {
+    public void setMaskBit(Body body, short maskBit) {
         Filter filter = new Filter();
         filter.maskBits = maskBit;
         for(Fixture fixture: body.getFixtureList())

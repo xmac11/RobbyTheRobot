@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.Assets;
 
 public class RobotGame extends Game {
 
@@ -14,9 +15,11 @@ public class RobotGame extends Game {
 
 	@Override
 	public void create () {
+		// load assets
+		Assets.getInstance().load();
+
 		this.batch = new SpriteBatch();
 		super.setScreen(new PlayScreen(this));
-		super.render();
 	}
 
 	@Override
@@ -32,9 +35,11 @@ public class RobotGame extends Game {
 	public void dispose () {
 		super.dispose();
 		batch.dispose();
+		Assets.getInstance().dispose();
 	}
 
 	public SpriteBatch getBatch() {
 		return batch;
 	}
+
 }

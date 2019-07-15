@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.LadderClimbHandler;
 
@@ -15,6 +17,7 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot /*extends InputAdapter*/ {
 
+    private Assets assets;
     private Sprite robotSprite;
     private World world;
     private Body body;
@@ -39,10 +42,10 @@ public class Robot /*extends InputAdapter*/ {
 
 //        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
 
-        Texture texture = new Texture("sf.png");
+//        Texture texture = new Texture("sf.png");
 //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
-        this.robotSprite = new Sprite(texture);
+        this.robotSprite = new Sprite(Assets.getInstance().robotAssets.region);
 
 //        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
 //        robotSprite.setSize(32 / PPM, 64 / PPM);
@@ -60,7 +63,7 @@ public class Robot /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(532 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -238,6 +241,13 @@ public class Robot /*extends InputAdapter*/ {
 //                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
             }
         }
+    }
+
+    public void draw(SpriteBatch batch) {
+        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
+        robotSprite.draw(batch);
+
+
     }
 
     public void dispose() {

@@ -1,4 +1,4 @@
-package com.robot.game.util;
+package com.robot.game.camera;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;

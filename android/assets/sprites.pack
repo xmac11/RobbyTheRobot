@@ -1,0 +1,103 @@
+
+sprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+robot
+  rotate: false
+  xy: 0, 176
+  size: 165, 330
+  orig: 165, 330
+  offset: 0, 0
+  index: -1
+crab1
+  rotate: false
+  xy: 0, 112
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab2
+  rotate: false
+  xy: 165, 442
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab3
+  rotate: false
+  xy: 0, 48
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab4
+  rotate: false
+  xy: 165, 378
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab_dead1
+  rotate: false
+  xy: 261, 442
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab_dead2
+  rotate: false
+  xy: 165, 314
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+bat_dead1
+  rotate: false
+  xy: 0, 0
+  size: 96, 48
+  orig: 96, 48
+  offset: 0, 0
+  index: -1
+bat_dead2
+  rotate: false
+  xy: 261, 394
+  size: 96, 48
+  orig: 96, 48
+  offset: 0, 0
+  index: -1
+bat1
+  rotate: false
+  xy: 357, 463
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat2
+  rotate: false
+  xy: 165, 271
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat3
+  rotate: false
+  xy: 261, 351
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat4
+  rotate: false
+  xy: 357, 420
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat5
+  rotate: false
+  xy: 165, 228
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1

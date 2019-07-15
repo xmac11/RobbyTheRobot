@@ -1,4 +1,4 @@
-package com.robot.game.util;
+package com.robot.game.camera;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

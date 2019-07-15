@@ -1,4 +1,4 @@
-package com.robot.game.util;
+package com.robot.game.camera;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;

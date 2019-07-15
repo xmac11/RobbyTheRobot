@@ -24,10 +24,11 @@ import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.sprites.Crab;
+import com.robot.game.util.Assets;
 import com.robot.game.util.ObjectParser;
 import com.robot.game.util.ContactManager;
-import com.robot.game.util.DebugCamera;
-import com.robot.game.util.Parallax;
+import com.robot.game.camera.DebugCamera;
+import com.robot.game.camera.Parallax;
 
 import static com.robot.game.util.Constants.*;
 
@@ -55,7 +56,6 @@ public class PlayScreen extends ScreenAdapter {
     private Array<MapObjects> layersObjectArray;
     private int[] backgroundWallLayer;
     private int[] mapLayers;
-    private int[] foregroundPipeLayer;
 
     // Box2d variables
     private World world;
@@ -104,7 +104,6 @@ public class PlayScreen extends ScreenAdapter {
 
         this.backgroundWallLayer = new int[] {1};
         this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 10};
-//        this.foregroundPipeLayer = new int[] {10};
 
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
@@ -198,9 +197,8 @@ public class PlayScreen extends ScreenAdapter {
         parallaxBarrels.draw(game.getBatch());
 
         // render sprites
-        Sprite robotSprite = robot.getRobotSprite();
-        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
-        robotSprite.draw(game.getBatch());
+        robot.draw(game.getBatch());
+
         for(Enemy enemy: enemies) {
             if(!enemy.isDestroyed() && enemy instanceof Bat) {
                 Sprite batSprite = ((Bat) enemy).batSprite;
