@@ -33,22 +33,15 @@ import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
 
-    public Texture background;
-    private Vector2 positionCache = new Vector2();
-    private Parallax parallaxBackground;
-    private Parallax parallaxForeground;
-
-    private ShapeRenderer shapeRenderer;
-
     private RobotGame game;
 
-    // entities
+    // robot
     private Robot robot;
 
     // interactive platforms
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
 
-    // enemy
+    // enemies
     private DelayedRemovalArray<Enemy> enemies;
 
     // camera variables
@@ -60,13 +53,22 @@ public class PlayScreen extends ScreenAdapter {
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Array<MapObjects> layersObjectArray;
-    private int[] backgroundLayers;
-    private int[] foregroundLayers;
+    private int[] backgroundWallLayer;
+    private int[] mapLayers;
+    private int[] foregroundPipeLayer;
 
     // Box2d variables
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private ObjectParser objectParser;
+
+    // parallax scrolling
+    private Parallax parallaxBackground;
+    private Parallax parallaxBarrels;
+
+    // debug lines for AI paths
+    private ShapeRenderer shapeRenderer;
+
 
     public PlayScreen(RobotGame game) {
         this.game = game;
@@ -100,8 +102,9 @@ public class PlayScreen extends ScreenAdapter {
         layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
 
-        this.backgroundLayers = new int[] {1,2,3,4,5,6,7};
-        this.foregroundLayers = new int[] {9};
+        this.backgroundWallLayer = new int[] {1};
+        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 10};
+//        this.foregroundPipeLayer = new int[] {10};
 
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
@@ -117,8 +120,8 @@ public class PlayScreen extends ScreenAdapter {
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
-        this.parallaxBackground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("background2.png")), 0.5f, 156, 292, false);
-        this.parallaxForeground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("water2.png")), 1.0f, 0, 75, true);
+        this.parallaxBackground = new Parallax(viewport, robot, new Texture(Gdx.files.internal("background2.png")), 0.5f, 192, 260, false);
+        this.parallaxBarrels = new Parallax(viewport, robot, new Texture(Gdx.files.internal("barrels.png")), 1.0f, 0, 75, true);
     }
 
     private void update(float delta) {
@@ -173,23 +176,28 @@ public class PlayScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // FIRST BATCH
+        //render wall
+        mapRenderer.render(backgroundWallLayer);
 
+        // FIRST BATCH
+        // render background
         game.getBatch().disableBlending();
         game.getBatch().begin();
-        // draw background
         parallaxBackground.draw(game.getBatch());
         game.getBatch().end();
 //        System.out.println("render1: " + game.getBatch().renderCalls);
 
-        // RENDER MAP
-        mapRenderer.render(backgroundLayers);
+        // render map
+        mapRenderer.render(mapLayers);
 
         // SECOND BATCH
-
         game.getBatch().enableBlending();
         game.getBatch().begin();
 
+        // render foreground (waves and barrels)
+        parallaxBarrels.draw(game.getBatch());
+
+        // render sprites
         Sprite robotSprite = robot.getRobotSprite();
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.draw(game.getBatch());
@@ -205,13 +213,11 @@ public class PlayScreen extends ScreenAdapter {
                 spiderSprite.draw(game.getBatch());
             }
         }
-        // draw foreground
-        parallaxForeground.draw(game.getBatch());
+
+
         game.getBatch().end();
 
 //        System.out.println("render2: " + game.getBatch().renderCalls);
-
-        mapRenderer.render(foregroundLayers);
 
         //render box2d debug rectangles
         if(debug_on) {

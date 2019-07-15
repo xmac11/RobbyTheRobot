@@ -47,10 +47,12 @@ public class Parallax {
         else {
             // for water image
             if(waterFlow) {
-                if(Math.abs(robot.getBody().getLinearVelocity().x) < 1f)
-                    srcX += 1;
+                if(robot.getBody().getLinearVelocity().x > 4f)
+                    srcX += 2;
+                else if( robot.getBody().getLinearVelocity().x < -4f)
+                    srcX += 1.5;
                 else
-                    srcX += robot.getBody().getLinearVelocity().x;
+                    srcX += 1;
             }
             // for background image
             else

@@ -74,7 +74,7 @@ public final class Constants {
     public static final float ROBOT_MAX_HOR_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
-    public static final float ROBOT_COYOTE_TIMER = 0.2f;
+    public static final float ROBOT_COYOTE_TIMER = 0.15f;
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
     public static final float ROBOT_JUMP_SPEED = 5.0f; // when on ground
     public static final Vector2 ROBOT_JUMP_IMPULSE = new Vector2(0, 5.1f); // when on interactive platform
