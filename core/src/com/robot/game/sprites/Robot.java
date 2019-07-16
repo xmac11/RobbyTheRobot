@@ -16,7 +16,6 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot /*extends InputAdapter*/ {
 
-    private Assets assets;
     private Sprite robotSprite;
     private World world;
     private Body body;
@@ -45,9 +44,7 @@ public class Robot /*extends InputAdapter*/ {
 //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
-
-//        this.robotSprite.setSize(robotSprite.getWidth() / PPM, robotSprite.getHeight() / PPM);
-//        robotSprite.setSize(32 / PPM, 64 / PPM);
+        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.setPosition(body.getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
 
         //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
@@ -62,7 +59,7 @@ public class Robot /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(2520 / PPM, 200 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -243,10 +240,7 @@ public class Robot /*extends InputAdapter*/ {
     }
 
     public void draw(SpriteBatch batch) {
-        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
         robotSprite.draw(batch);
-
-
     }
 
     public void dispose() {

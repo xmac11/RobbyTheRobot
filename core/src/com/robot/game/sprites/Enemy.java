@@ -7,10 +7,10 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.Location;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.XmlReader;
 import static com.robot.game.util.Constants.MAP_HEIGHT;
 import static com.robot.game.util.Constants.PPM;
 
-public abstract class Enemy implements Steerable<Vector2> {
+public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     // Box2D
     protected World world;
@@ -181,7 +181,7 @@ public abstract class Enemy implements Steerable<Vector2> {
 
         // for bats, set a timer
         if(this instanceof  Bat)
-            ((Bat) this).setStartTime(TimeUtils.nanoTime());
+            ((Bat) this).setDeadStartTime(TimeUtils.nanoTime());
     }
 
     protected void destroyBody() {

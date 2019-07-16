@@ -1,7 +1,9 @@
 package com.robot.game.sprites;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -39,6 +41,11 @@ public class Crab extends Enemy {
 
         // attach sprite to body
         spiderSprite.setPosition(body.getPosition().x - (CRAB_WIDTH / 2) / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
+    }
+
+    @Override
+    public void draw(Batch batch) {
+
     }
 
 }

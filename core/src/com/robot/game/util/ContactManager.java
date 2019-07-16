@@ -68,7 +68,6 @@ public class ContactManager implements ContactListener {
 
     // robot - ladder collision begins
     private void robotLadderBegin(Fixture fixA, Fixture fixB) {
-        Texture texture = new Texture("blue.png");
         Robot robot;
         Ladder ladder;
         if(fixA.getUserData() instanceof Robot) {
@@ -88,7 +87,6 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "On bottom ladder");
         }
         else {
-            robot.setRobotSprite(new Sprite(texture));
             robot.setOnLadder(true);
             robot.setFallingOffLadder(false);
             Gdx.app.log("ContactManager", "On ladder");
@@ -307,7 +305,6 @@ public class ContactManager implements ContactListener {
 
     // robot - ladder collision ends
     private void robotLadderEnd(Fixture fixA, Fixture fixB) {
-        Texture texture = new Texture("sf.png");
         Robot robot;
         Ladder ladder;
         if(fixA.getUserData() instanceof Robot) {
@@ -321,7 +318,6 @@ public class ContactManager implements ContactListener {
         // remove robot from ladder only if it lets go of the core
         if(ladder.getDescription().equals(LADDER_CORE_DESCRIPTION)) {
             Gdx.app.log("ContactManager", "Off ladder");
-            robot.setRobotSprite(new Sprite(texture));
             robot.setOnLadder(false);
         }
     }
