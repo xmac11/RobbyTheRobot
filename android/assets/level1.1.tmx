@@ -55,6 +55,7 @@
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="288"/>
+    <property name="height" type="float" value="8"/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="false"/>
     <property name="startX" type="float" value="-1"/>
@@ -62,12 +63,14 @@
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-3"/>
     <property name="waiting" type="bool" value="false"/>
+    <property name="width" type="float" value="64"/>
    </properties>
   </object>
   <object id="119" x="2368" y="324" width="64" height="8">
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="288"/>
+    <property name="height" type="float" value="8"/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="false"/>
     <property name="startX" type="float" value="-1"/>
@@ -75,12 +78,14 @@
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="3"/>
     <property name="waiting" type="bool" value="false"/>
+    <property name="width" type="float" value="64"/>
    </properties>
   </object>
   <object id="120" x="2608" y="432" width="32" height="8">
    <properties>
     <property name="endX" type="float" value="2836"/>
     <property name="endY" type="float" value="-1"/>
+    <property name="height" type="float" value="8"/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>
@@ -88,6 +93,7 @@
     <property name="vX" type="float" value="3"/>
     <property name="vY" type="float" value="0"/>
     <property name="waiting" type="bool" value="true"/>
+    <property name="width" type="float" value="32"/>
    </properties>
   </object>
   <object id="146" x="2816" y="160">
@@ -100,48 +106,60 @@
    <properties>
     <property name="delay" type="float" value="0.75"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="152" x="3200" y="128" width="48" height="8">
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="153" x="3328" y="112" width="48" height="8">
    <properties>
     <property name="delay" type="float" value="0.25"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="154" x="3648" y="192" width="48" height="8">
    <properties>
     <property name="delay" type="float" value="0.2"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="155" x="3808" y="224" width="48" height="8">
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="156" x="3952" y="256" width="48" height="8">
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="157" x="0" y="384">
@@ -157,8 +175,10 @@
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="height" type="float" value="8"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
+    <property name="width" type="float" value="48"/>
    </properties>
   </object>
   <object id="168" x="1232" y="192" width="48" height="8">

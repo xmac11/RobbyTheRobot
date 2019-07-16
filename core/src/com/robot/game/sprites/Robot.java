@@ -14,7 +14,7 @@ import com.robot.game.util.LadderClimbHandler;
 
 import static com.robot.game.util.Constants.*;
 
-public class Robot /*extends InputAdapter*/ {
+public class Robot extends Sprite /*extends InputAdapter*/ {
 
     private Sprite robotSprite;
     private World world;
@@ -59,7 +59,7 @@ public class Robot /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(2520 / PPM, 200 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -105,8 +105,13 @@ public class Robot /*extends InputAdapter*/ {
                 body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
 
             // platform moving horizontally to the right, apply force to robot so it moves with it
-            else if(interactivePlatform.getBody().getLinearVelocity().x != 0 )
-                body.applyForceToCenter(-0.4f * body.getMass() * world.getGravity().y, 0, true);
+            else if(interactivePlatform.getBody().getLinearVelocity().x != 0 ) {
+                body.applyForceToCenter(-0.6f * body.getMass() * world.getGravity().y, 0, true);
+
+                System.out.println(body.getLinearVelocity().x);
+                System.out.println("Interactive " + interactivePlatform.getBody().getLinearVelocity().x);
+            }
+
         }
 
         // apply additional force when object is falling in order to land faster
@@ -123,7 +128,7 @@ public class Robot /*extends InputAdapter*/ {
         if(body.getLinearVelocity().y < -5f)
             body.setLinearVelocity(body.getLinearVelocity().x, -5f);*/
 
-        // attach robot sprite to circle body
+        // attach robot sprite to body
 //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
@@ -157,7 +162,7 @@ public class Robot /*extends InputAdapter*/ {
             // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
             // this will be used at most once, so a new Vector is created instead of keeping a variable in the Constant class
             if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop()) {
-                body.applyLinearImpulse(new Vector2(-0.15f, 0), body.getWorldCenter(), true);
+                body.applyLinearImpulse(new Vector2(-0.25f, 0), body.getWorldCenter(), true);
             }
             else {
                 // GRADUAL ACCELERATION

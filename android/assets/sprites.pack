@@ -101,3 +101,10 @@ bat5
   orig: 96, 43
   offset: 0, 0
   index: -1
+movingplatform
+  rotate: false
+  xy: 96, 168
+  size: 32, 8
+  orig: 32, 8
+  offset: 0, 0
+  index: -1

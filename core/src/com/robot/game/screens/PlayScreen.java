@@ -196,6 +196,13 @@ public class PlayScreen extends ScreenAdapter {
         // render foreground (waves and barrels)
         parallaxBarrels.draw(game.getBatch());
 
+        // render interactive platforms
+        for(InteractivePlatform platform: interactivePlatforms) {
+            if(!platform.isDestroyed()) {
+                platform.draw(game.getBatch());
+            }
+        }
+
         // render sprites
         robot.draw(game.getBatch());
 

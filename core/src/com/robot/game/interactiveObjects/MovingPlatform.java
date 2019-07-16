@@ -19,7 +19,7 @@ public class MovingPlatform extends InteractivePlatform {
 
     // will probably need to pass the whole map object
     public MovingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, (float) object.getProperties().get("vX"), (float) object.getProperties().get("vY"));
+        super(world, body, object);
         body.createFixture(fixtureDef).setUserData(this);
 
         this.startX = (float) object.getProperties().get("startX");
@@ -53,6 +53,9 @@ public class MovingPlatform extends InteractivePlatform {
             else if (outOfRangeY())
                 this.reverseVelocity(false, true);
         }
+
+        // attach sprite to body
+        super.attachSprite();
     }
 
     // moving platforms are never destroyed

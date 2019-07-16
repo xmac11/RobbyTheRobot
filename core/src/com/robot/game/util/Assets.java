@@ -17,6 +17,7 @@ public class Assets {
     public RobotAssets robotAssets;
     public BatAssets batAssets;
     public CrabAssets crabAssets;
+    public InteractivePlatformAssets interactivePlatformAssets;
     public ParallaxAssets parallaxAssets;
 
     private Assets() {
@@ -39,6 +40,8 @@ public class Assets {
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
         this.crabAssets = new CrabAssets(atlas);
+        this.interactivePlatformAssets = new InteractivePlatformAssets();
+//        this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
     }
 
@@ -102,6 +105,24 @@ public class Assets {
             this.crabDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
         }
     }
+
+    public class InteractivePlatformAssets {
+
+        public final Texture platformTexture;
+
+        public InteractivePlatformAssets() {
+            this.platformTexture = new Texture(Gdx.files.internal("movingplatform.png"));
+        }
+    }
+
+    /*public class InteractivePlatformAssets {
+
+        public final TextureAtlas.AtlasRegion atlasRegion;
+
+        public InteractivePlatformAssets(TextureAtlas atlas) {
+            this.atlasRegion = atlas.findRegion("movingplatform");
+        }
+    }*/
 
     // Parallax assets
     public class ParallaxAssets {

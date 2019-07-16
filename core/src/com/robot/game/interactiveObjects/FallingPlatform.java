@@ -7,6 +7,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import static com.robot.game.util.Constants.PPM;
+
 public class FallingPlatform extends InteractivePlatform {
 
     private float delay;
@@ -18,7 +20,7 @@ public class FallingPlatform extends InteractivePlatform {
     private boolean toggle;
 
     public FallingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, (float) object.getProperties().get("vX"), (float) object.getProperties().get("vY"));
+        super(world, body, object);
         body.createFixture(fixtureDef).setUserData(this);
 
         this.delay = (float) object.getProperties().get("delay");
@@ -50,6 +52,9 @@ public class FallingPlatform extends InteractivePlatform {
                 elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
             }
         }
+
+        // attach sprite to body
+        super.attachSprite();
     }
 
     @Override
