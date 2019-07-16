@@ -16,6 +16,7 @@ public class Assets {
 
     public RobotAssets robotAssets;
     public BatAssets batAssets;
+    public CrabAssets crabAssets;
     public ParallaxAssets parallaxAssets;
 
     private Assets() {
@@ -37,6 +38,7 @@ public class Assets {
         // create assets
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
+        this.crabAssets = new CrabAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
     }
 
@@ -58,18 +60,46 @@ public class Assets {
     // Bat assets
     public class BatAssets {
 
-        public final TextureAtlas.AtlasRegion atlasRegion;
         public final Animation<TextureRegion> batFlyAnimation;
+        public final Animation<TextureRegion> batDeadAnimation;
 
         private BatAssets(TextureAtlas atlas) {
-            this.atlasRegion = atlas.findRegion("bat");
 
-            Array<TextureAtlas.AtlasRegion> framesFlyArray = new Array<>();
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 5; i++) {
-                framesFlyArray.add(atlas.findRegion("bat" + i));
+                framesArray.add(atlas.findRegion("bat" + i));
             }
+            this.batFlyAnimation = new Animation<>(0.05f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
 
-            this.batFlyAnimation = new Animation<>(0.05f, framesFlyArray, Animation.PlayMode.LOOP_PINGPONG);
+            framesArray.clear();
+
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(atlas.findRegion("bat_dead" + i));
+            }
+            this.batDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+        }
+    }
+
+    // Crab assets
+    public class CrabAssets {
+
+        public final Animation<TextureRegion> crabWalkAnimation;
+        public final Animation<TextureRegion> crabDeadAnimation;
+
+        private CrabAssets(TextureAtlas atlas) {
+
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            for(int i = 1; i <= 4; i++) {
+                framesArray.add(atlas.findRegion("crab" + i));
+            }
+            this.crabWalkAnimation = new Animation<>(0.05f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
+
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(atlas.findRegion("crab_dead" + i));
+            }
+            this.crabDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
         }
     }
 

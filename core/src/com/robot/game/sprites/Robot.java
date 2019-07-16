@@ -59,7 +59,7 @@ public class Robot /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(2520 / PPM, 200 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(32 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);

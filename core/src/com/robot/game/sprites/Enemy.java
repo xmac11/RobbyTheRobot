@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
 import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -62,6 +63,13 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     protected boolean dead; // for drawing the sprite at the moment
     protected boolean isDestroyed;
 
+    // animation
+    protected TextureRegion textureRegion;
+    protected float startTimeAnim;
+    protected float elapsedAnim;
+    protected float deadStartTime;
+    protected float deadElapsed;
+
     public Enemy(World world, Body body, FixtureDef fixtureDef, MapObject object) {
         this.world = world;
         this.body = body;
@@ -111,6 +119,9 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
             body.setLinearVelocity(vX, vY);
         }
+
+        // animation
+        startTimeAnim = TimeUtils.nanoTime();
     }
 
     public abstract void update(float delta);
@@ -178,10 +189,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     public void setFlagToKill() {
         this.flagToKill = true;
-
-        // for bats, set a timer
-        if(this instanceof  Bat)
-            ((Bat) this).setDeadStartTime(TimeUtils.nanoTime());
+        deadStartTime = TimeUtils.nanoTime();
     }
 
     protected void destroyBody() {

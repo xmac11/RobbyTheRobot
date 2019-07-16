@@ -200,13 +200,8 @@ public class PlayScreen extends ScreenAdapter {
         robot.draw(game.getBatch());
 
         for(Enemy enemy: enemies) {
-            if(!enemy.isDestroyed() && enemy instanceof Bat) {
+            if(!enemy.isDestroyed()) {
                 enemy.draw(game.getBatch());
-            }
-            if(!enemy.isDestroyed() && enemy instanceof Crab){
-                Sprite spiderSprite = ((Crab) enemy).spiderSprite;
-                spiderSprite.setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
-                spiderSprite.draw(game.getBatch());
             }
         }
 

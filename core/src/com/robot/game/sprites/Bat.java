@@ -14,21 +14,12 @@ import static com.robot.game.util.Constants.*;
 
 public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
 
-    private TextureRegion textureRegion;
-    private float deadStartTime;
-    private float deadElapsed;
-
-    // animation
-    private float startTimeAnim;
-    private float elapsedAnim;
-
     public Bat(World world, Body body, FixtureDef fixtureDef, MapObject object) {
         super(world, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 
-        this.startTimeAnim = TimeUtils.nanoTime();
-
+        // set the size of the bat sprite
         setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
     }
 
@@ -38,7 +29,7 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
         if(flagToKill) {
             dead = true;
             if(deadElapsed >= 1.0f) {
-                body.setLinearVelocity(0, -5);
+                body.setLinearVelocity(0, -8);
                 flagToKill = false;
             }
             else
@@ -61,25 +52,24 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
             else if(outOfRangeY())
                 reverseVelocity(false, true);
         }
-
-        // attach sprite to body
-//        batSprite.setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM); // for rectangle
     }
 
     @Override
     public void draw(Batch batch) {
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
-        textureRegion = Assets.getInstance().batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
 
+        if(!dead) {
+            textureRegion = Assets.getInstance().batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
+        }
+        else {
+            textureRegion = Assets.getInstance().batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
+        }
         // attach sprite to body and set the appropriate region
         setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
         setRegion(textureRegion);
-        super.draw(batch);
+        super.draw(batch); // call to Sprite superclass
     }
 
-    public void setDeadStartTime(float deadStartTime) {
-        this.deadStartTime = deadStartTime;
-    }
 }
 
 
