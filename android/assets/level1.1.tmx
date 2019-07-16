@@ -5,7 +5,7 @@
  <tileset firstgid="41" source="tiles.tsx"/>
  <tileset firstgid="2761" source="water.tsx"/>
  <imagelayer id="25" name="Background-image" visible="0" offsetx="0" offsety="80">
-  <image source="background.png" width="3840" height="256"/>
+  <image source="background.png" width="6912" height="256"/>
  </imagelayer>
  <layer id="98" name="Wall" width="432" height="32">
   <data encoding="base64">
@@ -336,7 +336,7 @@
     <property name="aiSpeed" type="float" value="2"/>
     <property name="crab" value=""/>
     <property name="enemy" value=""/>
-    <property name="offsetX" type="float" value="12"/>
+    <property name="offsetX" type="float" value="8"/>
     <property name="offsetY" type="float" value="8"/>
     <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="49"/>
@@ -348,7 +348,7 @@
     <property name="aiSpeed" type="float" value="2"/>
     <property name="crab" value=""/>
     <property name="enemy" value=""/>
-    <property name="offsetX" type="float" value="12"/>
+    <property name="offsetX" type="float" value="8"/>
     <property name="offsetY" type="float" value="8"/>
     <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="49"/>

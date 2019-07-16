@@ -64,9 +64,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
         else {
             textureRegion = Assets.getInstance().batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
         }
-        // attach sprite to body and set the appropriate region
-        setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
+
+        // set the appropriate region and attach sprite to body
         setRegion(textureRegion);
+        setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
         super.draw(batch); // call to Sprite superclass
     }
 

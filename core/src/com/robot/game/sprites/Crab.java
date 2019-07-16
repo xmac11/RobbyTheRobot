@@ -23,6 +23,8 @@ public class Crab extends Enemy {
 
         // set the size of the crab sprite
         setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
+        // set the origin of rotation to the middle of the sprite
+        setOrigin(CRAB_WIDTH / 2 / PPM, CRAB_HEIGHT / 2 / PPM);
     }
 
     @Override
@@ -40,6 +42,14 @@ public class Crab extends Enemy {
         if(aiPathFollowing && steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
             applySteering(steeringOutput, delta);
+
+            // rotate path-following crabs based on their velocity
+            float vX = body.getLinearVelocity().x;
+            float vY = body.getLinearVelocity().y;
+            if(Math.abs(vX) >= 0.1f)
+                body.setTransform(body.getWorldCenter(), (float) Math.atan2(vY, -vX));
+            if(Math.abs(vY) >= 0.1f)
+                body.setTransform(body.getWorldCenter(), (float) Math.atan2(-vY, -vX));
         }
         else if(!aiPathFollowing && getPosition().x < startX / PPM || getPosition().x > endX / PPM)
             reverseVelocity(true, false);
@@ -56,9 +66,10 @@ public class Crab extends Enemy {
             textureRegion = Assets.getInstance().crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
         }
 
-        // attach sprite to body and set the appropriate region
-        setPosition(body.getPosition().x - CRAB_WIDTH / 2 / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
+        // set the appropriate region and attach sprite to body
         setRegion(textureRegion);
+        setPosition(body.getPosition().x - CRAB_WIDTH / 2 / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
+        setRotation(body.getAngle() * MathUtils.radiansToDegrees);
         super.draw(batch); // call to Sprite superclass
     }
 
