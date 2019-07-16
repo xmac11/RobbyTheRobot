@@ -57,7 +57,7 @@ public class ContactManager implements ContactListener {
                 robotSpikesBegin(fixA, fixB);
                 break;
 
-            // robot - spikes
+            // robot - enemy
             case ROBOT_CATEGORY | ENEMY_CATEGORY:
                 robotEnemyBegin(normal, fixA, fixB);
                 break;
@@ -191,6 +191,10 @@ public class ContactManager implements ContactListener {
         }
     }
 
+    /* When the robot steps on an enemy, I have to set the enemy’s mask bit to “NOTHING”. As a result, the collision stops at that point, the player
+     * bounces off the enemy as normal and the presolve() method does not get called.
+     * If the mask bit was not set to “NOTHING”, the collision would continue being detected. Then the presolve() method would be called disabling the
+     * collision, so the robot would pass through the enemy and the bounce off the enemy would never take place. */
     private void robotEnemyBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         Enemy enemy;
@@ -206,17 +210,22 @@ public class ContactManager implements ContactListener {
                 if(enemy.isAiPathFollowing()) {
                     enemy.getFollowPath().setEnabled(false);
                 }
+                // stop enemy
                 enemy.getBody().setLinearVelocity(0, 0);
-                setMaskBit(enemy.getBody(), NOTHING_MASK);
-
+                // set enemy's mask bits to "nothing"
+                setMaskBit(/*enemy.getBody()*/ fixB, NOTHING_MASK);
             }
-            else if(normal.y >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from below");
-            else if(normal.x <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from the right");
-            else if(normal.x >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from the left");
+            else {
+                if (normal.y >= 1 / Math.sqrt(2))
+                    Gdx.app.log("ContactManager", "Robot hit enemy from below");
+                else if (normal.x <= -1 / Math.sqrt(2))
+                    Gdx.app.log("ContactManager", "Robot hit enemy from the right");
+                else if (normal.x >= 1 / Math.sqrt(2))
+                    Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
+                robot.health --;
+                System.out.println("Robot health " + robot.health);
+            }
         }
         else {
             robot = (Robot) fixB.getUserData();
@@ -229,19 +238,22 @@ public class ContactManager implements ContactListener {
                 if(enemy.isAiPathFollowing()) {
                     enemy.getFollowPath().setEnabled(false);
                 }
+                // stop enemy
                 enemy.getBody().setLinearVelocity(0, 0);
-
-                /*Filter filter = new Filter();
-                filter.maskBits = NOTHING_MASK;
-                enemy.getBody().getFixtureList().first().setFilterData(filter);*/
-                setMaskBit(enemy.getBody(), NOTHING_MASK);
+                // set enemy's mask bits to "nothing"
+                setMaskBit(fixA, NOTHING_MASK);
             }
-            else if(normal.y <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from below");
-            else if(normal.x >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from the right");
-            else if(normal.x <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit enemy from the left");
+            else {
+                if(normal.y <= -1/Math.sqrt(2))
+                    Gdx.app.log("ContactManager","Robot hit enemy from below");
+                else if(normal.x >= 1/Math.sqrt(2))
+                    Gdx.app.log("ContactManager","Robot hit enemy from the right");
+                else if(normal.x <= -1/Math.sqrt(2))
+                    Gdx.app.log("ContactManager","Robot hit enemy from the left");
+
+                robot.health --;
+                System.out.println("Robot health " + robot.health);
+            }
         }
     }
 
@@ -374,6 +386,17 @@ public class ContactManager implements ContactListener {
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
+        // Get the two fixtures that contact
+        Fixture fixA = contact.getFixtureA();
+        Fixture fixB = contact.getFixtureB();
+
+        int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+        switch(collisionID) {
+            // robot - enemy
+            case ROBOT_CATEGORY | ENEMY_CATEGORY:
+                contact.setEnabled(false);
+//                Gdx.app.log("ContactManager","Contact was disabled");
+        }
     }
 
     @Override
@@ -381,14 +404,16 @@ public class ContactManager implements ContactListener {
 
     }
 
-    public void setMaskBit(Body body, short maskBit) {
+    public void setMaskBit(/*Body body*/Fixture fixture, short maskBit) {
         Filter filter = new Filter();
         filter.maskBits = maskBit;
-        for(Fixture fixture: body.getFixtureList())
-            fixture.setFilterData(filter);
+        /*for(Fixture fixture: body.getFixtureList())
+            fixture.setFilterData(filter);*/
+        fixture.setFilterData(filter);
     }
 
     public static int getFootContactCounter() {
         return footContactCounter;
     }
+
 }

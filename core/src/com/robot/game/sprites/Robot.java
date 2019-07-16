@@ -34,6 +34,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private InteractivePlatform interactivePlatform;
     private boolean isOnInteractivePlatform;
 
+    public float health = 100;
+
     public Robot(World world) {
         this.world = world;
         createRobotB2d();
@@ -59,7 +61,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(2520 / PPM, 200 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(800 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -87,7 +89,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         fixtureDef.filter.categoryBits = ROBOT_FEET_CATEGORY;
         fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
         fixtureDef.isSensor = true;
-        this.body.createFixture(fixtureDef).setUserData(this);
+        this.body.createFixture(fixtureDef).setUserData("feet");
 
         recShape.dispose();
 //        circleShape.dispose();
