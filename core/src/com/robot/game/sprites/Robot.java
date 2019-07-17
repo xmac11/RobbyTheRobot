@@ -2,10 +2,10 @@ package com.robot.game.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.util.Assets;
@@ -14,9 +14,8 @@ import com.robot.game.util.LadderClimbHandler;
 
 import static com.robot.game.util.Constants.*;
 
-public class Robot extends Sprite /*extends InputAdapter*/ {
+public class Robot extends Actor /*extends InputAdapter*/ {
 
-    private Sprite robotSprite;
     private World world;
     private Body body;
     private boolean onLadder;
@@ -40,20 +39,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.world = world;
         createRobotB2d();
 
-//        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
-
-//        Texture texture = new Texture("sf.png");
-//        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
-        robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
-        robotSprite.setPosition(body.getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle (not really needed since it's done by update)
-
-        //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
-
         //Gdx.input.setInputProcessor(this);
-
-        //this.IMPULSE = body.getMass() * (float) Math.sqrt(-2 * world.getGravity().y * 32 / PPM);
     }
 
     private void createRobotB2d() {
@@ -61,7 +47,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(800 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(1520 / PPM, 160 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1520, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -129,12 +115,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             body.setLinearVelocity(body.getLinearVelocity().x, 5f);
         if(body.getLinearVelocity().y < -5f)
             body.setLinearVelocity(body.getLinearVelocity().x, -5f);*/
-
-        // attach robot sprite to body
-//        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
-        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
-
-//        System.out.println(body.getLinearVelocity());
 
     }
 
@@ -246,25 +226,20 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
-    public void draw(SpriteBatch batch) {
-        robotSprite.draw(batch);
-    }
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        batch.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
 
-    public void dispose() {
-        robotSprite.getTexture().dispose();
+        batch.draw(Assets.getInstance().robotAssets.atlasRegion,
+                body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM,
+                body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM,
+                ROBOT_SPRITE_WIDTH / PPM,
+                ROBOT_SPRITE_HEIGHT / PPM);
     }
 
     // getter for the Body
     public Body getBody() {
         return body;
-    }
-
-    public Sprite getRobotSprite() {
-        return robotSprite;
-    }
-
-    public void setRobotSprite(Sprite robotSprite) {
-        this.robotSprite = robotSprite;
     }
 
     public void setOnLadder(boolean onLadder) {

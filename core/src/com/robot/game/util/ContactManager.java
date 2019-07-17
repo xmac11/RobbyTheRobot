@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
@@ -225,6 +228,7 @@ public class ContactManager implements ContactListener {
 
                 robot.health --;
                 System.out.println("Robot health " + robot.health);
+                flicker(robot);
             }
         }
         else {
@@ -253,6 +257,7 @@ public class ContactManager implements ContactListener {
 
                 robot.health --;
                 System.out.println("Robot health " + robot.health);
+                flicker(robot);
             }
         }
     }
@@ -416,4 +421,8 @@ public class ContactManager implements ContactListener {
         return footContactCounter;
     }
 
+    private void flicker(Robot robot) {
+        SequenceAction flicker = new SequenceAction(Actions.fadeOut(FADE_DURATION), Actions.fadeIn(FADE_DURATION));
+        robot.addAction(Actions.repeat(FLICKER_REPEATS, flicker));
+    }
 }
