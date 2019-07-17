@@ -228,7 +228,7 @@ public class ContactManager implements ContactListener {
 
                 robot.health --;
                 System.out.println("Robot health " + robot.health);
-                flicker(robot);
+                robot.setFlicker(true);
             }
         }
         else {
@@ -257,7 +257,7 @@ public class ContactManager implements ContactListener {
 
                 robot.health --;
                 System.out.println("Robot health " + robot.health);
-                flicker(robot);
+                robot.setFlicker(true);
             }
         }
     }
@@ -421,8 +421,4 @@ public class ContactManager implements ContactListener {
         return footContactCounter;
     }
 
-    private void flicker(Robot robot) {
-        SequenceAction flicker = new SequenceAction(Actions.fadeOut(FADE_DURATION), Actions.fadeIn(FADE_DURATION));
-        robot.addAction(Actions.repeat(FLICKER_REPEATS, flicker));
-    }
 }

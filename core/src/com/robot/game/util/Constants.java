@@ -66,6 +66,7 @@ public final class Constants {
         // Sensor feet
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
     public static final float ROBOT_FEET_HEIGHT = 4;
+
         // Movement
     public static final float ROBOT_MAX_HOR_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
@@ -74,10 +75,8 @@ public final class Constants {
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
     public static final float ROBOT_JUMP_SPEED = 5.0f; // when on ground
 
-        // Flicker action
-    public static final float FADE_DURATION = 0.1f;
-    public static final int FLICKER_REPEATS = 5;
-
+        // Flickering
+    public static final float FLICKER_TIME = 1;
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -12,28 +14,27 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
-import com.robot.game.camera.DebugCamera;
-import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
+import com.robot.game.sprites.Crab;
 import com.robot.game.util.Assets;
-import com.robot.game.util.ContactManager;
 import com.robot.game.util.ObjectParser;
+import com.robot.game.util.ContactManager;
+import com.robot.game.camera.DebugCamera;
+import com.robot.game.camera.Parallax;
 
 import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
 
     private RobotGame game;
-
-    private Stage stage;
 
     // robot
     private Robot robot;
@@ -118,10 +119,6 @@ public class PlayScreen extends ScreenAdapter {
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
-        // create stage;
-        this.stage = new Stage(viewport);
-        stage.addActor(robot);
-
         this.parallaxBackground = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
         this.parallaxBarrels = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
     }
@@ -133,10 +130,10 @@ public class PlayScreen extends ScreenAdapter {
         for(int i = 0; i < interactivePlatforms.size; i++) {
             InteractivePlatform platform = interactivePlatforms.get(i);
             // if robot is within a certain distance from the platform, activate the platform
-//            if(Math.abs(platform.getBody().getPosition().x - robot.getBody().getPosition().x) < viewport.getWorldWidth())
-//                platform.getBody().setActive(true);
-//            else
-//                platform.getBody().setActive(false);
+            //            if(Math.abs(platform.getBody().getPosition().x - robot.getBody().getPosition().x) < viewport.getWorldWidth())
+            //                platform.getBody().setActive(true);
+            //            else
+            //                platform.getBody().setActive(false);
 
             // if platform is active, update it
             if(platform.getBody().isActive())
@@ -165,8 +162,8 @@ public class PlayScreen extends ScreenAdapter {
         mapRenderer.setView(camera);
         game.getBatch().setProjectionMatrix(camera.combined);
 
-//        System.out.println("Interactive platforms: " + interactivePlatforms.size);
-//        System.out.println("Number of enemies: " + enemies.size);
+        //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
+        //        System.out.println("Number of enemies: " + enemies.size);
 
     }
 
@@ -187,7 +184,7 @@ public class PlayScreen extends ScreenAdapter {
         game.getBatch().begin();
         parallaxBackground.draw(game.getBatch());
         game.getBatch().end();
-//        System.out.println("render1: " + game.getBatch().renderCalls);
+        //        System.out.println("render1: " + game.getBatch().renderCalls);
 
         // render map
         mapRenderer.render(mapLayers);
@@ -206,17 +203,17 @@ public class PlayScreen extends ScreenAdapter {
             }
         }
 
+        // render sprites
+        robot.draw(game.getBatch(), delta);
+
         for(Enemy enemy: enemies) {
             if(!enemy.isDestroyed()) {
                 enemy.draw(game.getBatch());
             }
         }
 
-        game.getBatch().end();
 
-        // draw stage
-        stage.draw();
-        stage.act();
+        game.getBatch().end();
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
@@ -266,9 +263,9 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
-        stage.dispose();
         if(debug_on)
             debugRenderer.dispose();
+        robot.dispose();
     }
 
     public Robot getRobot() {
