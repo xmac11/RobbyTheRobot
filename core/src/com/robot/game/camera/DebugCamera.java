@@ -20,7 +20,7 @@ public class DebugCamera {
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
-//        camera.position.x =  robot.getBody().getPosition().x;
+//        camera.position.x =  robot.getBody().getSpawnLocation().x;
         this.robot = robot;
         this.following = true;
     }
@@ -35,7 +35,7 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            /*if(robot.getBody().getPosition().x > 2048 / PPM && robot.getBody().getPosition().x < 2976 / PPM  && !shakeActive) {
+            /*if(robot.getBody().getSpawnLocation().x > 2048 / PPM && robot.getBody().getSpawnLocation().x < 2976 / PPM  && !shakeActive) {
                 ShakeEffect.shake(0.35f, 0.1f);
                 shakeActive = true;
             }
@@ -43,7 +43,7 @@ public class DebugCamera {
             if(ShakeEffect.getTimeLeft() > 0) {
                 ShakeEffect.update();
                 //camera.rotate(Vector3.Z, ShakeEffect.randomRotation());
-                camera.translate(ShakeEffect.getPosition());
+                camera.translate(ShakeEffect.getSpawnLocation());
             }
             else
                 shakeActive = false;*/
@@ -55,9 +55,9 @@ public class DebugCamera {
             }*/
 
             camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-//            camera.position.x = camera.position.x + (robot.getBody().getPosition().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
+//            camera.position.x = camera.position.x + (robot.getBody().getSpawnLocation().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
 //            camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
-//            camera.position.y =  robot.getBody().getPosition().y; // camera follows the robot vertically
+//            camera.position.y =  robot.getBody().getSpawnLocation().y; // camera follows the robot vertically
             camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f;
 
         }

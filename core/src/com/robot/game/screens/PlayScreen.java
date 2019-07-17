@@ -28,7 +28,10 @@ import static com.robot.game.util.Constants.*;
 
 public class PlayScreen extends ScreenAdapter {
 
+    // main class reference
     private RobotGame game;
+
+    // game data
     private GameData gameData;
 
     // robot
@@ -61,28 +64,33 @@ public class PlayScreen extends ScreenAdapter {
     private Parallax parallaxBackground;
     private Parallax parallaxBarrels;
 
+    // Checkpoints
+    private boolean firstCheckpointActivated;
+    private boolean secondCheckpointActivated;
+    private boolean thirdCheckpointActivated;
+
     // debug lines for AI paths
     private ShapeRenderer shapeRenderer;
 
 
     public PlayScreen(RobotGame game) {
         this.game = game;
-
-        if(!FileSaver.getFile().exists()) {
+        // if file with game data exists, load it, otherwise create new one
+        if(FileSaver.getFile().exists()) {
+            this.gameData = FileSaver.loadData();
+        }
+        else {
             this.gameData = new GameData();
             gameData.setDefaultData();
             FileSaver.saveData(gameData);
         }
-        else {
-            this.gameData = FileSaver.loadData();
-            System.out.println("Initial Lives " + gameData.getLives());
-            System.out.println("Initial Health " + gameData.getHealth());
-        }
+        Gdx.app.log("PlayScreen", "Lives " + gameData.getLives());
+        Gdx.app.log("PlayScreen", "Health " + gameData.getHealth());
     }
 
     @Override
     public void show() {
-        System.out.println("show");
+        Gdx.app.log("PlayScreen", "show");
 
         if(debug_on)
             this.shapeRenderer = new ShapeRenderer();
@@ -114,7 +122,7 @@ public class PlayScreen extends ScreenAdapter {
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
         // create robot
-        this.robot = new Robot(world, gameData);
+        this.robot = new Robot(this);
 
         // create interactive platforms
         this.interactivePlatforms = objectParser.getInteractivePlatforms();
@@ -136,7 +144,7 @@ public class PlayScreen extends ScreenAdapter {
         for(int i = 0; i < interactivePlatforms.size; i++) {
             InteractivePlatform platform = interactivePlatforms.get(i);
             // if robot is within a certain distance from the platform, activate the platform
-            //            if(Math.abs(platform.getBody().getPosition().x - robot.getBody().getPosition().x) < viewport.getWorldWidth())
+            //            if(Math.abs(platform.getBody().getSpawnLocation().x - robot.getBody().getSpawnLocation().x) < viewport.getWorldWidth())
             //                platform.getBody().setActive(true);
             //            else
             //                platform.getBody().setActive(false);
@@ -248,18 +256,32 @@ public class PlayScreen extends ScreenAdapter {
 
             shapeRenderer.end();
         }
+
+        if(robot.isDead() && gameData.getLives() >= 0) {
+            Gdx.app.log("PlayScreen", "Player died");
+            FileSaver.saveData(gameData);
+            game.setScreen(new PlayScreen(game));
+            /*robot.setDead(false);
+            robot.getBody().setTransform(gameData.getSpawnLocation(), 0);*/
+        }
+        else if(robot.isDead()) {
+            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+            gameData.setDefaultData();
+            FileSaver.saveData(gameData);
+            game.setScreen(new PlayScreen(game));
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-        System.out.println("resize");
+        Gdx.app.log("PlayScreen", "resize");
         viewport.update(width, height, true);
         camera.update();
     }
 
     @Override
     public void hide() {
-        System.out.println("hide");
+        Gdx.app.log("PlayScreen", "hide");
         // save the game every time it is closed
         FileSaver.saveData(gameData);
         this.dispose();
@@ -267,13 +289,12 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        System.out.println("dispose");
+        Gdx.app.log("PlayScreen", "dispose");
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
         if(debug_on)
             debugRenderer.dispose();
-        robot.dispose();
     }
 
     public Robot getRobot() {
@@ -298,5 +319,29 @@ public class PlayScreen extends ScreenAdapter {
 
     public GameData getGameData() {
         return gameData;
+    }
+
+    public boolean isFirstCheckpointActivated() {
+        return firstCheckpointActivated;
+    }
+
+    public void setFirstCheckpointActivated(boolean firstCheckpointActivated) {
+        this.firstCheckpointActivated = firstCheckpointActivated;
+    }
+
+    public boolean isSecondCheckpointActivated() {
+        return secondCheckpointActivated;
+    }
+
+    public void setSecondCheckpointActivated(boolean secondCheckpointActivated) {
+        this.secondCheckpointActivated = secondCheckpointActivated;
+    }
+
+    public boolean isThirdCheckpointActivated() {
+        return thirdCheckpointActivated;
+    }
+
+    public void setThirdCheckpointActivated(boolean thirdCheckpointActivated) {
+        this.thirdCheckpointActivated = thirdCheckpointActivated;
     }
 }

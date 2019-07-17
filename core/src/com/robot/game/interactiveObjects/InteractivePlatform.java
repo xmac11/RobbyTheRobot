@@ -33,8 +33,7 @@ public abstract class InteractivePlatform extends Sprite {
         this.width = (float) object.getProperties().get("width");
         this.height = (float) object.getProperties().get("height");
 
-        this.interactivePlatformSprite = new Sprite(Assets.getInstance().interactivePlatformAssets.platformTexture);
-//        this.interactivePlatformSprite = new Sprite(Assets.getInstance().interactivePlatformAssets.atlasRegion);
+        this.interactivePlatformSprite = new Sprite(Assets.getInstance().interactivePlatformAssets.atlasRegion);
 
         interactivePlatformSprite.setSize(width / PPM, height / PPM);
         interactivePlatformSprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);

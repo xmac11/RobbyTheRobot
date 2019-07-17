@@ -8,8 +8,7 @@ public class GameData {
 
     private int health;
     private int lives;
-    private Vector2 position;
-    private boolean checkPoint1Activated;
+    private Vector2 spawnLocation;
 
     public int getHealth() {
         return health;
@@ -27,12 +26,12 @@ public class GameData {
         this.lives = lives;
     }
 
-    public Vector2 getPosition() {
-        return position;
+    public Vector2 getSpawnLocation() {
+        return spawnLocation;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
+    public void setSpawnLocation(Vector2 spawnLocation) {
+        this.spawnLocation = spawnLocation;
     }
 
     public void decreaseLives() {
@@ -43,14 +42,6 @@ public class GameData {
         lives++;
     }
 
-    public boolean isCheckPoint1Activated() {
-        return checkPoint1Activated;
-    }
-
-    public void setCheckPoint1Activated(boolean checkPoint1Activated) {
-        this.checkPoint1Activated = checkPoint1Activated;
-    }
-
     public void decreaseHealth(int damage) {
         health -= damage;
     }
@@ -58,7 +49,6 @@ public class GameData {
     public void setDefaultData() {
         health = 100;
         lives = 3;
-        position = SPAWN_LOCATION;
-        checkPoint1Activated = false;
+        spawnLocation = SPAWN_LOCATION;
     }
 }

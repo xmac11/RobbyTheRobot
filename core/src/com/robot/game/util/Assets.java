@@ -40,14 +40,13 @@ public class Assets {
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
         this.crabAssets = new CrabAssets(atlas);
-        this.interactivePlatformAssets = new InteractivePlatformAssets();
-//        this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
+        this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
     }
 
     public void dispose() {
         assetManager.dispose();
-        System.out.println("AssetManager was disposed");
+        Gdx.app.log("Assets", "AssetManager was disposed");
     }
 
     // Robot assets
@@ -108,21 +107,12 @@ public class Assets {
 
     public class InteractivePlatformAssets {
 
-        public final Texture platformTexture;
-
-        public InteractivePlatformAssets() {
-            this.platformTexture = new Texture(Gdx.files.internal("movingplatform.png"));
-        }
-    }
-
-    /*public class InteractivePlatformAssets {
-
         public final TextureAtlas.AtlasRegion atlasRegion;
 
         public InteractivePlatformAssets(TextureAtlas atlas) {
             this.atlasRegion = atlas.findRegion("movingplatform");
         }
-    }*/
+    }
 
     // Parallax assets
     public class ParallaxAssets {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.*;
 
 import static com.robot.game.util.Constants.*;
@@ -17,11 +18,16 @@ import static com.robot.game.util.Constants.*;
 public class Robot extends Sprite /*extends InputAdapter*/ {
 
     private Sprite robotSprite;
+    private PlayScreen playScreen;
     private World world;
     private Body body;
+
+    // state booleans
     private boolean onLadder;
     private boolean fallingOffLadder;
+    private boolean dead;
 
+    // jump timers
     private float jumpTimeout;
     private float jumpTimer;
     private float coyoteTimer;
@@ -43,26 +49,16 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // Game data
     private GameData gameData;
 
-//    public float health = 100;
-
-    public Robot(World world, GameData gameData) {
-        this.world = world;
-        this.gameData = gameData;
+    public Robot(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+        this.world = playScreen.getWorld();
+        this.gameData = playScreen.getGameData();
         createRobotB2d();
-
-        //        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
-
-        //        Texture texture = new Texture("sf.png");
-        //        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
-        //        this.robotSprite.setOrigin(robotSprite.getWidth() / 2, robotSprite.getHeight() / 2);
-
         //Gdx.input.setInputProcessor(this);
-
-        //this.IMPULSE = body.getMass() * (float) Math.sqrt(-2 * world.getGravity().y * 32 / PPM);
     }
 
     private void createRobotB2d() {
@@ -70,7 +66,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(gameData.getPosition()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(gameData.getSpawnLocation()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -139,21 +135,32 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // attach robot sprite to body
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
-        if( Math.abs( (body.getPosition().x - CHECKPOINT1_LOCATION.x) * PPM )  < 8f && !gameData.isCheckPoint1Activated()) {
-            gameData.setPosition(CHECKPOINT1_LOCATION);
-            gameData.setCheckPoint1Activated(true);
-            FileSaver.saveData(gameData);
-            System.out.println("Checkpoint activated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        // First checkpoint
+        if(!playScreen.isFirstCheckpointActivated()) {
+            checkFirstCheckpoint();
         }
+        // Second checkpoint
+        else if(!playScreen.isSecondCheckpointActivated()) {
+            checkSecondCheckpoint();
+        }
+        else if(!playScreen.isThirdCheckpointActivated()) {
+            checkThirdCheckpoint();
+        }
+
+        // if player falls in the water
         if(body.getPosition().y < 0) {
+            dead = true;
+            // decrease lives by one
             gameData.decreaseLives();
-            if(gameData.getLives() > 0) {
-                body.setTransform(gameData.getPosition(), 0);
+
+            // if it still has lives
+            /*if(gameData.getLives() > 0) {
+                body.setTransform(gameData.getSpawnLocation(), 0);
                 System.out.println("Lives: " + gameData.getLives());
             }
             else {
                 gameData.setDefaultData();
-            }
+            }*/
         }
     }
 
@@ -239,12 +246,12 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
 
             jumpTimer = ROBOT_JUMP_TIMER; // start jumping timer
-            System.out.println("space pressed -> " + ContactManager.getFootContactCounter() + " contacts");
+            Gdx.app.log("Robot","space pressed -> " + ContactManager.getFootContactCounter() + " contacts");
         }
 
         // if the timers have been set and robot not on ladder, jump
         if(jumpTimer > 0 && coyoteTimer > 0 && jumpTimeout > ROBOT_JUMP_TIMEOUT && !onLadder) {
-            System.out.println("jumpTimeout: " + jumpTimeout);
+            Gdx.app.log("Robot","jumpTimeout: " + jumpTimeout);
             // reset timers
             jumpTimer = 0;
             coyoteTimer = 0;
@@ -259,7 +266,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             // robot jumps from the ground
             else {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
-                System.out.println("Just jumped: " + ContactManager.getFootContactCounter() + " contacts");
+                Gdx.app.log("Robot","Just jumped: " + ContactManager.getFootContactCounter() + " contacts");
                 //                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
             }
         }
@@ -286,21 +293,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
-    public void dispose() {
-        robotSprite.getTexture().dispose();
-    }
-
     // getter for the Body
     public Body getBody() {
         return body;
-    }
-
-    public Sprite getRobotSprite() {
-        return robotSprite;
-    }
-
-    public void setRobotSprite(Sprite robotSprite) {
-        this.robotSprite = robotSprite;
     }
 
     public void setOnLadder(boolean onLadder) {
@@ -333,6 +328,43 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public GameData getGameData() {
         return gameData;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    private void checkFirstCheckpoint() {
+        if( Math.abs( (body.getPosition().x - FIRST_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
+            gameData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
+            playScreen.setFirstCheckpointActivated(true);
+            FileSaver.saveData(gameData);
+            Gdx.app.log("Robot","First checkpoint activated!");
+        }
+    }
+
+    private void checkSecondCheckpoint() {
+        if( Math.abs( (body.getPosition().x - SECOND_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE
+                && Math.abs( (body.getPosition().y - SECOND_CHECKPOINT_LOCATION.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
+
+            gameData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
+            playScreen.setSecondCheckpointActivated(true);
+            FileSaver.saveData(gameData);
+            Gdx.app.log("Robot","Second checkpoint activated!");
+        }
+    }
+
+    private void checkThirdCheckpoint() {
+        if( Math.abs( (body.getPosition().x - THIRD_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
+            gameData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
+            playScreen.setThirdCheckpointActivated(true);
+            FileSaver.saveData(gameData);
+            Gdx.app.log("Robot","Third checkpoint activated!");
+        }
     }
 
     /*@Override

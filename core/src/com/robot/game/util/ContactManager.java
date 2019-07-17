@@ -227,7 +227,7 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
                 robot.getGameData().decreaseHealth(1);
-                System.out.println("Robot health " + robot.getGameData().getHealth());
+                Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }
         }
@@ -256,7 +256,7 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
 
                 robot.getGameData().decreaseHealth(1);
-                System.out.println("Robot health " + robot.getGameData().getHealth());
+                Gdx.app.log("ContactManager","Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }
         }

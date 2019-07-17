@@ -51,8 +51,6 @@ public final class Constants {
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
 
-
-
     // Robot
 
         // Dimensions
@@ -64,10 +62,13 @@ public final class Constants {
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
     public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
-    public static final Vector2 CHECKPOINT1_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION = new Vector2(2880 / PPM, 400 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4208 / PPM, 208 / PPM);
+    public static final float CHECKPOINT_TOLERANCE = 48;
 
 
-        // Sensor feet
+    // Sensor feet
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
     public static final float ROBOT_FEET_HEIGHT = 4;
 
