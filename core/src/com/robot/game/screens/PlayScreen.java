@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,13 +18,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.interactiveObjects.InteractivePlatform;
-import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
-import com.robot.game.sprites.Crab;
-import com.robot.game.util.Assets;
-import com.robot.game.util.ObjectParser;
-import com.robot.game.util.ContactManager;
+import com.robot.game.util.*;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.Parallax;
 
@@ -35,6 +29,7 @@ import static com.robot.game.util.Constants.*;
 public class PlayScreen extends ScreenAdapter {
 
     private RobotGame game;
+    private GameData gameData;
 
     // robot
     private Robot robot;
@@ -72,6 +67,17 @@ public class PlayScreen extends ScreenAdapter {
 
     public PlayScreen(RobotGame game) {
         this.game = game;
+
+        if(!FileSaver.getFile().exists()) {
+            this.gameData = new GameData();
+            gameData.setDefaultData();
+            FileSaver.saveData(gameData);
+        }
+        else {
+            this.gameData = FileSaver.loadData();
+            System.out.println("Initial Lives " + gameData.getLives());
+            System.out.println("Initial Health " + gameData.getHealth());
+        }
     }
 
     @Override
@@ -108,7 +114,7 @@ public class PlayScreen extends ScreenAdapter {
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
         // create robot
-        this.robot = new Robot(world);
+        this.robot = new Robot(world, gameData);
 
         // create interactive platforms
         this.interactivePlatforms = objectParser.getInteractivePlatforms();
@@ -254,6 +260,8 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void hide() {
         System.out.println("hide");
+        // save the game every time it is closed
+        FileSaver.saveData(gameData);
         this.dispose();
     }
 
@@ -288,4 +296,7 @@ public class PlayScreen extends ScreenAdapter {
         return world;
     }
 
+    public GameData getGameData() {
+        return gameData;
+    }
 }

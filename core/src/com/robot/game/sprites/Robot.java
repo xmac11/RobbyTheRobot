@@ -10,9 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
-import com.robot.game.util.Assets;
-import com.robot.game.util.ContactManager;
-import com.robot.game.util.LadderClimbHandler;
+import com.robot.game.util.*;
 
 import static com.robot.game.util.Constants.*;
 
@@ -42,10 +40,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private float flickerStartTime;
     private float flickerElapsed;
 
-    public float health = 100;
+    // Game data
+    private GameData gameData;
 
-    public Robot(World world) {
+//    public float health = 100;
+
+    public Robot(World world, GameData gameData) {
         this.world = world;
+        this.gameData = gameData;
         createRobotB2d();
 
         //        this.ROBOT_IMPULSE = new Vector2(body.getMass() * ROBOT_MAX_HOR_SPEED, 0);
@@ -68,7 +70,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(800 / PPM, 384 / PPM); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(gameData.getPosition()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -116,9 +118,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 // platform moving horizontally to the right, apply force to robot so it moves with it
             else if(interactivePlatform.getBody().getLinearVelocity().x != 0 ) {
                 body.applyForceToCenter(-0.6f * body.getMass() * world.getGravity().y, 0, true);
-
-                System.out.println(body.getLinearVelocity().x);
-                System.out.println("Interactive " + interactivePlatform.getBody().getLinearVelocity().x);
             }
 
         }
@@ -138,11 +137,24 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             body.setLinearVelocity(body.getLinearVelocity().x, -5f);*/
 
         // attach robot sprite to body
-        //        robotSprite.setPosition(body.getPosition().x - ROBOT_RADIUS / PPM, body.getPosition().y - ROBOT_RADIUS / PPM);
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
-        //        System.out.println(body.getLinearVelocity());
-
+        if( Math.abs( (body.getPosition().x - CHECKPOINT1_LOCATION.x) * PPM )  < 8f && !gameData.isCheckPoint1Activated()) {
+            gameData.setPosition(CHECKPOINT1_LOCATION);
+            gameData.setCheckPoint1Activated(true);
+            FileSaver.saveData(gameData);
+            System.out.println("Checkpoint activated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        if(body.getPosition().y < 0) {
+            gameData.decreaseLives();
+            if(gameData.getLives() > 0) {
+                body.setTransform(gameData.getPosition(), 0);
+                System.out.println("Lives: " + gameData.getLives());
+            }
+            else {
+                gameData.setDefaultData();
+            }
+        }
     }
 
     private void handleInput(float delta) {
@@ -317,6 +329,10 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         if(flicker)
             this.flickerStartTime = TimeUtils.nanoTime();
+    }
+
+    public GameData getGameData() {
+        return gameData;
     }
 
     /*@Override

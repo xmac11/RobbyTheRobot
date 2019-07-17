@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
@@ -62,6 +63,9 @@ public final class Constants {
     public static final float ROBOT_OFFSET_Y = 5;
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
+    public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
+    public static final Vector2 CHECKPOINT1_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
+
 
         // Sensor feet
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;

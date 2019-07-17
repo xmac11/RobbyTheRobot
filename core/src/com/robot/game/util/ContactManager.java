@@ -226,8 +226,8 @@ public class ContactManager implements ContactListener {
                 else if (normal.x >= 1 / Math.sqrt(2))
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
-                robot.health --;
-                System.out.println("Robot health " + robot.health);
+                robot.getGameData().decreaseHealth(1);
+                System.out.println("Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }
         }
@@ -255,8 +255,8 @@ public class ContactManager implements ContactListener {
                 else if(normal.x <= -1/Math.sqrt(2))
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
 
-                robot.health --;
-                System.out.println("Robot health " + robot.health);
+                robot.getGameData().decreaseHealth(1);
+                System.out.println("Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }
         }
