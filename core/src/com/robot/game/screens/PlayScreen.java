@@ -64,10 +64,7 @@ public class PlayScreen extends ScreenAdapter {
     private Parallax parallaxBackground;
     private Parallax parallaxBarrels;
 
-    // Checkpoints
-    private boolean firstCheckpointActivated;
-    private boolean secondCheckpointActivated;
-    private boolean thirdCheckpointActivated;
+
 
     // debug lines for AI paths
     private ShapeRenderer shapeRenderer;
@@ -321,27 +318,4 @@ public class PlayScreen extends ScreenAdapter {
         return gameData;
     }
 
-    public boolean isFirstCheckpointActivated() {
-        return firstCheckpointActivated;
-    }
-
-    public void setFirstCheckpointActivated(boolean firstCheckpointActivated) {
-        this.firstCheckpointActivated = firstCheckpointActivated;
-    }
-
-    public boolean isSecondCheckpointActivated() {
-        return secondCheckpointActivated;
-    }
-
-    public void setSecondCheckpointActivated(boolean secondCheckpointActivated) {
-        this.secondCheckpointActivated = secondCheckpointActivated;
-    }
-
-    public boolean isThirdCheckpointActivated() {
-        return thirdCheckpointActivated;
-    }
-
-    public void setThirdCheckpointActivated(boolean thirdCheckpointActivated) {
-        this.thirdCheckpointActivated = thirdCheckpointActivated;
-    }
 }

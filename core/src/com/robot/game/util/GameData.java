@@ -10,6 +10,11 @@ public class GameData {
     private int lives;
     private Vector2 spawnLocation;
 
+    // Checkpoints
+    private boolean firstCheckpointActivated;
+    private boolean secondCheckpointActivated;
+    private boolean thirdCheckpointActivated;
+
     public int getHealth() {
         return health;
     }
@@ -34,6 +39,30 @@ public class GameData {
         this.spawnLocation = spawnLocation;
     }
 
+    public boolean isFirstCheckpointActivated() {
+        return firstCheckpointActivated;
+    }
+
+    public void setFirstCheckpointActivated(boolean firstCheckpointActivated) {
+        this.firstCheckpointActivated = firstCheckpointActivated;
+    }
+
+    public boolean isSecondCheckpointActivated() {
+        return secondCheckpointActivated;
+    }
+
+    public void setSecondCheckpointActivated(boolean secondCheckpointActivated) {
+        this.secondCheckpointActivated = secondCheckpointActivated;
+    }
+
+    public boolean isThirdCheckpointActivated() {
+        return thirdCheckpointActivated;
+    }
+
+    public void setThirdCheckpointActivated(boolean thirdCheckpointActivated) {
+        this.thirdCheckpointActivated = thirdCheckpointActivated;
+    }
+
     public void decreaseLives() {
         lives--;
     }
@@ -48,7 +77,7 @@ public class GameData {
 
     public void setDefaultData() {
         health = 100;
-        lives = 3;
+        lives = 1000;
         spawnLocation = SPAWN_LOCATION;
     }
 }
