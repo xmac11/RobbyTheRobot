@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static boolean debug_on = true;
+    public static final boolean DEBUG_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -75,10 +75,10 @@ public final class Constants {
         // Movement
     public static final float ROBOT_MAX_HOR_SPEED = 5;
     public static final float ROBOT_CLIMB_SPEED = 3;
+    public static final float ROBOT_JUMP_SPEED = 5;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
     public static final float ROBOT_COYOTE_TIMER = 0.15f;
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
-    public static final float ROBOT_JUMP_SPEED = 5.0f; // when on ground
 
         // Flickering
     public static final float FLICKER_TIME = 1;

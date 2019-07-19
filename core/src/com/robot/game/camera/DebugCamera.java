@@ -28,7 +28,7 @@ public class DebugCamera {
     public void update(float delta) {
 
         // reverse boolean when 'C' is pressed
-        if(debug_on && Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+        if(DEBUG_ON && Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             following = !following;
         }
 

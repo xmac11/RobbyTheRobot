@@ -21,18 +21,19 @@ public class LadderClimbHandler extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
         if(keycode == Input.Keys.UP && !robot.isFallingOffLadder()) {
+            Gdx.app.log("LadderClimbHandler", "climbing up");
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
-            Gdx.app.log("LadderClimbHandler", "climbing");
         }
-        if(keycode == Input.Keys.DOWN && !robot.isFallingOffLadder())
+        if(keycode == Input.Keys.DOWN && !robot.isFallingOffLadder()) {
+            Gdx.app.log("LadderClimbHandler", "climbing down");
             body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
+        }
 
         if(keycode == Input.Keys.SPACE && !robot.isFallingOffLadder()) {
+            Gdx.app.log("LadderClimbHandler", "jumped off ladder");
             robot.setFallingOffLadder(true);
             body.setGravityScale(1); // turn on gravity, then jump
-//            body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
             body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED);
-
         }
 
         return true;
@@ -40,8 +41,10 @@ public class LadderClimbHandler extends InputAdapter {
 
     @Override
     public boolean keyUp(int keycode) {
-        if((keycode == Input.Keys.UP || keycode == Input.Keys.DOWN) && !robot.isFallingOffLadder())
+        if((keycode == Input.Keys.UP || keycode == Input.Keys.DOWN) && !robot.isFallingOffLadder()) {
             body.setLinearVelocity(0, 0);
+            Gdx.app.log("LadderClimbHandler", "stopped climbing");
+        }
 
         return true;
     }

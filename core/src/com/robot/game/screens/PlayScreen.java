@@ -91,7 +91,7 @@ public class PlayScreen extends ScreenAdapter {
     public void show() {
         Gdx.app.log("PlayScreen", "show");
 
-        if(debug_on)
+        if(DEBUG_ON)
             this.shapeRenderer = new ShapeRenderer();
 
         // create camera
@@ -105,7 +105,7 @@ public class PlayScreen extends ScreenAdapter {
         // create box2d world
         this.world = new World(new Vector2(0, -9.81f /*0*/), true);
         world.setContactListener(new ContactManager());
-        if(debug_on)
+        if(DEBUG_ON)
             this.debugRenderer = new Box2DDebugRenderer();
 
         // create tiled objects
@@ -219,9 +219,10 @@ public class PlayScreen extends ScreenAdapter {
             }
         }
 
-        // render sprites
+        // render robot
         robot.draw(game.getBatch(), delta);
 
+        // render enemies
         for(Enemy enemy: enemies) {
             if(!enemy.isDestroyed()) {
                 enemy.draw(game.getBatch());
@@ -236,7 +237,7 @@ public class PlayScreen extends ScreenAdapter {
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
         //render box2d debug rectangles
-        if(debug_on) {
+        if(DEBUG_ON) {
             debugRenderer.render(world, viewport.getCamera().combined);
 
             shapeRenderer.setProjectionMatrix(camera.combined);
@@ -262,21 +263,7 @@ public class PlayScreen extends ScreenAdapter {
         }
 
         // finally, check if robot is dead
-        if(robot.isDead() && gameData.getLives() >= 0) {
-            Gdx.app.log("PlayScreen", "Player died");
-            FileSaver.saveData(gameData);
-            game.setScreen(new PlayScreen(game));
-
-            // with setTransform
-            /*robot.setDead(false);
-            robot.getBody().setTransform(gameData.getSpawnLocation(), 0);*/
-        }
-        else if(robot.isDead()) {
-            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
-            gameData.setDefaultData();
-            FileSaver.saveData(gameData);
-            game.setScreen(new PlayScreen(game));
-        }
+        checkIfDead();
     }
 
     @Override
@@ -285,7 +272,6 @@ public class PlayScreen extends ScreenAdapter {
         viewport.update(width, height, true);
         hud.getHudViewport().update(width, height, true);
         camera.update();
-        Gdx.app.log("Graphics", Gdx.graphics.getHeight() + "");
     }
 
     @Override
@@ -302,7 +288,7 @@ public class PlayScreen extends ScreenAdapter {
         tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
-        if(debug_on)
+        if(DEBUG_ON)
             debugRenderer.dispose();
     }
 
@@ -328,6 +314,24 @@ public class PlayScreen extends ScreenAdapter {
 
     public GameData getGameData() {
         return gameData;
+    }
+
+    private void checkIfDead() {
+        if(robot.isDead() && gameData.getLives() >= 0) {
+            Gdx.app.log("PlayScreen", "Player died");
+            FileSaver.saveData(gameData);
+            game.setScreen(new PlayScreen(game));
+
+            // with setTransform
+            /*robot.setDead(false);
+            robot.getBody().setTransform(gameData.getSpawnLocation(), 0);*/
+        }
+        else if(robot.isDead()) {
+            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+            gameData.setDefaultData();
+            FileSaver.saveData(gameData);
+            game.setScreen(new PlayScreen(game));
+        }
     }
 
 }
