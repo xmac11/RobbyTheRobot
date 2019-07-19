@@ -104,4 +104,18 @@ public final class Constants {
     public static final float CRAB_WIDTH = 24;
     public static final float CRAB_HEIGHT = 16;
 
+    // Hud
+    public static final float PADDING = 8;
+        // frame
+    public static final float FRAME_OFFSET = 32;
+    public static final float FRAME_WIDTH = 137.5f;
+    public static final float FRAME_HEIGHT = 32;
+        // bars
+    public static final float BAR_OFFSET_X = 38;
+    public static final float BAR_OFFSET_Y = 27;
+    public static final float BAR_WIDTH = 95;
+    public static final float BAR_HEIGHT = 20;
+
+
+
 }

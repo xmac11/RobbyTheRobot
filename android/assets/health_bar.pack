@@ -1,0 +1,26 @@
+
+health_bar.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+skin
+  rotate: false
+  xy: 1, 1
+  size: 232, 54
+  orig: 232, 54
+  offset: 0, 0
+  index: -1
+green
+  rotate: false
+  xy: 235, 23
+  size: 157, 32
+  orig: 157, 32
+  offset: 0, 0
+  index: -1
+red
+  rotate: false
+  xy: 394, 24
+  size: 83, 31
+  orig: 83, 31
+  offset: 0, 0
+  index: -1

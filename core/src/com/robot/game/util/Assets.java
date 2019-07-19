@@ -19,6 +19,7 @@ public class Assets {
     public CrabAssets crabAssets;
     public InteractivePlatformAssets interactivePlatformAssets;
     public ParallaxAssets parallaxAssets;
+    public HealthBarAssets healthBarAssets;
 
     private Assets() {
     }
@@ -42,6 +43,7 @@ public class Assets {
         this.crabAssets = new CrabAssets(atlas);
         this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
+        this.healthBarAssets = new HealthBarAssets(atlas);
     }
 
     public void dispose() {
@@ -123,5 +125,20 @@ public class Assets {
             this.backgroundTexture = new Texture(Gdx.files.internal("background.png"));
             this.barrelsTexture = new Texture(Gdx.files.internal("barrels.png"));
         }
+    }
+
+    public class HealthBarAssets {
+
+        public final TextureAtlas.AtlasRegion frame;
+        public final TextureAtlas.AtlasRegion greenBar;
+        public final TextureAtlas.AtlasRegion redBar;
+
+        private HealthBarAssets(TextureAtlas atlas) {
+            this.frame = atlas.findRegion("frame");
+            this.greenBar = atlas.findRegion("green");
+            this.redBar = atlas.findRegion("red");
+        }
+
+
     }
 }

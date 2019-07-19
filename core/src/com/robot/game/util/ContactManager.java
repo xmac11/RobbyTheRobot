@@ -1,13 +1,8 @@
 package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
@@ -226,7 +221,7 @@ public class ContactManager implements ContactListener {
                 else if (normal.x >= 1 / Math.sqrt(2))
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
-                robot.getGameData().decreaseHealth(1);
+                robot.getGameData().decreaseHealth(25);
                 Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }
@@ -255,7 +250,7 @@ public class ContactManager implements ContactListener {
                 else if(normal.x <= -1/Math.sqrt(2))
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
 
-                robot.getGameData().decreaseHealth(1);
+                robot.getGameData().decreaseHealth(25);
                 Gdx.app.log("ContactManager","Robot health " + robot.getGameData().getHealth());
                 robot.setFlicker(true);
             }

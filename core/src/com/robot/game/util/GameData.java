@@ -79,5 +79,9 @@ public class GameData {
         health = 100;
         lives = 1000;
         spawnLocation = SPAWN_LOCATION;
+
+        firstCheckpointActivated = false;
+        secondCheckpointActivated = false;
+        thirdCheckpointActivated = false;
     }
 }

@@ -147,12 +147,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             checkThirdCheckpoint();
         }
         // if player falls in the water
-        if(body.getPosition().y < 0) {
+        if(body.getPosition().y < 0 || gameData.getHealth() <= 0) {
             dead = true;
             // decrease lives by one
             gameData.decreaseLives();
+            // reset health
+            gameData.setHealth(100);
 
-            // if it still has lives
+            // if it still has lives (setTransform)
             /*if(gameData.getLives() > 0) {
                 body.setTransform(gameData.getSpawnLocation(), 0);
                 System.out.println("Lives: " + gameData.getLives());
