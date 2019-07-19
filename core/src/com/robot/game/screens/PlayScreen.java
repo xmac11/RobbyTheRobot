@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -97,7 +96,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // create camera
         this.camera = new OrthographicCamera();
-        this.viewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
+        this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
 
         // load map and set up map renderer
         this.tiledMap = new TmxMapLoader().load("level1.1.tmx");
@@ -235,7 +234,7 @@ public class PlayScreen extends ScreenAdapter {
         }
 
         // render Hud
-        hud.draw(game.getBatch(), 1);
+        hud.draw(game.getBatch());
 
         game.getBatch().end();
 

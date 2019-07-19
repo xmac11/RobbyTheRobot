@@ -77,7 +77,7 @@ public class GameData {
 
     public void setDefaultData() {
         health = 100;
-        lives = 1000;
+        lives = 3;
         spawnLocation = SPAWN_LOCATION;
 
         firstCheckpointActivated = false;

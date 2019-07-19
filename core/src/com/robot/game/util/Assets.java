@@ -2,11 +2,10 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Array;
 
 public class Assets {
@@ -20,7 +19,7 @@ public class Assets {
     public CrabAssets crabAssets;
     public InteractivePlatformAssets interactivePlatformAssets;
     public ParallaxAssets parallaxAssets;
-    public HealthBarAssets healthBarAssets;
+    public HudAssets hudAssets;
 
     private Assets() {
     }
@@ -44,7 +43,7 @@ public class Assets {
         this.crabAssets = new CrabAssets(atlas);
         this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
-        this.healthBarAssets = new HealthBarAssets(atlas);
+        this.hudAssets = new HudAssets(atlas);
     }
 
     public void dispose() {
@@ -128,25 +127,41 @@ public class Assets {
         }
     }
 
-    public class HealthBarAssets {
+    public class HudAssets {
 
-//        public final TextureAtlas.AtlasRegion frame;
-//        public final TextureAtlas.AtlasRegion greenBar;
-//        public final TextureAtlas.AtlasRegion redBar;
+        public final TextureAtlas.AtlasRegion frame;
+        public final TextureAtlas.AtlasRegion greenBar;
+        public final TextureAtlas.AtlasRegion redBar;
+        public final Texture lives;
+        public BitmapFont font;
+        public GlyphLayout glyphLayout;
 
-        public final Image frame;
-        public final Image greenBar;
-        public final Image redBar;
+        private HudAssets(TextureAtlas atlas) {
+            this.frame = atlas.findRegion("frame");
+            this.greenBar = atlas.findRegion("green");
+            this.redBar = atlas.findRegion("red");
+            this.lives = new Texture("lives.png"); // add this to atlas when finalized
 
-        private HealthBarAssets(TextureAtlas atlas) {
-//            this.frame = atlas.findRegion("frame");
-//            this.greenBar = atlas.findRegion("green");
-//            this.redBar = atlas.findRegion("red");
+            generateFont();
+        }
 
-            this.frame = new Image(atlas.findRegion("frame"));
-            this.greenBar = new Image(atlas.findRegion("green"));
-            this.redBar = new Image(atlas.findRegion("red"));
+        private void generateFont() {
+            FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("blow.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            fontParameter.size = 64;
+            fontParameter.color = Color.WHITE;
+            this.font = fontGenerator.generateFont(fontParameter);
 
+            //        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+            font.getData().setScale(1 / 64f);
+            font.setUseIntegerPositions(false);
+
+            String text = "x3";
+            this.glyphLayout = new GlyphLayout();
+            glyphLayout.setText(font, text);
+
+
+            fontGenerator.dispose();
         }
 
 

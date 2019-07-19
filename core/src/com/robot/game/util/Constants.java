@@ -120,6 +120,10 @@ public final class Constants {
     public static final float BAR_OFFSET_Y = 27;
     public static final float BAR_WIDTH = 95;
     public static final float BAR_HEIGHT = 20;
+        // lives
+    public static final float LIVES_WIDTH = 25.3f;
+    public static final float LIVES_HEIGHT = 32; // make this a multiple of PPM
+
 
 
 }

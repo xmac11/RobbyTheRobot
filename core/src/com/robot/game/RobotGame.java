@@ -1,6 +1,7 @@
 package com.robot.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
@@ -13,6 +14,7 @@ public class RobotGame extends Game {
 
 	@Override
 	public void create () {
+		Gdx.app.log("RobotGame", "create");
 		// load assets
 		Assets.getInstance().load();
 
@@ -27,11 +29,13 @@ public class RobotGame extends Game {
 
 	@Override
 	public void resize(int width, int height) {
-//		super.resize(width, height);
+		Gdx.app.log("RobotGame", "resize");
+		super.resize(width, height);
 	}
 
 	@Override
 	public void dispose () {
+		Gdx.app.log("RobotGame", "dispose");
 		super.dispose();
 		batch.dispose();
 		Assets.getInstance().dispose();

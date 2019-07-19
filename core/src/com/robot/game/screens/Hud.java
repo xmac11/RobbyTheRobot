@@ -1,8 +1,11 @@
 package com.robot.game.screens;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.util.Assets;
@@ -10,37 +13,38 @@ import com.robot.game.util.GameData;
 
 import static com.robot.game.util.Constants.*;
 
-public class Hud extends Actor {
+public class Hud {
 
     private PlayScreen playScreen;
     private GameData gameData;
     private Viewport hudViewport;
+    private TextureRegion frame;
+    private TextureRegion greenBar;
+    private TextureRegion redBar;
 
-//    private TextureRegion frame;
-//    private TextureRegion greenBar;
-//    private TextureRegion redBar;
-
-    public Image frame;
-    public Image greenBar;
-    public Image redBar;
+    private Texture lives;
+    private BitmapFont font;
+    private GlyphLayout glyphLayout;
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.gameData = playScreen.getGameData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
 
-        this.frame = Assets.getInstance().healthBarAssets.frame;
-        this.greenBar = Assets.getInstance().healthBarAssets.greenBar;
-        this.redBar = Assets.getInstance().healthBarAssets.redBar;
+        this.frame = Assets.getInstance().hudAssets.frame;
+        this.greenBar = Assets.getInstance().hudAssets.greenBar;
+        this.redBar = Assets.getInstance().hudAssets.redBar;
+        this.lives = Assets.getInstance().hudAssets.lives;
+        this.font = Assets.getInstance().hudAssets.font;
+        this.glyphLayout = Assets.getInstance().hudAssets.glyphLayout;
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw(SpriteBatch batch) {
 
         batch.setProjectionMatrix(hudViewport.getCamera().combined);
 
         // draw frame
-        /*batch.draw(frame,
+        batch.draw(frame,
                 PADDING / PPM,
                 hudViewport.getWorldHeight() - (FRAME_OFFSET + PADDING) / PPM,
                 FRAME_WIDTH / PPM,
@@ -51,29 +55,26 @@ public class Hud extends Actor {
                 (BAR_OFFSET_X + PADDING) / PPM,
                 hudViewport.getWorldHeight() - (BAR_OFFSET_Y + PADDING) / PPM,
                 (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
-                BAR_HEIGHT / PPM);*/
-
-        frame.setBounds(PADDING / PPM,
-                hudViewport.getWorldHeight() - (FRAME_OFFSET + PADDING) / PPM,
-                FRAME_WIDTH / PPM,
-                FRAME_HEIGHT / PPM);
-        frame.draw(batch, 1);
-
-        if(gameData.getHealth() >= 50) {
-            greenBar.setBounds((BAR_OFFSET_X + PADDING) / PPM,
-                    hudViewport.getWorldHeight() - (BAR_OFFSET_Y + PADDING) / PPM,
-                    (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
-                    BAR_HEIGHT / PPM);
-            greenBar.draw(batch, 1);
-        }
-        else {
-            redBar.setBounds((BAR_OFFSET_X + PADDING) / PPM,
-                hudViewport.getWorldHeight() - (BAR_OFFSET_Y + PADDING) / PPM,
-                (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
                 BAR_HEIGHT / PPM);
 
-            redBar.draw(batch, 1);
-        }
+        batch.draw(lives,
+                hudViewport.getWorldWidth() - (PADDING + 2.5f * LIVES_WIDTH) / PPM,
+                hudViewport.getWorldHeight() - (PADDING + LIVES_HEIGHT) / PPM,
+                LIVES_WIDTH / PPM,
+                LIVES_HEIGHT / PPM);
+
+//        float scale = Gdx.graphics.getHeight() * 32 / SCREEN_HEIGHT;
+//        System.out.println(scale);
+//        font.getData().setScale(1f / scale);
+        font.draw(batch,
+                "x" + gameData.getLives(),
+                hudViewport.getWorldWidth() - PADDING / PPM - glyphLayout.width / 2,
+                hudViewport.getWorldHeight() - PADDING / PPM - glyphLayout.height / 2,
+                /*LIVES_WIDTH / PPM*/0,
+                Align.center,
+                false);
+
+//        System.out.println(glyphLayout.width + " " + glyphLayout.height);
     }
 
     public Viewport getHudViewport() {
