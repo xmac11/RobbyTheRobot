@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
+import com.robot.game.util.FileSaver;
+import com.robot.game.util.GameData;
 
 public class RobotGame extends Game {
 
@@ -37,6 +39,12 @@ public class RobotGame extends Game {
 
 	public SpriteBatch getBatch() {
 		return batch;
+	}
+
+	public void respawn(GameData gameData) {
+		// first save game data, then restart game
+		FileSaver.saveData(gameData);
+		setScreen(new PlayScreen(this));
 	}
 
 }

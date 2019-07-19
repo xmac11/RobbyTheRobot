@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.interactiveObjects.Spike;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 
@@ -180,13 +181,28 @@ public class ContactManager implements ContactListener {
 
     private void robotSpikesBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
+        Spike spike;
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
-            Gdx.app.log("ContactManager","Robot died from spikes");
+            spike = (Spike) fixB.getUserData();
+            Gdx.app.log("ContactManager","Robot hurt from spikes");
         }
         else {
             robot = (Robot) fixB.getUserData();
-            Gdx.app.log("ContactManager","Robot died from spikes");
+            spike = (Spike) fixA.getUserData();
+            Gdx.app.log("ContactManager","Robot hurt from spikes");
+        }
+
+        if(!robot.isInvulnerable()) {
+            robot.getGameData().decreaseHealth(20);
+            robot.setInvulnerable(true);
+        }
+        Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth());
+        robot.setFlicker(true);
+
+        if(spike.mightBeWalked()) {
+            robot.setWalkingOnSpikes(true);
+//            robot.getGameData().setSpawnLocation(spike.getRespawnLocation());
         }
     }
 
@@ -305,6 +321,11 @@ public class ContactManager implements ContactListener {
                 robotMovingPlatEnd(fixA, fixB);
                 break;
 
+            // robot - spikes
+            case ROBOT_CATEGORY | SPIKE_CATEGORY:
+                robotSpikesEnd(fixA, fixB);
+                break;
+
             /*// feet
             case ROBOT_FEET_CATEGORY | GROUND_CATEGORY:
             case ROBOT_FEET_CATEGORY | FALLING_PLATFORM_CATEGORY:
@@ -369,6 +390,21 @@ public class ContactManager implements ContactListener {
         // remove the robot from the moving platform
         robot.setOnInteractivePlatform(null, false);
         Gdx.app.log("ContactManager", "Off moving platform");
+    }
+
+    private void robotSpikesEnd(Fixture fixA, Fixture fixB) {
+        Robot robot;
+        Spike spike;
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            spike = (Spike) fixB.getUserData();
+            Gdx.app.log("ContactManager","Spike collision ended");
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            spike = (Spike) fixA.getUserData();
+            Gdx.app.log("ContactManager","Spike collision ended");
+        }
     }
 
     private void feetOffObject(Fixture fixA, Fixture fixB) {

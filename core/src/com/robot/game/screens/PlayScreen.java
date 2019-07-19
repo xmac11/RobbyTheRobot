@@ -114,6 +114,7 @@ public class PlayScreen extends ScreenAdapter {
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
         this.backgroundWallLayer = new int[] {1};
         this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 10};
@@ -316,11 +317,14 @@ public class PlayScreen extends ScreenAdapter {
         return gameData;
     }
 
+    public RobotGame getGame() {
+        return game;
+    }
+
     private void checkIfDead() {
         if(robot.isDead() && gameData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
-            FileSaver.saveData(gameData);
-            game.setScreen(new PlayScreen(game));
+            game.respawn(gameData);
 
             // with setTransform
             /*robot.setDead(false);
@@ -329,8 +333,7 @@ public class PlayScreen extends ScreenAdapter {
         else if(robot.isDead()) {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
             gameData.setDefaultData();
-            FileSaver.saveData(gameData);
-            game.setScreen(new PlayScreen(game));
+            game.respawn(gameData);
         }
     }
 

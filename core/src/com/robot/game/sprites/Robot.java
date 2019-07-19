@@ -25,8 +25,13 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // state booleans
     private boolean onLadder;
     private boolean fallingOffLadder;
-    private boolean velocitySetToZero;
+    private boolean walkingOnSpikes;
     private boolean dead;
+
+    // invulnerability
+    private boolean invulnerable;
+    private float invulnerableStartTime;
+    private float invulnerableElapsed;
 
     // jump timers
     private float jumpTimeout;
@@ -122,18 +127,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // apply additional force when object is falling in order to land faster
         if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform && !onLadder) {
             body.applyForceToCenter(0, -7.5f, true);
-            Gdx.app.log("Robot", "Vertical force is applied");
         }
-
-        // clamp velocity vector
-        /*if(body.getLinearVelocity().len() > 7.0f)
-            body.setLinearVelocity(body.getLinearVelocity().limit(7.0f));*/
-
-        // clamp vY
-        /*if(body.getLinearVelocity().y > 5f)
-            body.setLinearVelocity(body.getLinearVelocity().x, 5f);
-        if(body.getLinearVelocity().y < -5f)
-            body.setLinearVelocity(body.getLinearVelocity().x, -5f);*/
 
         // attach robot sprite to body
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
@@ -149,22 +143,25 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         else if(!gameData.isThirdCheckpointActivated()) {
             checkThirdCheckpoint();
         }
-        // if player falls in the water
-        if(body.getPosition().y < 0 || gameData.getHealth() <= 0) {
+
+        // if robot is invulnerable
+        if(isInvulnerable()) {
+            // check how much time has passed
+            invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
+            // if more than 1 second, disable it
+            if(invulnerableElapsed >= 1) {
+                setInvulnerable(false);
+                invulnerableElapsed = 0;
+            }
+        }
+
+        // conditions for player to die
+        if((body.getPosition().y < 0 || gameData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
             dead = true;
             // decrease lives by one
             gameData.decreaseLives();
             // reset health
             gameData.setHealth(100);
-
-            // if it still has lives (setTransform)
-            /*if(gameData.getLives() > 0) {
-                body.setTransform(gameData.getSpawnLocation(), 0);
-                System.out.println("Lives: " + gameData.getLives());
-            }
-            else {
-                gameData.setDefaultData();
-            }*/
         }
     }
 
@@ -348,6 +345,31 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.dead = dead;
     }
 
+    public boolean isInvulnerable() {
+        return invulnerable;
+    }
+
+    public void setInvulnerable(boolean invulnerable) {
+        this.invulnerable = invulnerable;
+
+        if(invulnerable) {
+            Gdx.app.log("Robot", "Invulnerability started");
+            this.invulnerableStartTime = TimeUtils.nanoTime();
+        }
+        else {
+            Gdx.app.log("Robot", "Invulnerability ended");
+        }
+    }
+
+    public boolean isWalkingOnSpikes() {
+        return walkingOnSpikes;
+    }
+
+    public void setWalkingOnSpikes(boolean walkingOnSpikes) {
+        this.walkingOnSpikes = walkingOnSpikes;
+    }
+
+    // Checkpoints
     private void checkFirstCheckpoint() {
         if( Math.abs( (body.getPosition().x - FIRST_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
             Gdx.app.log("Robot","First checkpoint activated!");

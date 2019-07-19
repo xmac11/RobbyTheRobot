@@ -28,7 +28,7 @@ public class Crab extends Enemy {
     public void update(float delta) {
         if(flagToKill) {
             dead = true;
-            if(deadElapsed >= 1.2f) {
+            if(deadElapsed >= DEAD_TIMER) {
                 destroyBody();
                 flagToKill = false;
             }

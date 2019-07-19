@@ -9,10 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.robot.game.interactiveObjects.FallingPlatform;
-import com.robot.game.interactiveObjects.InteractivePlatform;
-import com.robot.game.interactiveObjects.Ladder;
-import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.interactiveObjects.*;
 import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Crab;
@@ -153,9 +150,11 @@ public class ObjectParser {
             fixtureDef.filter.categoryBits = ENEMY_CATEGORY;
             fixtureDef.filter.maskBits = ENEMY_MASK;
         }
+        // spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
             fixtureDef.filter.categoryBits = SPIKE_CATEGORY;
             fixtureDef.filter.maskBits = SPIKE_MASK;
+            fixtureDef.isSensor = true;
         }
         // ground
         else {
@@ -193,7 +192,7 @@ public class ObjectParser {
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY))
-            body.createFixture(fixtureDef).setUserData(SPIKE_PROPERTY);
+            new Spike(body, fixtureDef, object);
         // create ground
         else {
             body.createFixture(fixtureDef).setUserData("ground");

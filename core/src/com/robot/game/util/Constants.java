@@ -26,6 +26,7 @@ public final class Constants {
     public static final String LADDER_OBJECT = "Ladder obj";
     public static final String BAT_OBJECT = "Bat obj";
     public static final String CRAB_OBJECT = "Crab obj";
+    public static final String SPIKE_OBJECT = "Spike obj";
 
     // COLLISIONS
 
@@ -67,8 +68,10 @@ public final class Constants {
     public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4208 / PPM, 208 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;
 
+        // Spike respawn locations
+//    public static final Vector2 SPIKE_RESPAWN_1 = new Vector2(1120 / PPM, 336 / PPM);
 
-    // Sensor feet
+        // Sensor feet
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
     public static final float ROBOT_FEET_HEIGHT = 4;
 
@@ -81,7 +84,7 @@ public final class Constants {
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
 
         // Flickering
-    public static final float FLICKER_TIME = 1;
+    public static final float FLICKER_TIME = 0.75f;
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";
@@ -95,8 +98,10 @@ public final class Constants {
     public static final String BAT_PROPERTY = "bat";
     public static final String CRAB_PROPERTY = "crab";
     public static final String SPIKE_PROPERTY = "spike";
+    public static final float DEAD_TIMER = 1;
 
-        // Bat
+
+    // Bat
     public static final float BAT_WIDTH = 28;
     public static final float BAT_HEIGHT = 16;
 
@@ -115,7 +120,6 @@ public final class Constants {
     public static final float BAR_OFFSET_Y = 27;
     public static final float BAR_WIDTH = 95;
     public static final float BAR_HEIGHT = 20;
-
 
 
 }
