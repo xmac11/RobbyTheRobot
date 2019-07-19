@@ -12,8 +12,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -70,7 +72,6 @@ public class PlayScreen extends ScreenAdapter {
     // debug lines for AI paths
     private ShapeRenderer shapeRenderer;
 
-
     public PlayScreen(RobotGame game) {
         this.game = game;
 
@@ -96,7 +97,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // create camera
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
+        this.viewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
 
         // load map and set up map renderer
         this.tiledMap = new TmxMapLoader().load("level1.1.tmx");
@@ -117,7 +118,7 @@ public class PlayScreen extends ScreenAdapter {
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
         this.backgroundWallLayer = new int[] {1};
-        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 10};
+        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 11};
 
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
@@ -133,10 +134,13 @@ public class PlayScreen extends ScreenAdapter {
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
+        // create parallax
         this.parallaxBackground = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
         this.parallaxBarrels = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
 
+        // create hud
         this.hud = new Hud(this);
+
     }
 
     private void update(float delta) {
@@ -231,7 +235,7 @@ public class PlayScreen extends ScreenAdapter {
         }
 
         // render Hud
-        hud.draw(game.getBatch());
+        hud.draw(game.getBatch(), 1);
 
         game.getBatch().end();
 

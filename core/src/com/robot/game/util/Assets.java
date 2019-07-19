@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 
 public class Assets {
@@ -129,14 +130,23 @@ public class Assets {
 
     public class HealthBarAssets {
 
-        public final TextureAtlas.AtlasRegion frame;
-        public final TextureAtlas.AtlasRegion greenBar;
-        public final TextureAtlas.AtlasRegion redBar;
+//        public final TextureAtlas.AtlasRegion frame;
+//        public final TextureAtlas.AtlasRegion greenBar;
+//        public final TextureAtlas.AtlasRegion redBar;
+
+        public final Image frame;
+        public final Image greenBar;
+        public final Image redBar;
 
         private HealthBarAssets(TextureAtlas atlas) {
-            this.frame = atlas.findRegion("frame");
-            this.greenBar = atlas.findRegion("green");
-            this.redBar = atlas.findRegion("red");
+//            this.frame = atlas.findRegion("frame");
+//            this.greenBar = atlas.findRegion("green");
+//            this.redBar = atlas.findRegion("red");
+
+            this.frame = new Image(atlas.findRegion("frame"));
+            this.greenBar = new Image(atlas.findRegion("green"));
+            this.redBar = new Image(atlas.findRegion("red"));
+
         }
 
 
