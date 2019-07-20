@@ -2,10 +2,14 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Array;
 
 public class Assets {
@@ -29,13 +33,26 @@ public class Assets {
     }
 
     public void load() {
+        // load atlas and textures
         assetManager.load("sprites.pack", TextureAtlas.class);
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
+
+        /* Load fonts following the procedure described in the LibGDX documentation: https://github.com/libgdx/libgdx/wiki/Managing-your-assets */
+        FileHandleResolver resolver = new InternalFileHandleResolver();
+        assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter font = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        font.fontFileName = "blow.ttf";
+        font.fontParameters.size = 64;
+        font.fontParameters.color = Color.WHITE;
+        assetManager.load(font.fontFileName, BitmapFont.class, font);
+
         assetManager.finishLoading();
 
         // create texture atlas
-        TextureAtlas atlas = new TextureAtlas("sprites.pack");
+        TextureAtlas atlas = assetManager.get("sprites.pack");
 
         // create assets
         this.robotAssets = new RobotAssets(atlas);
@@ -47,8 +64,8 @@ public class Assets {
     }
 
     public void dispose() {
-        assetManager.dispose();
         Gdx.app.log("Assets", "AssetManager was disposed");
+        assetManager.dispose();
     }
 
     // Robot assets
@@ -122,11 +139,12 @@ public class Assets {
         public final Texture barrelsTexture;
 
         private ParallaxAssets() {
-            this.backgroundTexture = new Texture(Gdx.files.internal("background.png"));
-            this.barrelsTexture = new Texture(Gdx.files.internal("barrels.png"));
+            this.backgroundTexture = assetManager.get("background.png");
+            this.barrelsTexture = assetManager.get("barrels.png");
         }
     }
 
+    // Hud assets
     public class HudAssets {
 
         public final TextureAtlas.AtlasRegion frame;
@@ -142,28 +160,17 @@ public class Assets {
             this.redBar = atlas.findRegion("red");
             this.lives = new Texture("lives.png"); // add this to atlas when finalized
 
-            generateFont();
-        }
-
-        private void generateFont() {
-            FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("blow.ttf"));
-            FreeTypeFontGenerator.FreeTypeFontParameter fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-            fontParameter.size = 64;
-            fontParameter.color = Color.WHITE;
-            this.font = fontGenerator.generateFont(fontParameter);
-
-            //        font.getRegion().getTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+            this.font = assetManager.get("blow.ttf", BitmapFont.class);
             font.getData().setScale(1 / 64f);
             font.setUseIntegerPositions(false);
 
-            String text = "x3";
+            // GlyphLayout for vertical alignment
             this.glyphLayout = new GlyphLayout();
+            String text = "x3";
             glyphLayout.setText(font, text);
 
-
-            fontGenerator.dispose();
         }
-
-
     }
+
+
 }

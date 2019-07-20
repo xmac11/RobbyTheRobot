@@ -22,7 +22,7 @@ public class Hud {
     private TextureRegion greenBar;
     private TextureRegion redBar;
 
-    private Texture lives;
+    private Texture lives; // this will become a TextureRegion when finalized
     private BitmapFont font;
     private GlyphLayout glyphLayout;
 
@@ -57,15 +57,14 @@ public class Hud {
                 (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
                 BAR_HEIGHT / PPM);
 
+        // draw lives image
         batch.draw(lives,
                 hudViewport.getWorldWidth() - (PADDING + 2.5f * LIVES_WIDTH) / PPM,
                 hudViewport.getWorldHeight() - (PADDING + LIVES_HEIGHT) / PPM,
                 LIVES_WIDTH / PPM,
                 LIVES_HEIGHT / PPM);
 
-//        float scale = Gdx.graphics.getHeight() * 32 / SCREEN_HEIGHT;
-//        System.out.println(scale);
-//        font.getData().setScale(1f / scale);
+        // draw lives font (label)
         font.draw(batch,
                 "x" + gameData.getLives(),
                 hudViewport.getWorldWidth() - PADDING / PPM - glyphLayout.width / 2,
