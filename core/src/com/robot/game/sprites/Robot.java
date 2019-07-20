@@ -402,11 +402,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private void toggleDebugCheckpoints() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
             Gdx.app.log("Robot", "Checkpoints deleted");
-            gameData.setSpawnLocation(SPAWN_LOCATION);
-            gameData.setFirstCheckpointActivated(false);
-            gameData.setSecondCheckpointActivated(false);
-            gameData.setThirdCheckpointActivated(false);
-            FileSaver.saveData(gameData);
+            FileSaver.getFile().delete();
+            playScreen.setGameDataDeleted(true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("Robot", "First checkpoint set");

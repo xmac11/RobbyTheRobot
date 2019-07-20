@@ -33,6 +33,7 @@ public class PlayScreen extends ScreenAdapter {
 
     // game data
     private GameData gameData;
+    private boolean gameDataDeleted;
 
     // robot
     private Robot robot;
@@ -284,7 +285,9 @@ public class PlayScreen extends ScreenAdapter {
     public void hide() {
         Gdx.app.log("PlayScreen", "hide");
         // save the game every time it is closed
-        FileSaver.saveData(gameData);
+        if(!gameDataDeleted) {
+            FileSaver.saveData(gameData);
+        }
         this.dispose();
     }
 
@@ -324,6 +327,10 @@ public class PlayScreen extends ScreenAdapter {
 
     public RobotGame getGame() {
         return game;
+    }
+
+    public void setGameDataDeleted(boolean gameDataDeleted) {
+        this.gameDataDeleted = gameDataDeleted;
     }
 
     private void checkIfDead() {
