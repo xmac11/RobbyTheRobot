@@ -3,6 +3,7 @@ package com.robot.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.robot.game.screens.LoadingScreen;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.FileSaver;
@@ -19,7 +20,7 @@ public class RobotGame extends Game {
 		Assets.getInstance().load();
 
 		this.batch = new SpriteBatch();
-		super.setScreen(new PlayScreen(this));
+		super.setScreen(new LoadingScreen(this));
 	}
 
 	@Override

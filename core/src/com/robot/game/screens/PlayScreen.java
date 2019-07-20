@@ -169,6 +169,9 @@ public class PlayScreen extends ScreenAdapter {
             Enemy enemy = enemies.get(i);
             if(enemy.getBody().isActive())
                 enemy.update(delta);
+            // for path-following bat that is activated when player gets near it
+            else if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
+                enemy.getBody().setActive(true);
             if(enemy.isDestroyed())
                 enemies.removeIndex(i);
         }

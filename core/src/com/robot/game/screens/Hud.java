@@ -35,8 +35,8 @@ public class Hud {
         this.greenBar = Assets.getInstance().hudAssets.greenBar;
         this.redBar = Assets.getInstance().hudAssets.redBar;
         this.lives = Assets.getInstance().hudAssets.lives;
-        this.font = Assets.getInstance().hudAssets.font;
-        this.glyphLayout = Assets.getInstance().hudAssets.glyphLayout;
+        this.font = Assets.getInstance().fontAssets.font;
+        this.glyphLayout = Assets.getInstance().fontAssets.glyphLayout;
     }
 
     public void draw(SpriteBatch batch) {

@@ -1,0 +1,19 @@
+
+loading_bar.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+loading
+  rotate: false
+  xy: 1, 1
+  size: 489, 47
+  orig: 489, 47
+  offset: 0, 0
+  index: -1
+loading_green
+  rotate: false
+  xy: 492, 15
+  size: 470, 33
+  orig: 470, 33
+  offset: 0, 0
+  index: -1

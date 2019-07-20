@@ -18,6 +18,8 @@ public class Assets {
 
     public AssetManager assetManager = new AssetManager();
 
+    public LoadingBarAssets loadingBarAssets;
+    public FontAssets fontAssets;
     public RobotAssets robotAssets;
     public BatAssets batAssets;
     public CrabAssets crabAssets;
@@ -33,12 +35,12 @@ public class Assets {
     }
 
     public void load() {
-        // load atlas and textures
-        assetManager.load("sprites.pack", TextureAtlas.class);
-        assetManager.load("background.png", Texture.class);
-        assetManager.load("barrels.png", Texture.class);
 
-        /* Load fonts following the procedure described in the LibGDX documentation: https://github.com/libgdx/libgdx/wiki/Managing-your-assets */
+        // load synchronously
+        assetManager.load("loading_bar.pack", TextureAtlas.class);
+
+        /* Load fonts following the procedure described in the LibGDX documentation:
+         * https://github.com/libgdx/libgdx/wiki/Managing-your-assets */
         FileHandleResolver resolver = new InternalFileHandleResolver();
         assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
@@ -49,7 +51,28 @@ public class Assets {
         font.fontParameters.color = Color.WHITE;
         assetManager.load(font.fontFileName, BitmapFont.class, font);
 
-        assetManager.finishLoading();
+        assetManager.finishLoading(); // blocking statement
+        createLoadingScreenAssets();
+
+        // load asynchronously
+        assetManager.load("sprites.pack", TextureAtlas.class);
+        assetManager.load("background.png", Texture.class);
+        assetManager.load("barrels.png", Texture.class);
+    }
+
+    // creates assets for loading screen
+    public void createLoadingScreenAssets() {
+
+        // create texture atlas
+        TextureAtlas atlas = assetManager.get("loading_bar.pack");
+
+        // create assets
+        this.loadingBarAssets = new LoadingBarAssets(atlas);
+        this.fontAssets = new FontAssets();
+    }
+
+    // creates all assets needed
+    public void createGameAssets() {
 
         // create texture atlas
         TextureAtlas atlas = assetManager.get("sprites.pack");
@@ -151,8 +174,7 @@ public class Assets {
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
         public final Texture lives;
-        public BitmapFont font;
-        public GlyphLayout glyphLayout;
+
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
@@ -160,6 +182,25 @@ public class Assets {
             this.redBar = atlas.findRegion("red");
             this.lives = new Texture("lives.png"); // add this to atlas when finalized
 
+        }
+    }
+
+    // Loading bar assets
+    public class LoadingBarAssets {
+        public final TextureAtlas.AtlasRegion frame;
+        public final TextureAtlas.AtlasRegion bar;
+
+        private  LoadingBarAssets(TextureAtlas atlas) {
+            this.frame = atlas.findRegion("loading");
+            this.bar = atlas.findRegion("loading_green");
+        }
+    }
+
+    public class FontAssets {
+        public BitmapFont font;
+        public GlyphLayout glyphLayout;
+
+        private FontAssets() {
             this.font = assetManager.get("blow.ttf", BitmapFont.class);
             font.getData().setScale(1 / 64f);
             font.setUseIntegerPositions(false);
@@ -168,7 +209,6 @@ public class Assets {
             this.glyphLayout = new GlyphLayout();
             String text = "x3";
             glyphLayout.setText(font, text);
-
         }
     }
 

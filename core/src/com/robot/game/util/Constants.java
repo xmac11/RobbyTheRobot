@@ -124,6 +124,17 @@ public final class Constants {
     public static final float LIVES_WIDTH = 25.3f;
     public static final float LIVES_HEIGHT = 32; // make this a multiple of PPM
 
+    // Loading screen
+        // frame
+    public static final float LOADING_FRAME_WIDTH = 550;
+    public static final float LOADING_FRAME_HEIGHT = 53;
+        // bar
+    public static final float LOADING_BAR_OFFSET_X = 265;
+    public static final float LOADING_BAR_OFFSET_Y = 19.5f;
+    public static final float LOADING_BAR_WIDTH = 530;
+    public static final float LOADING_BAR_HEIGHT = 40;
+        // progress (font)
+    public static final float LOADING_FONT_OFFSET_Y = 11.5f;
 
 
 }

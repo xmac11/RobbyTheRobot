@@ -18,6 +18,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
 
         body.createFixture(fixtureDef).setUserData(this);
 
+        if(object.getProperties().containsKey("waitForPlayer")) {
+            body.setActive(false);
+        }
+
         // set the size of the bat sprite
         setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
     }
