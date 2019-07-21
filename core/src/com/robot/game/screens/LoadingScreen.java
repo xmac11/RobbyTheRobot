@@ -44,7 +44,7 @@ public class LoadingScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(!Assets.getInstance().assetManager.update()) {
-            Gdx.app.log("LoadingScreen", "Loading... " + 1.2f * Assets.getInstance().assetManager.getProgress() * 100 + "%");
+            Gdx.app.log("LoadingScreen", "Loading... " + (int) (1.2f * Assets.getInstance().assetManager.getProgress() * 100) + "%");
 
             game.getBatch().setProjectionMatrix(loadingScreenViewport.getCamera().combined);
 
@@ -90,7 +90,6 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         loadingScreenViewport.update(width, height, true);
-
     }
 
     @Override

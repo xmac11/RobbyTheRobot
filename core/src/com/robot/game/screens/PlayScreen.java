@@ -20,6 +20,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
@@ -43,6 +44,9 @@ public class PlayScreen extends ScreenAdapter {
 
     // enemies
     private DelayedRemovalArray<Enemy> enemies;
+
+    // collectables
+    private DelayedRemovalArray<Collectable> collectables;
 
     // camera variables
     private OrthographicCamera camera;
@@ -115,9 +119,10 @@ public class PlayScreen extends ScreenAdapter {
         layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(CRAB_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
         this.backgroundWallLayer = new int[] {1};
-        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 11};
+        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 10, 12};
 
         this.objectParser = new ObjectParser(world, layersObjectArray);
 
@@ -127,8 +132,11 @@ public class PlayScreen extends ScreenAdapter {
         // create interactive platforms
         this.interactivePlatforms = objectParser.getInteractivePlatforms();
 
-        // create enemy
+        // create enemies
         this.enemies = objectParser.getEnemies();
+
+        // create collectables
+        this.collectables = objectParser.getCollectables();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -155,8 +163,8 @@ public class PlayScreen extends ScreenAdapter {
             //                platform.getBody().setActive(false);
 
             // if platform is active, update it
-            if(platform.getBody().isActive())
-                platform.update(delta);
+            platform.update(delta);
+
             // if platform is destroyed, remove from array
             if(platform.isDestroyed())
                 interactivePlatforms.removeIndex(i);
@@ -168,16 +176,26 @@ public class PlayScreen extends ScreenAdapter {
         // update enemies
         for(int i = 0; i < enemies.size; i++) {
             Enemy enemy = enemies.get(i);
-            if(enemy.getBody().isActive())
-                enemy.update(delta);
-            // for path-following bat that is activated when player gets near it
-            else if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
+            enemy.update(delta);
+
+            // for path-following bat that is activated when the robot gets near it
+           if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
                 enemy.getBody().setActive(true);
+
             if(enemy.isDestroyed())
                 enemies.removeIndex(i);
         }
 
-        // update camera
+        // update collectables
+        for(int i = 0; i < collectables.size; i++) {
+            Collectable collectable = collectables.get(i);
+            collectable.update(delta);
+
+            if(collectable.isDestroyed())
+                collectables.removeIndex(i);
+        }
+
+            // update camera
         debugCamera.update(delta);
 //        hud.getHudViewport().getCamera().update();
 
@@ -192,7 +210,8 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        this.update(delta); // perform all necessary updates
+        // first perform all necessary updates
+        this.update(delta);
 
         // clear game screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -236,9 +255,14 @@ public class PlayScreen extends ScreenAdapter {
             }
         }
 
+        // render collectables
+        for(Collectable collectable: collectables) {
+            if(!collectable.isDestroyed())
+                collectable.draw(game.getBatch());
+        }
+
         // render Hud
         hud.draw(game.getBatch());
-
         game.getBatch().end();
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);
@@ -265,7 +289,6 @@ public class PlayScreen extends ScreenAdapter {
                 }
 
             }
-
             shapeRenderer.end();
         }
 
@@ -284,7 +307,7 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void hide() {
         Gdx.app.log("PlayScreen", "hide");
-        // save the game every time it is closed
+        // unless checkpoints are wiped out, save the game every time it is closed
         if(!gameDataDeleted) {
             FileSaver.saveData(gameData);
         }

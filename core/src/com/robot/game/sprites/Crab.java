@@ -27,11 +27,8 @@ public class Crab extends Enemy {
     @Override
     public void update(float delta) {
         if(flagToKill) {
-            dead = true;
-            if(deadElapsed >= DEAD_TIMER) {
+            if(deadElapsed >= DEAD_TIMER)
                 destroyBody();
-                flagToKill = false;
-            }
             else
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
         }
@@ -56,7 +53,7 @@ public class Crab extends Enemy {
     public void draw(Batch batch) {
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
 
-        if(!dead) {
+        if(!flagToKill) {
             textureRegion = Assets.getInstance().crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
         }
         else {

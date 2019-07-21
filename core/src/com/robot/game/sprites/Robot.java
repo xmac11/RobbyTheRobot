@@ -108,8 +108,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public void update(float delta) {
 
-        // first handle input
-        handleInput(delta);
+        // first process input
+        processInput(delta);
 
         if(isOnInteractivePlatform) {
 
@@ -129,6 +129,18 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             body.applyForceToCenter(0, -7.5f, true);
         }
 
+
+        // another option is to change gravity scale
+        /*if(body.getLinearVelocity().y < 0 && body.getGravityScale() != 2 && !isOnInteractivePlatform && !onLadder) {
+            //            body.applyForceToCenter(0, -7.5f, true);
+            body.setGravityScale(2f);
+            System.out.println(body.getGravityScale());
+        }
+        else if(body.getGravityScale() != 1  && !onLadder) {
+            body.setGravityScale(1);
+            System.out.println(body.getGravityScale());
+        }*/
+
         // attach robot sprite to body
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
@@ -145,7 +157,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         // if robot is invulnerable
-        if(isInvulnerable()) {
+        if(invulnerable) {
             // check how much time has passed
             invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
             // if more than 1 second, disable it
@@ -155,7 +167,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
         }
 
-        // conditions for player to die
+        // conditions for robot to die
         if((body.getPosition().y < 0 || gameData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
             dead = true;
             // decrease lives by one
@@ -165,7 +177,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
-    private void handleInput(float delta) {
+    private void processInput(float delta) {
 
         // CONSTANT SPEED
         //        temp.x = ROBOT_IMPULSE.x; // reset every frame
@@ -190,7 +202,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             // this is for the case of the horizontally moving platform that will stop under the ladder
             // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
             // this will be used at most once, so a new Vector is created instead of keeping a variable in the Constant class
-            if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop()) {
+            if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop() && interactivePlatform.getvX() != 0) {
                 body.applyLinearImpulse(new Vector2(-0.25f, 0), body.getWorldCenter(), true);
             }
             else {

@@ -26,6 +26,7 @@ public class Assets {
     public InteractivePlatformAssets interactivePlatformAssets;
     public ParallaxAssets parallaxAssets;
     public HudAssets hudAssets;
+    public CollectableAssets collectableAssets;
 
     private Assets() {
     }
@@ -84,6 +85,7 @@ public class Assets {
         this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
         this.hudAssets = new HudAssets(atlas);
+        this.collectableAssets = new CollectableAssets();
     }
 
     public void dispose() {
@@ -173,8 +175,9 @@ public class Assets {
         public final TextureAtlas.AtlasRegion frame;
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
-        public final Texture lives;
-
+        public final Texture lives; // add this to atlas when finalized
+//        public BitmapFont scoreFont;
+        public GlyphLayout scoreGlyphLayout;
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
@@ -182,6 +185,10 @@ public class Assets {
             this.redBar = atlas.findRegion("red");
             this.lives = new Texture("lives.png"); // add this to atlas when finalized
 
+            // GlyphLayout for alignment
+            this.scoreGlyphLayout = new GlyphLayout();
+            String text = "SCORE";
+            scoreGlyphLayout.setText(fontAssets.font, text);
         }
     }
 
@@ -205,12 +212,19 @@ public class Assets {
             font.getData().setScale(1 / 64f);
             font.setUseIntegerPositions(false);
 
-            // GlyphLayout for vertical alignment
+            // GlyphLayout for alignment
             this.glyphLayout = new GlyphLayout();
             String text = "x3";
             glyphLayout.setText(font, text);
         }
     }
 
+    public class CollectableAssets {
 
+        public Texture burgerTexture;
+
+        private CollectableAssets() {
+            this.burgerTexture = new Texture("burger.png"); // add this to atlas when finalized
+        }
+    }
 }

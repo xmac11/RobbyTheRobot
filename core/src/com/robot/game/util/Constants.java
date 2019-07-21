@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = true ;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -27,6 +27,7 @@ public final class Constants {
     public static final String BAT_OBJECT = "Bat obj";
     public static final String CRAB_OBJECT = "Crab obj";
     public static final String SPIKE_OBJECT = "Spike obj";
+    public static final String COLLECTABLE_OBJECT = "Collectable obj";
 
     // COLLISIONS
 
@@ -39,17 +40,20 @@ public final class Constants {
     public static final short ROBOT_FEET_CATEGORY = 32;
     public static final short ENEMY_CATEGORY = 64;
     public static final short SPIKE_CATEGORY = 128;
+    public static final short COLLECTABLE_CATEGORY = 256;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
-    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | ENEMY_CATEGORY | SPIKE_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY;
+    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY
+                                            | ENEMY_CATEGORY | SPIKE_CATEGORY | COLLECTABLE_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY | COLLECTABLE_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
+    public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
 
     // Robot
@@ -100,7 +104,6 @@ public final class Constants {
     public static final String SPIKE_PROPERTY = "spike";
     public static final float DEAD_TIMER = 1;
 
-
     // Bat
     public static final float BAT_WIDTH = 28;
     public static final float BAT_HEIGHT = 16;
@@ -108,6 +111,11 @@ public final class Constants {
         // Crab
     public static final float CRAB_WIDTH = 24;
     public static final float CRAB_HEIGHT = 16;
+
+    // Collectables
+    public static final String COLLECTABLE_PROPERTY = "collectable";
+    public static final float COLLECTABLE_WIDTH = 20;
+    public static final float COLLECTABLE_HEIGHT = 16;
 
     // Hud
     public static final float PADDING = 8;
@@ -135,6 +143,16 @@ public final class Constants {
     public static final float LOADING_BAR_HEIGHT = 40;
         // progress (font)
     public static final float LOADING_FONT_OFFSET_Y = 11.5f;
+
+    // Damage
+    public static final int DAMAGE_FROM_BAT = 25;
+    public static final int DAMAGE_FROM_CRAB = 20;
+    public static final int DAMAGE_FROM_SPIKE = 25;
+
+    // Points
+    public static final int POINTS_FOR_BAT = 100;
+    public static final int POINTS_FOR_CRAB = 50;
+    public static final int POINTS_FOR_COLLECTABLE = 25;
 
 
 }

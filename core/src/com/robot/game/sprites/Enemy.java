@@ -60,7 +60,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     protected boolean aiPathFollowing;
     protected boolean flagToKill;
-    protected boolean dead; // for drawing the sprite at the moment
     protected boolean isDestroyed;
 
     // animation
@@ -74,7 +73,8 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
         this.world = world;
         this.body = body;
         this.fixtureDef = fixtureDef;
-        fixtureDef.restitution = 0.5f;
+        if(!object.getProperties().containsKey("noRestitution"))
+            fixtureDef.restitution = 0.5f;
 
         this.aiPathFollowing = (boolean) object.getProperties().get("aiPathFollowing");
 
@@ -189,6 +189,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     public void setFlagToKill() {
         this.flagToKill = true;
+        // keep track of the time enemy was killed
         deadStartTime = TimeUtils.nanoTime();
     }
 

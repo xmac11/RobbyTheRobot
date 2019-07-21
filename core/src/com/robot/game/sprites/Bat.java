@@ -30,18 +30,15 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
     public void update(float delta) {
         // if bat is flagged to be killed
         if(flagToKill) {
-            dead = true;
-            if(deadElapsed >= DEAD_TIMER) {
+            if(deadElapsed >= DEAD_TIMER)
                 body.setLinearVelocity(0, -8);
-                flagToKill = false;
-            }
             else
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
         }
-        // if bat is dead and out of the map
-        else if(dead && body.getPosition().y < 0)
+        // if the bat is out of the map (dead), destroy it
+        else if(body.getPosition().y < 0)
             destroyBody();
-        else if(!dead) {
+        else {
             if(aiPathFollowing && steeringBehavior != null) {
                 steeringBehavior.calculateSteering(steeringOutput);
                 applySteering(steeringOutput, delta);
@@ -61,7 +58,7 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
     public void draw(Batch batch) {
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
 
-        if(!dead) {
+        if(!flagToKill) {
             textureRegion = Assets.getInstance().batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
         }
         else {

@@ -7,6 +7,8 @@ import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.interactiveObjects.Spike;
+import com.robot.game.sprites.Bat;
+import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 
@@ -60,6 +62,11 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | ENEMY_CATEGORY:
                 robotEnemyBegin(normal, fixA, fixB);
                 break;
+
+            // robot - collectable
+            case  ROBOT_CATEGORY | COLLECTABLE_CATEGORY:
+            robotCollectableBegin(fixA, fixB);
+            break;
         }
 
 
@@ -182,6 +189,7 @@ public class ContactManager implements ContactListener {
     private void robotSpikesBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
         Spike spike;
+
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
             spike = (Spike) fixB.getUserData();
@@ -193,13 +201,15 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager","Robot hurt from spikes");
         }
 
-        if(!robot.isInvulnerable()) {
-            robot.getGameData().decreaseHealth(20);
+        // if robot is not invulnerable and is not walking on spikes, decrease health and make it invulnerable
+        if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
+            robot.getGameData().decreaseHealth(DAMAGE_FROM_SPIKE);
             robot.setInvulnerable(true);
+            robot.setFlicker(true);
+            Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth() + "%");
         }
-        Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth());
-        robot.setFlicker(true);
 
+        // if robot is walking on spikes, it dies
         if(spike.mightBeWalked()) {
             robot.setWalkingOnSpikes(true);
 //            robot.getGameData().setSpawnLocation(spike.getRespawnLocation());
@@ -221,14 +231,20 @@ public class ContactManager implements ContactListener {
             if(normal.y <= -1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 enemy.setFlagToKill();
+
                 // if following a path, disable it
                 if(enemy.isAiPathFollowing()) {
                     enemy.getFollowPath().setEnabled(false);
                 }
+
                 // stop enemy
                 enemy.getBody().setLinearVelocity(0, 0);
+
                 // set enemy's mask bits to "nothing"
-                setMaskBit(/*enemy.getBody()*/ fixB, NOTHING_MASK);
+                setMaskBit(fixB, NOTHING_MASK);
+
+                // increase points
+                increaseScore(robot, enemy);
             }
             else {
                 if (normal.y >= 1 / Math.sqrt(2))
@@ -238,9 +254,10 @@ public class ContactManager implements ContactListener {
                 else if (normal.x >= 1 / Math.sqrt(2))
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
-                robot.getGameData().decreaseHealth(25);
-                Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth());
+                // decrease robot's health
+                decreaseHealth(robot, enemy);
                 robot.setFlicker(true);
+                Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth() + "%");
             }
         }
         else {
@@ -250,14 +267,20 @@ public class ContactManager implements ContactListener {
             if(normal.y >= 1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 enemy.setFlagToKill();
+
                 // if following a path, disable it
                 if(enemy.isAiPathFollowing()) {
                     enemy.getFollowPath().setEnabled(false);
                 }
+
                 // stop enemy
                 enemy.getBody().setLinearVelocity(0, 0);
+
                 // set enemy's mask bits to "nothing"
                 setMaskBit(fixA, NOTHING_MASK);
+
+                // increase points
+                increaseScore(robot, enemy);
             }
             else {
                 if(normal.y <= -1/Math.sqrt(2))
@@ -267,28 +290,30 @@ public class ContactManager implements ContactListener {
                 else if(normal.x <= -1/Math.sqrt(2))
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
 
-                robot.getGameData().decreaseHealth(25);
-                Gdx.app.log("ContactManager","Robot health " + robot.getGameData().getHealth());
+                // decrease robot's health
+                decreaseHealth(robot, enemy);
                 robot.setFlicker(true);
+                Gdx.app.log("ContactManager","Robot health " + robot.getGameData().getHealth() + "%");
             }
         }
     }
 
-
-
-    private void feetOnObject(Fixture fixA, Fixture fixB) {
-        /*Robot robot;
+    private void robotCollectableBegin(Fixture fixA, Fixture fixB) {
+        Robot robot;
+        Collectable collectable;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
-
+            collectable = (Collectable) fixB.getUserData();
         }
         else {
             robot = (Robot) fixB.getUserData();
-        }*/
-        Gdx.app.log("ContactManager","FEET on object");
+            collectable = (Collectable) fixA.getUserData();
+        }
+        robot.getGameData().increaseScore(POINTS_FOR_COLLECTABLE);
+        collectable.setFlagToCollect();
+        Gdx.app.log("ContactManager","Robot collected item");
     }
-
 
     @Override
     public void endContact(Contact contact) {
@@ -407,19 +432,6 @@ public class ContactManager implements ContactListener {
         }
     }
 
-    private void feetOffObject(Fixture fixA, Fixture fixB) {
-        /*Robot robot;
-
-        if(fixA.getUserData() instanceof Robot) {
-            robot = (Robot) fixA.getUserData();
-
-        }
-        else {
-            robot = (Robot) fixB.getUserData();
-        }*/
-        Gdx.app.log("ContactManager","FEET off object");
-    }
-
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
 
@@ -428,6 +440,7 @@ public class ContactManager implements ContactListener {
         Fixture fixB = contact.getFixtureB();
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
         switch(collisionID) {
             // robot - enemy
             case ROBOT_CATEGORY | ENEMY_CATEGORY:
@@ -451,6 +464,20 @@ public class ContactManager implements ContactListener {
 
     public static int getFootContactCounter() {
         return footContactCounter;
+    }
+
+    private void increaseScore(Robot robot, Enemy enemy) {
+        if(enemy instanceof Bat)
+            robot.getGameData().increaseScore(POINTS_FOR_BAT);
+        else
+            robot.getGameData().increaseScore(POINTS_FOR_CRAB);
+    }
+
+    private void decreaseHealth(Robot robot, Enemy enemy) {
+        if(enemy instanceof Bat)
+            robot.getGameData().decreaseHealth(DAMAGE_FROM_BAT);
+        else
+            robot.getGameData().decreaseHealth(DAMAGE_FROM_CRAB);
     }
 
 }

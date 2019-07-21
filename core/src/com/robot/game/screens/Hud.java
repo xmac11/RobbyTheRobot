@@ -1,5 +1,6 @@
 package com.robot.game.screens;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -25,6 +26,8 @@ public class Hud {
     private Texture lives; // this will become a TextureRegion when finalized
     private BitmapFont font;
     private GlyphLayout glyphLayout;
+    private BitmapFont scoreFont;
+    private GlyphLayout scoreGlyphLayout;
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -37,6 +40,7 @@ public class Hud {
         this.lives = Assets.getInstance().hudAssets.lives;
         this.font = Assets.getInstance().fontAssets.font;
         this.glyphLayout = Assets.getInstance().fontAssets.glyphLayout;
+        this.scoreGlyphLayout = Assets.getInstance().hudAssets.scoreGlyphLayout;
     }
 
     public void draw(SpriteBatch batch) {
@@ -57,6 +61,26 @@ public class Hud {
                 (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
                 BAR_HEIGHT / PPM);
 
+        // draw score label (SCORE)
+        font.setColor(255f / 255, 192f / 255, 43f / 255, 1);
+        font.draw(batch,
+                "SCORE",
+                1.5f * PADDING / PPM + scoreGlyphLayout.width / 2,
+                hudViewport.getWorldHeight() - (FRAME_OFFSET + 2 * PADDING) / PPM,
+                0,
+                Align.center,
+                false);
+
+        // draw score (value)
+        font.setColor(Color.WHITE);
+        font.draw(batch,
+                String.valueOf(gameData.getScore()),
+                3 * PADDING / PPM + scoreGlyphLayout.width,
+                hudViewport.getWorldHeight() - (FRAME_OFFSET + 2 * PADDING) / PPM,
+                0,
+                Align.left,
+                false);
+
         // draw lives image
         batch.draw(lives,
                 hudViewport.getWorldWidth() - (PADDING + 2.5f * LIVES_WIDTH) / PPM,
@@ -65,6 +89,7 @@ public class Hud {
                 LIVES_HEIGHT / PPM);
 
         // draw lives font (label)
+        font.setColor(Color.WHITE);
         font.draw(batch,
                 "x" + gameData.getLives(),
                 hudViewport.getWorldWidth() - PADDING / PPM - glyphLayout.width / 2,

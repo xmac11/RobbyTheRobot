@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.sprites.Bat;
+import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Crab;
 
@@ -22,11 +23,13 @@ public class ObjectParser {
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
+    private DelayedRemovalArray<Collectable> collectables;
 
     public ObjectParser(World world, Array<MapObjects> layersObjectArray) {
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
+        this.collectables = new DelayedRemovalArray<>();
         for(MapObjects objects: layersObjectArray)
             createTiledObjects(world, objects);
     }
@@ -156,6 +159,12 @@ public class ObjectParser {
             fixtureDef.filter.maskBits = SPIKE_MASK;
             fixtureDef.isSensor = true;
         }
+        // collectables
+        else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
+            fixtureDef.filter.categoryBits = COLLECTABLE_CATEGORY;
+            fixtureDef.filter.maskBits = COLLECTABLE_MASK;
+            fixtureDef.isSensor = true;
+        }
         // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
@@ -185,14 +194,19 @@ public class ObjectParser {
 
             if(object.getProperties().containsKey(BAT_PROPERTY))
                 enemy = new Bat(world, body, fixtureDef, object);
-
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
                 enemy = new Crab(world, body, fixtureDef, object);
+
             this.enemies.add(enemy);
         }
         // create spikes
-        else if(object.getProperties().containsKey(SPIKE_PROPERTY))
+        else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
             new Spike(body, fixtureDef, object);
+        }
+        // create collectables
+        else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
+            collectables.add(new Collectable(world, body, fixtureDef, object));
+        }
         // create ground
         else {
             body.createFixture(fixtureDef).setUserData("ground");
@@ -207,5 +221,10 @@ public class ObjectParser {
     // getter for enemies
     public DelayedRemovalArray<Enemy> getEnemies() {
         return enemies;
+    }
+
+    // getter for collectables
+    public DelayedRemovalArray<Collectable> getCollectables() {
+        return collectables;
     }
 }

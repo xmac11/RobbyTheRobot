@@ -8,6 +8,7 @@ public class GameData {
 
     private int health;
     private int lives;
+    private int score;
     private Vector2 spawnLocation;
 
     // Checkpoints
@@ -29,6 +30,14 @@ public class GameData {
 
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public Vector2 getSpawnLocation() {
@@ -75,9 +84,18 @@ public class GameData {
         health -= damage;
     }
 
+    public void increaseHealth(int powerup) {
+        health += powerup;
+    }
+
+    public void increaseScore(int points) {
+        score += points;
+    }
+
     public void setDefaultData() {
         health = 100;
         lives = 3;
+        score = 0;
         spawnLocation = SPAWN_LOCATION;
 
         firstCheckpointActivated = false;
