@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
@@ -20,12 +21,14 @@ import static com.robot.game.util.Constants.*;
 
 public class ObjectParser {
 
+    PlayScreen playScreen;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
 
-    public ObjectParser(World world, Array<MapObjects> layersObjectArray) {
+    public ObjectParser(PlayScreen playScreen, World world, Array<MapObjects> layersObjectArray) {
+        this.playScreen = playScreen;
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
@@ -205,7 +208,8 @@ public class ObjectParser {
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
-            collectables.add(new Collectable(world, body, fixtureDef, object));
+            if((boolean)object.getProperties().get("spawn"))
+                collectables.add(new Collectable(playScreen, world, body, fixtureDef, object));
         }
         // create ground
         else {

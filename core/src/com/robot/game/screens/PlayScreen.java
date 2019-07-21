@@ -2,6 +2,7 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -54,6 +55,7 @@ public class PlayScreen extends ScreenAdapter {
     private DebugCamera debugCamera;
 
     // Tiled map variables
+    public FileHandle mapFile = Gdx.files.local("level1.1.tmx");
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Array<MapObjects> layersObjectArray;
@@ -124,7 +126,7 @@ public class PlayScreen extends ScreenAdapter {
         this.backgroundWallLayer = new int[] {1};
         this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 10, 12};
 
-        this.objectParser = new ObjectParser(world, layersObjectArray);
+        this.objectParser = new ObjectParser(this, world, layersObjectArray);
 
         // create robot
         this.robot = new Robot(this);

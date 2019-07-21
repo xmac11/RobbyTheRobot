@@ -7,21 +7,26 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
 
 public class Collectable extends Sprite {
 
+    PlayScreen playScreen;
     private Sprite burgerSprite;
     private World world;
     private Body body;
+    private MapObject object;
     private boolean flagToCollect;
     private boolean isDestroyed;
 
-    public Collectable(World world, Body body, FixtureDef fixtureDef, MapObject object) {
+    public Collectable(PlayScreen playScreen, World world, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.playScreen = playScreen;
         this.world = world;
         this.body = body;
+        this.object = object;
         body.createFixture(fixtureDef).setUserData(this);
         this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burgerTexture);
 
@@ -44,6 +49,9 @@ public class Collectable extends Sprite {
 
     public void setFlagToCollect() {
         this.flagToCollect = true;
+        this.object.getProperties().put("spawn", false);
+
+
     }
 
     protected void destroyBody() {

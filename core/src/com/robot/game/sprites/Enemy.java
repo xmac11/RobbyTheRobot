@@ -14,12 +14,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.XmlReader;
+import com.badlogic.gdx.utils.*;
 
-import static com.robot.game.util.Constants.MAP_HEIGHT;
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
@@ -85,7 +82,8 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
             this.object = object;
 
             if(platformID != null) {
-                parseXml();
+//                parseXml();
+                parseJson();
 
                 this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
                         new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
@@ -132,6 +130,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     // parse xml to get the waypoints of the platform the enemy should follow
     private void parseXml() {
+        float start =  System.nanoTime();
         XmlReader reader = new XmlReader();
         XmlReader.Element root = reader.parse(Gdx.files.internal("level1.1.tmx"));
         Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
@@ -145,19 +144,54 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
                     this.x = Float.valueOf(child2.get(j).getAttributes().get("x"));
                     this.y = MAP_HEIGHT - Float.valueOf(child2.get(j).getAttributes().get("y"));
 
-                    XmlReader.Element child = child2.get(j).getChildByName("polygon");
-                    String points = child.getAttributes().get("points");
-                    String[] pointsArr = points.split(",| ");
-
-                    if(pointsArr.length == 8) {
-                        this.width = Float.valueOf(pointsArr[6]) - Float.valueOf(pointsArr[0]);
-                        this.height = Math.abs(Float.valueOf(pointsArr[1]) - Float.valueOf(pointsArr[3]));
+                    XmlReader.Element properties = child2.get(j).getChildByName("properties");
+                    Array<XmlReader.Element> property = properties.getChildrenByNameRecursively("property");
+                    for(int k = 0; k < property.size; k++) {
+                        if(property.get(k).getAttributes().get("name").equals("width"))
+                            this.width = Float.valueOf(property.get(k).getAttributes().get("value"));
+                        else if(property.get(k).getAttributes().get("name").equals("height"))
+                            this.height =  Float.valueOf(property.get(k).getAttributes().get("value"));
                     }
-                    else
-                        throw new IllegalArgumentException("Tile not rectangular");
                 }
             }
         }
+        System.out.println(System.nanoTime() - start);
+    }
+
+    // parse json file to get the waypoints of the platform the enemy should follow
+    private void parseJson() {
+        float start =  System.nanoTime();
+        JsonReader reader = new JsonReader();
+        JsonValue root =  reader.parse(Gdx.files.internal("level1.1.json"));
+        JsonValue child1 = root.get("layers");
+
+        for(int i = 0; i < child1.size; i++) {
+
+            if(child1.get(i).has("name") && child1.get(i).getString("name").equals(GROUND_OBJECT)) {
+                JsonValue child2 = child1.get(i).get("objects");
+
+                for(int j = 0; j < child2.size; j++) {
+
+                    if(child2.get(j).has("id") && child2.get(j).getString("id").equals(platformID)) {
+
+                        this.x = child2.get(j).getFloat("x");
+                        this.y = MAP_HEIGHT - child2.get(j).getFloat("y");
+
+                        JsonValue child3 = child2.get(j).get("properties");
+                        for(int k = 0; k < child3.size; k++) {
+
+                            if(child3.get(k).getString("name").equals("width"))
+                                this.width = child3.get(k).getFloat("value");
+                            else if(child3.get(k).getString("name").equals("height"))
+                                this.height = child3.get(k).getFloat("value");
+                        }
+                    }
+                }
+            }
+
+        }
+        System.out.println(System.nanoTime() - start);
+
     }
 
     protected void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
