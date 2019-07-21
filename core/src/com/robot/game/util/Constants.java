@@ -17,7 +17,9 @@ public final class Constants {
 
 
     // Tiled map editor
-    private static TiledMap tiledMap = new TmxMapLoader().load("level1.1.tmx");
+    public static final String LEVEL_1_TMX = "level1.1.tmx";
+    public static final String LEVEL_1_JSON = "level1.1.json";
+    private static TiledMap tiledMap = new TmxMapLoader().load(LEVEL_1_TMX);
     private static MapProperties mapProperties = tiledMap.getProperties();
     public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
     public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;

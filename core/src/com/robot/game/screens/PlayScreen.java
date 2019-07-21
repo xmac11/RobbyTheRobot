@@ -55,7 +55,7 @@ public class PlayScreen extends ScreenAdapter {
     private DebugCamera debugCamera;
 
     // Tiled map variables
-    public FileHandle mapFile = Gdx.files.local("level1.1.tmx");
+    public FileHandle mapFile = Gdx.files.local(LEVEL_1_TMX);
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Array<MapObjects> layersObjectArray;
@@ -105,7 +105,7 @@ public class PlayScreen extends ScreenAdapter {
         this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
 
         // load map and set up map renderer
-        this.tiledMap = new TmxMapLoader().load("level1.1.tmx");
+        this.tiledMap = Assets.getInstance().tiledMapAssets.tiledMap;
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // create box2d world
@@ -319,7 +319,7 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         Gdx.app.log("PlayScreen", "dispose");
-        tiledMap.dispose();
+//        tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
         if(DEBUG_ON)

@@ -132,7 +132,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     private void parseXml() {
         float start =  System.nanoTime();
         XmlReader reader = new XmlReader();
-        XmlReader.Element root = reader.parse(Gdx.files.internal("level1.1.tmx"));
+        XmlReader.Element root = reader.parse(Gdx.files.internal(LEVEL_1_TMX));
         Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
 
         for(int i = 0; i < child1.size; i++) {
@@ -162,7 +162,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     private void parseJson() {
         float start =  System.nanoTime();
         JsonReader reader = new JsonReader();
-        JsonValue root =  reader.parse(Gdx.files.internal("level1.1.json"));
+        JsonValue root =  reader.parse(Gdx.files.internal(LEVEL_1_JSON));
         JsonValue child1 = root.get("layers");
 
         for(int i = 0; i < child1.size; i++) {

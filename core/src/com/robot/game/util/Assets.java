@@ -10,7 +10,11 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
+
+import static com.robot.game.util.Constants.LEVEL_1_TMX;
 
 public class Assets {
 
@@ -18,6 +22,7 @@ public class Assets {
 
     public AssetManager assetManager = new AssetManager();
 
+    public TiledMapAssets tiledMapAssets;
     public LoadingBarAssets loadingBarAssets;
     public FontAssets fontAssets;
     public RobotAssets robotAssets;
@@ -37,7 +42,8 @@ public class Assets {
 
     public void load() {
 
-        // load synchronously
+        //// LOAD SYNCHRONOUSLY ////
+
         assetManager.load("loading_bar.pack", TextureAtlas.class);
 
         /* Load fonts following the procedure described in the LibGDX documentation:
@@ -55,7 +61,13 @@ public class Assets {
         assetManager.finishLoading(); // blocking statement
         createLoadingScreenAssets();
 
-        // load asynchronously
+        //// LOAD ASYNCHRONOUSLY ////
+
+        /* Load tiled map following the procedure described in the LibGDX documentation:
+         * https://github.com/libgdx/libgdx/wiki/Tile-maps */
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        assetManager.load(LEVEL_1_TMX, TiledMap.class);
+
         assetManager.load("sprites.pack", TextureAtlas.class);
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
@@ -79,6 +91,7 @@ public class Assets {
         TextureAtlas atlas = assetManager.get("sprites.pack");
 
         // create assets
+        this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
         this.crabAssets = new CrabAssets(atlas);
@@ -91,6 +104,14 @@ public class Assets {
     public void dispose() {
         Gdx.app.log("Assets", "AssetManager was disposed");
         assetManager.dispose();
+    }
+
+    public class TiledMapAssets {
+        public TiledMap tiledMap;
+
+        public TiledMapAssets() {
+            this.tiledMap = assetManager.get(LEVEL_1_TMX);
+        }
     }
 
     // Robot assets
@@ -176,7 +197,7 @@ public class Assets {
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
         public final Texture lives; // add this to atlas when finalized
-//        public BitmapFont scoreFont;
+        //        public BitmapFont scoreFont;
         public GlyphLayout scoreGlyphLayout;
 
         private HudAssets(TextureAtlas atlas) {
