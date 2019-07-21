@@ -312,6 +312,7 @@ public class ContactManager implements ContactListener {
         }
         robot.getGameData().increaseScore(POINTS_FOR_COLLECTABLE);
         collectable.setFlagToCollect();
+        collectable.setSpawn((int) collectable.getObject().getProperties().get("id"), false);
         Gdx.app.log("ContactManager","Robot collected item");
     }
 

@@ -319,7 +319,6 @@ public class PlayScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         Gdx.app.log("PlayScreen", "dispose");
-//        tiledMap.dispose();
         mapRenderer.dispose();
         world.dispose();
         if(DEBUG_ON)

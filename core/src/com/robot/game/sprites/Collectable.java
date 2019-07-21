@@ -1,6 +1,7 @@
 package com.robot.game.sprites;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
@@ -9,6 +10,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
+import com.robot.game.util.FileSaver;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 import static com.robot.game.util.Constants.*;
 
@@ -61,5 +69,73 @@ public class Collectable extends Sprite {
 
     public boolean isDestroyed() {
         return isDestroyed;
+    }
+
+    public MapObject getObject() {
+        return object;
+    }
+
+    public void setSpawn(int collectableID, boolean bool) {
+
+        FileHandle file = Gdx.files.local(LEVEL_1_JSON);
+        JSONObject root = null;
+
+        try {
+            root = (JSONObject) new JSONParser().parse(file.reader());
+
+            JSONArray child1 = (JSONArray) root.get("layers");
+
+            if(child1 != null) {
+                for(int i = 0; i < child1.size(); i++) {
+                    //System.out.println(((JSONObject) child1.get(i)).keySet());
+                    JSONObject obj = ((JSONObject) child1.get(i));
+                    if(COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                        JSONArray child2 = (JSONArray) obj.get("objects");
+                        //System.out.println(child2);
+
+                        if(child2 != null) {
+                            for(int j = 0; j < child2.size(); j++) {
+                                //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
+                                JSONObject obj2 = ((JSONObject) child2.get(j));
+                                System.out.println((long) obj2.get("id"));
+                                if((long) obj2.get("id") == collectableID) {
+                                    JSONArray child3 = (JSONArray) obj2.get("properties");
+                                    //System.out.println(child3);
+
+                                    if(child3 != null) {
+                                        for(int k = 0; k < child3.size(); k++) {
+                                            //System.out.println(((JSONObject) child3.get(k)).keySet());
+                                            JSONObject obj3 = ((JSONObject) child3.get(k));
+                                            if("shouldSpawn".equals(obj3.get("name"))) {
+                                                Gdx.app.log("Collectable", "Before: " + obj3.get("value"));
+                                                obj3.put("value", bool);
+                                                Gdx.app.log("Collectable", "After: " + obj3.get("value"));
+                                            }
+
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+        catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+        FileSaver.saveCollectable(file, root);
+    }
+
+    public void resetSpawningOfCollectables() {
+
+    }
+
+    public void getJsonCollectables() {
+
     }
 }

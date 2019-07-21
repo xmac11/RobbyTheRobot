@@ -66,7 +66,7 @@ public class LoadingScreen extends ScreenAdapter {
 
             // draw font
             font.draw(game.getBatch(),
-                    "Loading..." + (int) (1.2 * Assets.getInstance().assetManager.getProgress() * 100) + "%",
+                    "Loading..." + (int) (1.2f * Assets.getInstance().assetManager.getProgress() * 100) + "%",
                     loadingScreenViewport.getWorldWidth() / 2,
                     loadingScreenViewport.getWorldHeight() / 2 + LOADING_FONT_OFFSET_Y / PPM,
                     0,

@@ -1,5 +1,6 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.sprites.Bat;
@@ -208,7 +211,7 @@ public class ObjectParser {
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
-            if((boolean)object.getProperties().get("spawn"))
+            if(shouldSpawn((int) object.getProperties().get("id")))
                 collectables.add(new Collectable(playScreen, world, body, fixtureDef, object));
         }
         // create ground
@@ -230,5 +233,32 @@ public class ObjectParser {
     // getter for collectables
     public DelayedRemovalArray<Collectable> getCollectables() {
         return collectables;
+    }
+
+    private boolean shouldSpawn(int collectableID) {
+        JsonReader reader = new JsonReader();
+        JsonValue root = reader.parse(Gdx.files.internal(LEVEL_1_JSON));
+        JsonValue child1 = root.get("layers");
+
+        for (int i = 0; i < child1.size; i++) {
+
+            if (child1.get(i).has("name") && child1.get(i).getString("name").equals(COLLECTABLE_OBJECT)) {
+                JsonValue child2 = child1.get(i).get("objects");
+                //                System.out.println(child2);
+
+                for (int j = 0; j < child2.size; j++) {
+
+                    if (child2.get(j).has("id") && child2.get(j).getInt("id") == collectableID) {
+                        JsonValue child3 = child2.get(j).get("properties");
+                        for(int k = 0; k < child3.size; k++) {
+                            if(child3.get(k).getString("name").equals("shouldSpawn")) {
+                                return child3.get(k).getBoolean("value");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
