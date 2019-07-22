@@ -26,13 +26,12 @@ public class Hud {
     private Texture lives; // this will become a TextureRegion when finalized
     private BitmapFont font;
     private GlyphLayout glyphLayout;
-    private BitmapFont scoreFont;
     private GlyphLayout scoreGlyphLayout;
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.checkpointData = playScreen.getCheckpointData();
-        this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
+        this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT * 1.35f / PPM);
 
         this.frame = Assets.getInstance().hudAssets.frame;
         this.greenBar = Assets.getInstance().hudAssets.greenBar;

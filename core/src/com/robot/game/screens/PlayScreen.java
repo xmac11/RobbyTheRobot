@@ -326,7 +326,7 @@ public class PlayScreen extends ScreenAdapter {
         }
         // if any items were collected and they have not been already saved in the checkIfDead() method, save them
         if(newItemCollected && !doNotSaveInHide) {
-            for(int collectableID: collectableHandler.getToDisableSpawning()) {
+            for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
                 collectableHandler.setSpawn(collectableID, false);
             }
             FileSaver.saveCollectedItems(collectedItems);
@@ -388,7 +388,7 @@ public class PlayScreen extends ScreenAdapter {
         if(robot.isDead() && checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
             // loop through all items that have been collected and disable their spawning
-            for(int collectableID: collectableHandler.getToDisableSpawning()) {
+            for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
                 collectableHandler.setSpawn(collectableID, false);
             }
             // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method

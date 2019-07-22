@@ -23,11 +23,11 @@ public class CollectableHandler {
     /* In this array I cache collectables to be disabled from being respawned if robot dies, because it has already
      * collected them. Thee will be disabled altogether when the robot dies, so as not to slow down the game when it
      * is in progress. */
-    private Array<Integer> toDisableSpawning;
+    private Array<Integer> itemsToDisableSpawning;
 
     public CollectableHandler() {
         this.collectedItems = new JSONArray();
-        this.toDisableSpawning = new Array<>();
+        this.itemsToDisableSpawning = new Array<>();
     }
 
     // parse json map file to determine if a collectable object should be spawned
@@ -78,8 +78,6 @@ public class CollectableHandler {
 
             JSONArray child1 = (JSONArray) root.get("layers");
 
-            int counterI = 0;
-            int counterJ = 0;
             boolean shouldBreakI = false;
             boolean shouldBreakJ = false;
 
@@ -87,12 +85,10 @@ public class CollectableHandler {
                 for(int i = 0; i < child1.size(); i++) {
                     if(shouldBreakI)
                         break;
-                    counterI++;
                     //System.out.println(((JSONObject) child1.get(i)).keySet());
                     JSONObject obj = ((JSONObject) child1.get(i));
                     if(COLLECTABLE_OBJECT.equals(obj.get("name"))) {
                         shouldBreakI = true;
-                        System.out.println("Collectable found, counterI = " + counterI);
                         JSONArray child2 = (JSONArray) obj.get("objects");
                         //System.out.println(child2);
 
@@ -100,12 +96,10 @@ public class CollectableHandler {
                             for(int j = 0; j < child2.size(); j++) {
                                 if(shouldBreakJ)
                                     break;
-                                counterJ++;
                                 //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
                                 JSONObject obj2 = ((JSONObject) child2.get(j));
                                 if((long) obj2.get("id") == collectableID) {
                                     shouldBreakJ = true;
-                                    System.out.println("ID found, counterJ = " + counterJ);
                                     JSONArray child3 = (JSONArray) obj2.get("properties");
                                     //System.out.println(child3);
 
@@ -128,15 +122,12 @@ public class CollectableHandler {
                                     }
                                 }
                             }
-                            System.out.println("counterJ " + counterJ);
                         }
 
                     }
 
                 }
-                System.out.println("counterI " + counterI);
             }
-
         }
         catch (IOException | ParseException e) { e.printStackTrace(); }
 
@@ -150,7 +141,7 @@ public class CollectableHandler {
         return collectedItems;
     }
 
-    public Array<Integer> getToDisableSpawning() {
-        return toDisableSpawning;
+    public Array<Integer> getItemsToDisableSpawning() {
+        return itemsToDisableSpawning;
     }
 }

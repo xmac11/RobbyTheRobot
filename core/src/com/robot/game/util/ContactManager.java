@@ -318,6 +318,8 @@ public class ContactManager implements ContactListener {
 
         // add the collectable to the list of collectables to be disabled from beying respawned if robot dies
         collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
+        // If I use a thread instead of queueing items to disable spawning, remove for-loop in the checkIfDead() method in Playscreen
+//        new Thread(() -> collectable.getCollectableHandler().setSpawn((int) collectable.getObject().getProperties().get("id"), false)).start();
 
         // flag that a new item was collected
         robot.getPlayScreen().setNewItemCollected(true);
@@ -360,12 +362,6 @@ public class ContactManager implements ContactListener {
                 robotSpikesEnd(fixA, fixB);
                 break;
 
-            /*// feet
-            case ROBOT_FEET_CATEGORY | GROUND_CATEGORY:
-            case ROBOT_FEET_CATEGORY | FALLING_PLATFORM_CATEGORY:
-            case ROBOT_FEET_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                feetOffObject(fixA, fixB);
-                break;*/
         }
 
 

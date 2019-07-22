@@ -205,7 +205,7 @@ public class ObjectParser {
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
             if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id")))
-                collectables.add(new Collectable(playScreen, world, body, fixtureDef, object));
+                collectables.add(new Collectable(playScreen, body, fixtureDef));
         }
         // create ground
         else {

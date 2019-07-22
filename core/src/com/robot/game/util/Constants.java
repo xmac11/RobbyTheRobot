@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true ;
+    public static final boolean DEBUG_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
