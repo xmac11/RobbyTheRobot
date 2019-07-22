@@ -36,18 +36,27 @@ public class CollectableHandler {
         JsonValue root = reader.parse(Gdx.files.internal(LEVEL_1_JSON));
         JsonValue child1 = root.get("layers");
 
+        boolean shouldBreakI = false;
+        boolean shouldBreakJ = false;
+
         for (int i = 0; i < child1.size; i++) {
 
-            if (child1.get(i).has("name") && child1.get(i).getString("name").equals(COLLECTABLE_OBJECT)) {
+            if(shouldBreakI)
+                break;
+            if (child1.get(i).has("name") && COLLECTABLE_OBJECT.equals(child1.get(i).getString("name"))) {
+                shouldBreakI = true;
                 JsonValue child2 = child1.get(i).get("objects");
                 //                System.out.println(child2);
 
                 for (int j = 0; j < child2.size; j++) {
-
+                    if(shouldBreakJ)
+                        break;
                     if (child2.get(j).has("id") && child2.get(j).getInt("id") == collectableID) {
+                        shouldBreakJ = true;
                         JsonValue child3 = child2.get(j).get("properties");
+
                         for(int k = 0; k < child3.size; k++) {
-                            if(child3.get(k).getString("name").equals("shouldSpawn")) {
+                            if("shouldSpawn".equals(child3.get(k).getString("name"))) {
                                 return child3.get(k).getBoolean("value");
                             }
                         }
@@ -69,24 +78,39 @@ public class CollectableHandler {
 
             JSONArray child1 = (JSONArray) root.get("layers");
 
+            int counterI = 0;
+            int counterJ = 0;
+            boolean shouldBreakI = false;
+            boolean shouldBreakJ = false;
+
             if(child1 != null) {
                 for(int i = 0; i < child1.size(); i++) {
+                    if(shouldBreakI)
+                        break;
+                    counterI++;
                     //System.out.println(((JSONObject) child1.get(i)).keySet());
                     JSONObject obj = ((JSONObject) child1.get(i));
-                    if (COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                    if(COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                        shouldBreakI = true;
+                        System.out.println("Collectable found, counterI = " + counterI);
                         JSONArray child2 = (JSONArray) obj.get("objects");
                         //System.out.println(child2);
 
                         if (child2 != null) {
                             for(int j = 0; j < child2.size(); j++) {
+                                if(shouldBreakJ)
+                                    break;
+                                counterJ++;
                                 //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
                                 JSONObject obj2 = ((JSONObject) child2.get(j));
                                 if((long) obj2.get("id") == collectableID) {
+                                    shouldBreakJ = true;
+                                    System.out.println("ID found, counterJ = " + counterJ);
                                     JSONArray child3 = (JSONArray) obj2.get("properties");
                                     //System.out.println(child3);
 
                                     if(child3 != null) {
-                                        for (int k = 0; k < child3.size(); k++) {
+                                        for(int k = 0; k < child3.size(); k++) {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
                                             if("shouldSpawn".equals(obj3.get("name"))) {
@@ -104,11 +128,13 @@ public class CollectableHandler {
                                     }
                                 }
                             }
+                            System.out.println("counterJ " + counterJ);
                         }
 
                     }
 
                 }
+                System.out.println("counterI " + counterI);
             }
 
         }

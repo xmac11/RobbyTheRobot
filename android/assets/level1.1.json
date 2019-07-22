@@ -2256,7 +2256,7 @@
 					{
 						"name": "shouldSpawn",
 						"type": "bool",
-						"value": false
+						"value": true
 					}
 				],
 				"height": 16
@@ -2279,7 +2279,7 @@
 					{
 						"name": "shouldSpawn",
 						"type": "bool",
-						"value": false
+						"value": true
 					}
 				],
 				"height": 16
@@ -2302,7 +2302,7 @@
 					{
 						"name": "shouldSpawn",
 						"type": "bool",
-						"value": false
+						"value": true
 					}
 				],
 				"height": 16

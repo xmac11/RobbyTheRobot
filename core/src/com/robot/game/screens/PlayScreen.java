@@ -384,30 +384,35 @@ public class PlayScreen extends ScreenAdapter {
     }
 
     private void checkIfDead() {
-        // robot died but haves remaining lives
+        // robot died but has remaining lives
         if(robot.isDead() && checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
+            // loop through all items that have been collected and disable their spawning
             for(int collectableID: collectableHandler.getToDisableSpawning()) {
                 collectableHandler.setSpawn(collectableID, false);
             }
+            // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
             if(newItemCollected) {
                 FileSaver.saveCollectedItems(collectedItems);
                 doNotSaveInHide = true;
             }
+            // finally restart the game
             game.respawn(checkpointData);
-
-            // with setTransform
-            /*robot.setDead(false);
-            robot.getBody().setTransform(checkpointData.getSpawnLocation(), 0);*/
         }
         // robot died and has no remaining lives
         else if(robot.isDead()) {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+
+            // reset checkpoint data
             checkpointData.setDefaultData();
+
+             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+              * reset their spawning and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables();
                 FileSaver.getCollectedItemsFile().delete();
             }
+            // finally restart the game
             game.respawn(checkpointData);
         }
     }

@@ -110,28 +110,37 @@ public class FileSaver {
 
             JSONArray child1 = (JSONArray) root.get("layers");
 
+            boolean shouldBreakI = false;
+            boolean shouldBreakJ = false;
+
             if(child1 != null) {
-                for (Object o : child1) {
+                for(int i = 0; i < child1.size(); i++) {
+                    if(shouldBreakI)
+                        break;
                     //System.out.println(((JSONObject) child1.get(i)).keySet());
-                    JSONObject obj = ((JSONObject) o);
-                    if (COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                    JSONObject obj = ((JSONObject) child1.get(i));
+                    if(COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                        shouldBreakI = true;
                         JSONArray child2 = (JSONArray) obj.get("objects");
                         //System.out.println(child2);
 
-                        if (child2 != null) {
-                            for (int j = 0; j < child2.size(); j++) {
+                        if(child2 != null) {
+                            for(int j = 0; j < child2.size(); j++) {
+                                if(shouldBreakJ)
+                                    break;
                                 //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
                                 JSONObject obj2 = ((JSONObject) child2.get(j));
                                 System.out.println((long) obj2.get("id"));
-                                if ((long) obj2.get("id") == collectableID) {
+                                if((long) obj2.get("id") == collectableID) {
+                                    shouldBreakJ = true;
                                     JSONArray child3 = (JSONArray) obj2.get("properties");
                                     //System.out.println(child3);
 
-                                    if (child3 != null) {
-                                        for (int k = 0; k < child3.size(); k++) {
+                                    if(child3 != null) {
+                                        for(int k = 0; k < child3.size(); k++) {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
-                                            if ("shouldSpawn".equals(obj3.get("name"))) {
+                                            if("shouldSpawn".equals(obj3.get("name"))) {
                                                 obj3.put("value", true);
                                             }
                                         }
