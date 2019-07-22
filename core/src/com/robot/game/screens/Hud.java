@@ -10,14 +10,14 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.util.Assets;
-import com.robot.game.util.GameData;
+import com.robot.game.util.CheckpointData;
 
 import static com.robot.game.util.Constants.*;
 
 public class Hud {
 
     private PlayScreen playScreen;
-    private GameData gameData;
+    private CheckpointData checkpointData;
     private Viewport hudViewport;
     private TextureRegion frame;
     private TextureRegion greenBar;
@@ -31,7 +31,7 @@ public class Hud {
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
-        this.gameData = playScreen.getGameData();
+        this.checkpointData = playScreen.getCheckpointData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
 
         this.frame = Assets.getInstance().hudAssets.frame;
@@ -55,10 +55,10 @@ public class Hud {
                 FRAME_HEIGHT / PPM);
 
         // draw bar
-        batch.draw(gameData.getHealth() >= 50 ? greenBar : redBar,
+        batch.draw(checkpointData.getHealth() >= 50 ? greenBar : redBar,
                 (BAR_OFFSET_X + PADDING) / PPM,
                 hudViewport.getWorldHeight() - (BAR_OFFSET_Y + PADDING) / PPM,
-                (BAR_WIDTH * gameData.getHealth() / 100) / PPM,
+                (BAR_WIDTH * checkpointData.getHealth() / 100) / PPM,
                 BAR_HEIGHT / PPM);
 
         // draw score label (SCORE)
@@ -74,7 +74,7 @@ public class Hud {
         // draw score (value)
         font.setColor(Color.WHITE);
         font.draw(batch,
-                String.valueOf(gameData.getScore()),
+                String.valueOf(checkpointData.getScore()),
                 3 * PADDING / PPM + scoreGlyphLayout.width,
                 hudViewport.getWorldHeight() - (FRAME_OFFSET + 2 * PADDING) / PPM,
                 0,
@@ -91,7 +91,7 @@ public class Hud {
         // draw lives font (label)
         font.setColor(Color.WHITE);
         font.draw(batch,
-                "x" + gameData.getLives(),
+                "x" + checkpointData.getLives(),
                 hudViewport.getWorldWidth() - PADDING / PPM - glyphLayout.width / 2,
                 hudViewport.getWorldHeight() - PADDING / PPM - glyphLayout.height / 2,
                 /*LIVES_WIDTH / PPM*/0,

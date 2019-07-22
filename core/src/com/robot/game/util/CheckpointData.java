@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import static com.robot.game.util.Constants.SPAWN_LOCATION;
 
-public class GameData {
+public class CheckpointData {
 
     private int health;
     private int lives;

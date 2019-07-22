@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -26,7 +25,6 @@ import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import static com.robot.game.util.Constants.*;
 
@@ -35,9 +33,9 @@ public class PlayScreen extends ScreenAdapter {
     // main class reference
     private RobotGame game;
 
-    // game data
-    private GameData gameData;
-    private boolean gameDataDeleted;
+    // checkpoint data
+    private CheckpointData checkpointData;
+    private boolean checkpointDataDeleted;
 
     // robot
     private Robot robot;
@@ -49,6 +47,7 @@ public class PlayScreen extends ScreenAdapter {
     private DelayedRemovalArray<Enemy> enemies;
 
     // collectables
+    private CollectableHandler collectableHandler;
     private DelayedRemovalArray<Collectable> collectables;
     private JSONArray collectedItems;
     private boolean newItemCollected;
@@ -86,17 +85,17 @@ public class PlayScreen extends ScreenAdapter {
         this.game = game;
 
         // if file with game data exists, load it, otherwise create new one
-        if(FileSaver.getFile().exists()) {
-            this.gameData = FileSaver.loadData();
+        if(FileSaver.getCheckpointFile().exists()) {
+            this.checkpointData = FileSaver.loadCheckpointData();
         }
         else {
-            this.gameData = new GameData();
-            gameData.setDefaultData();
-            FileSaver.saveData(gameData);
+            this.checkpointData = new CheckpointData();
+            checkpointData.setDefaultData();
+            FileSaver.saveCheckpointData(checkpointData);
         }
         Gdx.app.log("PlayScreen", "New game started");
-        Gdx.app.log("PlayScreen", "Lives " + gameData.getLives());
-        Gdx.app.log("PlayScreen", "Health " + gameData.getHealth());
+        Gdx.app.log("PlayScreen", "Lives " + checkpointData.getLives());
+        Gdx.app.log("PlayScreen", "Health " + checkpointData.getHealth());
     }
 
     @Override
@@ -132,6 +131,10 @@ public class PlayScreen extends ScreenAdapter {
         this.backgroundWallLayer = new int[] {1};
         this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 10, 12};
 
+        // create collectable handler
+        this.collectableHandler = new CollectableHandler();
+
+        // create object parser
         this.objectParser = new ObjectParser(this, world, layersObjectArray);
 
         // create robot
@@ -145,7 +148,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // create collectables
         this.collectables = objectParser.getCollectables();
-        this.collectedItems = objectParser.getCollectedItems();
+        this.collectedItems = collectableHandler.getCollectedItems();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -157,6 +160,7 @@ public class PlayScreen extends ScreenAdapter {
         // create hud
         this.hud = new Hud(this);
 
+        System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size());
     }
 
     private void update(float delta) {
@@ -317,11 +321,14 @@ public class PlayScreen extends ScreenAdapter {
     public void hide() {
         Gdx.app.log("PlayScreen", "hide");
         // unless checkpoints are wiped out, save the game every time it is closed
-        if(!gameDataDeleted) {
-            FileSaver.saveData(gameData);
+        if(!checkpointDataDeleted) {
+            FileSaver.saveCheckpointData(checkpointData);
         }
         // if any items were collected and they have not been already saved in the checkIfDead() method, save them
         if(newItemCollected && !doNotSaveInHide) {
+            for(int collectableID: collectableHandler.getToDisableSpawning()) {
+                collectableHandler.setSpawn(collectableID, false);
+            }
             FileSaver.saveCollectedItems(collectedItems);
         }
         this.dispose();
@@ -356,45 +363,52 @@ public class PlayScreen extends ScreenAdapter {
         return world;
     }
 
-    public GameData getGameData() {
-        return gameData;
+    public CheckpointData getCheckpointData() {
+        return checkpointData;
     }
 
     public RobotGame getGame() {
         return game;
     }
 
-    public void setGameDataDeleted(boolean gameDataDeleted) {
-        this.gameDataDeleted = gameDataDeleted;
+    public void setCheckpointDataDeleted(boolean checkpointDataDeleted) {
+        this.checkpointDataDeleted = checkpointDataDeleted;
     }
 
     public void setNewItemCollected(boolean newItemCollected) {
         this.newItemCollected = newItemCollected;
     }
 
+    public CollectableHandler getCollectableHandler() {
+        return collectableHandler;
+    }
+
     private void checkIfDead() {
         // robot died but haves remaining lives
-        if(robot.isDead() && gameData.getLives() >= 0) {
+        if(robot.isDead() && checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
+            for(int collectableID: collectableHandler.getToDisableSpawning()) {
+                collectableHandler.setSpawn(collectableID, false);
+            }
             if(newItemCollected) {
                 FileSaver.saveCollectedItems(collectedItems);
                 doNotSaveInHide = true;
             }
-            game.respawn(gameData);
+            game.respawn(checkpointData);
 
             // with setTransform
             /*robot.setDead(false);
-            robot.getBody().setTransform(gameData.getSpawnLocation(), 0);*/
+            robot.getBody().setTransform(checkpointData.getSpawnLocation(), 0);*/
         }
         // robot died and has no remaining lives
         else if(robot.isDead()) {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
-            gameData.setDefaultData();
-            if(FileSaver.getCollectedFile().exists()) {
+            checkpointData.setDefaultData();
+            if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables();
-                FileSaver.getCollectedFile().delete();
+                FileSaver.getCollectedItemsFile().delete();
             }
-            game.respawn(gameData);
+            game.respawn(checkpointData);
         }
     }
 

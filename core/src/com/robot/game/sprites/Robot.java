@@ -53,12 +53,12 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private float flickerElapsed;
 
     // Game data
-    private GameData gameData;
+    private CheckpointData checkpointData;
 
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
-        this.gameData = playScreen.getGameData();
+        this.checkpointData = playScreen.getCheckpointData();
         createRobotB2d();
 
         this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
@@ -72,7 +72,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(gameData.getSpawnLocation()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(checkpointData.getSpawnLocation()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -145,14 +145,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
         // First checkpoint
-        if(!gameData.isFirstCheckpointActivated()) {
+        if(!checkpointData.isFirstCheckpointActivated()) {
             checkFirstCheckpoint();
         }
         // Second checkpoint
-        else if(!gameData.isSecondCheckpointActivated()) {
+        else if(!checkpointData.isSecondCheckpointActivated()) {
             checkSecondCheckpoint();
         }
-        else if(!gameData.isThirdCheckpointActivated()) {
+        else if(!checkpointData.isThirdCheckpointActivated()) {
             checkThirdCheckpoint();
         }
 
@@ -168,12 +168,12 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         // conditions for robot to die
-        if((body.getPosition().y < 0 || gameData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
+        if((body.getPosition().y < 0 || checkpointData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
             dead = true;
             // decrease lives by one
-            gameData.decreaseLives();
+            checkpointData.decreaseLives();
             // reset health
-            gameData.setHealth(100);
+            checkpointData.setHealth(100);
         }
     }
 
@@ -310,6 +310,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
+    // getter for the PlayScreen
+    public PlayScreen getPlayScreen() {
+        return playScreen;
+    }
+
     // getter for the Body
     public Body getBody() {
         return body;
@@ -345,8 +350,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             this.flickerStartTime = TimeUtils.nanoTime();
     }
 
-    public GameData getGameData() {
-        return gameData;
+    public CheckpointData getCheckpointData() {
+        return checkpointData;
     }
 
     public boolean isDead() {
@@ -385,9 +390,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private void checkFirstCheckpoint() {
         if( Math.abs( (body.getPosition().x - FIRST_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
             Gdx.app.log("Robot","First checkpoint activated!");
-            gameData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
-            gameData.setFirstCheckpointActivated(true);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
+            checkpointData.setFirstCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
         }
     }
 
@@ -396,50 +401,50 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 && Math.abs( (body.getPosition().y - SECOND_CHECKPOINT_LOCATION.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
 
             Gdx.app.log("Robot","Second checkpoint activated!");
-            gameData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
-            gameData.setSecondCheckpointActivated(true);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
+            checkpointData.setSecondCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
         }
     }
 
     private void checkThirdCheckpoint() {
         if( Math.abs( (body.getPosition().x - THIRD_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
             Gdx.app.log("Robot","Third checkpoint activated!");
-            gameData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
-            gameData.setThirdCheckpointActivated(true);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
+            checkpointData.setThirdCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
         }
     }
 
     private void toggleDebugCheckpoints() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
             Gdx.app.log("Robot", "Checkpoints deleted");
-            FileSaver.getFile().delete();
-            playScreen.setGameDataDeleted(true);
+            FileSaver.getCheckpointFile().delete();
+            playScreen.setCheckpointDataDeleted(true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("Robot", "First checkpoint set");
-            gameData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
-            gameData.setFirstCheckpointActivated(true);
-            gameData.setSecondCheckpointActivated(false);
-            gameData.setThirdCheckpointActivated(false);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(false);
+            checkpointData.setThirdCheckpointActivated(false);
+            FileSaver.saveCheckpointData(checkpointData);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
             Gdx.app.log("Robot", "Second checkpoint set");
-            gameData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
-            gameData.setFirstCheckpointActivated(true);
-            gameData.setSecondCheckpointActivated(true);
-            gameData.setThirdCheckpointActivated(false);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(true);
+            checkpointData.setThirdCheckpointActivated(false);
+            FileSaver.saveCheckpointData(checkpointData);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
             Gdx.app.log("Robot", "Third checkpoint set");
-            gameData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
-            gameData.setFirstCheckpointActivated(true);
-            gameData.setSecondCheckpointActivated(true);
-            gameData.setThirdCheckpointActivated(true);
-            FileSaver.saveData(gameData);
+            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(true);
+            checkpointData.setThirdCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
         }
     }
 

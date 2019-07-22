@@ -1,29 +1,23 @@
 package com.robot.game.sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
-import com.robot.game.util.FileSaver;
+import com.robot.game.util.CollectableHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import java.io.IOException;
 
 import static com.robot.game.util.Constants.*;
 
 public class Collectable extends Sprite {
 
-    PlayScreen playScreen;
+    private PlayScreen playScreen;
+    private CollectableHandler collectableHandler;
     private Sprite burgerSprite;
     private World world;
     private Body body;
@@ -34,8 +28,9 @@ public class Collectable extends Sprite {
 //    private Array<JSONObject> collectedItems;
     private JSONArray collectedItems;
 
-    public Collectable(PlayScreen playScreen, World world, Body body, FixtureDef fixtureDef, MapObject object, /*Array<JSONObject>*/JSONArray collectedItems) {
+    public Collectable(PlayScreen playScreen, World world, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
+        this.collectableHandler = playScreen.getCollectableHandler();
         this.world = world;
         this.body = body;
         this.object = object;
@@ -63,9 +58,7 @@ public class Collectable extends Sprite {
 
     public void setFlagToCollect() {
         this.flagToCollect = true;
-        this.object.getProperties().put("spawn", false);
-
-
+//        this.object.getProperties().put("spawn", false);
     }
 
     protected void destroyBody() {
@@ -81,7 +74,11 @@ public class Collectable extends Sprite {
         return object;
     }
 
-    public void setSpawn(int collectableID, boolean bool) {
+    public void addToDisableSpawning(int collectableID) {
+        collectableHandler.getToDisableSpawning().add(collectableID);
+    }
+
+    /*public void setSpawn(int collectableID, boolean bool) {
 
         FileHandle file = Gdx.files.local(LEVEL_1_JSON);
         JSONObject root = null;
@@ -139,7 +136,7 @@ public class Collectable extends Sprite {
             e.printStackTrace();
         }
         FileSaver.saveJsonMap(file, root);
-    }
+    }*/
 
 
 

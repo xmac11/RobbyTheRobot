@@ -203,16 +203,16 @@ public class ContactManager implements ContactListener {
 
         // if robot is not invulnerable and is not walking on spikes, decrease health and make it invulnerable
         if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
-            robot.getGameData().decreaseHealth(DAMAGE_FROM_SPIKE);
+            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
             robot.setInvulnerable(true);
             robot.setFlicker(true);
-            Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth() + "%");
+            Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }
 
         // if robot is walking on spikes, it dies
         if(spike.mightBeWalked()) {
             robot.setWalkingOnSpikes(true);
-//            robot.getGameData().setSpawnLocation(spike.getRespawnLocation());
+//            robot.getCheckpointData().setSpawnLocation(spike.getRespawnLocation());
         }
     }
 
@@ -257,7 +257,7 @@ public class ContactManager implements ContactListener {
                 // decrease robot's health
                 decreaseHealth(robot, enemy);
                 robot.setFlicker(true);
-                Gdx.app.log("ContactManager", "Robot health " + robot.getGameData().getHealth() + "%");
+                Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
         else {
@@ -293,7 +293,7 @@ public class ContactManager implements ContactListener {
                 // decrease robot's health
                 decreaseHealth(robot, enemy);
                 robot.setFlicker(true);
-                Gdx.app.log("ContactManager","Robot health " + robot.getGameData().getHealth() + "%");
+                Gdx.app.log("ContactManager","Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
     }
@@ -310,9 +310,17 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             collectable = (Collectable) fixA.getUserData();
         }
-        robot.getGameData().increaseScore(POINTS_FOR_COLLECTABLE);
+        // increase score for collectable
+        robot.getCheckpointData().increaseScore(POINTS_FOR_COLLECTABLE);
+
+        // flag to collect (in order to destroy the body)
         collectable.setFlagToCollect();
-        collectable.setSpawn((int) collectable.getObject().getProperties().get("id"), false);
+
+        // add the collectable to the list of collectables to be disabled from beying respawned if robot dies
+        collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
+
+        // flag that a new item was collected
+        robot.getPlayScreen().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
     }
 
@@ -469,16 +477,16 @@ public class ContactManager implements ContactListener {
 
     private void increaseScore(Robot robot, Enemy enemy) {
         if(enemy instanceof Bat)
-            robot.getGameData().increaseScore(POINTS_FOR_BAT);
+            robot.getCheckpointData().increaseScore(POINTS_FOR_BAT);
         else
-            robot.getGameData().increaseScore(POINTS_FOR_CRAB);
+            robot.getCheckpointData().increaseScore(POINTS_FOR_CRAB);
     }
 
     private void decreaseHealth(Robot robot, Enemy enemy) {
         if(enemy instanceof Bat)
-            robot.getGameData().decreaseHealth(DAMAGE_FROM_BAT);
+            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_BAT);
         else
-            robot.getGameData().decreaseHealth(DAMAGE_FROM_CRAB);
+            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_CRAB);
     }
 
 }

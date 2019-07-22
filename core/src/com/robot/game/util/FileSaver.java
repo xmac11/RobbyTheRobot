@@ -2,93 +2,106 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
-import com.robot.game.sprites.Collectable;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
 
-import static com.robot.game.util.Constants.COLLECTABLE_OBJECT;
-import static com.robot.game.util.Constants.LEVEL_1_JSON;
+import static com.robot.game.util.Constants.*;
 
 public class FileSaver {
 
     private static Json json = new Json();
-    private static FileHandle file = Gdx.files.local("/files/checkpoints.json");
-    private static FileHandle collectedFile = Gdx.files.local("/files/collectedItems.json");
+    private static FileHandle checkPointFile = Gdx.files.local("/files/checkpoints.json");
+    private static FileHandle collectedItemsFile = Gdx.files.local("/files/collectedItems.json");
 
-    public static void saveData(GameData gameData) {
+    // CHECKPOINTS
+
+    /** Saves the game data needed for checkpoints to a json file */
+    public static void saveCheckpointData(CheckpointData checkpointData) {
         json.setOutputType(JsonWriter.OutputType.json);
-        file.writeString(json.prettyPrint(gameData), false);
-        Gdx.app.log("FileSaver", "Data Saved");
+        checkPointFile.writeString(json.prettyPrint(checkpointData), false);
+        Gdx.app.log("FileSaver", "Checkpoint data saved");
     }
 
+    /** Reads the json file containing checkpoints data and returns the data as a class instance */
+    public static CheckpointData loadCheckpointData() {
+        return json.fromJson(CheckpointData.class, checkPointFile);
+    }
+
+    // COLLECTABLES
+
+    /** Saves the new root to the specified file (Json tiled map file) */
     public static void saveJsonMap(FileHandle file, JSONObject root) {
         json.setOutputType(JsonWriter.OutputType.json);
         file.writeString(json.prettyPrint(root.toString()), false);
         Gdx.app.log("FileSaver", "Json Map Saved");
     }
 
-    public static void saveCollectedItems(/*Array<JSONObject>*/JSONArray collectedItems) {
+    /** Loops through a given JSONArray of collected items and saves their IDs to a json file */
+    public static void saveCollectedItems(JSONArray collectedItems) {
         json.setOutputType(JsonWriter.OutputType.json);
         JSONArray jsonArray;
-        if(collectedFile.exists()) {
-            jsonArray = loadCollectedFile();
+
+        // if the file exists, load it to JSONArray, otherwise create new one
+        if(collectedItemsFile.exists()) {
+            jsonArray = loadCollectedItemsFile();
         }
        else {
             jsonArray = new JSONArray();
         }
 
-
         for(Object object: collectedItems)
             jsonArray.add(object);
-        collectedFile.writeString(json.prettyPrint(jsonArray.toString()), false);
+
+        collectedItemsFile.writeString(json.prettyPrint(jsonArray.toString()), false);
         Gdx.app.log("FileSaver", "collectedItems.json was saved");
     }
 
+    /** When the robot dies and has no more lives, this method reads the saved file of collected items
+     * (whose spawning has been disabled) and resets spawning to TRUE */
     public static void resetSpawningOfCollectables() {
 
-        JSONArray jsonArray = loadCollectedFile();
+        JSONArray jsonArray = loadCollectedItemsFile();
 
         for(Object object: jsonArray) {
             JSONObject obj = (JSONObject) object;
-            methodname((long) obj.get("id"));
+            resetSpawningOfCollectable((long) obj.get("id"));
         }
         Gdx.app.log("FileSaver", "Collectables reset");
     }
 
-    public static GameData loadData() {
-        return json.fromJson(GameData.class, file);
-    }
-
-    public static JSONArray loadCollectedFile() {
+    /** Reads the json file containing the items that have been collected and disabled from being spawned
+     *  and returns them as a JSONArray */
+    public static JSONArray loadCollectedItemsFile() {
         JSONArray jsonArray = null;
+
         try {
-            jsonArray = (JSONArray) new JSONParser().parse(collectedFile.reader());
+            jsonArray = (JSONArray) new JSONParser().parse(collectedItemsFile.reader());
         }
-        catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
+        catch (IOException | ParseException e) { e.printStackTrace();}
 
         return jsonArray;
     }
 
-    public static FileHandle getFile() {
-        return file;
+    // getter for the checkpoint file
+    public static FileHandle getCheckpointFile() {
+        return checkPointFile;
     }
 
-    public static FileHandle getCollectedFile() {
-        return collectedFile;
+    // getter for the collected items file
+    public static FileHandle getCollectedItemsFile() {
+        return collectedItemsFile;
     }
 
-    public static void methodname(long collectableID) {
+    /** Given the ID of the collectable item to be reset to be spawned, reads the tiled map json file,
+     *  overrides the boolean value of whether a particular collectable should be respawned to TRUE.
+     *  Finally saves the tiled map json file */
+    public static void resetSpawningOfCollectable(long collectableID) {
         FileHandle file = Gdx.files.local(LEVEL_1_JSON);
         JSONObject root = null;
 
@@ -119,11 +132,8 @@ public class FileSaver {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
                                             if ("shouldSpawn".equals(obj3.get("name"))) {
-                                                Gdx.app.log("Collectable", "Before: " + obj3.get("value"));
                                                 obj3.put("value", true);
-                                                Gdx.app.log("Collectable", "After: " + obj3.get("value"));
                                             }
-
                                         }
                                     }
 
@@ -137,9 +147,10 @@ public class FileSaver {
             }
 
         }
-        catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-        FileSaver.saveJsonMap(file, root);
+        catch (IOException | ParseException e) { e.printStackTrace(); }
+
+        // finally save the json tiled map file
+        if(root != null)
+            saveJsonMap(file, root);
     }
 }
