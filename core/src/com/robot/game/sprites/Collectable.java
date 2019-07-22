@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.FileSaver;
@@ -27,14 +28,19 @@ public class Collectable extends Sprite {
     private World world;
     private Body body;
     private MapObject object;
+    private JSONObject temp;
     private boolean flagToCollect;
     private boolean isDestroyed;
+//    private Array<JSONObject> collectedItems;
+    private JSONArray collectedItems;
 
-    public Collectable(PlayScreen playScreen, World world, Body body, FixtureDef fixtureDef, MapObject object) {
+    public Collectable(PlayScreen playScreen, World world, Body body, FixtureDef fixtureDef, MapObject object, /*Array<JSONObject>*/JSONArray collectedItems) {
         this.playScreen = playScreen;
         this.world = world;
         this.body = body;
         this.object = object;
+        this.temp = new JSONObject();
+        this.collectedItems = collectedItems;
         body.createFixture(fixtureDef).setUserData(this);
         this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burgerTexture);
 
@@ -86,30 +92,34 @@ public class Collectable extends Sprite {
             JSONArray child1 = (JSONArray) root.get("layers");
 
             if(child1 != null) {
-                for(int i = 0; i < child1.size(); i++) {
+                for (Object o : child1) {
                     //System.out.println(((JSONObject) child1.get(i)).keySet());
-                    JSONObject obj = ((JSONObject) child1.get(i));
-                    if(COLLECTABLE_OBJECT.equals(obj.get("name"))) {
+                    JSONObject obj = ((JSONObject) o);
+                    if (COLLECTABLE_OBJECT.equals(obj.get("name"))) {
                         JSONArray child2 = (JSONArray) obj.get("objects");
                         //System.out.println(child2);
 
-                        if(child2 != null) {
-                            for(int j = 0; j < child2.size(); j++) {
+                        if (child2 != null) {
+                            for (int j = 0; j < child2.size(); j++) {
                                 //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
                                 JSONObject obj2 = ((JSONObject) child2.get(j));
-                                System.out.println((long) obj2.get("id"));
-                                if((long) obj2.get("id") == collectableID) {
+                                if ((long) obj2.get("id") == collectableID) {
                                     JSONArray child3 = (JSONArray) obj2.get("properties");
                                     //System.out.println(child3);
 
-                                    if(child3 != null) {
-                                        for(int k = 0; k < child3.size(); k++) {
+                                    if (child3 != null) {
+                                        for (int k = 0; k < child3.size(); k++) {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
-                                            if("shouldSpawn".equals(obj3.get("name"))) {
-                                                Gdx.app.log("Collectable", "Before: " + obj3.get("value"));
+                                            if ("shouldSpawn".equals(obj3.get("name"))) {
                                                 obj3.put("value", bool);
-                                                Gdx.app.log("Collectable", "After: " + obj3.get("value"));
+
+                                                temp.put("id", obj2.get("id"));
+                                                temp.put("value", obj3.get("value"));
+                                                collectedItems.add(temp);
+                                                playScreen.setNewItemCollected(true);
+                                                Gdx.app.log("Collectable", "Item was put in JsonArray. " +
+                                                        "Size: " + collectedItems.size());
                                             }
 
                                         }
@@ -128,12 +138,10 @@ public class Collectable extends Sprite {
         catch (IOException | ParseException e) {
             e.printStackTrace();
         }
-        FileSaver.saveCollectable(file, root);
+        FileSaver.saveJsonMap(file, root);
     }
 
-    public void resetSpawningOfCollectables() {
 
-    }
 
     public void getJsonCollectables() {
 

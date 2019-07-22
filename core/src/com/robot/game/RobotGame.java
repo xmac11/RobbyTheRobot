@@ -47,6 +47,7 @@ public class RobotGame extends Game {
 	}
 
 	public void respawn(GameData gameData) {
+		Gdx.app.log("RobotGame", "Respawning...");
 		// first save game data, then restart game
 		FileSaver.saveData(gameData);
 		setScreen(new PlayScreen(this));

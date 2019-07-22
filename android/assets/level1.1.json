@@ -5,7 +5,7 @@
 "infinite": false,
 "type": "map",
 "version": 1.2,
-"nextobjectid": 214,
+"nextobjectid": 217,
 "tilewidth": 16,
 "tiledversion": "1.2.4",
 "tileheight": 16,
@@ -2223,6 +2223,75 @@
 				"x": 3136,
 				"y": 64,
 				"id": 213,
+				"type": "",
+				"properties": [
+					{
+						"name": "collectable",
+						"type": "string",
+						"value": ""
+					},
+					{
+						"name": "shouldSpawn",
+						"type": "bool",
+						"value": true
+					}
+				],
+				"height": 16
+			},
+			{
+				"visible": true,
+				"rotation": 0,
+				"name": "",
+				"width": 20,
+				"x": 2960,
+				"y": 64,
+				"id": 214,
+				"type": "",
+				"properties": [
+					{
+						"name": "collectable",
+						"type": "string",
+						"value": ""
+					},
+					{
+						"name": "shouldSpawn",
+						"type": "bool",
+						"value": true
+					}
+				],
+				"height": 16
+			},
+			{
+				"visible": true,
+				"rotation": 0,
+				"name": "",
+				"width": 20,
+				"x": 112,
+				"y": 320,
+				"id": 215,
+				"type": "",
+				"properties": [
+					{
+						"name": "collectable",
+						"type": "string",
+						"value": ""
+					},
+					{
+						"name": "shouldSpawn",
+						"type": "bool",
+						"value": false
+					}
+				],
+				"height": 16
+			},
+			{
+				"visible": true,
+				"rotation": 0,
+				"name": "",
+				"width": 20,
+				"x": 160,
+				"y": 288,
+				"id": 216,
 				"type": "",
 				"properties": [
 					{

@@ -25,6 +25,8 @@ import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import static com.robot.game.util.Constants.*;
 
@@ -48,6 +50,9 @@ public class PlayScreen extends ScreenAdapter {
 
     // collectables
     private DelayedRemovalArray<Collectable> collectables;
+    private JSONArray collectedItems;
+    private boolean newItemCollected;
+    private boolean doNotSaveInHide;
 
     // camera variables
     private OrthographicCamera camera;
@@ -89,6 +94,7 @@ public class PlayScreen extends ScreenAdapter {
             gameData.setDefaultData();
             FileSaver.saveData(gameData);
         }
+        Gdx.app.log("PlayScreen", "New game started");
         Gdx.app.log("PlayScreen", "Lives " + gameData.getLives());
         Gdx.app.log("PlayScreen", "Health " + gameData.getHealth());
     }
@@ -139,6 +145,7 @@ public class PlayScreen extends ScreenAdapter {
 
         // create collectables
         this.collectables = objectParser.getCollectables();
+        this.collectedItems = objectParser.getCollectedItems();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -313,6 +320,10 @@ public class PlayScreen extends ScreenAdapter {
         if(!gameDataDeleted) {
             FileSaver.saveData(gameData);
         }
+        // if any items were collected and they have not been already saved in the checkIfDead() method, save them
+        if(newItemCollected && !doNotSaveInHide) {
+            FileSaver.saveCollectedItems(collectedItems);
+        }
         this.dispose();
     }
 
@@ -357,18 +368,32 @@ public class PlayScreen extends ScreenAdapter {
         this.gameDataDeleted = gameDataDeleted;
     }
 
+    public void setNewItemCollected(boolean newItemCollected) {
+        this.newItemCollected = newItemCollected;
+    }
+
     private void checkIfDead() {
+        // robot died but haves remaining lives
         if(robot.isDead() && gameData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
+            if(newItemCollected) {
+                FileSaver.saveCollectedItems(collectedItems);
+                doNotSaveInHide = true;
+            }
             game.respawn(gameData);
 
             // with setTransform
             /*robot.setDead(false);
             robot.getBody().setTransform(gameData.getSpawnLocation(), 0);*/
         }
+        // robot died and has no remaining lives
         else if(robot.isDead()) {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
             gameData.setDefaultData();
+            if(FileSaver.getCollectedFile().exists()) {
+                FileSaver.resetSpawningOfCollectables();
+                FileSaver.getCollectedFile().delete();
+            }
             game.respawn(gameData);
         }
     }

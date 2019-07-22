@@ -1,6 +1,7 @@
 package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -18,6 +19,12 @@ import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Crab;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 import static com.robot.game.util.Constants.*;
 
@@ -29,6 +36,8 @@ public class ObjectParser {
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
+//    private Array<JSONObject> collectedItems;
+    private JSONArray collectedItems;
 
     public ObjectParser(PlayScreen playScreen, World world, Array<MapObjects> layersObjectArray) {
         this.playScreen = playScreen;
@@ -36,6 +45,8 @@ public class ObjectParser {
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         this.collectables = new DelayedRemovalArray<>();
+//        this.collectedItems = new Array<>();
+        this.collectedItems = new JSONArray();
         for(MapObjects objects: layersObjectArray)
             createTiledObjects(world, objects);
     }
@@ -212,7 +223,7 @@ public class ObjectParser {
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
             if(shouldSpawn((int) object.getProperties().get("id")))
-                collectables.add(new Collectable(playScreen, world, body, fixtureDef, object));
+                collectables.add(new Collectable(playScreen, world, body, fixtureDef, object, collectedItems));
         }
         // create ground
         else {
@@ -260,5 +271,27 @@ public class ObjectParser {
             }
         }
         return false;
+    }
+
+    /*public void resetSpawningOfCollectables() {
+        FileHandle file = Gdx.files.local(LEVEL_1_JSON);
+        JSONObject root = null;
+
+        try {
+            root = (JSONObject) new JSONParser().parse(file.reader());
+        }
+        catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        for(JSONObject object: collectedItems) {
+            object.put("value", true);
+        }
+        FileSaver.saveJsonMap(file, root);
+    }*/
+
+    public /*Array<JSONObject>*/JSONArray getCollectedItems() {
+        return collectedItems;
     }
 }
