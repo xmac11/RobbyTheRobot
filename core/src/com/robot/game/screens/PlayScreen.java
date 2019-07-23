@@ -20,6 +20,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.Parallax;
+import com.robot.game.camera.ShakeEffect;
+import com.robot.game.interactiveObjects.FallingPipe;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
@@ -53,6 +55,10 @@ public class PlayScreen extends ScreenAdapter {
     private JSONArray collectedItems;
     private boolean newItemCollected;
     private boolean doNotSaveInHide;
+
+    // falling pipes
+    private Array<FallingPipe> fallingPipess;
+    private boolean earthquakeHappened;
 
     // camera variables
     private OrthographicCamera camera;
@@ -153,6 +159,9 @@ public class PlayScreen extends ScreenAdapter {
         this.collectables = objectParser.getCollectables();
         this.collectedItems = collectableHandler.getCollectedItems();
 
+        // falling pipes array
+        this.fallingPipess = new Array<>();
+
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
 
@@ -168,6 +177,11 @@ public class PlayScreen extends ScreenAdapter {
 
     private void update(float delta) {
         world.step(1 / 60f, 8, 3);
+
+        if(!earthquakeHappened)
+            checkForEarthquake();
+        if(robot.isInShakeArea() && fallingPipess.size < 25)
+            fallingPipess.add(new FallingPipe(this));
 
         // update interactive platforms (do this first if robot should be moving along with it)
         for(int i = 0; i < interactivePlatforms.size; i++) {
@@ -209,6 +223,11 @@ public class PlayScreen extends ScreenAdapter {
 
             if(collectable.isDestroyed())
                 collectables.removeIndex(i);
+        }
+
+        // update falling pipes
+        for(FallingPipe fallingPipe: fallingPipess) {
+            fallingPipe.update(delta);
         }
 
             // update camera
@@ -275,6 +294,11 @@ public class PlayScreen extends ScreenAdapter {
         for(Collectable collectable: collectables) {
             if(!collectable.isDestroyed())
                 collectable.draw(game.getBatch());
+        }
+
+        // render falling pipes
+        for(FallingPipe fallingPipe: fallingPipess) {
+            fallingPipe.draw(game.getBatch());
         }
 
         // render Hud
@@ -388,6 +412,16 @@ public class PlayScreen extends ScreenAdapter {
 
     public CollectableHandler getCollectableHandler() {
         return collectableHandler;
+    }
+
+    private void checkForEarthquake() {
+        // if robot is in the shake area and the shake is not already active, start it
+        if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
+            ShakeEffect.shake(0.25f, 3f, false);
+            ShakeEffect.setShakeON(true);
+            Gdx.app.log("Robot", "shake active = true");
+            earthquakeHappened = true;
+        }
     }
 
     private void checkIfDead() {

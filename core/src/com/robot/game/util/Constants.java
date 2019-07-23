@@ -2,12 +2,11 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -43,19 +42,21 @@ public final class Constants {
     public static final short ENEMY_CATEGORY = 64;
     public static final short SPIKE_CATEGORY = 128;
     public static final short COLLECTABLE_CATEGORY = 256;
+    public static final short PIPE_CATEGORY = 512;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY
-                                            | ENEMY_CATEGORY | SPIKE_CATEGORY | COLLECTABLE_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY;
+                                            | ENEMY_CATEGORY | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY | PIPE_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
-    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
+    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | PIPE_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY /*| GROUND_CATEGORY*/;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
+    public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
 
     // Robot
@@ -159,6 +160,16 @@ public final class Constants {
     public static final int POINTS_FOR_BAT = 100;
     public static final int POINTS_FOR_CRAB = 50;
     public static final int POINTS_FOR_COLLECTABLE = 25;
+
+    // Falling pipes
+    public static final float PIPE_WIDTH = 8;
+    public static final float PIPE_HEIGHT = 32;
+    public static final Vector2[] PIPE_VERTICES = new Vector2[]{new Vector2(-4 / PPM, 14 / PPM),
+                                                                new Vector2(0 / PPM, 16 / PPM),
+                                                                new Vector2(4 / PPM, 14 / PPM),
+                                                                new Vector2(4 / PPM, -14 / PPM),
+                                                                new Vector2(0 / PPM, -16 / PPM),
+                                                                new Vector2(-4 / PPM, -14 / PPM)};
 
 
 }

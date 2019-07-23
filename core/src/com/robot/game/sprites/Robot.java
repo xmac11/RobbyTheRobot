@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.camera.ShakeEffect;
+import com.robot.game.interactiveObjects.FallingPipe;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
@@ -146,6 +148,17 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // attach robot sprite to body
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
 
+        // if robot is invulnerable
+        if(invulnerable) {
+            // check how much time has passed
+            invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
+            // if more than 1 second, disable it
+            if(invulnerableElapsed >= 1) {
+                setInvulnerable(false);
+                invulnerableElapsed = 0;
+            }
+        }
+
         // First checkpoint
         if(!checkpointData.isFirstCheckpointActivated()) {
             checkFirstCheckpoint();
@@ -156,17 +169,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
         else if(!checkpointData.isThirdCheckpointActivated()) {
             checkThirdCheckpoint();
-        }
-
-        // if robot is invulnerable
-        if(invulnerable) {
-            // check how much time has passed
-            invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
-            // if more than 1 second, disable it
-            if(invulnerableElapsed >= 1) {
-                setInvulnerable(false);
-                invulnerableElapsed = 0;
-            }
         }
 
         // conditions for robot to die
@@ -418,6 +420,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
+
+    // Debug keys for checkpoints
+
     private void toggleDebugCheckpoints() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
             Gdx.app.log("Robot", "Checkpoints deleted");
@@ -451,7 +456,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     public boolean isInShakeArea() {
-        return body.getPosition().x > THIRD_CHECKPOINT_LOCATION.x + 128 / PPM && body.getPosition().x < /*6032*/4528 / PPM;
+        return body.getPosition().x > 4992 / PPM && body.getPosition().x < 6032 / PPM;
     }
 
     /*@Override

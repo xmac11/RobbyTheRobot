@@ -33,17 +33,17 @@ public class ShakeEffect {
 
     public static void update() {
 
-        if(indefiniteShaking && shakeON) {
+        /*if(indefiniteShaking && shakeON) {
             calculateCameraDisplacement();
         }
-        else if(elapsed <= timeToShake) {
+        else*/ if(elapsed <= timeToShake) {
             calculateCameraDisplacement();
 
             elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
         }
         else {
             shakeON = false;
-            timeToShake = 0;
+            //timeToShake = 0;
         }
     }
 

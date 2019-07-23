@@ -32,6 +32,7 @@ public class Assets {
     public ParallaxAssets parallaxAssets;
     public HudAssets hudAssets;
     public CollectableAssets collectableAssets;
+    public PipeAssets pipeAssets;
 
     private Assets() {
     }
@@ -99,6 +100,7 @@ public class Assets {
         this.parallaxAssets = new ParallaxAssets();
         this.hudAssets = new HudAssets(atlas);
         this.collectableAssets = new CollectableAssets();
+        this.pipeAssets = new PipeAssets();
     }
 
     public void dispose() {
@@ -246,6 +248,14 @@ public class Assets {
 
         private CollectableAssets() {
             this.burgerTexture = new Texture("burger.png"); // add this to atlas when finalized
+        }
+    }
+
+    public class PipeAssets {
+        public Texture pipeTexture;
+
+        private PipeAssets() {
+            this.pipeTexture = new Texture("debris1.png"); // add this to atlas when finalized
         }
     }
 }

@@ -38,13 +38,14 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            // if robot is in the shake area and the shake is not already active, start it
+            /*// if robot is in the shake area and the shake is not already active, start it
             if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
-                ShakeEffect.shake(0.25f, 2f, false);
+                ShakeEffect.shake(0.25f, 5f, false);
                 ShakeEffect.setShakeON(true);
 //                shakeActive = true;
                 Gdx.app.log("DebugCamera", "shake active = true");
-            }
+            }*/
+
             // else if robot is not in the shake area, but the shake is active stop it
             /*else if(!robot.isInShakeArea() && shakeActive) {
                 Gdx.app.log("DebugCamera", "shake active = false");
@@ -53,7 +54,7 @@ public class DebugCamera {
                 ShakeEffect.setShakeON(false);
             }*/
 
-            if(/*ShakeEffect.isShakeON() || */ShakeEffect.getTimeToShake() > 0) {
+            if(ShakeEffect.isShakeON() /*|| ShakeEffect.getTimeToShake() > 0*/) {
                 ShakeEffect.update();
                 camera.translate(ShakeEffect.getCameraDisplacement());
             }
