@@ -21,6 +21,10 @@ import static com.robot.game.util.Constants.*;
 
 public class ObjectParser {
 
+    int rectangles = 0;
+    int polylines = 0;
+    int polygons = 0;
+
     PlayScreen playScreen;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
@@ -37,6 +41,8 @@ public class ObjectParser {
 //        this.collectedItems = new JSONArray();
         for(MapObjects objects: layersObjectArray)
             createTiledObjects(world, objects);
+
+        System.out.println("Rectangles: " + rectangles + ", polylines: " + polylines + ", polygons: " + polygons);
     }
 
     private void createTiledObjects(World world, MapObjects objects) {
@@ -51,6 +57,7 @@ public class ObjectParser {
             Body body;
 
             if(object instanceof RectangleMapObject) {
+                rectangles++;
 
                 Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
@@ -60,7 +67,7 @@ public class ObjectParser {
                 body = world.createBody(bodyDef);
 
                 // create shape
-                PolygonShape polygonShape =  new PolygonShape();
+                PolygonShape polygonShape = new PolygonShape();
                 polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM,
                                       rectangle.getHeight() / 2 / PPM);
 
@@ -72,9 +79,10 @@ public class ObjectParser {
                 polygonShape.dispose();
             }
             else if(object instanceof PolylineMapObject) {
+                polylines++;
 
                 body = world.createBody(bodyDef);
-                Shape shape =  createPolyline((PolylineMapObject) object);
+                Shape shape = createPolyline((PolylineMapObject) object);
 
                 // create fixture
                 fixtureDef.shape = shape;
@@ -83,10 +91,11 @@ public class ObjectParser {
 
                 shape.dispose();
             }
-            else if(object instanceof PolygonMapObject) {
+            /*else if(object instanceof PolygonMapObject) {
+                polygons++;
 
                 body = world.createBody(bodyDef);
-                Shape shape =  createPolygon((PolygonMapObject) object);
+                Shape shape = createPolygon((PolygonMapObject) object);
 
                 // create fixture
                 fixtureDef.shape = shape;
@@ -95,7 +104,7 @@ public class ObjectParser {
 
                 shape.dispose();
             }
-            else continue;
+            else continue;*/
         }
     }
 
@@ -113,7 +122,7 @@ public class ObjectParser {
         return chainShape;
     }
 
-    private ChainShape createPolygon(PolygonMapObject polygon) {
+    /*private ChainShape createPolygon(PolygonMapObject polygon) {
         float[] vertices =  polygon.getPolygon().getTransformedVertices();
         float[] worldVertices = new float[vertices.length + 2]; // +2 to close the polyline
 
@@ -127,7 +136,7 @@ public class ObjectParser {
         chainShape.createChain(worldVertices);
 
         return chainShape;
-    }
+    }*/
 
     // assign filter bits to bodies
     private void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
@@ -205,7 +214,7 @@ public class ObjectParser {
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
             if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id")))
-                collectables.add(new Collectable(playScreen, body, fixtureDef));
+                collectables.add(new Collectable(playScreen, body, fixtureDef, object));
         }
         // create ground
         else {

@@ -25,11 +25,12 @@ public class Collectable extends Sprite {
     private boolean flagToCollect;
     private boolean isDestroyed;
 
-    public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef) {
+    public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
         this.collectableHandler = playScreen.getCollectableHandler();
         this.world = playScreen.getWorld();
         this.body = body;
+        this.object = object;
         this.temp = new JSONObject();
         body.createFixture(fixtureDef).setUserData(this);
         this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burgerTexture);

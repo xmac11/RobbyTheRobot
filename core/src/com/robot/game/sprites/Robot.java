@@ -20,6 +20,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private Sprite robotSprite;
     private PlayScreen playScreen;
     private World world;
+    private ContactManager contactManager;
     private Body body;
 
     // state booleans
@@ -58,6 +59,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.world = playScreen.getWorld();
+        this.contactManager = playScreen.getContactManager();
         this.checkpointData = playScreen.getCheckpointData();
         createRobotB2d();
 
@@ -252,14 +254,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         jumpTimeout += delta;
 
         // when the robot is grounded, start coyote timer
-        if(ContactManager.getFootContactCounter() > 0)
+        if(contactManager.getFootContactCounter() > 0)
             coyoteTimer = ROBOT_COYOTE_TIMER;
 
         // when space is pressed, start jump timer
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
 
             jumpTimer = ROBOT_JUMP_TIMER; // start jumping timer
-            Gdx.app.log("Robot","space pressed -> " + ContactManager.getFootContactCounter() + " contacts");
+            Gdx.app.log("Robot","space pressed -> " + contactManager.getFootContactCounter() + " contacts");
         }
 
         // if the timers have been set and robot not on ladder, jump
@@ -279,7 +281,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             // robot jumps from the ground
             else {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
-                Gdx.app.log("Robot","Just jumped: " + ContactManager.getFootContactCounter() + " contacts");
+                Gdx.app.log("Robot","Just jumped: " + contactManager.getFootContactCounter() + " contacts");
                 //                body.applyLinearImpulse(ROBOT_JUMP_IMPULSE, body.getWorldCenter(), true);
             }
         }
@@ -446,6 +448,10 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             checkpointData.setThirdCheckpointActivated(true);
             FileSaver.saveCheckpointData(checkpointData);
         }
+    }
+
+    public boolean isInShakeArea() {
+        return body.getPosition().x > THIRD_CHECKPOINT_LOCATION.x + 128 / PPM && body.getPosition().x < /*6032*/4528 / PPM;
     }
 
     /*@Override

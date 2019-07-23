@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
@@ -68,6 +69,7 @@ public class PlayScreen extends ScreenAdapter {
 
     // Box2d variables
     private World world;
+    private ContactManager contactManager;
     private Box2DDebugRenderer debugRenderer;
     private ObjectParser objectParser;
 
@@ -93,7 +95,7 @@ public class PlayScreen extends ScreenAdapter {
             checkpointData.setDefaultData();
             FileSaver.saveCheckpointData(checkpointData);
         }
-        Gdx.app.log("PlayScreen", "New game started");
+        Gdx.app.log("PlayScreen", "New game started.");
         Gdx.app.log("PlayScreen", "Lives " + checkpointData.getLives());
         Gdx.app.log("PlayScreen", "Health " + checkpointData.getHealth());
     }
@@ -115,7 +117,8 @@ public class PlayScreen extends ScreenAdapter {
 
         // create box2d world
         this.world = new World(new Vector2(0, -9.81f /*0*/), true);
-        world.setContactListener(new ContactManager());
+        this.contactManager = new ContactManager();
+        world.setContactListener(contactManager);
         if(DEBUG_ON)
             this.debugRenderer = new Box2DDebugRenderer();
 
@@ -170,7 +173,7 @@ public class PlayScreen extends ScreenAdapter {
         for(int i = 0; i < interactivePlatforms.size; i++) {
             InteractivePlatform platform = interactivePlatforms.get(i);
             // if robot is within a certain distance from the platform, activate the platform
-            //            if(Math.abs(platform.getBody().getSpawnLocation().x - robot.getBody().getSpawnLocation().x) < viewport.getWorldWidth())
+            //            if(Math.abs(platform.getBody().getCameraDisplacement().x - robot.getBody().getCameraDisplacement().x) < viewport.getWorldWidth())
             //                platform.getBody().setActive(true);
             //            else
             //                platform.getBody().setActive(false);
@@ -210,7 +213,7 @@ public class PlayScreen extends ScreenAdapter {
 
             // update camera
         debugCamera.update(delta);
-//        hud.getHudViewport().getCamera().update();
+        hud.getHudViewport().getCamera().update();
 
         // only render what the camera can see
         mapRenderer.setView(camera);
@@ -369,6 +372,10 @@ public class PlayScreen extends ScreenAdapter {
 
     public RobotGame getGame() {
         return game;
+    }
+
+    public ContactManager getContactManager() {
+        return contactManager;
     }
 
     public void setCheckpointDataDeleted(boolean checkpointDataDeleted) {

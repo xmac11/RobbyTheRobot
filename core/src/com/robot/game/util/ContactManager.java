@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
@@ -17,7 +18,7 @@ import static com.robot.game.util.Constants.*;
 public class ContactManager implements ContactListener {
 
 //    private Robot robot;
-    private static int footContactCounter = 0;
+    private int footContactCounter = 0;
 
     @Override
     public void beginContact(Contact contact) {
@@ -31,7 +32,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter++;
-            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter);
+            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet in contact with " + fixA.getUserData() + " or " + fixB.getUserData());
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -201,19 +202,26 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager","Robot hurt from spikes");
         }
 
-        // if robot is not invulnerable and is not walking on spikes, decrease health and make it invulnerable
+        // if robot is not invulnerable and is not walking on spikes
         if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
+            // decrease health
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
+            // make it invulnerable
             robot.setInvulnerable(true);
-            robot.setFlicker(true);
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }
 
         // if robot is walking on spikes, it dies
         if(spike.mightBeWalked()) {
+            robot.setFlicker(true);
             robot.setWalkingOnSpikes(true);
 //            robot.getCheckpointData().setSpawnLocation(spike.getRespawnLocation());
         }
+
+        // make it flicker
+        robot.setFlicker(true);
+        //shake camera
+        ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
     }
 
     /* When the robot steps on an enemy, I have to set the enemy’s mask bit to “NOTHING”. As a result, the collision stops at that point, the player
@@ -256,7 +264,10 @@ public class ContactManager implements ContactListener {
 
                 // decrease robot's health
                 decreaseHealth(robot, enemy);
+                // make it flicker
                 robot.setFlicker(true);
+                // shake camera
+                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
                 Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -292,7 +303,10 @@ public class ContactManager implements ContactListener {
 
                 // decrease robot's health
                 decreaseHealth(robot, enemy);
+                // make it flicker
                 robot.setFlicker(true);
+                // shake camera
+                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
                 Gdx.app.log("ContactManager","Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -467,7 +481,7 @@ public class ContactManager implements ContactListener {
         fixture.setFilterData(filter);
     }
 
-    public static int getFootContactCounter() {
+    public int getFootContactCounter() {
         return footContactCounter;
     }
 

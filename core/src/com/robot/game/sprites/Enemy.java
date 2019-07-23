@@ -83,6 +83,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
             if(platformID != null) {
 //                parseXml();
+                // parse json file to get the waypoints of the platform the enemy should follow
                 parseJson();
 
                 this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
@@ -113,7 +114,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
             this.vX = (float) object.getProperties().get("vX");
             this.vY = (float) object.getProperties().get("vY");
 
-            this.horizontal = vX != 0;
+            this.horizontal = (vX != 0);
 
             body.setLinearVelocity(vX, vY);
         }
@@ -174,18 +175,10 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
                     if(child2.get(j).has("id") && child2.get(j).getString("id").equals(platformID)) {
 
+                        this.width = child2.get(j).getFloat("width");
+                        this.height = child2.get(j).getFloat("height");
                         this.x = child2.get(j).getFloat("x");
-                        this.y = MAP_HEIGHT - child2.get(j).getFloat("y");
-
-                        JsonValue child3 = child2.get(j).get("properties");
-                        for(int k = 0; k < child3.size; k++) {
-
-                            if(child3.get(k).getString("name").equals("width"))
-                                this.width = child3.get(k).getFloat("value");
-                            else if(child3.get(k).getString("name").equals("height"))
-                                this.height = child3.get(k).getFloat("value");
-                        }
-                        //System.out.println(width + " " + height);
+                        this.y = MAP_HEIGHT - child2.get(j).getFloat("y") - height; // to get the bottom left corner
                     }
                 }
             }

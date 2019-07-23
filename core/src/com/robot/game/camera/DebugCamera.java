@@ -15,13 +15,16 @@ public class DebugCamera {
     private Camera camera;
     private Robot robot;
     private boolean following;
-    private boolean shakeActive;
+//    private boolean shakeActive;
+    private boolean shakeJustStopped;
 
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
-//        camera.position.x =  robot.getBody().getSpawnLocation().x;
+//        camera.position.x =  robot.getBody().getCameraDisplacement().x;
         this.robot = robot;
+//        camera.position.x = robot.getBody().getPosition().x;
+//        camera.position.y = robot.getBody().getPosition().y;
         this.following = true;
     }
 
@@ -35,32 +38,47 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            /*if(robot.getBody().getSpawnLocation().x > 2048 / PPM && robot.getBody().getSpawnLocation().x < 2976 / PPM  && !shakeActive) {
-                ShakeEffect.shake(0.35f, 0.1f);
-                shakeActive = true;
+            // if robot is in the shake area and the shake is not already active, start it
+            if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
+                ShakeEffect.shake(0.25f, 2f, false);
+                ShakeEffect.setShakeON(true);
+//                shakeActive = true;
+                Gdx.app.log("DebugCamera", "shake active = true");
             }
-
-            if(ShakeEffect.getTimeLeft() > 0) {
-                ShakeEffect.update();
-                //camera.rotate(Vector3.Z, ShakeEffect.randomRotation());
-                camera.translate(ShakeEffect.getSpawnLocation());
-            }
-            else
-                shakeActive = false;*/
-
-            // in case of rotation
-            /*else {
-                camera.direction.set(0, 0, -1);
-                camera.up.set(0, 1, 0);
+            // else if robot is not in the shake area, but the shake is active stop it
+            /*else if(!robot.isInShakeArea() && shakeActive) {
+                Gdx.app.log("DebugCamera", "shake active = false");
+                shakeActive = false;
+                shakeJustStopped = true;
+                ShakeEffect.setShakeON(false);
             }*/
 
-            camera.position.x =  robot.getBody().getPosition().x; // camera follows the robot horizontally
-//            camera.position.x = camera.position.x + (robot.getBody().getSpawnLocation().x - camera.position.x) * 0.1f; // camera follows the robot horizontally with interpolation
-//            camera.position.y = viewport.getWorldHeight() / 2; // keep camera always centered vertically
-//            camera.position.y =  robot.getBody().getSpawnLocation().y; // camera follows the robot vertically
-            camera.position.y = camera.position.y + (robot.getBody().getPosition().y - camera.position.y) * 0.1f;
+            if(/*ShakeEffect.isShakeON() || */ShakeEffect.getTimeToShake() > 0) {
+                ShakeEffect.update();
+                camera.translate(ShakeEffect.getCameraDisplacement());
+            }
+
+            // update camera's position
+            if(!ShakeEffect.isShakeON()) {
+                // camera follows the robot
+                camera.position.x = robot.getBody().getPosition().x;
+                camera.position.y = robot.getBody().getPosition().y;
+            }
+            // when camera is shaking, lerp to robot's position to get a smooth transition
+            else {
+                camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x, 0.2f);
+                camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.2f);
+            }
+
+            if(shakeJustStopped) {
+                System.out.println("Shake just stopped");
+                camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x, 0.01f);
+                camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.01f);
+                shakeJustStopped = false;
+            }
 
         }
+        // camera is not following the player
         else {
             if(Gdx.input.isKeyPressed(Input.Keys.A))
                 camera.position.x -= delta * DEBUG_CAM_SPEED;
@@ -71,6 +89,7 @@ public class DebugCamera {
             if(Gdx.input.isKeyPressed(Input.Keys.S))
                 camera.position.y -= delta * DEBUG_CAM_SPEED;
         }
+
         // finally clamp the position of the camera within the map
         if(following) {
             camera.position.x = MathUtils.clamp(camera.position.x,
@@ -80,7 +99,6 @@ public class DebugCamera {
                     viewport.getWorldHeight() / 2,
                     MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);
         }
-
         camera.update();
     }
 }

@@ -19,7 +19,7 @@ public final class Constants {
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.1.tmx";
     public static final String LEVEL_1_JSON = "level1.1.json";
-    private static TiledMap tiledMap = new TmxMapLoader().load(LEVEL_1_TMX);
+    private static TiledMap tiledMap = Assets.getInstance().tiledMapAssets.tiledMap;
     private static MapProperties mapProperties = tiledMap.getProperties();
     public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
     public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
@@ -48,12 +48,12 @@ public final class Constants {
     public static final short NOTHING_MASK = 0;
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY
                                             | ENEMY_CATEGORY | SPIKE_CATEGORY | COLLECTABLE_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY | COLLECTABLE_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
-    public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
+    public static final short ENEMY_MASK = ROBOT_CATEGORY /*| GROUND_CATEGORY*/;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
@@ -150,6 +150,10 @@ public final class Constants {
     public static final int DAMAGE_FROM_BAT = 25;
     public static final int DAMAGE_FROM_CRAB = 20;
     public static final int DAMAGE_FROM_SPIKE = 25;
+
+    // Shake when damage
+    public static final float HIT_SHAKE_INTENSITY = 0.15f;
+    public static final float HIT_SHAKE_TIME = 0.2f;
 
     // Points
     public static final int POINTS_FOR_BAT = 100;

@@ -130,7 +130,7 @@ public class FileSaver {
                                     break;
                                 //System.out.println("keyset" + ((JSONObject) child2.get(j)).keySet());
                                 JSONObject obj2 = ((JSONObject) child2.get(j));
-                                System.out.println((long) obj2.get("id"));
+                                //System.out.println((long) obj2.get("id"));
                                 if((long) obj2.get("id") == collectableID) {
                                     shouldBreakJ = true;
                                     JSONArray child3 = (JSONArray) obj2.get("properties");
