@@ -99,8 +99,8 @@ public class Assets {
         this.interactivePlatformAssets = new InteractivePlatformAssets(atlas);
         this.parallaxAssets = new ParallaxAssets();
         this.hudAssets = new HudAssets(atlas);
-        this.collectableAssets = new CollectableAssets();
-        this.pipeAssets = new PipeAssets();
+        this.collectableAssets = new CollectableAssets(atlas);
+        this.pipeAssets = new PipeAssets(atlas);
     }
 
     public void dispose() {
@@ -244,18 +244,18 @@ public class Assets {
 
     public class CollectableAssets {
 
-        public Texture burgerTexture;
+        public final TextureAtlas.AtlasRegion burger;
 
-        private CollectableAssets() {
-            this.burgerTexture = new Texture("burger.png"); // add this to atlas when finalized
+        private CollectableAssets(TextureAtlas atlas) {
+            this.burger = atlas.findRegion("burger");
         }
     }
 
     public class PipeAssets {
-        public Texture pipeTexture;
+        public final TextureAtlas.AtlasRegion debris;
 
-        private PipeAssets() {
-            this.pipeTexture = new Texture("debris1.png"); // add this to atlas when finalized
+        private PipeAssets(TextureAtlas atlas) {
+            this.debris = atlas.findRegion("debris");
         }
     }
 }

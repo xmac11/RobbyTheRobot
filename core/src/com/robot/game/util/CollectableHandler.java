@@ -12,8 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 
-import static com.robot.game.util.Constants.COLLECTABLE_OBJECT;
-import static com.robot.game.util.Constants.LEVEL_1_JSON;
+import static com.robot.game.util.Constants.*;
 
 public class CollectableHandler {
 
@@ -56,7 +55,7 @@ public class CollectableHandler {
                         JsonValue child3 = child2.get(j).get("properties");
 
                         for(int k = 0; k < child3.size; k++) {
-                            if("shouldSpawn".equals(child3.get(k).getString("name"))) {
+                            if(COLLECTABLE_SPAWNING_PROPERTY.equals(child3.get(k).getString("name"))) {
                                 return child3.get(k).getBoolean("value");
                             }
                         }
@@ -107,7 +106,7 @@ public class CollectableHandler {
                                         for(int k = 0; k < child3.size(); k++) {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
-                                            if("shouldSpawn".equals(obj3.get("name"))) {
+                                            if(COLLECTABLE_SPAWNING_PROPERTY.equals(obj3.get("name"))) {
                                                 obj3.put("value", bool);
 
                                                 JSONObject temp = new JSONObject();

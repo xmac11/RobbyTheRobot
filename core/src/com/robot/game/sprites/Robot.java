@@ -8,11 +8,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.camera.ShakeEffect;
-import com.robot.game.interactiveObjects.FallingPipe;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.*;
 
 import static com.robot.game.util.Constants.*;
@@ -20,7 +18,7 @@ import static com.robot.game.util.Constants.*;
 public class Robot extends Sprite /*extends InputAdapter*/ {
 
     private Sprite robotSprite;
-    private PlayScreen playScreen;
+    private ScreenLevel1 screenLevel1;
     private World world;
     private ContactManager contactManager;
     private Body body;
@@ -58,11 +56,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // Game data
     private CheckpointData checkpointData;
 
-    public Robot(PlayScreen playScreen) {
-        this.playScreen = playScreen;
-        this.world = playScreen.getWorld();
-        this.contactManager = playScreen.getContactManager();
-        this.checkpointData = playScreen.getCheckpointData();
+    public Robot(ScreenLevel1 screenLevel1) {
+        this.screenLevel1 = screenLevel1;
+        this.world = screenLevel1.getWorld();
+        this.contactManager = screenLevel1.getContactManager();
+        this.checkpointData = screenLevel1.getCheckpointData();
         createRobotB2d();
 
         this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
@@ -289,7 +287,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         //// Debug keys for checkpoints ////
-        toggleDebugCheckpoints();
+        if(DEBUG_ON)
+            toggleDebugCheckpoints();
 
     }
 
@@ -314,9 +313,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
-    // getter for the PlayScreen
-    public PlayScreen getPlayScreen() {
-        return playScreen;
+    // getter for the ScreenLevel1
+    public ScreenLevel1 getScreenLevel1() {
+        return screenLevel1;
     }
 
     // getter for the Body
@@ -427,7 +426,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
             Gdx.app.log("Robot", "Checkpoints deleted");
             FileSaver.getCheckpointFile().delete();
-            playScreen.setCheckpointDataDeleted(true);
+            screenLevel1.setCheckpointDataDeleted(true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("Robot", "First checkpoint set");

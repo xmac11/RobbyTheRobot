@@ -15,7 +15,6 @@ public class DebugCamera {
     private Camera camera;
     private Robot robot;
     private boolean following;
-//    private boolean shakeActive;
     private boolean shakeJustStopped;
 
     public DebugCamera(Viewport viewport, Robot robot) {
@@ -38,22 +37,6 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            /*// if robot is in the shake area and the shake is not already active, start it
-            if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
-                ShakeEffect.shake(0.25f, 5f, false);
-                ShakeEffect.setShakeON(true);
-//                shakeActive = true;
-                Gdx.app.log("DebugCamera", "shake active = true");
-            }*/
-
-            // else if robot is not in the shake area, but the shake is active stop it
-            /*else if(!robot.isInShakeArea() && shakeActive) {
-                Gdx.app.log("DebugCamera", "shake active = false");
-                shakeActive = false;
-                shakeJustStopped = true;
-                ShakeEffect.setShakeON(false);
-            }*/
-
             if(ShakeEffect.isShakeON() /*|| ShakeEffect.getTimeToShake() > 0*/) {
                 ShakeEffect.update();
                 camera.translate(ShakeEffect.getCameraDisplacement());
@@ -71,13 +54,12 @@ public class DebugCamera {
                 camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.2f);
             }
 
-            if(shakeJustStopped) {
+            /*if(shakeJustStopped) {
                 System.out.println("Shake just stopped");
                 camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x, 0.01f);
                 camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.01f);
                 shakeJustStopped = false;
-            }
-
+            }*/
         }
         // camera is not following the player
         else {

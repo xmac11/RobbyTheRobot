@@ -6,7 +6,7 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.Assets;
 import com.robot.game.util.CollectableHandler;
 import org.json.simple.JSONObject;
@@ -15,7 +15,7 @@ import static com.robot.game.util.Constants.*;
 
 public class Collectable extends Sprite {
 
-    private PlayScreen playScreen;
+    private ScreenLevel1 screenLevel1;
     private CollectableHandler collectableHandler;
     private Sprite burgerSprite;
     private World world;
@@ -25,15 +25,15 @@ public class Collectable extends Sprite {
     private boolean flagToCollect;
     private boolean isDestroyed;
 
-    public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
-        this.playScreen = playScreen;
-        this.collectableHandler = playScreen.getCollectableHandler();
-        this.world = playScreen.getWorld();
+    public Collectable(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.screenLevel1 = screenLevel1;
+        this.collectableHandler = screenLevel1.getCollectableHandler();
+        this.world = screenLevel1.getWorld();
         this.body = body;
         this.object = object;
         this.temp = new JSONObject();
         body.createFixture(fixtureDef).setUserData(this);
-        this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burgerTexture);
+        this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burger);
 
         // set the size of the bat sprite
         burgerSprite.setSize(COLLECTABLE_WIDTH / PPM, COLLECTABLE_HEIGHT / PPM);

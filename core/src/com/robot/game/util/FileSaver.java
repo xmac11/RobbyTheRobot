@@ -35,7 +35,7 @@ public class FileSaver {
 
     // COLLECTABLES
 
-    /** Saves the new root to the specified file (Json tiled map file) */
+    /** Saves the new root to the specified file (overrides the json tiled map file) */
     public static void saveJsonMap(FileHandle file, JSONObject root) {
         json.setOutputType(JsonWriter.OutputType.json);
         file.writeString(json.prettyPrint(root.toString()), false);
@@ -63,9 +63,10 @@ public class FileSaver {
     }
 
     /** When the robot dies and has no more lives, this method reads the saved file of collected items
-     * (whose spawning has been disabled) and resets spawning to TRUE */
+     * (whose spawning has been disabled) and resets their spawning to TRUE */
     public static void resetSpawningOfCollectables() {
 
+        // read the file with collected items and store them in a JSONArray
         JSONArray jsonArray = loadCollectedItemsFile();
 
         for(Object object: jsonArray) {
@@ -98,7 +99,7 @@ public class FileSaver {
         return collectedItemsFile;
     }
 
-    /** Given the ID of the collectable item to be reset to be spawned, reads the tiled map json file,
+    /** Given the ID of the collectable item to be reset to be spawned, the method reads the tiled map json file,
      *  overrides the boolean value of whether a particular collectable should be respawned to TRUE.
      *  Finally saves the tiled map json file */
     public static void resetSpawningOfCollectable(long collectableID) {
@@ -140,7 +141,7 @@ public class FileSaver {
                                         for(int k = 0; k < child3.size(); k++) {
                                             //System.out.println(((JSONObject) child3.get(k)).keySet());
                                             JSONObject obj3 = ((JSONObject) child3.get(k));
-                                            if("shouldSpawn".equals(obj3.get("name"))) {
+                                            if(COLLECTABLE_SPAWNING_PROPERTY.equals(obj3.get("name"))) {
                                                 obj3.put("value", true);
                                             }
                                         }

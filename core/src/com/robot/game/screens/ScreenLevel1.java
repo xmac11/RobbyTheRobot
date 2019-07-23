@@ -31,7 +31,7 @@ import org.json.simple.JSONArray;
 
 import static com.robot.game.util.Constants.*;
 
-public class PlayScreen extends ScreenAdapter {
+public class ScreenLevel1 extends ScreenAdapter {
 
     // main class reference
     private RobotGame game;
@@ -89,7 +89,7 @@ public class PlayScreen extends ScreenAdapter {
     // debug lines for AI paths
     private ShapeRenderer shapeRenderer;
 
-    public PlayScreen(RobotGame game) {
+    public ScreenLevel1(RobotGame game) {
         this.game = game;
 
         // if file with game data exists, load it, otherwise create new one
@@ -101,14 +101,14 @@ public class PlayScreen extends ScreenAdapter {
             checkpointData.setDefaultData();
             FileSaver.saveCheckpointData(checkpointData);
         }
-        Gdx.app.log("PlayScreen", "New game started.");
-        Gdx.app.log("PlayScreen", "Lives " + checkpointData.getLives());
-        Gdx.app.log("PlayScreen", "Health " + checkpointData.getHealth());
+        Gdx.app.log("ScreenLevel1", "New game started.");
+        Gdx.app.log("ScreenLevel1", "Lives " + checkpointData.getLives());
+        Gdx.app.log("ScreenLevel1", "Health " + checkpointData.getHealth());
     }
 
     @Override
     public void show() {
-        Gdx.app.log("PlayScreen", "show");
+        Gdx.app.log("ScreenLevel1", "show");
 
         if(DEBUG_ON)
             this.shapeRenderer = new ShapeRenderer();
@@ -172,6 +172,7 @@ public class PlayScreen extends ScreenAdapter {
         // create hud
         this.hud = new Hud(this);
 
+        //System.out.println(tiledMap.getLayers().get(GROUND_OBJECT).getObjects().get(250)); // error
         System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size());
     }
 
@@ -338,7 +339,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        Gdx.app.log("PlayScreen", "resize");
+        Gdx.app.log("ScreenLevel1", "resize");
         viewport.update(width, height, true);
         hud.getHudViewport().update(width, height, true);
         camera.update();
@@ -346,7 +347,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void hide() {
-        Gdx.app.log("PlayScreen", "hide");
+        Gdx.app.log("ScreenLevel1", "hide");
         // unless checkpoints are wiped out, save the game every time it is closed
         if(!checkpointDataDeleted) {
             FileSaver.saveCheckpointData(checkpointData);
@@ -363,7 +364,7 @@ public class PlayScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        Gdx.app.log("PlayScreen", "dispose");
+        Gdx.app.log("ScreenLevel1", "dispose");
         mapRenderer.dispose();
         world.dispose();
         if(DEBUG_ON)
@@ -427,7 +428,7 @@ public class PlayScreen extends ScreenAdapter {
     private void checkIfDead() {
         // robot died but has remaining lives
         if(robot.isDead() && checkpointData.getLives() >= 0) {
-            Gdx.app.log("PlayScreen", "Player died");
+            Gdx.app.log("ScreenLevel1", "Player died");
             // loop through all items that have been collected and disable their spawning
             for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
                 collectableHandler.setSpawn(collectableID, false);
@@ -442,7 +443,7 @@ public class PlayScreen extends ScreenAdapter {
         }
         // robot died and has no remaining lives
         else if(robot.isDead()) {
-            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+            Gdx.app.log("ScreenLevel1", "Player died, no more lives left :(");
 
             // reset checkpoint data
             checkpointData.setDefaultData();

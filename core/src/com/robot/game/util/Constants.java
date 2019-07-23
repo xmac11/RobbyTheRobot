@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -16,10 +16,10 @@ public final class Constants {
 
 
     // Tiled map editor
-    public static final String LEVEL_1_TMX = "level1.1.tmx";
-    public static final String LEVEL_1_JSON = "level1.1.json";
+    public static final String LEVEL_1_TMX = "level1.tmx";
+    public static final String LEVEL_1_JSON = "files/level1.json";
     private static TiledMap tiledMap = Assets.getInstance().tiledMapAssets.tiledMap;
-    private static MapProperties mapProperties = tiledMap.getProperties();
+    public static MapProperties mapProperties = tiledMap.getProperties();
     public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
     public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
     public static final float MAP_HEIGHT = mapProperties.get("height", Integer.class) * TILE_SIZE;
@@ -117,6 +117,7 @@ public final class Constants {
 
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
+    public static final String COLLECTABLE_SPAWNING_PROPERTY = "shouldSpawn";
     public static final float COLLECTABLE_WIDTH = 20;
     public static final float COLLECTABLE_HEIGHT = 16;
 

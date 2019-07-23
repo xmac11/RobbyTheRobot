@@ -17,7 +17,6 @@ import static com.robot.game.util.Constants.*;
 
 public class ContactManager implements ContactListener {
 
-//    private Robot robot;
     private int footContactCounter = 0;
 
     @Override
@@ -336,7 +335,7 @@ public class ContactManager implements ContactListener {
 //        new Thread(() -> collectable.getCollectableHandler().setSpawn((int) collectable.getObject().getProperties().get("id"), false)).start();
 
         // flag that a new item was collected
-        robot.getPlayScreen().setNewItemCollected(true);
+        robot.getScreenLevel1().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
     }
 

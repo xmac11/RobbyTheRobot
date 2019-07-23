@@ -3,9 +3,8 @@ package com.robot.game.interactiveObjects;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.Assets;
 
 import java.util.Random;
@@ -15,17 +14,17 @@ import static com.robot.game.util.Constants.PPM;
 
 public class FallingPipe extends Sprite{
 
-    private PlayScreen playScreen;
+    private ScreenLevel1 screenLevel1;
     private World world;
     private Body body;
     private Sprite pipeSprite;
 
-    public FallingPipe(PlayScreen playScreen) {
-        this.playScreen = playScreen;
-        this.world = playScreen.getWorld();
+    public FallingPipe(ScreenLevel1 screenLevel1) {
+        this.screenLevel1 = screenLevel1;
+        this.world = screenLevel1.getWorld();
         createPipeB2d();
 
-        this.pipeSprite = new Sprite(Assets.getInstance().pipeAssets.pipeTexture);
+        this.pipeSprite = new Sprite(Assets.getInstance().pipeAssets.debris);
         pipeSprite.setSize(PIPE_WIDTH / PPM, PIPE_HEIGHT / PPM);
 
         pipeSprite.setOrigin(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
@@ -37,8 +36,8 @@ public class FallingPipe extends Sprite{
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(randomPipePosition(), playScreen.getViewport().getWorldHeight());
-//        bodyDef.position.set(playScreen.getRobot().getBody().getPosition().x, playScreen.getViewport().getWorldHeight());
+        bodyDef.position.set(randomPipePosition(), screenLevel1.getViewport().getWorldHeight());
+//        bodyDef.position.set(screenLevel1.getRobot().getBody().getPosition().x, screenLevel1.getViewport().getWorldHeight());
         bodyDef.angle =  (float) Math.PI / 4 * (random.nextFloat() * (1 - (-1)) - 1);
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -76,8 +75,8 @@ public class FallingPipe extends Sprite{
 
     private float randomPipePosition() {
         Random random = new Random();
-        float max = playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2;
-        float min = playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2;
+        float max = screenLevel1.getCamera().position.x + screenLevel1.getViewport().getWorldWidth() / 2;
+        float min = screenLevel1.getCamera().position.x - screenLevel1.getViewport().getWorldWidth() / 2;
         float rand = (random.nextFloat() * (max - min) + min);
         return rand;
     }

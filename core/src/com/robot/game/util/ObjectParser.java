@@ -2,7 +2,6 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Crab;
@@ -25,15 +24,15 @@ public class ObjectParser {
     int polylines = 0;
     int polygons = 0;
 
-    PlayScreen playScreen;
+    ScreenLevel1 screenLevel1;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
 //    private JSONArray collectedItems;
 
-    public ObjectParser(PlayScreen playScreen, World world, Array<MapObjects> layersObjectArray) {
-        this.playScreen = playScreen;
+    public ObjectParser(ScreenLevel1 screenLevel1, World world, Array<MapObjects> layersObjectArray) {
+        this.screenLevel1 = screenLevel1;
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
@@ -214,7 +213,7 @@ public class ObjectParser {
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
             if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id")))
-                collectables.add(new Collectable(playScreen, body, fixtureDef, object));
+                collectables.add(new Collectable(screenLevel1, body, fixtureDef, object));
         }
         // create ground
         else {

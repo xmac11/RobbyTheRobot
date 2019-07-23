@@ -161,19 +161,30 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
     // parse json file to get the waypoints of the platform the enemy should follow
     private void parseJson() {
-        //float start =  System.nanoTime();
         JsonReader reader = new JsonReader();
         JsonValue root =  reader.parse(Gdx.files.internal(LEVEL_1_JSON));
         JsonValue child1 = root.get("layers");
 
+        //System.out.println(child1.size);
+
+        boolean shouldBreakI = false;
+        boolean shouldBreakJ = false;
+
         for(int i = 0; i < child1.size; i++) {
 
+            if(shouldBreakI)
+                break;
             if(child1.get(i).has("name") && child1.get(i).getString("name").equals(GROUND_OBJECT)) {
+                shouldBreakI = true;
                 JsonValue child2 = child1.get(i).get("objects");
 
+                //System.out.println(child2.size);
                 for(int j = 0; j < child2.size; j++) {
 
+                    if(shouldBreakJ)
+                        break;
                     if(child2.get(j).has("id") && child2.get(j).getString("id").equals(platformID)) {
+                        shouldBreakJ = true;
 
                         this.width = child2.get(j).getFloat("width");
                         this.height = child2.get(j).getFloat("height");
@@ -183,7 +194,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
                 }
             }
         }
-        //System.out.println(System.nanoTime() - start);
     }
 
     protected void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
