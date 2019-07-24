@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.camera.ShakeEffect;
-import com.robot.game.interactiveObjects.FallingPlatform;
-import com.robot.game.interactiveObjects.Ladder;
-import com.robot.game.interactiveObjects.MovingPlatform;
-import com.robot.game.interactiveObjects.Spike;
+import com.robot.game.interactiveObjects.*;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
@@ -31,8 +28,6 @@ public class ContactManager implements ContactListener {
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter++;
             Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet in contact with " + fixA.getUserData() + " or " + fixB.getUserData());
-
-            if(DEBUG_ON && footContactCounter > 1) throw new IllegalArgumentException("footContactCounter > 1");
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -67,6 +62,11 @@ public class ContactManager implements ContactListener {
             // robot - collectable
             case  ROBOT_CATEGORY | COLLECTABLE_CATEGORY:
             robotCollectableBegin(fixA, fixB);
+            break;
+
+            // robot - falling pipe
+            case ROBOT_CATEGORY | PIPE_CATEGORY:
+            robotPipeBegin(contact.getWorldManifold(), fixA, fixB);
             break;
         }
 
@@ -347,6 +347,71 @@ public class ContactManager implements ContactListener {
         // flag that a new item was collected
         robot.getScreenLevel1().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
+    }
+
+    private void robotPipeBegin(WorldManifold manifold, Fixture fixA, Fixture fixB) {
+        Robot robot;
+        FallingPipe pipe;
+        Vector2 normal = manifold.getNormal();
+        Vector2[] points = manifold.getPoints();
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            pipe = (FallingPipe) fixB.getUserData();
+
+            if(normal.y >= 1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager","Pipe hit robot on head");
+            }
+            else if (normal.y <= -1 / Math.sqrt(2))
+                Gdx.app.log("ContactManager", "Robot is stepping on pipe");
+            else if (normal.x <= -1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Pipe hit robot on the left");
+                for(int i = 0; i < points.length; i++) {
+                    System.out.println(robot.getBody().getLocalPoint(points[i]));
+                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
+                        Gdx.app.log("ContactManager", "Pipe hit robot on the left and died");
+                    }
+                }
+            }
+            else if (normal.x >= 1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Pipe hit robot on the right");
+                for(int i = 0; i < points.length; i++) {
+                    System.out.println(robot.getBody().getLocalPoint(points[i]));
+                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
+                        Gdx.app.log("ContactManager", "Pipe hit robot on the right and died");
+                    }
+                }
+            }
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            pipe = (FallingPipe) fixA.getUserData();
+
+            if(normal.y <= -1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager","Pipe hit robot on head");
+            }
+            else if (normal.y >= 1 / Math.sqrt(2))
+                Gdx.app.log("ContactManager", "Robot is stepping on pipe");
+            else if (normal.x <= -1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Pipe hit robot on the right");
+                for(int i = 0; i < points.length; i++) {
+                    System.out.println(robot.getBody().getLocalPoint(points[i]));
+                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
+                        Gdx.app.log("ContactManager", "Pipe hit robot on the right and died");
+                    }
+                }
+            }
+            else if (normal.x >= 1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Pipe hit robot on the left");
+                for(int i = 0; i < points.length; i++) {
+                    System.out.println(robot.getBody().getLocalPoint(points[i]));
+                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
+                        Gdx.app.log("ContactManager", "Pipe hit robot on the left and died");
+                        //break;
+                    }
+                }
+            }
+        }
     }
 
     @Override

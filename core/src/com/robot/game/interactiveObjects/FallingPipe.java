@@ -77,7 +77,6 @@ public class FallingPipe extends Sprite{
         Random random = new Random();
         float max = screenLevel1.getCamera().position.x + screenLevel1.getViewport().getWorldWidth() / 2;
         float min = screenLevel1.getCamera().position.x - screenLevel1.getViewport().getWorldWidth() / 2;
-        float rand = (random.nextFloat() * (max - min) + min);
-        return rand;
+        return (random.nextFloat() * (max - min) + min);
     }
 }

@@ -26,6 +26,7 @@ public class PointsRenderer {
 
     public void draw(SpriteBatch batch, float delta) {
 
+        // draw any points gained from killing enemies
         for(Enemy enemyKey: enemyPointsToDraw.keys()) {
 
             float alpha = enemyPointsToDraw.get(enemyKey);
@@ -42,13 +43,11 @@ public class PointsRenderer {
 
                 enemyPointsToDraw.put(enemyKey, alpha - /*1.5f **/ delta);
             }
-            else {
+            else
                 enemyPointsToDraw.remove(enemyKey);
-            }
-
         }
 
-        ///////////
+        // draw any points gained from collecting items
         for(Collectable collectableKey: itemPointsToDraw.keys()) {
 
             float alpha = itemPointsToDraw.get(collectableKey);
@@ -65,13 +64,9 @@ public class PointsRenderer {
 
                 itemPointsToDraw.put(collectableKey, alpha - 1.5f * delta);
             }
-            else {
+            else
                 itemPointsToDraw.remove(collectableKey);
-            }
-
         }
-
-
     }
 
     public ObjectMap<Enemy, Float> getEnemyPointsToDraw() {

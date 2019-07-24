@@ -246,7 +246,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
          *  jumpTimeout is used to disable jumping immediately after jumping
          *  Since the player can jump while not fully grounded, it would be able to jump immediately after jumping.
          *  jumpTimeout is increased by "delta" at every frame.
-         *  In addition to the previous checks, it is checked whether the time out period has expired, in particular,
+         *  In addition to the previous checks, it is checked whether the timeout period has expired, in particular,
          *  whether jumpTimeout is higher than a certain value, e.g. 0.3 seconds.
          *  If yes the player jumps and the timeout is reset to zero */
         jumpTimer -= delta;
