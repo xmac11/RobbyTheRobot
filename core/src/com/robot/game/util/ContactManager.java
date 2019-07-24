@@ -68,6 +68,11 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | PIPE_CATEGORY:
             robotPipeBegin(contact.getWorldManifold(), fixA, fixB);
             break;
+
+            // ground - falling pipe
+            case GROUND_CATEGORY | PIPE_CATEGORY:
+            groundPipeBegin(fixA, fixB);
+            break;
         }
 
 
@@ -412,6 +417,21 @@ public class ContactManager implements ContactListener {
                 }
             }
         }
+    }
+
+    private void groundPipeBegin(Fixture fixA, Fixture fixB) {
+        FallingPipe fallingPipe;
+
+        if(fixA.getUserData() instanceof FallingPipe) {
+            fallingPipe = (FallingPipe) fixA.getUserData();
+        }
+        else {
+            fallingPipe = (FallingPipe) fixB.getUserData();
+        }
+
+        fallingPipe.setFlagToSleep(true);
+        System.out.println("Ground pipe collided");
+
     }
 
     @Override

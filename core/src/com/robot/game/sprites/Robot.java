@@ -455,7 +455,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     public boolean isInShakeArea() {
-        return body.getPosition().x > 4992 / PPM && body.getPosition().x < 6032 / PPM;
+        return Math.abs(body.getPosition().x * PPM - 4992) <= 48;
     }
 
     /*@Override

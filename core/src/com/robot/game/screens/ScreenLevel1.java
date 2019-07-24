@@ -2,21 +2,19 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -30,8 +28,6 @@ import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
 import org.json.simple.JSONArray;
-
-import java.util.HashMap;
 
 import static com.robot.game.util.Constants.*;
 
@@ -61,8 +57,12 @@ public class ScreenLevel1 extends ScreenAdapter {
     private boolean doNotSaveInHide;
 
     // falling pipes
-    private Array<FallingPipe> fallingPipess;
+    private DelayedRemovalArray<FallingPipe> fallingPipes;
     private boolean earthquakeHappened;
+    private boolean pipesStartedFalling;
+    private PipeBodyCache pipeBodyCache;
+    private float pipeStartTime;
+    private float pipeElapsed;
 
     // points to draw
     private  PointsRenderer pointsRenderer;
@@ -73,7 +73,6 @@ public class ScreenLevel1 extends ScreenAdapter {
     private DebugCamera debugCamera;
 
     // Tiled map variables
-    public FileHandle mapFile = Gdx.files.local(LEVEL_1_TMX);
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer mapRenderer;
     private Array<MapObjects> layersObjectArray;
@@ -166,8 +165,12 @@ public class ScreenLevel1 extends ScreenAdapter {
         this.collectables = objectParser.getCollectables();
         this.collectedItems = collectableHandler.getCollectedItems();
 
-        // falling pipes array
-        this.fallingPipess = new Array<>();
+        // create falling pipes and cache 5 pipes
+        this.fallingPipes = new DelayedRemovalArray<>();
+        this.pipeBodyCache = new PipeBodyCache();
+        for(int i = 0; i < 5; i++) {
+            fallingPipes.add(new FallingPipe(this, true));
+        }
 
         // points to draw
         this.pointsRenderer = new PointsRenderer();
@@ -182,17 +185,14 @@ public class ScreenLevel1 extends ScreenAdapter {
         // create hud
         this.hud = new Hud(this);
 
+//        this.pipePool = new PipePool(this, 16, 25);
+
         //System.out.println(tiledMap.getLayers().get(GROUND_OBJECT).getObjects().get(250)); // error
         System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size());
     }
 
     private void update(float delta) {
         world.step(1 / 60f, 8, 3);
-
-        if(!earthquakeHappened)
-            checkForEarthquake();
-        if(robot.isInShakeArea() && fallingPipess.size < 25)
-            fallingPipess.add(new FallingPipe(this));
 
         // update interactive platforms (do this first if robot should be moving along with it)
         for(int i = 0; i < interactivePlatforms.size; i++) {
@@ -236,8 +236,45 @@ public class ScreenLevel1 extends ScreenAdapter {
                 collectables.removeIndex(i);
         }
 
+        if(!earthquakeHappened && !pipesStartedFalling)
+            checkForEarthquake();
+
         // update falling pipes
-        for(FallingPipe fallingPipe: fallingPipess) {
+        /*if(shouldTransformPipes) {
+            for(FallingPipe fallingPipe : fallingPipes) {
+                fallingPipe.getBody().setTransform(fallingPipe.randomPipePosition(), viewport.getWorldHeight(), (float) Math.PI / 4 * MathUtils.random(-1f, 1f));
+                fallingPipe.getBody().setGravityScale(1);
+                fallingPipe.getBody().setAwake(true);
+            }
+            shouldTransformPipes = false;
+            pipesActive = true;
+        }
+
+        if(pipesActive) {
+            for(FallingPipe fallingPipe : fallingPipes) {
+                fallingPipe.update(delta);
+            }
+        }*/
+
+
+        if(earthquakeHappened) {
+            //            fallingPipes.add(new FallingPipe(this, false));
+            for(FallingPipe fallingPipe : fallingPipes) {
+                fallingPipe.getBody().setAwake(true);
+                fallingPipe.getBody().setGravityScale(1);
+            }
+            this.pipeStartTime = TimeUtils.nanoTime() + 3 / MathUtils.nanoToSec; //add extra 3 seconds timeout initially
+            earthquakeHappened = false;
+            pipesStartedFalling = true;
+        }
+
+        //System.out.println(fallingPipes.size);
+        if(pipesStartedFalling && shouldSpawnPipe()) {
+            fallingPipes.add(new FallingPipe(this, false));
+        }
+
+        // update falling pipes
+        for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.update(delta);
         }
 
@@ -308,7 +345,7 @@ public class ScreenLevel1 extends ScreenAdapter {
         }
 
         // render falling pipes
-        for(FallingPipe fallingPipe: fallingPipess) {
+        for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.draw(game.getBatch());
         }
 
@@ -436,13 +473,23 @@ public class ScreenLevel1 extends ScreenAdapter {
         return collectableHandler;
     }
 
+    public DelayedRemovalArray<FallingPipe> getFallingPipes() {
+        return fallingPipes;
+    }
+
+    public PipeBodyCache getPipeBodyCache() {
+        return pipeBodyCache;
+    }
+
     private void checkForEarthquake() {
         // if robot is in the shake area and the shake is not already active, start it
         if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
-            ShakeEffect.shake(0.25f, 3f, false);
+            ShakeEffect.shake(0.25f, 2f, false);
             ShakeEffect.setShakeON(true);
             Gdx.app.log("Robot", "shake active = true");
             earthquakeHappened = true;
+            //shouldTransformPipes = true;
+            //pipesStartedFalling = true;
         }
     }
 
@@ -477,6 +524,18 @@ public class ScreenLevel1 extends ScreenAdapter {
             }
             // finally restart the game
             game.respawn(checkpointData);
+        }
+    }
+
+    public boolean shouldSpawnPipe() {
+        if(pipeElapsed >= 2f) {
+            this.pipeStartTime = TimeUtils.nanoTime();
+            this.pipeElapsed = 0;
+            return true;
+        }
+        else  {
+            this.pipeElapsed = (TimeUtils.nanoTime() - pipeStartTime) * MathUtils.nanoToSec;
+            return false;
         }
     }
 

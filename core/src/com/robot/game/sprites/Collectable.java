@@ -33,6 +33,10 @@ public class Collectable extends Sprite {
         this.object = object;
         this.temp = new JSONObject();
         body.createFixture(fixtureDef).setUserData(this);
+
+        // put collectables to sleep to reduce CPU cost
+        body.setAwake(false);
+
         this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burger);
 
         // set the size of the bat sprite

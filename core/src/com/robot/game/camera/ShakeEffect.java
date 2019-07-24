@@ -5,8 +5,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import java.util.Random;
-
 public class ShakeEffect {
 
     private static float startTime;
@@ -14,7 +12,6 @@ public class ShakeEffect {
     private static float elapsed;
     private static float intensity;
     private static float currentIntensity;
-    private static Random random;
     private static Vector3 cameraDisplacement;
     private static boolean shakeON;
     private static boolean indefiniteShaking;
@@ -22,7 +19,6 @@ public class ShakeEffect {
     public static void shake(float shakeIntensity, float shakeTime, boolean indefinite) {
         Gdx.app.log("ShakeEffect", "Shake started");
         startTime = TimeUtils.nanoTime();
-        random = new Random();
         intensity = shakeIntensity;
         timeToShake = shakeTime;
         indefiniteShaking = indefinite;
@@ -51,8 +47,8 @@ public class ShakeEffect {
     public static void calculateCameraDisplacement() {
         currentIntensity = intensity /** (timeToShake - elapsed) / timeToShake*/;
 
-        cameraDisplacement.x = (random.nextFloat() * (1 - (-1)) - 1) * currentIntensity;
-        cameraDisplacement.y = (random.nextFloat() * (1 - (-1)) - 1) * currentIntensity * 4;
+        cameraDisplacement.x = MathUtils.random(-1f, 1f) * currentIntensity;
+        cameraDisplacement.y = MathUtils.random(-1f, 1f) * currentIntensity * 4;
     }
 
     public static float getTimeToShake() {

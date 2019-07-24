@@ -213,7 +213,7 @@ public class ObjectParser {
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
             if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id")))
-                collectables.add(new Collectable(screenLevel1, body, fixtureDef, object));
+                this.collectables.add(new Collectable(screenLevel1, body, fixtureDef, object));
         }
         // create ground
         else {
