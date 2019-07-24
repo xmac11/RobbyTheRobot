@@ -23,8 +23,7 @@ public class Assets {
     public AssetManager assetManager = new AssetManager();
 
     public TiledMapAssets tiledMapAssets;
-    public LoadingBarAssets loadingBarAssets;
-    public FontAssets fontAssets;
+    public LoadingScreenAssets loadingScreenAssets;
     public RobotAssets robotAssets;
     public BatAssets batAssets;
     public CrabAssets crabAssets;
@@ -33,6 +32,9 @@ public class Assets {
     public HudAssets hudAssets;
     public CollectableAssets collectableAssets;
     public PipeAssets pipeAssets;
+    // fonts
+    public FontAssets fontAssets;
+    public SmallFontAssets smallFontAssets;
 
     private Assets() {
     }
@@ -55,14 +57,20 @@ public class Assets {
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter font = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         font.fontFileName = "blow.ttf";
-        font.fontParameters.size = 64;
+        font.fontParameters.size = 86;
         font.fontParameters.color = Color.WHITE;
-        assetManager.load(font.fontFileName, BitmapFont.class, font);
+        assetManager.load("font.ttf", BitmapFont.class, font);
 
         assetManager.finishLoading(); // blocking statement
         createLoadingScreenAssets();
 
         //// LOAD ASYNCHRONOUSLY ////
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter smallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        smallFont.fontFileName = "blow.ttf";
+        smallFont.fontParameters.size = 64;
+        smallFont.fontParameters.color = Color.WHITE;
+        assetManager.load("smallFont.ttf", BitmapFont.class, smallFont);
 
         /* Load tiled map following the procedure described in the LibGDX documentation:
          * https://github.com/libgdx/libgdx/wiki/Tile-maps */
@@ -81,7 +89,7 @@ public class Assets {
         TextureAtlas atlas = assetManager.get("loading_bar.pack");
 
         // create assets
-        this.loadingBarAssets = new LoadingBarAssets(atlas);
+        this.loadingScreenAssets = new LoadingScreenAssets(atlas);
         this.fontAssets = new FontAssets();
     }
 
@@ -101,6 +109,7 @@ public class Assets {
         this.hudAssets = new HudAssets(atlas);
         this.collectableAssets = new CollectableAssets(atlas);
         this.pipeAssets = new PipeAssets(atlas);
+        this.smallFontAssets = new SmallFontAssets();
     }
 
     public void dispose() {
@@ -199,8 +208,8 @@ public class Assets {
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
         public final Texture lives; // add this to atlas when finalized
-        //        public BitmapFont scoreFont;
         public GlyphLayout scoreGlyphLayout;
+        public GlyphLayout livesGlyphLayout;
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
@@ -212,33 +221,22 @@ public class Assets {
             this.scoreGlyphLayout = new GlyphLayout();
             String text = "SCORE";
             scoreGlyphLayout.setText(fontAssets.font, text);
+
+            // GlyphLayout for alignment
+            this.livesGlyphLayout = new GlyphLayout();
+            String text2 = "x3";
+            livesGlyphLayout.setText(fontAssets.font, text2);
         }
     }
 
     // Loading bar assets
-    public class LoadingBarAssets {
+    public class LoadingScreenAssets {
         public final TextureAtlas.AtlasRegion frame;
         public final TextureAtlas.AtlasRegion bar;
 
-        private  LoadingBarAssets(TextureAtlas atlas) {
+        private LoadingScreenAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("loading");
             this.bar = atlas.findRegion("loading_green");
-        }
-    }
-
-    public class FontAssets {
-        public BitmapFont font;
-        public GlyphLayout glyphLayout;
-
-        private FontAssets() {
-            this.font = assetManager.get("blow.ttf", BitmapFont.class);
-            font.getData().setScale(1 / 64f);
-            font.setUseIntegerPositions(false);
-
-            // GlyphLayout for alignment
-            this.glyphLayout = new GlyphLayout();
-            String text = "x3";
-            glyphLayout.setText(font, text);
         }
     }
 
@@ -256,6 +254,28 @@ public class Assets {
 
         private PipeAssets(TextureAtlas atlas) {
             this.debris = atlas.findRegion("debris");
+        }
+    }
+
+    // FONTS
+
+    public class FontAssets {
+        public BitmapFont font;
+
+        private FontAssets() {
+            this.font = assetManager.get("font.ttf", BitmapFont.class);
+            font.getData().setScale(1 / 86f);
+            font.setUseIntegerPositions(false);
+        }
+    }
+
+    public class SmallFontAssets {
+        public BitmapFont smallFont;
+
+        private SmallFontAssets() {
+            this.smallFont = assetManager.get("smallFont.ttf", BitmapFont.class);
+            smallFont.getData().setScale(1 / 64f / 2);
+            smallFont.setUseIntegerPositions(false);
         }
     }
 }

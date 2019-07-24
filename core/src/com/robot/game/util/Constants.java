@@ -123,18 +123,19 @@ public final class Constants {
 
     // Hud
     public static final float PADDING = 8;
-        // frame
-    public static final float FRAME_OFFSET = 32;
+        // health frame
+        public static final float FRAME_OFFSET = 32;
     public static final float FRAME_WIDTH = 137.5f;
     public static final float FRAME_HEIGHT = 32;
-        // bars
+        // healt bar
     public static final float BAR_OFFSET_X = 38;
     public static final float BAR_OFFSET_Y = 27;
     public static final float BAR_WIDTH = 95;
     public static final float BAR_HEIGHT = 20;
         // lives
     public static final float LIVES_WIDTH = 25.3f;
-    public static final float LIVES_HEIGHT = 32; // make this a multiple of PPM
+    public static final float LIVES_HEIGHT = 32;
+
 
     // Loading screen
         // frame
@@ -145,7 +146,7 @@ public final class Constants {
     public static final float LOADING_BAR_OFFSET_Y = 19.5f;
     public static final float LOADING_BAR_WIDTH = 530;
     public static final float LOADING_BAR_HEIGHT = 40;
-        // progress (font)
+        // progress (loadingScreenFont)
     public static final float LOADING_FONT_OFFSET_Y = 11.5f;
 
     // Damage

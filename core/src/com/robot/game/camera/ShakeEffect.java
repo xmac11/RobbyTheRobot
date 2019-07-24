@@ -20,7 +20,7 @@ public class ShakeEffect {
     private static boolean indefiniteShaking;
 
     public static void shake(float shakeIntensity, float shakeTime, boolean indefinite) {
-        Gdx.app.log("ShakeEffect", "shake()");
+        Gdx.app.log("ShakeEffect", "Shake started");
         startTime = TimeUtils.nanoTime();
         random = new Random();
         intensity = shakeIntensity;
@@ -44,6 +44,7 @@ public class ShakeEffect {
         else {
             shakeON = false;
             //timeToShake = 0;
+            Gdx.app.log("ShakeEffect", "Shake ended");
         }
     }
 

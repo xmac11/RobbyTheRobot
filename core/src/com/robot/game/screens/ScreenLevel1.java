@@ -1,11 +1,11 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -13,8 +13,10 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -28,6 +30,8 @@ import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
 import com.robot.game.util.*;
 import org.json.simple.JSONArray;
+
+import java.util.HashMap;
 
 import static com.robot.game.util.Constants.*;
 
@@ -59,6 +63,9 @@ public class ScreenLevel1 extends ScreenAdapter {
     // falling pipes
     private Array<FallingPipe> fallingPipess;
     private boolean earthquakeHappened;
+
+    // points to draw
+    private  PointsRenderer pointsRenderer;
 
     // camera variables
     private OrthographicCamera camera;
@@ -122,7 +129,7 @@ public class ScreenLevel1 extends ScreenAdapter {
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // create box2d world
-        this.world = new World(new Vector2(0, -9.81f /*0*/), true);
+        this.world = new World(new Vector2(0, -9.81f), true);
         this.contactManager = new ContactManager();
         world.setContactListener(contactManager);
         if(DEBUG_ON)
@@ -161,6 +168,9 @@ public class ScreenLevel1 extends ScreenAdapter {
 
         // falling pipes array
         this.fallingPipess = new Array<>();
+
+        // points to draw
+        this.pointsRenderer = new PointsRenderer();
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -302,6 +312,13 @@ public class ScreenLevel1 extends ScreenAdapter {
             fallingPipe.draw(game.getBatch());
         }
 
+        // render points to draw
+        // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
+        pointsRenderer.draw(game.getBatch(), delta);
+
+        /*if(pointsToDraw.size != 0)
+            pointsToDraw.clear();*/
+
         // render Hud
         hud.draw(game.getBatch());
         game.getBatch().end();
@@ -397,6 +414,10 @@ public class ScreenLevel1 extends ScreenAdapter {
 
     public RobotGame getGame() {
         return game;
+    }
+
+    public PointsRenderer getPointsRenderer() {
+        return pointsRenderer;
     }
 
     public ContactManager getContactManager() {

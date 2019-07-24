@@ -28,8 +28,8 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.loadingScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
-        this.frame = Assets.getInstance().loadingBarAssets.frame;
-        this.greenBar = Assets.getInstance().loadingBarAssets.bar;
+        this.frame = Assets.getInstance().loadingScreenAssets.frame;
+        this.greenBar = Assets.getInstance().loadingScreenAssets.bar;
 
         this.font = Assets.getInstance().fontAssets.font;
     }
@@ -64,7 +64,7 @@ public class LoadingScreen extends ScreenAdapter {
                     1.2f * LOADING_BAR_WIDTH * Assets.getInstance().assetManager.getProgress() / PPM,
                     LOADING_BAR_HEIGHT / PPM);
 
-            // draw font
+            // draw loadingScreenFont
             font.draw(game.getBatch(),
                     "Loading..." + (int) (1.2f * Assets.getInstance().assetManager.getProgress() * 100) + "%",
                     loadingScreenViewport.getWorldWidth() / 2,
@@ -79,7 +79,7 @@ public class LoadingScreen extends ScreenAdapter {
         else {
             // dispose loading bar since it will not be needed again
             Assets.getInstance().assetManager.unload("loading_bar.pack");
-            Gdx.app.log("LoadingScreen", "Loading bar was disposed");
+            Gdx.app.log("LoadingScreen", "Loading bar atlas was disposed");
 
             // create all necessary game assets
             Assets.getInstance().createGameAssets();

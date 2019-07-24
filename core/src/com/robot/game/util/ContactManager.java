@@ -8,7 +8,6 @@ import com.robot.game.interactiveObjects.FallingPlatform;
 import com.robot.game.interactiveObjects.Ladder;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.interactiveObjects.Spike;
-import com.robot.game.sprites.Bat;
 import com.robot.game.sprites.Collectable;
 import com.robot.game.sprites.Enemy;
 import com.robot.game.sprites.Robot;
@@ -32,6 +31,8 @@ public class ContactManager implements ContactListener {
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter++;
             Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet in contact with " + fixA.getUserData() + " or " + fixB.getUserData());
+
+            if(DEBUG_ON && footContactCounter > 1) throw new IllegalArgumentException("footContactCounter > 1");
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -251,7 +252,10 @@ public class ContactManager implements ContactListener {
                 setMaskBit(fixB, NOTHING_MASK);
 
                 // increase points
-                increaseScore(robot, enemy);
+                StaticMethods.increaseScore(robot, enemy);
+
+                // add enemy to the HashMap in order to render the points gained
+                robot.getScreenLevel1().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
             }
             else {
                 if (normal.y >= 1 / Math.sqrt(2))
@@ -262,7 +266,7 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
 
                 // decrease robot's health
-                decreaseHealth(robot, enemy);
+                StaticMethods.decreaseHealth(robot, enemy);
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
@@ -290,7 +294,10 @@ public class ContactManager implements ContactListener {
                 setMaskBit(fixA, NOTHING_MASK);
 
                 // increase points
-                increaseScore(robot, enemy);
+                StaticMethods.increaseScore(robot, enemy);
+
+                // add enemy to the HashMap in order to render the points gained
+                robot.getScreenLevel1().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
             }
             else {
                 if(normal.y <= -1/Math.sqrt(2))
@@ -301,7 +308,7 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
 
                 // decrease robot's health
-                decreaseHealth(robot, enemy);
+                StaticMethods.decreaseHealth(robot, enemy);
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
@@ -325,6 +332,9 @@ public class ContactManager implements ContactListener {
         }
         // increase score for collectable
         robot.getCheckpointData().increaseScore(POINTS_FOR_COLLECTABLE);
+
+        // add collectable to the HashMap in order to render the points gained
+        robot.getScreenLevel1().getPointsRenderer().getItemPointsToDraw().put(collectable , 1f);
 
         // flag to collect (in order to destroy the body)
         collectable.setFlagToCollect();
@@ -484,18 +494,8 @@ public class ContactManager implements ContactListener {
         return footContactCounter;
     }
 
-    private void increaseScore(Robot robot, Enemy enemy) {
-        if(enemy instanceof Bat)
-            robot.getCheckpointData().increaseScore(POINTS_FOR_BAT);
-        else
-            robot.getCheckpointData().increaseScore(POINTS_FOR_CRAB);
-    }
 
-    private void decreaseHealth(Robot robot, Enemy enemy) {
-        if(enemy instanceof Bat)
-            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_BAT);
-        else
-            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_CRAB);
-    }
+
+
 
 }

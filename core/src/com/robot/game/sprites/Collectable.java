@@ -61,6 +61,10 @@ public class Collectable extends Sprite {
         isDestroyed = true;
     }
 
+    public Body getBody() {
+        return body;
+    }
+
     public boolean isDestroyed() {
         return isDestroyed;
     }

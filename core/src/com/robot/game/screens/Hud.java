@@ -25,8 +25,8 @@ public class Hud {
 
     private Texture lives; // this will become a TextureRegion when finalized
     private BitmapFont font;
-    private GlyphLayout glyphLayout;
     private GlyphLayout scoreGlyphLayout;
+    private GlyphLayout livesGlyphLayout;
 
     public Hud(ScreenLevel1 screenLevel1) {
         this.screenLevel1 = screenLevel1;
@@ -38,8 +38,9 @@ public class Hud {
         this.redBar = Assets.getInstance().hudAssets.redBar;
         this.lives = Assets.getInstance().hudAssets.lives;
         this.font = Assets.getInstance().fontAssets.font;
-        this.glyphLayout = Assets.getInstance().fontAssets.glyphLayout;
         this.scoreGlyphLayout = Assets.getInstance().hudAssets.scoreGlyphLayout;
+        this.livesGlyphLayout = Assets.getInstance().hudAssets.livesGlyphLayout;
+
     }
 
     public void draw(SpriteBatch batch) {
@@ -87,20 +88,21 @@ public class Hud {
                 LIVES_WIDTH / PPM,
                 LIVES_HEIGHT / PPM);
 
-        // draw lives font (label)
+        // draw lives loadingScreenFont (label)
         font.setColor(Color.WHITE);
         font.draw(batch,
                 "x" + checkpointData.getLives(),
-                hudViewport.getWorldWidth() - PADDING / PPM - glyphLayout.width / 2,
-                hudViewport.getWorldHeight() - PADDING / PPM - glyphLayout.height / 2,
+                hudViewport.getWorldWidth() - PADDING / PPM - livesGlyphLayout.width / 2,
+                hudViewport.getWorldHeight() - PADDING / PPM - livesGlyphLayout.height / 2,
                 /*LIVES_WIDTH / PPM*/0,
                 Align.center,
                 false);
 
-//        System.out.println(glyphLayout.width + " " + glyphLayout.height);
+//        System.out.println(livesGlyphLayout.width + " " + livesGlyphLayout.height);
     }
 
     public Viewport getHudViewport() {
         return hudViewport;
     }
+
 }
