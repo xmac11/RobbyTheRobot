@@ -71,6 +71,11 @@ public class ContactManager implements ContactListener {
             case GROUND_CATEGORY | PIPE_CATEGORY:
             groundPipeBegin(fixA, fixB);
             break;
+
+            // feet - pipe on ground
+            case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
+                feetPipeOnGroundBegin(fixA, fixB);
+                break;
         }
 
 
@@ -344,13 +349,13 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManger", "Robot collected powerup, Health " + robot.getCheckpointData().getHealth() + "%");
         }
 
-        // flag to collect (in order to destroy the body)
+        // flagToCancelVelocity to collect (in order to destroy the body)
         collectable.setFlagToCollect();
 
         // add the collectable to the list of collectables to be disabled from beying respawned if robot dies
         collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
 
-        // flag that a new item was collected
+        // flagToCancelVelocity that a new item was collected
         robot.getScreenLevel1().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
     }
@@ -383,6 +388,21 @@ public class ContactManager implements ContactListener {
         }
     }
 
+    private void feetPipeOnGroundBegin(Fixture fixA, Fixture fixB) {
+        FallingPipe fallingPipe;
+
+        if(fixA.getUserData() instanceof  FallingPipe) {
+            fallingPipe = (FallingPipe) fixA.getUserData();
+        }
+        else {
+            fallingPipe = (FallingPipe) fixB.getUserData();
+        }
+
+        // robot is on a pipe; turn on flag to set pipe's velocity to zero so as not to move with the robot
+        fallingPipe.setFlagToCancelVelocity(true);
+        Gdx.app.log("ContactManager", "Robot stepped on pipe. Flag to cancel pipe's velocity activated.");
+    }
+
     private void groundPipeBegin(Fixture fixA, Fixture fixB) {
         FallingPipe fallingPipe;
 
@@ -400,7 +420,7 @@ public class ContactManager implements ContactListener {
             // change category bits
             StaticMethods.setCategoryBit(fixB, PIPE_ON_GROUND_CATEGORY);
         }
-        // set flag for pipes that are on the floor to sleep
+        // set flagToCancelVelocity for pipes that are on the floor to sleep
         fallingPipe.setFlagToSleep(true);
     }
 
@@ -415,7 +435,7 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getFilterData().categoryBits == ROBOT_FEET_CATEGORY || fixB.getFilterData().categoryBits == ROBOT_FEET_CATEGORY) {
             footContactCounter--;
-            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter);
+            Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet ended contact with " + fixA.getUserData() + " or " + fixB.getUserData());
         }
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
@@ -440,9 +460,11 @@ public class ContactManager implements ContactListener {
                 robotSpikesEnd(fixA, fixB);
                 break;
 
+            // feet - pipe on ground
+            case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
+                feetPipeOnGroundEnd(fixA, fixB);
+                break;
         }
-
-
     }
 
     // robot - ladder collision ends
@@ -500,6 +522,23 @@ public class ContactManager implements ContactListener {
         Gdx.app.log("ContactManager", "Off moving platform");
     }
 
+    private void feetPipeOnGroundEnd(Fixture fixA, Fixture fixB) {
+        FallingPipe fallingPipe;
+
+        if(fixA.getUserData() instanceof FallingPipe) {
+            fallingPipe = (FallingPipe) fixA.getUserData();
+        }
+        else {
+            fallingPipe = (FallingPipe) fixB.getUserData();
+
+        }
+
+        // robot got off the pipe; turn off flag to set pipe's velocity to zero
+        fallingPipe.setFlagToCancelVelocity(false);
+        Gdx.app.log("ContactManager", "Robot stepped off pipe. Flag to cancel pipe's velocity disabled.");
+    }
+
+    // this just prints statements
     private void robotSpikesEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
         Spike spike;
