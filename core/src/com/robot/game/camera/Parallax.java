@@ -44,6 +44,12 @@ public class Parallax {
             if(waterFlow)
                 srcX += 1;
         }
+        // for keeping robot in the lhs of the screen (instead of the above "if")
+        /*if(robot.getBody().getPosition().x < viewport.getWorldWidth() / 2 || robot.getBody().getPosition().x > MAP_WIDTH / PPM - viewport.getWorldWidth()) {
+            //srcX += 0;
+            if(waterFlow)
+                srcX += 1;
+        }*/
         else {
             // for water image
             if(waterFlow) {

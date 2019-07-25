@@ -20,10 +20,7 @@ public class DebugCamera {
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
-//        camera.position.x =  robot.getBody().getCameraDisplacement().x;
         this.robot = robot;
-//        camera.position.x = robot.getBody().getPosition().x;
-//        camera.position.y = robot.getBody().getPosition().y;
         this.following = true;
     }
 
@@ -37,29 +34,22 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            if(ShakeEffect.isShakeON() /*|| ShakeEffect.getTimeToShake() > 0*/) {
+            if(ShakeEffect.isShakeON()) {
                 ShakeEffect.update();
                 camera.translate(ShakeEffect.getCameraDisplacement());
             }
 
-            // update camera's position
+            // update camera's position (+viewport.getWorldWidth() / 4 for keeping robot in the lhs of the screen
             if(!ShakeEffect.isShakeON()) {
                 // camera follows the robot
-                camera.position.x = robot.getBody().getPosition().x;
+                camera.position.x = robot.getBody().getPosition().x /*+ viewport.getWorldWidth() / 4*/;
                 camera.position.y = robot.getBody().getPosition().y;
             }
             // when camera is shaking, lerp to robot's position to get a smooth transition
             else {
-                camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x, 0.2f);
+                camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x /*+ viewport.getWorldWidth() / 4*/, 0.2f);
                 camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.2f);
             }
-
-            /*if(shakeJustStopped) {
-                System.out.println("Shake just stopped");
-                camera.position.x = MathUtils.lerp(camera.position.x, robot.getBody().getPosition().x, 0.01f);
-                camera.position.y = MathUtils.lerp(camera.position.y, robot.getBody().getPosition().y, 0.01f);
-                shakeJustStopped = false;
-            }*/
         }
         // camera is not following the player
         else {

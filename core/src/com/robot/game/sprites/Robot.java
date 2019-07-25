@@ -440,6 +440,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 FileSaver.resetSpawningOfCollectables();
                 FileSaver.getCollectedItemsFile().delete();
             }
+            else {
+                screenLevel1.setNewItemCollected(false);
+            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("Robot", "First checkpoint set");
