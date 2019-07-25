@@ -60,6 +60,7 @@ public class ScreenLevel1 extends ScreenAdapter {
     private DelayedRemovalArray<FallingPipe> fallingPipes;
     private boolean earthquakeHappened;
     private boolean pipesStartedFalling;
+    private boolean pipesDisabled;
     private PipeBodyCache pipeBodyCache;
     private float pipeStartTime;
     private float pipeElapsed;
@@ -236,42 +237,7 @@ public class ScreenLevel1 extends ScreenAdapter {
                 collectables.removeIndex(i);
         }
 
-        if(!earthquakeHappened && !pipesStartedFalling)
-            checkForEarthquake();
-
-        // update falling pipes
-        /*if(shouldTransformPipes) {
-            for(FallingPipe fallingPipe : fallingPipes) {
-                fallingPipe.getBody().setTransform(fallingPipe.randomPipePosition(), viewport.getWorldHeight(), (float) Math.PI / 4 * MathUtils.random(-1f, 1f));
-                fallingPipe.getBody().setGravityScale(1);
-                fallingPipe.getBody().setAwake(true);
-            }
-            shouldTransformPipes = false;
-            pipesActive = true;
-        }
-
-        if(pipesActive) {
-            for(FallingPipe fallingPipe : fallingPipes) {
-                fallingPipe.update(delta);
-            }
-        }*/
-
-
-        if(earthquakeHappened) {
-            //            fallingPipes.add(new FallingPipe(this, false));
-            for(FallingPipe fallingPipe : fallingPipes) {
-                fallingPipe.getBody().setAwake(true);
-                fallingPipe.getBody().setGravityScale(1);
-            }
-            this.pipeStartTime = TimeUtils.nanoTime() + 3 / MathUtils.nanoToSec; //add extra 3 seconds timeout initially
-            earthquakeHappened = false;
-            pipesStartedFalling = true;
-        }
-
-        //System.out.println(fallingPipes.size);
-        if(pipesStartedFalling && shouldSpawnPipe()) {
-            fallingPipes.add(new FallingPipe(this, false));
-        }
+        handleEarthquake();
 
         // update falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
@@ -481,16 +447,42 @@ public class ScreenLevel1 extends ScreenAdapter {
         return pipeBodyCache;
     }
 
+    private void handleEarthquake() {
+        if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled)
+            checkForEarthquake();
+
+        if(earthquakeHappened) {
+            // activate cached pipes
+            for(FallingPipe fallingPipe : fallingPipes) {
+                fallingPipe.getBody().setAwake(true);
+                fallingPipe.getBody().setGravityScale(1);
+            }
+            this.pipeStartTime = TimeUtils.nanoTime() + 3 / MathUtils.nanoToSec; //add extra 3 seconds timeout initially
+            earthquakeHappened = false;
+            pipesStartedFalling = true;
+        }
+
+        if(pipesStartedFalling && !pipesDisabled) {
+            if(checkDisablingPipes())
+                this.pipesDisabled = true;
+
+            if(!pipesDisabled && shouldSpawnPipe()) {
+                fallingPipes.add(new FallingPipe(this, false));
+            }
+        }
+    }
+
     private void checkForEarthquake() {
         // if robot is in the shake area and the shake is not already active, start it
-        if(robot.isInShakeArea() && !ShakeEffect.isShakeON()) {
-            ShakeEffect.shake(0.25f, 2f, false);
-            ShakeEffect.setShakeON(true);
-            Gdx.app.log("Robot", "shake active = true");
+        if(Math.abs(robot.getBody().getPosition().x * PPM - PIPES_START_X) <= 48) {
+            Gdx.app.log("ScreenLevel1", "Earthquake activated");
+            ShakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
             earthquakeHappened = true;
-            //shouldTransformPipes = true;
-            //pipesStartedFalling = true;
         }
+    }
+
+    private boolean checkDisablingPipes() {
+        return robot.getBody().getPosition().x > PIPES_END_X / PPM;
     }
 
     private void checkIfDead() {
@@ -528,7 +520,7 @@ public class ScreenLevel1 extends ScreenAdapter {
     }
 
     public boolean shouldSpawnPipe() {
-        if(pipeElapsed >= 2f) {
+        if(pipeElapsed >= PIPES_SPAWNING_PERIOD) {
             this.pipeStartTime = TimeUtils.nanoTime();
             this.pipeElapsed = 0;
             return true;

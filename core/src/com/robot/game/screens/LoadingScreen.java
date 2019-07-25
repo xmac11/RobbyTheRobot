@@ -44,7 +44,7 @@ public class LoadingScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(!Assets.getInstance().assetManager.update()) {
-            Gdx.app.log("LoadingScreen", "Loading... " + (int) (1.2f * Assets.getInstance().assetManager.getProgress() * 100) + "%");
+            Gdx.app.log("LoadingScreen", "Loading... " + (int) (1.1f * Assets.getInstance().assetManager.getProgress() * 100) + "%");
 
             game.getBatch().setProjectionMatrix(loadingScreenViewport.getCamera().combined);
 
@@ -61,12 +61,12 @@ public class LoadingScreen extends ScreenAdapter {
             game.getBatch().draw(greenBar,
                     loadingScreenViewport.getWorldWidth() / 2 - LOADING_BAR_OFFSET_X / PPM,
                     loadingScreenViewport.getWorldHeight() / 2 - LOADING_BAR_OFFSET_Y / PPM,
-                    1.2f * LOADING_BAR_WIDTH * Assets.getInstance().assetManager.getProgress() / PPM,
+                    1.1f * LOADING_BAR_WIDTH * Assets.getInstance().assetManager.getProgress() / PPM,
                     LOADING_BAR_HEIGHT / PPM);
 
             // draw loadingScreenFont
             font.draw(game.getBatch(),
-                    "Loading..." + (int) (1.2f * Assets.getInstance().assetManager.getProgress() * 100) + "%",
+                    "Loading..." + (int) (1.1f * Assets.getInstance().assetManager.getProgress() * 100) + "%",
                     loadingScreenViewport.getWorldWidth() / 2,
                     loadingScreenViewport.getWorldHeight() / 2 + LOADING_FONT_OFFSET_Y / PPM,
                     0,

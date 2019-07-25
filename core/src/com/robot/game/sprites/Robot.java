@@ -33,6 +33,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private boolean invulnerable;
     private float invulnerableStartTime;
     private float invulnerableElapsed;
+    private float invulnerabilityPeriod;
 
     // jump timers
     private float jumpTimeout;
@@ -148,12 +149,15 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         // if robot is invulnerable
         if(invulnerable) {
+
             // check how much time has passed
             invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
+
             // if more than 1 second, disable it
-            if(invulnerableElapsed >= 1) {
-                setInvulnerable(false);
+            if(invulnerableElapsed >= invulnerabilityPeriod) {
+                invulnerable = false;
                 invulnerableElapsed = 0;
+                Gdx.app.log("Robot", "Invulnerability ended");
             }
         }
 
@@ -287,7 +291,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         //// Debug keys for checkpoints ////
-        if(DEBUG_ON)
+        //if(DEBUG_ON)
             toggleDebugCheckpoints();
 
     }
@@ -369,16 +373,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         return invulnerable;
     }
 
-    public void setInvulnerable(boolean invulnerable) {
-        this.invulnerable = invulnerable;
-
-        if(invulnerable) {
-            Gdx.app.log("Robot", "Invulnerability started");
-            this.invulnerableStartTime = TimeUtils.nanoTime();
-        }
-        else {
-            Gdx.app.log("Robot", "Invulnerability ended");
-        }
+    public void setInvulnerable(float invulnerabilityPeriod) {
+        Gdx.app.log("Robot", "Invulnerability started");
+        this.invulnerable = true;
+        this.invulnerabilityPeriod = invulnerabilityPeriod;
+        this.invulnerableStartTime = TimeUtils.nanoTime();
     }
 
     public boolean isWalkingOnSpikes() {
@@ -454,8 +453,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
     }
 
-    public boolean isInShakeArea() {
-        return Math.abs(body.getPosition().x * PPM - 4992) <= 48;
+    public boolean activatedEarthquake() {
+        return Math.abs(body.getPosition().x * PPM - PIPES_START_X) <= 48;
     }
 
     /*@Override

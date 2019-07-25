@@ -37,19 +37,19 @@ public class FallingPipe extends Sprite {
         BodyDef bodyDef = screenLevel1.getPipeBodyCache().getBodyDef();
 
         if(cache) {
-            bodyDef.position.set(4992 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
-                    (MAP_HEIGHT - 24) / PPM);
+            bodyDef.position.set(5112 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
+                                 (MAP_HEIGHT - 24) / PPM);
             bodyDef.gravityScale = 0;
             bodyDef.awake = false;
         }
         else {
             bodyDef.position.set(screenLevel1.getRobot().getBody().getPosition().x + MathUtils.random(96f / PPM, 192 / PPM),
-                                 screenLevel1.getViewport().getWorldHeight() /*(MAP_HEIGHT + 64) / PPM*/);
+                                 screenLevel1.getViewport().getWorldHeight());
             bodyDef.gravityScale = 1;
             bodyDef.awake = true;
         }
-        bodyDef.angle =  (float) Math.PI / 4 * MathUtils.random(-1f, 1f);
 
+        bodyDef.angle =  (float) Math.PI / 3 * MathUtils.random(-1f, 1f);
         this.body = world.createBody(bodyDef);
 
         // create fixture
@@ -61,7 +61,7 @@ public class FallingPipe extends Sprite {
 
         fixtureDef.friction = 0.4f;
         fixtureDef.density = 1.0f;
-        fixtureDef.restitution = 0.15f;
+        fixtureDef.restitution = 0.25f;
         fixtureDef.filter.categoryBits = PIPE_CATEGORY;
         fixtureDef.filter.maskBits = PIPE_MASK;
 
@@ -71,8 +71,10 @@ public class FallingPipe extends Sprite {
     }
 
     public void update(float delta) {
-        if(flagToSleep && body.getLinearVelocity().isZero())
+        if(flagToSleep && body.getLinearVelocity().isZero()) {
             body.setAwake(false);
+            flagToSleep = false;
+        }
 
         // attach sprite to body
         pipeSprite.setPosition(body.getPosition().x - PIPE_WIDTH / 2 / PPM, body.getPosition().y - PIPE_HEIGHT / 2 / PPM);
@@ -86,12 +88,6 @@ public class FallingPipe extends Sprite {
     public void draw(Batch batch) {
         pipeSprite.draw(batch);
     }
-
-    /*public float randomPipePosition() {
-        float max =
-        float min = screenLevel1.getCamera().position.x - screenLevel1.getViewport().getWorldWidth() / 2;
-        return MathUtils.random(min, max);
-    }*/
 
     public Body getBody() {
         return body;

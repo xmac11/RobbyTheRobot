@@ -212,7 +212,7 @@ public class ContactManager implements ContactListener {
             // decrease health
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
             // make it invulnerable
-            robot.setInvulnerable(true);
+            robot.setInvulnerable(1f);
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }
 
@@ -226,7 +226,7 @@ public class ContactManager implements ContactListener {
         // make it flicker
         robot.setFlicker(true);
         //shake camera
-        ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
+        ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
     }
 
     /* When the robot steps on an enemy, I have to set the enemy’s mask bit to “NOTHING”. As a result, the collision stops at that point, the player
@@ -254,7 +254,7 @@ public class ContactManager implements ContactListener {
                 enemy.getBody().setLinearVelocity(0, 0);
 
                 // set enemy's mask bits to "nothing"
-                setMaskBit(fixB, NOTHING_MASK);
+                StaticMethods.setMaskBit(fixB, NOTHING_MASK);
 
                 // increase points
                 StaticMethods.increaseScore(robot, enemy);
@@ -275,7 +275,7 @@ public class ContactManager implements ContactListener {
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
-                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
+                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
                 Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -296,7 +296,7 @@ public class ContactManager implements ContactListener {
                 enemy.getBody().setLinearVelocity(0, 0);
 
                 // set enemy's mask bits to "nothing"
-                setMaskBit(fixA, NOTHING_MASK);
+                StaticMethods.setMaskBit(fixA, NOTHING_MASK);
 
                 // increase points
                 StaticMethods.increaseScore(robot, enemy);
@@ -317,7 +317,7 @@ public class ContactManager implements ContactListener {
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
-                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME, false);
+                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
                 Gdx.app.log("ContactManager","Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -363,59 +363,22 @@ public class ContactManager implements ContactListener {
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
             pipe = (FallingPipe) fixB.getUserData();
-
-            if(normal.y >= 1/Math.sqrt(2)) {
-                Gdx.app.log("ContactManager","Pipe hit robot on head");
-            }
-            else if (normal.y <= -1 / Math.sqrt(2))
-                Gdx.app.log("ContactManager", "Robot is stepping on pipe");
-            else if (normal.x <= -1 / Math.sqrt(2)) {
-                Gdx.app.log("ContactManager", "Pipe hit robot on the left");
-                for(int i = 0; i < points.length; i++) {
-                    System.out.println(robot.getBody().getLocalPoint(points[i]));
-                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
-                        Gdx.app.log("ContactManager", "Pipe hit robot on the left and died");
-                    }
-                }
-            }
-            else if (normal.x >= 1 / Math.sqrt(2)) {
-                Gdx.app.log("ContactManager", "Pipe hit robot on the right");
-                for(int i = 0; i < points.length; i++) {
-                    System.out.println(robot.getBody().getLocalPoint(points[i]));
-                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
-                        Gdx.app.log("ContactManager", "Pipe hit robot on the right and died");
-                    }
-                }
-            }
         }
         else {
             robot = (Robot) fixB.getUserData();
             pipe = (FallingPipe) fixA.getUserData();
+        }
 
-            if(normal.y <= -1/Math.sqrt(2)) {
-                Gdx.app.log("ContactManager","Pipe hit robot on head");
-            }
-            else if (normal.y >= 1 / Math.sqrt(2))
-                Gdx.app.log("ContactManager", "Robot is stepping on pipe");
-            else if (normal.x <= -1 / Math.sqrt(2)) {
-                Gdx.app.log("ContactManager", "Pipe hit robot on the right");
-                for(int i = 0; i < points.length; i++) {
-                    System.out.println(robot.getBody().getLocalPoint(points[i]));
-                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
-                        Gdx.app.log("ContactManager", "Pipe hit robot on the right and died");
-                    }
-                }
-            }
-            else if (normal.x >= 1 / Math.sqrt(2)) {
-                Gdx.app.log("ContactManager", "Pipe hit robot on the left");
-                for(int i = 0; i < points.length; i++) {
-                    System.out.println(robot.getBody().getLocalPoint(points[i]));
-                    if(robot.getBody().getLocalPoint(points[i]).y > 0) {
-                        Gdx.app.log("ContactManager", "Pipe hit robot on the left and died");
-                        //break;
-                    }
-                }
-            }
+        // if robot is not invulnerable
+        if(!robot.isInvulnerable()) {
+            // decrease health
+            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_PIPE);
+            // make it invulnerable for 1 second
+            robot.setInvulnerable(1f);
+            // make it flicker
+            robot.setFlicker(true);
+            // shake the camera
+            ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
         }
     }
 
@@ -424,14 +387,20 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getUserData() instanceof FallingPipe) {
             fallingPipe = (FallingPipe) fixA.getUserData();
+            //StaticMethods.setMaskBit(fixA, NOTHING_MASK);
+
+            // change category bits
+            StaticMethods.setCategoryBit(fixA, PIPE_ON_GROUND_CATEGORY);
         }
         else {
             fallingPipe = (FallingPipe) fixB.getUserData();
+            //StaticMethods.setMaskBit(fixB, NOTHING_MASK);
+
+            // change category bits
+            StaticMethods.setCategoryBit(fixB, PIPE_ON_GROUND_CATEGORY);
         }
-
+        // set flag for pipes that are on the floor to sleep
         fallingPipe.setFlagToSleep(true);
-        System.out.println("Ground pipe collided");
-
     }
 
     @Override
@@ -565,14 +534,6 @@ public class ContactManager implements ContactListener {
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
-    }
-
-    public void setMaskBit(/*Body body*/Fixture fixture, short maskBit) {
-        Filter filter = new Filter();
-        filter.maskBits = maskBit;
-        /*for(Fixture fixture: body.getFixtureList())
-            fixture.setFilterData(filter);*/
-        fixture.setFilterData(filter);
     }
 
     public int getFootContactCounter() {
