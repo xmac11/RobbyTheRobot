@@ -118,17 +118,23 @@ public final class Constants {
 
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
+    public static final String POWERUP_PROPERTY = "powerup";
+    public static final String BURGER_PROPERTY = "burger";
     public static final String COLLECTABLE_SPAWNING_PROPERTY = "shouldSpawn";
-    public static final float COLLECTABLE_WIDTH = 20;
-    public static final float COLLECTABLE_HEIGHT = 16;
+    public static final float BURGER_WIDTH = 20;
+    public static final float BURGER_HEIGHT = 16;
+    public static final float POWERUP_WIDTH = 20;
+    public static final float POWERUP_HEIGHT = 22;
+    public static final float FULL_HEAL_WIDTH = 26;
+    public static final float FULL_HEAL_HEIGHT = 28.5f;
 
     // Hud
     public static final float PADDING = 8;
         // health frame
-        public static final float FRAME_OFFSET = 32;
+    public static final float FRAME_OFFSET = 32;
     public static final float FRAME_WIDTH = 137.5f;
     public static final float FRAME_HEIGHT = 32;
-        // healt bar
+        // health bar
     public static final float BAR_OFFSET_X = 38;
     public static final float BAR_OFFSET_Y = 27;
     public static final float BAR_WIDTH = 95;
@@ -147,7 +153,7 @@ public final class Constants {
     public static final float LOADING_BAR_OFFSET_Y = 19.5f;
     public static final float LOADING_BAR_WIDTH = 530;
     public static final float LOADING_BAR_HEIGHT = 40;
-        // progress (loadingScreenFont)
+        // progress (LoadingScreen)
     public static final float LOADING_FONT_OFFSET_Y = 11.5f;
 
     // Damage
@@ -160,10 +166,11 @@ public final class Constants {
     public static final float HIT_SHAKE_INTENSITY = 0.15f;
     public static final float HIT_SHAKE_TIME = 0.2f;
 
-    // Points
+    // Points - Health
     public static final int POINTS_FOR_BAT = 100;
     public static final int POINTS_FOR_CRAB = 50;
-    public static final int POINTS_FOR_COLLECTABLE = 25;
+    public static final int POINTS_FOR_BURGER = 25;
+    public static final int HEALTH_FOR_POWERUP = 25;
 
     // Earthquake
     public static final float EARTH_SHAKE_INTENSITY = 0.25f;
@@ -179,8 +186,16 @@ public final class Constants {
                                                                 new Vector2(0 / PPM, -16 / PPM),
                                                                 new Vector2(-4 / PPM, -14 / PPM)};
     public static final float PIPES_START_X = 4992;
-    public static final float PIPES_END_X = 5888;
-    public static final float PIPES_SPAWNING_PERIOD = 1;
+    public static final float PIPES_END_X = 6608;
+    public static final float PIPES_SPAWNING_PERIOD = 1.5f;
 
+    // PointsRenderer (health bar for powerup)
+    public static final float POWERUP_FRAME_WIDTH = FRAME_WIDTH / 2f;
+    public static final float POWERUP_FRAME_HEIGHT = FRAME_HEIGHT / 2f;
+    // health bar
+    public static final float POWERUP_BAR_OFFSET_X = 16;
+    public static final float POWERUP_BAR_OFFSET_Y = 2.5f;
+    public static final float POWERUP_BAR_WIDTH = BAR_WIDTH / 2f;
+    public static final float POWERUP_BAR_HEIGHT = BAR_HEIGHT / 2f;
 
 }

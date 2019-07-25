@@ -61,7 +61,7 @@ public class FallingPipe extends Sprite {
 
         fixtureDef.friction = 0.4f;
         fixtureDef.density = 1.0f;
-        fixtureDef.restitution = 0.25f;
+        fixtureDef.restitution = 0.15f;
         fixtureDef.filter.categoryBits = PIPE_CATEGORY;
         fixtureDef.filter.maskBits = PIPE_MASK;
 

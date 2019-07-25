@@ -66,14 +66,15 @@ public class FileSaver {
      * (whose spawning has been disabled) and resets their spawning to TRUE */
     public static void resetSpawningOfCollectables() {
 
+        Gdx.app.log("FileSaver", "Collectables reset");
+
         // read the file with collected items and store them in a JSONArray
         JSONArray jsonArray = loadCollectedItemsFile();
 
         for(Object object: jsonArray) {
             JSONObject obj = (JSONObject) object;
-            resetSpawningOfCollectable((long) obj.get("id"));
+            FileSaver.resetSpawningOfCollectable((long) obj.get("id"));
         }
-        Gdx.app.log("FileSaver", "Collectables reset");
     }
 
     /** Reads the json file containing the items that have been collected and disabled from being spawned
@@ -161,6 +162,6 @@ public class FileSaver {
 
         // finally save the json tiled map file
         if(root != null)
-            saveJsonMap(file, root);
+            FileSaver.saveJsonMap(file, root);
     }
 }

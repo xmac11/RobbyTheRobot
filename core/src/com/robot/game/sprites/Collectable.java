@@ -13,11 +13,10 @@ import org.json.simple.JSONObject;
 
 import static com.robot.game.util.Constants.*;
 
-public class Collectable extends Sprite {
+public abstract class Collectable extends Sprite {
 
     private ScreenLevel1 screenLevel1;
     private CollectableHandler collectableHandler;
-    private Sprite burgerSprite;
     private World world;
     private Body body;
     private MapObject object;
@@ -36,24 +35,12 @@ public class Collectable extends Sprite {
 
         // put collectables to sleep to reduce CPU cost
         body.setAwake(false);
-
-        this.burgerSprite = new Sprite(Assets.getInstance().collectableAssets.burger);
-
-        // set the size of the bat sprite
-        burgerSprite.setSize(COLLECTABLE_WIDTH / PPM, COLLECTABLE_HEIGHT / PPM);
-        // attach sprite to body
-        burgerSprite.setPosition(body.getPosition().x - COLLECTABLE_WIDTH / 2 / PPM, body.getPosition().y - COLLECTABLE_HEIGHT / 2 / PPM);
     }
 
     public void update(float delta) {
         if(flagToCollect) {
             destroyBody();
         }
-    }
-
-    @Override
-    public void draw(Batch batch) {
-        burgerSprite.draw(batch);
     }
 
     public void setFlagToCollect() {

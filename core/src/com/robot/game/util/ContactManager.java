@@ -5,9 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Enemy;
-import com.robot.game.sprites.Robot;
+import com.robot.game.sprites.*;
 
 import static com.robot.game.util.Constants.*;
 
@@ -336,18 +334,21 @@ public class ContactManager implements ContactListener {
             collectable = (Collectable) fixA.getUserData();
         }
         // increase score for collectable
-        robot.getCheckpointData().increaseScore(POINTS_FOR_COLLECTABLE);
+        StaticMethods.increaseScore(robot, collectable);
 
-        // add collectable to the HashMap in order to render the points gained
-        robot.getScreenLevel1().getPointsRenderer().getItemPointsToDraw().put(collectable , 1f);
+        // add collectable to the HashMap in order to render the points gained or the powerup animation
+        StaticMethods.queueForPointsRenderer(robot, collectable);
+
+        if(collectable instanceof PowerUp) {
+            StaticMethods.increaseHealth(robot, (PowerUp) collectable);
+            Gdx.app.log("ContactManger", "Robot collected powerup, Health " + robot.getCheckpointData().getHealth() + "%");
+        }
 
         // flag to collect (in order to destroy the body)
         collectable.setFlagToCollect();
 
         // add the collectable to the list of collectables to be disabled from beying respawned if robot dies
         collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
-        // If I use a thread instead of queueing items to disable spawning, remove for-loop in the checkIfDead() method in Playscreen
-//        new Thread(() -> collectable.getCollectableHandler().setSpawn((int) collectable.getObject().getProperties().get("id"), false)).start();
 
         // flag that a new item was collected
         robot.getScreenLevel1().setNewItemCollected(true);

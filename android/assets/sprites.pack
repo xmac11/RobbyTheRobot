@@ -3,142 +3,149 @@ sprites.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+powerup
+  rotate: false
+  xy: 1, 421
+  size: 492, 598
+  orig: 492, 598
+  offset: 0, 0
+  index: -1
 robot
   rotate: false
-  xy: 1, 177
+  xy: 1, 89
   size: 165, 330
   orig: 165, 330
   offset: 0, 0
   index: -1
 burger
   rotate: false
-  xy: 168, 356
+  xy: 168, 268
   size: 194, 151
   orig: 194, 151
   offset: 0, 0
   index: -1
 frame
   rotate: false
-  xy: 168, 300
+  xy: 168, 212
   size: 232, 54
   orig: 232, 54
   offset: 0, 0
   index: -1
 green
   rotate: false
-  xy: 1, 143
+  xy: 1, 55
   size: 157, 32
   orig: 157, 32
   offset: 0, 0
   index: -1
 red
   rotate: false
-  xy: 168, 266
+  xy: 168, 178
   size: 157, 32
   orig: 157, 32
   offset: 0, 0
   index: -1
 crab1
   rotate: false
-  xy: 364, 443
+  xy: 364, 355
   size: 96, 64
   orig: 96, 64
   offset: 0, 0
   index: -1
 crab2
   rotate: false
-  xy: 1, 77
+  xy: 168, 112
   size: 96, 64
   orig: 96, 64
   offset: 0, 0
   index: -1
 crab3
   rotate: false
-  xy: 168, 200
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab4
-  rotate: false
-  xy: 364, 377
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab_dead1
-  rotate: false
-  xy: 1, 11
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab_dead2
-  rotate: false
-  xy: 99, 77
+  xy: 364, 289
   size: 96, 64
   orig: 96, 64
   offset: 0, 0
   index: -1
 bat_dead1
   rotate: false
-  xy: 99, 27
+  xy: 1, 5
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
+crab4
+  rotate: false
+  xy: 266, 112
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
 bat1
   rotate: false
-  xy: 168, 155
+  xy: 168, 67
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat2
+  rotate: false
+  xy: 266, 67
   size: 96, 43
   orig: 96, 43
   offset: 0, 0
   index: -1
 bat_dead2
   rotate: false
-  xy: 266, 216
+  xy: 99, 5
   size: 96, 48
   orig: 96, 48
   offset: 0, 0
   index: -1
-bat2
+crab_dead1
   rotate: false
-  xy: 266, 171
-  size: 96, 43
-  orig: 96, 43
+  xy: 197, 1
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
-bat3
+crab_dead2
   rotate: false
-  xy: 266, 126
-  size: 96, 43
-  orig: 96, 43
+  xy: 295, 1
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
 debris
   rotate: false
-  xy: 462, 447
+  xy: 462, 359
   size: 24, 60
   orig: 24, 60
   offset: 0, 0
   index: -1
+bat3
+  rotate: false
+  xy: 402, 244
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
 bat4
   rotate: false
-  xy: 402, 332
+  xy: 402, 199
   size: 96, 43
   orig: 96, 43
   offset: 0, 0
   index: -1
 bat5
   rotate: false
-  xy: 402, 287
+  xy: 393, 154
   size: 96, 43
   orig: 96, 43
   offset: 0, 0
   index: -1
 movingplatform
   rotate: false
-  xy: 1, 1
+  xy: 364, 279
   size: 32, 8
   orig: 32, 8
   offset: 0, 0

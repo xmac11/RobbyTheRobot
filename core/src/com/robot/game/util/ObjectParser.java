@@ -10,10 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.screens.ScreenLevel1;
-import com.robot.game.sprites.Bat;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Crab;
-import com.robot.game.sprites.Enemy;
+import com.robot.game.sprites.*;
 
 import static com.robot.game.util.Constants.*;
 
@@ -197,14 +194,13 @@ public class ObjectParser {
         }
         // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
-            Enemy enemy;
 
+            // create bats
             if(object.getProperties().containsKey(BAT_PROPERTY))
-                enemy = new Bat(world, body, fixtureDef, object);
+                this.enemies.add(new Bat(world, body, fixtureDef, object));
+            // create crabs
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
-                enemy = new Crab(world, body, fixtureDef, object);
-
-            this.enemies.add(enemy);
+                this.enemies.add(new Crab(world, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
@@ -212,8 +208,17 @@ public class ObjectParser {
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
-            if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id")))
-                this.collectables.add(new Collectable(screenLevel1, body, fixtureDef, object));
+
+            // check if collectable should spawn (i.e. it has not been already collected)
+            if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id"))) {
+                // create powerups
+                if(object.getProperties().containsKey(POWERUP_PROPERTY)) {
+                    this.collectables.add(new PowerUp(screenLevel1, body, fixtureDef, object));
+                }
+                // create burgers
+                else
+                    this.collectables.add(new Burger(screenLevel1, body, fixtureDef, object));
+            }
         }
         // create ground
         else {

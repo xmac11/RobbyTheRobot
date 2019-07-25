@@ -85,7 +85,7 @@ public class CheckpointData {
     }
 
     public void increaseHealth(int powerup) {
-        health += powerup;
+        health = Math.min(health + powerup, 100);
     }
 
     public void increaseScore(int points) {

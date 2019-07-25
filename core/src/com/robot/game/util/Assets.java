@@ -243,9 +243,11 @@ public class Assets {
     public class CollectableAssets {
 
         public final TextureAtlas.AtlasRegion burger;
+        public final TextureAtlas.AtlasRegion powerup;
 
         private CollectableAssets(TextureAtlas atlas) {
             this.burger = atlas.findRegion("burger");
+            this.powerup = atlas.findRegion("powerup");
         }
     }
 

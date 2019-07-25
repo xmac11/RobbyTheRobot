@@ -144,8 +144,8 @@ public class ScreenLevel1 extends ScreenAdapter {
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
-        this.backgroundWallLayer = new int[] {1};
-        this.mapLayers = new int[] {2, 3, 4, 5, 6, 7, 8, 9, 10, 12};
+        this.backgroundWallLayer = new int[] {0};
+        this.mapLayers = new int[] {1, 2, 3, 4, 5, 6, 8, 9, 10};
 
         // create collectable handler
         this.collectableHandler = new CollectableHandler();
@@ -174,7 +174,7 @@ public class ScreenLevel1 extends ScreenAdapter {
         }
 
         // points to draw
-        this.pointsRenderer = new PointsRenderer();
+        this.pointsRenderer = new PointsRenderer(robot);
 
         // create debug camera
         this.debugCamera = new DebugCamera(viewport, robot);
@@ -193,6 +193,7 @@ public class ScreenLevel1 extends ScreenAdapter {
     }
 
     private void update(float delta) {
+        // perform physics simulation
         world.step(1 / 60f, 8, 3);
 
         // update interactive platforms (do this first if robot should be moving along with it)
@@ -237,6 +238,7 @@ public class ScreenLevel1 extends ScreenAdapter {
                 collectables.removeIndex(i);
         }
 
+        // handle earthquake
         handleEarthquake();
 
         // update falling pipes
@@ -244,7 +246,7 @@ public class ScreenLevel1 extends ScreenAdapter {
             fallingPipe.update(delta);
         }
 
-            // update camera
+        // update camera
         debugCamera.update(delta);
         hud.getHudViewport().getCamera().update();
 
@@ -330,7 +332,7 @@ public class ScreenLevel1 extends ScreenAdapter {
 
         //render box2d debug rectangles
         if(DEBUG_ON) {
-            debugRenderer.render(world, viewport.getCamera().combined);
+//            debugRenderer.render(world, viewport.getCamera().combined);
 
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -467,6 +469,9 @@ public class ScreenLevel1 extends ScreenAdapter {
                 this.pipesDisabled = true;
 
             if(!pipesDisabled && shouldSpawnPipe()) {
+                // follow up earthquakes with probability 45%
+                if(MathUtils.random() > 0.55f)
+                        ShakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
                 fallingPipes.add(new FallingPipe(this, false));
             }
         }

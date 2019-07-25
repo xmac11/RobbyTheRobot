@@ -426,6 +426,13 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             Gdx.app.log("Robot", "Checkpoints deleted");
             FileSaver.getCheckpointFile().delete();
             screenLevel1.setCheckpointDataDeleted(true);
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables();
+                FileSaver.getCollectedItemsFile().delete();
+            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("Robot", "First checkpoint set");
