@@ -332,7 +332,7 @@ public class ScreenLevel1 extends ScreenAdapter {
 
         //render box2d debug rectangles
         if(DEBUG_ON) {
-//            debugRenderer.render(world, viewport.getCamera().combined);
+            debugRenderer.render(world, viewport.getCamera().combined);
 
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

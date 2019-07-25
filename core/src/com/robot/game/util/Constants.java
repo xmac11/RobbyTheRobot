@@ -186,7 +186,7 @@ public final class Constants {
                                                                 new Vector2(0 / PPM, -16 / PPM),
                                                                 new Vector2(-4 / PPM, -14 / PPM)};
     public static final float PIPES_START_X = 4992;
-    public static final float PIPES_END_X = 6608;
+    public static final float PIPES_END_X = 6528;
     public static final float PIPES_SPAWNING_PERIOD = 1.5f;
 
     // PointsRenderer (health bar for powerup)

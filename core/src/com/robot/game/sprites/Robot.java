@@ -173,6 +173,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             checkThirdCheckpoint();
         }
 
+        if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
+            body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
+        if(body.getPosition().x > (MAP_WIDTH - ROBOT_BODY_WIDTH / 2) / PPM)
+            body.setTransform((MAP_WIDTH - ROBOT_BODY_WIDTH / 2) / PPM, body.getPosition().y, 0);
+
         // conditions for robot to die
         if((body.getPosition().y < 0 || checkpointData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
             dead = true;
