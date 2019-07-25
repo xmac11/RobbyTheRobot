@@ -219,7 +219,7 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }
 
-        // if robot is walking on spikes, it dies
+        // if robot is walking on spikes, it dies (but does not lose health)
         if(spike.mightBeWalked()) {
             robot.setFlicker(true);
             robot.setWalkingOnSpikes(true);

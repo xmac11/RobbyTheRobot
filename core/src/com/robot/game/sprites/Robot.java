@@ -184,7 +184,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             // decrease lives by one
             checkpointData.decreaseLives();
             // reset health
-            checkpointData.setHealth(100);
+            if(checkpointData.getHealth() <= 0) {
+                checkpointData.setHealth(100); // to decide: should the robot restore its health when falling in the water?
+            }
         }
     }
 

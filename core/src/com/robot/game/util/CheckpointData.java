@@ -81,7 +81,7 @@ public class CheckpointData {
     }
 
     public void decreaseHealth(int damage) {
-        health -= damage;
+        health = Math.max(health - damage, 0);
     }
 
     public void increaseHealth(int powerup) {
