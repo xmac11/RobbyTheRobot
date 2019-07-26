@@ -282,6 +282,20 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
         }
 
+        /*  Similarly, climbTimer is used to enable climbing if up key is pressed slightly before getting on ladder.
+         *  It is reduced by "delta" at every frame.
+         *  When the player presses UP, climbTimer is set to a value, e.g. 0.2 seconds.
+         *  When the player gets on the ladder and the LadderClimbHandler is created, it is checked if UP was pressed within the last 0.2 seconds.
+         *  If yes, the player climbs even though it was not on the ladder when UP was pressed. At this point the timer is reset to zero.*/
+        /*climbTimer -= delta;
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && !onLadder) {
+            climbTimer = ROBOT_CLIMB_TIMER;
+            Gdx.app.log("Robot","up pressed in robot class -> climbTimer was set");
+        }*/
+
+
+
         //// Debug keys for checkpoints ////
         //if(DEBUG_ON)
             toggleDebugCheckpoints();
@@ -322,8 +336,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
         Gdx.input.setInputProcessor(onLadder ? new LadderClimbHandler(this) : null/*this*/);
+
+        // if on ladder, turn off gravity
         body.setGravityScale(onLadder ? 0 : 1);
-        if(onLadder) {
+
+
+        // isKeyPressed mutually exclusive with the LadderClimbHandler constructor
+        if(onLadder && !Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            world.clearForces();
             body.setLinearVelocity(body.getLinearVelocity().x, 0);
             Gdx.app.log("Robot", "On ladder, velocity in y set to zero");
         }
