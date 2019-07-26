@@ -15,6 +15,7 @@ public class MovingPlatform extends InteractivePlatform {
     private float endY;
     private boolean waiting;
     private boolean shouldStop;
+    private boolean activated;
     private boolean horizontal;
 
     // will probably need to pass the whole map object
@@ -41,15 +42,19 @@ public class MovingPlatform extends InteractivePlatform {
 
         // moving horizontally
         if(horizontal) {
-            if(shouldStop && outOfRangeX())
+            if(shouldStop && outOfRangeX()) {
                 stop();
+                activated = true;
+            }
             else if(outOfRangeX())
                 reverseVelocity(true, false);
         }
         // moving vertically
         else {
-            if(shouldStop && outOfRangeY())
+            if(shouldStop && outOfRangeY()) {
                 stop();
+                activated = true;
+            }
             else if (outOfRangeY())
                 this.reverseVelocity(false, true);
         }
@@ -97,5 +102,9 @@ public class MovingPlatform extends InteractivePlatform {
 
     public boolean shouldStop() {
         return shouldStop;
+    }
+
+    public boolean isActivated() {
+        return activated;
     }
 }

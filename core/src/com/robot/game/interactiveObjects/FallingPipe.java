@@ -45,7 +45,7 @@ public class FallingPipe extends Sprite {
             bodyDef.awake = false;
         }
         // if robot is almost still, create pipe on top of it
-        else if(Math.abs(screenLevel1.getRobot().getBody().getLinearVelocity().x) < 1f) {
+        else if(Math.abs(screenLevel1.getRobot().getBody().getLinearVelocity().x) < 2f) {
             bodyDef.position.set(screenLevel1.getRobot().getBody().getPosition().x,
                     screenLevel1.getViewport().getWorldHeight());
             bodyDef.gravityScale = 1;

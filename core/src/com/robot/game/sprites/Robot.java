@@ -83,10 +83,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // create fixture
         FixtureDef fixtureDef = new FixtureDef();
 
-        /*CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(ROBOT_RADIUS / PPM);
-        fixtureDef.shape = circleShape;*/
-
         PolygonShape recShape = new PolygonShape();
         recShape.setAsBox(ROBOT_BODY_WIDTH / 2 / PPM, ROBOT_BODY_HEIGHT / 2 / PPM);
         fixtureDef.shape = recShape;
@@ -114,35 +110,23 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // first process input
         processInput(delta);
 
-        if(isOnInteractivePlatform) {
+        if(isOnInteractivePlatform && interactivePlatform != null) {
 
             // platform moving vertically, set robot's vY to platform's vY
-            if(interactivePlatform.getBody().getLinearVelocity().y != 0)
+            if(interactivePlatform.getBody().getLinearVelocity().y != 0) {
                 body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
+            }
 
-                // platform moving horizontally to the right, apply force to robot so it moves with it
+            // platform moving horizontally to the right, apply force to robot so it moves with it
             else if(interactivePlatform.getBody().getLinearVelocity().x != 0 ) {
                 body.applyForceToCenter(-0.6f * body.getMass() * world.getGravity().y, 0, true);
             }
-
         }
 
         // apply additional force when object is falling in order to land faster
         if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform && !onLadder) {
             body.applyForceToCenter(0, -7.5f, true);
         }
-
-
-        // another option is to change gravity scale
-        /*if(body.getLinearVelocity().y < 0 && body.getGravityScale() != 2 && !isOnInteractivePlatform && !onLadder) {
-            //            body.applyForceToCenter(0, -7.5f, true);
-            body.setGravityScale(2f);
-            System.out.println(body.getGravityScale());
-        }
-        else if(body.getGravityScale() != 1  && !onLadder) {
-            body.setGravityScale(1);
-            System.out.println(body.getGravityScale());
-        }*/
 
         // attach robot sprite to body
         robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
@@ -173,6 +157,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             checkThirdCheckpoint();
         }
 
+        // keep robot within map
         if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
             body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
         if(body.getPosition().x > (MAP_WIDTH - ROBOT_BODY_WIDTH / 2) / PPM)

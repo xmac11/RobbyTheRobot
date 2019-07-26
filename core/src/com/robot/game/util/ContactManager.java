@@ -74,8 +74,8 @@ public class ContactManager implements ContactListener {
 
             // feet - pipe on ground
             case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
-                feetPipeOnGroundBegin(fixA, fixB);
-                break;
+            feetPipeOnGroundBegin(fixA, fixB);
+            break;
         }
 
 
@@ -160,12 +160,16 @@ public class ContactManager implements ContactListener {
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
             movingPlatform = (MovingPlatform) fixB.getUserData();
+
             if(normal.y <= -1/Math.sqrt(2)) {
-                robot.setOnInteractivePlatform(movingPlatform, true);
-                if(movingPlatform.isWaiting())
-                    movingPlatform.movePlatform();
 
                 Gdx.app.log("ContactManager", "On moving platform");
+                robot.setOnInteractivePlatform(movingPlatform, true);
+
+                // if platform is waiting and has not been already activated, move it
+                if(movingPlatform.isWaiting() && !movingPlatform.isActivated()) {
+                    movingPlatform.movePlatform();
+                }
             }
             else if(normal.y >= 1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
@@ -180,11 +184,14 @@ public class ContactManager implements ContactListener {
             movingPlatform = (MovingPlatform) fixA.getUserData();
 
             if(normal.y >= 1/Math.sqrt(2)) {
-                robot.setOnInteractivePlatform(movingPlatform, true);
-                if(movingPlatform.isWaiting())
-                    movingPlatform.movePlatform();
 
                 Gdx.app.log("ContactManager", "On moving platform");
+                robot.setOnInteractivePlatform(movingPlatform, true);
+
+                // if platform is waiting and has not been already activated, move it
+                if(movingPlatform.isWaiting() && !movingPlatform.isActivated()) {
+                    movingPlatform.movePlatform();
+                }
             }
             else if(normal.y <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
