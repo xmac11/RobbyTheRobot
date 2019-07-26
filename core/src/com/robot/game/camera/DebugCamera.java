@@ -15,7 +15,6 @@ public class DebugCamera {
     private Camera camera;
     private Robot robot;
     private boolean following;
-    private boolean shakeJustStopped;
 
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;

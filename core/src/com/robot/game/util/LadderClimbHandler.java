@@ -20,15 +20,26 @@ public class LadderClimbHandler extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
+        // climb up up while on ladder
         if(keycode == Input.Keys.UP && !robot.isFallingOffLadder()) {
             Gdx.app.log("LadderClimbHandler", "climbing up");
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
         }
+        // climb up up while falling off ladder (grabs ladder)
+        else if(keycode == Input.Keys.UP) {
+            Gdx.app.log("LadderClimbHandler", "grabbed on ladder while falling");
+            robot.setFallingOffLadder(false);
+            body.setGravityScale(0);
+            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+        }
+
+        // climb down
         if(keycode == Input.Keys.DOWN && !robot.isFallingOffLadder()) {
             Gdx.app.log("LadderClimbHandler", "climbing down");
             body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
         }
 
+        // jump off ladder
         if(keycode == Input.Keys.SPACE && !robot.isFallingOffLadder()) {
             Gdx.app.log("LadderClimbHandler", "jumped off ladder");
             robot.setFallingOffLadder(true);
