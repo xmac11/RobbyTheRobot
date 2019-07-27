@@ -14,12 +14,14 @@ public class DebugCamera {
     private Viewport viewport;
     private Camera camera;
     private Robot robot;
+    private ShakeEffect shakeEffect;
     private boolean following;
 
     public DebugCamera(Viewport viewport, Robot robot) {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
         this.robot = robot;
+        this.shakeEffect = robot.getScreenLevel1().getShakeEffect();
         this.following = true;
     }
 
@@ -33,13 +35,13 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            if(ShakeEffect.isShakeON()) {
-                ShakeEffect.update();
-                camera.translate(ShakeEffect.getCameraDisplacement());
+            if(shakeEffect.isShakeON()) {
+                shakeEffect.update();
+                camera.translate(shakeEffect.getCameraDisplacement());
             }
 
             // update camera's position (+viewport.getWorldWidth() / 4 for keeping robot in the lhs of the screen
-            if(!ShakeEffect.isShakeON()) {
+            if(!shakeEffect.isShakeON()) {
                 // camera follows the robot
                 camera.position.x = robot.getBody().getPosition().x /*+ viewport.getWorldWidth() / 4*/;
                 camera.position.y = robot.getBody().getPosition().y;

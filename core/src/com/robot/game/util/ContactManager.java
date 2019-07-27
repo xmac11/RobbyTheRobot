@@ -236,7 +236,7 @@ public class ContactManager implements ContactListener {
         // make it flicker
         robot.setFlicker(true);
         //shake camera
-        ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+        robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
     }
 
     /* When the robot steps on an enemy, I have to set the enemy’s mask bit to “NOTHING”. As a result, the collision stops at that point, the player
@@ -285,7 +285,7 @@ public class ContactManager implements ContactListener {
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
-                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+                robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
                 Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -327,7 +327,7 @@ public class ContactManager implements ContactListener {
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
-                ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+                robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
                 Gdx.app.log("ContactManager","Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
@@ -391,7 +391,7 @@ public class ContactManager implements ContactListener {
             // make it flicker
             robot.setFlicker(true);
             // shake the camera
-            ShakeEffect.shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+            robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
         }
     }
 

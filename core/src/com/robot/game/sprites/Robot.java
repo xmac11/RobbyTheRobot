@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.screens.ScreenLevel1;
@@ -22,6 +23,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private World world;
     private ContactManager contactManager;
     private Body body;
+    private ShakeEffect shakeEffect;
 
     // state booleans
     public boolean onLadder;
@@ -63,6 +65,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.world = screenLevel1.getWorld();
         this.contactManager = screenLevel1.getContactManager();
         this.checkpointData = screenLevel1.getCheckpointData();
+        this.shakeEffect = screenLevel1.getShakeEffect();
         createRobotB2d();
 
         this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
@@ -408,6 +411,10 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public void setWalkingOnSpikes(boolean walkingOnSpikes) {
         this.walkingOnSpikes = walkingOnSpikes;
+    }
+
+    public ShakeEffect getShakeEffect() {
+        return shakeEffect;
     }
 
     // Checkpoints

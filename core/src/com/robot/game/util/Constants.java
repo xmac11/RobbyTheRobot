@@ -73,7 +73,7 @@ public final class Constants {
     public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
     public static final Vector2 FIRST_CHECKPOINT_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
     public static final Vector2 SECOND_CHECKPOINT_LOCATION = new Vector2(2880 / PPM, 416 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4208 / PPM, 208 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4248 / PPM, 208 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Spike respawn locations

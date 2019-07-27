@@ -40,6 +40,9 @@ public class ScreenLevel1 extends ScreenAdapter {
     private CheckpointData checkpointData;
     private boolean checkpointDataDeleted;
 
+    // shake effect
+    private ShakeEffect shakeEffect;
+
     // robot
     private Robot robot;
 
@@ -58,7 +61,6 @@ public class ScreenLevel1 extends ScreenAdapter {
     private JSONArray collectedItems;
     private boolean newItemCollected;
     private boolean doNotSaveInHide;
-
     // falling pipes
     private DelayedRemovalArray<FallingPipe> fallingPipes;
     private boolean earthquakeHappened;
@@ -155,6 +157,9 @@ public class ScreenLevel1 extends ScreenAdapter {
 
         // create object parser
         this.objectParser = new ObjectParser(this, world, layersObjectArray);
+
+        // create shake effect
+        this.shakeEffect = new ShakeEffect();
 
         // create robot
         this.robot = new Robot(this);
@@ -431,6 +436,10 @@ public class ScreenLevel1 extends ScreenAdapter {
         return pointsRenderer;
     }
 
+    public ShakeEffect getShakeEffect() {
+        return shakeEffect;
+    }
+
     public ContactManager getContactManager() {
         return contactManager;
     }
@@ -481,7 +490,7 @@ public class ScreenLevel1 extends ScreenAdapter {
             if(!pipesDisabled && shouldSpawnPipe()) {
                 // follow up earthquakes with probability 45%
                 if(MathUtils.random() > 0.55f)
-                        ShakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
+                        shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
                 fallingPipes.add(new FallingPipe(this, false));
             }
         }
@@ -491,7 +500,7 @@ public class ScreenLevel1 extends ScreenAdapter {
         // if robot is in the shake area and the shake is not already active, start it
         if(Math.abs(robot.getBody().getPosition().x * PPM - PIPES_START_X) <= 48) {
             Gdx.app.log("ScreenLevel1", "Earthquake activated");
-            ShakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
+            shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
             earthquakeHappened = true;
         }
     }

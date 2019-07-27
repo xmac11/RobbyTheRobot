@@ -7,26 +7,26 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class ShakeEffect {
 
-    private static float startTime;
-    private static float timeToShake;
-    private static float elapsed;
-    private static float intensity;
-    private static Vector3 cameraDisplacement;
-    private static boolean shakeON;
+    private float startTime;
+    private float shakeTime;
+    private float elapsed;
+    private float shakeIntensity;
+    private Vector3 cameraDisplacement;
+    private boolean shakeON;
 
-    public static void shake(float shakeIntensity, float shakeTime) {
+    public void shake(float shakeIntensity, float shakeTime) {
         Gdx.app.log("ShakeEffect", "Shake started");
-        startTime = TimeUtils.nanoTime();
-        intensity = shakeIntensity;
-        timeToShake = shakeTime;
-        elapsed = 0;
-        cameraDisplacement = new Vector3();
-        shakeON = true;
+        this.startTime = TimeUtils.nanoTime();
+        this.shakeIntensity = shakeIntensity;
+        this.shakeTime = shakeTime;
+        this.elapsed = 0;
+        this.cameraDisplacement = new Vector3();
+        this.shakeON = true;
     }
 
-    public static void update() {
+    public void update() {
 
-        if(elapsed <= timeToShake) {
+        if(elapsed <= shakeTime) {
             calculateCameraDisplacement();
             elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
         }
@@ -36,16 +36,16 @@ public class ShakeEffect {
         }
     }
 
-    public static void calculateCameraDisplacement() {
-        cameraDisplacement.x = MathUtils.random(-1f, 1f) * intensity;
-        cameraDisplacement.y = MathUtils.random(-1f, 1f) * intensity * 4;
+    private void calculateCameraDisplacement() {
+        cameraDisplacement.x = MathUtils.random(-1f, 1f) * shakeIntensity;
+        cameraDisplacement.y = MathUtils.random(-1f, 1f) * shakeIntensity * 4;
     }
 
-    public static Vector3 getCameraDisplacement() {
+    public Vector3 getCameraDisplacement() {
         return cameraDisplacement;
     }
 
-    public static boolean isShakeON() {
+    public boolean isShakeON() {
         return shakeON;
     }
 
