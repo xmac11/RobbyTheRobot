@@ -16,19 +16,16 @@ public class LadderClimbHandler extends InputAdapter {
     public LadderClimbHandler(Robot robot) {
         this.robot = robot;
         this.body = robot.getBody();
-
-       /* Check if UP key is already pressed.
-        * This has to be checked because the keydown() method will not be executed if the key was pressed before
-        * the creation of the LadderClimbHandler, i.e. before the robot got on the ladder*/
-        checkIfShouldClimb();
     }
 
-    private void checkIfShouldClimb() {
-
-        // isKeyPressed mutually exclusive with the setOnLadder() method
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            Gdx.app.log("LadderClimbHandler", "Constructor: UP key is pressed");
+    /* Check if UP key was pressed within the last 0.3 seconds and it is still being pressed.
+     * This has to be checked because the keydown() method will not be executed if the key was pressed before
+     * the input processor was set to LadderClimbHandler, i.e. before the robot got on the ladder*/
+    public void checkForClimbTimer() {
+        if(robot.getClimbTimer() > 0 && Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            Gdx.app.log("LadderClimbHandler", "climbTimer > 0");
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+            robot.resetClimbTimer();
         }
     }
 

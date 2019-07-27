@@ -43,6 +43,9 @@ public class ScreenLevel1 extends ScreenAdapter {
     // robot
     private Robot robot;
 
+    // ladder climb handler
+    private LadderClimbHandler ladderClimbHandler;
+
     // interactive platforms
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
 
@@ -155,6 +158,9 @@ public class ScreenLevel1 extends ScreenAdapter {
 
         // create robot
         this.robot = new Robot(this);
+
+        // create ladder climb handler
+        this.ladderClimbHandler = new LadderClimbHandler(robot);
 
         // create interactive platforms
         this.interactivePlatforms = objectParser.getInteractivePlatforms();
@@ -447,6 +453,10 @@ public class ScreenLevel1 extends ScreenAdapter {
 
     public PipeBodyCache getPipeBodyCache() {
         return pipeBodyCache;
+    }
+
+    public LadderClimbHandler getLadderClimbHandler() {
+        return ladderClimbHandler;
     }
 
     private void handleEarthquake() {

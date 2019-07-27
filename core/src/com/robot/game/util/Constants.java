@@ -90,6 +90,7 @@ public final class Constants {
     public static final float ROBOT_JUMP_TIMER = 0.2f;
     public static final float ROBOT_COYOTE_TIMER = 0.15f;
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
+    public static final float ROBOT_CLIMB_TIMER = 0.3f;
 
         // Flickering
     public static final float FLICKER_TIME = 0.75f;
