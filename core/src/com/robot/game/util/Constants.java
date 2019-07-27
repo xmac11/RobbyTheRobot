@@ -92,6 +92,7 @@ public final class Constants {
     public static final float ROBOT_COYOTE_TIMER = 0.15f;
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
     public static final float ROBOT_CLIMB_TIMER = 0.3f;
+    public static final Vector2 LEFT_IMPULSE_ON_MOVING_PLATFORM = new Vector2(-0.2f, 0); // this is for the case of the horizontally moving platform to the right
 
         // Flickering
     public static final float FLICKER_TIME = 0.75f;

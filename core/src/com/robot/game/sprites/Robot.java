@@ -205,9 +205,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             // this is for the case of the horizontally moving platform that will stop under the ladder
             // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
-            // this will be used at most once, so a new Vector is created instead of keeping a variable in the Constant class
             if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop() && interactivePlatform.getvX() != 0) {
-                body.applyLinearImpulse(new Vector2(-0.25f, 0), body.getWorldCenter(), true);
+                body.applyLinearImpulse(LEFT_IMPULSE_ON_MOVING_PLATFORM, body.getWorldCenter(), true);
             }
             else {
                 // GRADUAL ACCELERATION

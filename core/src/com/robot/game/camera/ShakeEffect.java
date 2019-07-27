@@ -11,7 +11,7 @@ public class ShakeEffect {
     private float shakeTime;
     private float elapsed;
     private float shakeIntensity;
-    private Vector3 cameraDisplacement;
+    private Vector3 cameraDisplacement = new Vector3();
     private boolean shakeON;
 
     public void shake(float shakeIntensity, float shakeTime) {
@@ -20,7 +20,6 @@ public class ShakeEffect {
         this.shakeIntensity = shakeIntensity;
         this.shakeTime = shakeTime;
         this.elapsed = 0;
-        this.cameraDisplacement = new Vector3();
         this.shakeON = true;
     }
 
