@@ -18,9 +18,7 @@ import static com.robot.game.util.Constants.LEVEL_1_TMX;
 
 public class Assets {
 
-    private static final Assets instance =  new Assets();
-
-    public AssetManager assetManager = new AssetManager();
+    private AssetManager assetManager;
 
     public TiledMapAssets tiledMapAssets;
     public LoadingScreenAssets loadingScreenAssets;
@@ -36,11 +34,12 @@ public class Assets {
     public FontAssets fontAssets;
     public SmallFontAssets smallFontAssets;
 
-    private Assets() {
+    public Assets() {
+        this.assetManager = new AssetManager();
     }
 
-    public static Assets getInstance() {
-        return instance;
+    public AssetManager getAssetManager() {
+        return assetManager;
     }
 
     public void load() {
@@ -83,7 +82,7 @@ public class Assets {
     }
 
     // creates assets for loading screen
-    public void createLoadingScreenAssets() {
+    private void createLoadingScreenAssets() {
 
         // create texture atlas
         TextureAtlas atlas = assetManager.get("loading_bar.pack");

@@ -36,6 +36,9 @@ public class ScreenLevel1 extends ScreenAdapter {
     // main class reference
     private RobotGame game;
 
+    // assets
+    private Assets assets;
+
     // checkpoint data
     private CheckpointData checkpointData;
     private boolean checkpointDataDeleted;
@@ -103,6 +106,7 @@ public class ScreenLevel1 extends ScreenAdapter {
 
     public ScreenLevel1(RobotGame game) {
         this.game = game;
+        this.assets = game.getAssets();
 
         // if file with game data exists, load it, otherwise create new one
         if(FileSaver.getCheckpointFile().exists()) {
@@ -130,7 +134,7 @@ public class ScreenLevel1 extends ScreenAdapter {
         this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM, camera);
 
         // load map and set up map renderer
-        this.tiledMap = Assets.getInstance().tiledMapAssets.tiledMap;
+        this.tiledMap = assets.tiledMapAssets.tiledMap;
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // create box2d world
@@ -191,8 +195,8 @@ public class ScreenLevel1 extends ScreenAdapter {
         this.debugCamera = new DebugCamera(viewport, robot);
 
         // create parallax
-        this.parallaxBackground = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
-        this.parallaxBarrels = new Parallax(viewport, robot, Assets.getInstance().parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
+        this.parallaxBackground = new Parallax(viewport, robot, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
+        this.parallaxBarrels = new Parallax(viewport, robot, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
 
         // create hud
         this.hud = new Hud(this);
@@ -430,6 +434,10 @@ public class ScreenLevel1 extends ScreenAdapter {
 
     public RobotGame getGame() {
         return game;
+    }
+
+    public Assets getAssets() {
+        return assets;
     }
 
     public PointsRenderer getPointsRenderer() {

@@ -18,6 +18,7 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot extends Sprite /*extends InputAdapter*/ {
 
+    private Assets assets;
     private Sprite robotSprite;
     private ScreenLevel1 screenLevel1;
     private World world;
@@ -62,13 +63,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public Robot(ScreenLevel1 screenLevel1) {
         this.screenLevel1 = screenLevel1;
+        this.assets = screenLevel1.getAssets();
         this.world = screenLevel1.getWorld();
         this.contactManager = screenLevel1.getContactManager();
         this.checkpointData = screenLevel1.getCheckpointData();
         this.shakeEffect = screenLevel1.getShakeEffect();
         createRobotB2d();
 
-        this.robotSprite = new Sprite(Assets.getInstance().robotAssets.atlasRegion);
+        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
         //Gdx.input.setInputProcessor(this);

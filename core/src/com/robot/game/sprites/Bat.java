@@ -5,16 +5,15 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.util.Assets;
+import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.*;
 
 public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
 
-    public Bat(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, fixtureDef, object);
+    public Bat(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(screenLevel1, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -59,10 +58,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
 
         if(!flagToKill) {
-            textureRegion = Assets.getInstance().batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
+            textureRegion = assets.batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
         }
         else {
-            textureRegion = Assets.getInstance().batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
+            textureRegion = assets.batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
         }
 
         // set the appropriate region and attach sprite to body

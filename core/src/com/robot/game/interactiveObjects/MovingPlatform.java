@@ -3,7 +3,7 @@ package com.robot.game.interactiveObjects;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
+import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.PPM;
 
@@ -19,8 +19,8 @@ public class MovingPlatform extends InteractivePlatform {
     private boolean horizontal;
 
     // will probably need to pass the whole map object
-    public MovingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, object);
+    public MovingPlatform(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(screenLevel1, body, object);
         body.createFixture(fixtureDef).setUserData(this);
 
         this.startX = (float) object.getProperties().get("startX");

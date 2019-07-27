@@ -15,10 +15,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.*;
+import com.robot.game.screens.ScreenLevel1;
+import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Steerable<Vector2> {
+
+    protected Assets assets;
 
     // Box2D
     protected World world;
@@ -66,8 +70,9 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     protected float deadStartTime;
     protected float deadElapsed;
 
-    public Enemy(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        this.world = world;
+    public Enemy(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.assets = screenLevel1.getAssets();
+        this.world = screenLevel1.getWorld();
         this.body = body;
         this.fixtureDef = fixtureDef;
         if(!object.getProperties().containsKey("noRestitution"))

@@ -13,6 +13,7 @@ import static com.robot.game.util.Constants.*;
 public class FallingPipe extends Sprite {
 
     private ScreenLevel1 screenLevel1;
+    private Assets assets;
     private World world;
     private Body body;
     private Sprite pipeSprite;
@@ -22,11 +23,12 @@ public class FallingPipe extends Sprite {
 
     public FallingPipe(ScreenLevel1 screenLevel1, boolean cache) {
         this.screenLevel1 = screenLevel1;
+        this.assets = screenLevel1.getAssets();
         this.world = screenLevel1.getWorld();
         this.cache = cache;
         createPipeB2d();
 
-        this.pipeSprite = new Sprite(Assets.getInstance().pipeAssets.debris);
+        this.pipeSprite = new Sprite(assets.pipeAssets.debris);
         pipeSprite.setSize(PIPE_WIDTH / PPM, PIPE_HEIGHT / PPM);
         pipeSprite.setOrigin(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
     }

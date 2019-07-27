@@ -1,6 +1,5 @@
 package com.robot.game.sprites;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,11 +10,10 @@ import com.robot.game.util.Assets;
 import com.robot.game.util.CollectableHandler;
 import org.json.simple.JSONObject;
 
-import static com.robot.game.util.Constants.*;
-
 public abstract class Collectable extends Sprite {
 
     private ScreenLevel1 screenLevel1;
+    protected Assets assets;
     private CollectableHandler collectableHandler;
     private World world;
     private Body body;
@@ -26,6 +24,7 @@ public abstract class Collectable extends Sprite {
 
     public Collectable(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
         this.screenLevel1 = screenLevel1;
+        this.assets = screenLevel1.getAssets();
         this.collectableHandler = screenLevel1.getCollectableHandler();
         this.world = screenLevel1.getWorld();
         this.body = body;

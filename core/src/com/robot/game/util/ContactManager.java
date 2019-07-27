@@ -3,9 +3,11 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.sprites.*;
+import com.robot.game.sprites.Collectable;
+import com.robot.game.sprites.Enemy;
+import com.robot.game.sprites.PowerUp;
+import com.robot.game.sprites.Robot;
 
 import static com.robot.game.util.Constants.*;
 

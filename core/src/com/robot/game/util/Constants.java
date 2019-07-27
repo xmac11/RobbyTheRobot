@@ -2,6 +2,7 @@ package com.robot.game.util;
 
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
@@ -18,7 +19,7 @@ public final class Constants {
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
     public static final String LEVEL_1_JSON = "files/level1.json";
-    private static TiledMap tiledMap = Assets.getInstance().tiledMapAssets.tiledMap;
+    private static TiledMap tiledMap = new TmxMapLoader().load("level1.tmx");
     public static MapProperties mapProperties = tiledMap.getProperties();
     public static final int TILE_SIZE = mapProperties.get("tilewidth", Integer.class);
     public static final float MAP_WIDTH = mapProperties.get("width", Integer.class) * TILE_SIZE;
@@ -73,7 +74,7 @@ public final class Constants {
     public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
     public static final Vector2 FIRST_CHECKPOINT_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
     public static final Vector2 SECOND_CHECKPOINT_LOCATION = new Vector2(2880 / PPM, 416 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4248 / PPM, 208 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4240 / PPM, 208 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Spike respawn locations

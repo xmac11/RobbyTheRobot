@@ -5,16 +5,15 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.util.Assets;
+import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.*;
 
 public class Crab extends Enemy {
 
-    public Crab(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, fixtureDef, object);
+    public Crab(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(screenLevel1, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -54,10 +53,10 @@ public class Crab extends Enemy {
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
 
         if(!flagToKill) {
-            textureRegion = Assets.getInstance().crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
+            textureRegion = assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
         }
         else {
-            textureRegion = Assets.getInstance().crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
+            textureRegion = assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
         }
 
         // set the appropriate region and attach sprite to body

@@ -11,13 +11,16 @@ import com.robot.game.util.CheckpointData;
 
 public class RobotGame extends Game {
 
+	private Assets assets;
 	private SpriteBatch batch;
 
 	@Override
 	public void create () {
 		Gdx.app.log("RobotGame", "create");
-		// load assets
-		Assets.getInstance().load();
+
+		// create and load assets
+		this.assets = new Assets();
+		assets.load();
 
 		this.batch = new SpriteBatch();
 		super.setScreen(new LoadingScreen(this));
@@ -39,7 +42,11 @@ public class RobotGame extends Game {
 		Gdx.app.log("RobotGame", "dispose");
 		super.dispose();
 		batch.dispose();
-		Assets.getInstance().dispose();
+		assets.dispose();
+	}
+
+	public Assets getAssets() {
+		return assets;
 	}
 
 	public SpriteBatch getBatch() {

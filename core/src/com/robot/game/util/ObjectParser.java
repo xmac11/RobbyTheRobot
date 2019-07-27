@@ -21,20 +21,20 @@ public class ObjectParser {
     int polylines = 0;
     int polygons = 0;
 
-    ScreenLevel1 screenLevel1;
+    private ScreenLevel1 screenLevel1;
+    private Assets assets;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
-//    private JSONArray collectedItems;
 
     public ObjectParser(ScreenLevel1 screenLevel1, World world, Array<MapObjects> layersObjectArray) {
         this.screenLevel1 = screenLevel1;
+        this.assets = screenLevel1.getAssets();
         this.world = world;
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         this.collectables = new DelayedRemovalArray<>();
-//        this.collectedItems = new JSONArray();
         for(MapObjects objects: layersObjectArray)
             createTiledObjects(world, objects);
 
@@ -184,12 +184,12 @@ public class ObjectParser {
         }
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            InteractivePlatform fallingPlatform = new FallingPlatform(world, body, fixtureDef, object);
+            InteractivePlatform fallingPlatform = new FallingPlatform(screenLevel1, body, fixtureDef, object);
             this.interactivePlatforms.add(fallingPlatform);
         }
         // create moving platform
         else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            InteractivePlatform movingPlatform = new MovingPlatform(world, body, fixtureDef, object);
+            InteractivePlatform movingPlatform = new MovingPlatform(screenLevel1, body, fixtureDef, object);
             this.interactivePlatforms.add(movingPlatform);
         }
         // create enemies
@@ -197,10 +197,10 @@ public class ObjectParser {
 
             // create bats
             if(object.getProperties().containsKey(BAT_PROPERTY))
-                this.enemies.add(new Bat(world, body, fixtureDef, object));
+                this.enemies.add(new Bat(screenLevel1, body, fixtureDef, object));
             // create crabs
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
-                this.enemies.add(new Crab(world, body, fixtureDef, object));
+                this.enemies.add(new Crab(screenLevel1, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {

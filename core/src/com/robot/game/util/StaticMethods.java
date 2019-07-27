@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.robot.game.sprites.*;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.DAMAGE_FROM_CRAB;
 
 public class StaticMethods {
 

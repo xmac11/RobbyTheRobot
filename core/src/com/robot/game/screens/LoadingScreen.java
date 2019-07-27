@@ -16,6 +16,7 @@ import static com.robot.game.util.Constants.*;
 public class LoadingScreen extends ScreenAdapter {
 
     private RobotGame game;
+    private Assets assets;
     private Viewport loadingScreenViewport;
     private TextureRegion frame;
     private TextureRegion greenBar;
@@ -23,15 +24,16 @@ public class LoadingScreen extends ScreenAdapter {
 
     public LoadingScreen(RobotGame game) {
         this.game = game;
+        this.assets = game.getAssets();
     }
 
     @Override
     public void show() {
         this.loadingScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
-        this.frame = Assets.getInstance().loadingScreenAssets.frame;
-        this.greenBar = Assets.getInstance().loadingScreenAssets.bar;
+        this.frame = assets.loadingScreenAssets.frame;
+        this.greenBar = assets.loadingScreenAssets.bar;
 
-        this.font = Assets.getInstance().fontAssets.font;
+        this.font = assets.fontAssets.font;
     }
 
     @Override
@@ -43,8 +45,8 @@ public class LoadingScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0f / 255, 108f / 255, 108f / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(!Assets.getInstance().assetManager.update()) {
-            Gdx.app.log("LoadingScreen", "Loading... " + (int) (1.0f * Assets.getInstance().assetManager.getProgress() * 100) + "%");
+        if(!assets.getAssetManager().update()) {
+            Gdx.app.log("LoadingScreen", "Loading... " + (int) (1.0f * assets.getAssetManager().getProgress() * 100) + "%");
 
             game.getBatch().setProjectionMatrix(loadingScreenViewport.getCamera().combined);
 
@@ -61,12 +63,12 @@ public class LoadingScreen extends ScreenAdapter {
             game.getBatch().draw(greenBar,
                     loadingScreenViewport.getWorldWidth() / 2 - LOADING_BAR_OFFSET_X / PPM,
                     loadingScreenViewport.getWorldHeight() / 2 - LOADING_BAR_OFFSET_Y / PPM,
-                    1.0f * LOADING_BAR_WIDTH * Assets.getInstance().assetManager.getProgress() / PPM,
+                    1.0f * LOADING_BAR_WIDTH * assets.getAssetManager().getProgress() / PPM,
                     LOADING_BAR_HEIGHT / PPM);
 
             // draw loadingScreenFont
             font.draw(game.getBatch(),
-                    "Loading..." + (int) (1.0f * Assets.getInstance().assetManager.getProgress() * 100) + "%",
+                    "Loading..." + (int) (1.0f * assets.getAssetManager().getProgress() * 100) + "%",
                     loadingScreenViewport.getWorldWidth() / 2,
                     loadingScreenViewport.getWorldHeight() / 2 + LOADING_FONT_OFFSET_Y / PPM,
                     0,
@@ -78,11 +80,11 @@ public class LoadingScreen extends ScreenAdapter {
         }
         else {
             // dispose loading bar since it will not be needed again
-            Assets.getInstance().assetManager.unload("loading_bar.pack");
+            assets.getAssetManager().unload("loading_bar.pack");
             Gdx.app.log("LoadingScreen", "Loading bar atlas was disposed");
 
             // create all necessary game assets
-            Assets.getInstance().createGameAssets();
+            assets.createGameAssets();
             game.setScreen(new ScreenLevel1(game));
         }
     }

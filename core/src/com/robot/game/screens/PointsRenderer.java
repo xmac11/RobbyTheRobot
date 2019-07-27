@@ -3,7 +3,6 @@ package com.robot.game.screens;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.sprites.Burger;
@@ -18,6 +17,7 @@ import static com.robot.game.util.Constants.*;
 public class PointsRenderer {
 
     private Robot robot;
+    private Assets assets;
     private ObjectMap<Enemy, Float> enemyPointsToDraw;
     private ObjectMap<Collectable, Float> itemPointsToDraw;
     private BitmapFont plusPointsFont;
@@ -27,13 +27,14 @@ public class PointsRenderer {
 
     public PointsRenderer(Robot robot) {
         this.robot = robot;
+        this.assets = robot.getScreenLevel1().getAssets();
         this.enemyPointsToDraw = new ObjectMap<>();
         this.itemPointsToDraw = new ObjectMap<>();
-        this.plusPointsFont = Assets.getInstance().smallFontAssets.smallFont;
+        this.plusPointsFont = assets.smallFontAssets.smallFont;
 
-        this.frame = Assets.getInstance().hudAssets.frame;
-        this.greenBar = Assets.getInstance().hudAssets.greenBar;
-        this.redBar = Assets.getInstance().hudAssets.redBar;
+        this.frame = assets.hudAssets.frame;
+        this.greenBar = assets.hudAssets.greenBar;
+        this.redBar = assets.hudAssets.redBar;
     }
 
     public void draw(SpriteBatch batch, float delta) {

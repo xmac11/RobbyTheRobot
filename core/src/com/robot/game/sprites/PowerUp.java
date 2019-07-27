@@ -6,10 +6,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.screens.ScreenLevel1;
-import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
 public class PowerUp extends Collectable {
 
@@ -31,7 +29,7 @@ public class PowerUp extends Collectable {
             this.height = POWERUP_HEIGHT;
         }
 
-        this.powerupSprite = new Sprite(Assets.getInstance().collectableAssets.powerup);
+        this.powerupSprite = new Sprite(assets.collectableAssets.powerup);
 
         // set the size of the bat sprite
         powerupSprite.setSize(width / PPM, height / PPM);

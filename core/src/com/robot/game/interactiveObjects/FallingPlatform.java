@@ -4,10 +4,8 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-
-import static com.robot.game.util.Constants.PPM;
+import com.robot.game.screens.ScreenLevel1;
 
 public class FallingPlatform extends InteractivePlatform {
 
@@ -19,8 +17,8 @@ public class FallingPlatform extends InteractivePlatform {
     private boolean isDestroyed;
     private boolean toggle;
 
-    public FallingPlatform(World world, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(world, body, object);
+    public FallingPlatform(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(screenLevel1, body, object);
         body.createFixture(fixtureDef).setUserData(this);
 
         this.delay = (float) object.getProperties().get("delay");

@@ -2,12 +2,12 @@ package com.robot.game.camera;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.sprites.Robot;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Constants.MAP_WIDTH;
+import static com.robot.game.util.Constants.PPM;
 
 public class Parallax {
 
