@@ -101,7 +101,7 @@ public class ContactManager implements ContactListener {
         if(ladder.getDescription().equals(LADDER_BOTTOM_DESCRIPTION)) {
             Gdx.app.log("ContactManager", "On bottom ladder");
             robot.setFallingOffLadder(false);
-            Gdx.input.setInputProcessor(robot.getScreenLevel1().getLadderClimbHandler());
+            Gdx.input.setInputProcessor(robot.getPlayScreen().getLadderClimbHandler());
             robot.getBody().setGravityScale(0);
         }
         else {
@@ -272,7 +272,7 @@ public class ContactManager implements ContactListener {
                 StaticMethods.increaseScore(robot, enemy);
 
                 // add enemy to the HashMap in order to render the points gained
-                robot.getScreenLevel1().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
             }
             else {
                 if (normal.y >= 1 / Math.sqrt(2))
@@ -314,7 +314,7 @@ public class ContactManager implements ContactListener {
                 StaticMethods.increaseScore(robot, enemy);
 
                 // add enemy to the HashMap in order to render the points gained
-                robot.getScreenLevel1().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getPointsRenderer().getEnemyPointsToDraw().put(enemy, 1f);
             }
             else {
                 if(normal.y <= -1/Math.sqrt(2))
@@ -365,7 +365,7 @@ public class ContactManager implements ContactListener {
         collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
 
         // flagToCancelVelocity that a new item was collected
-        robot.getScreenLevel1().setNewItemCollected(true);
+        robot.getPlayScreen().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
     }
 

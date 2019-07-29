@@ -32,7 +32,8 @@ www-test/
 com_crashlytics_export_strings.xml
 classes/
 core/resources/
-android/assets/files/
+android/assets/files/*
+!android/assets/files/level1.json
 
 ## Eclipse
 

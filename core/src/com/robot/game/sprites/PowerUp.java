@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.*;
@@ -16,8 +17,8 @@ public class PowerUp extends Collectable {
     private float width;
     private float height;
 
-    public PowerUp(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(screenLevel1, body, fixtureDef, object);
+    public PowerUp(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(playScreen, body, fixtureDef, object);
         this.fullHeal = (boolean) object.getProperties().get("fullHeal");
 
         if(fullHeal) {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.*;
 
@@ -20,7 +21,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     private Assets assets;
     private Sprite robotSprite;
-    private ScreenLevel1 screenLevel1;
+    private PlayScreen playScreen;
     private World world;
     private ContactManager contactManager;
     private Body body;
@@ -61,13 +62,13 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // Game data
     private CheckpointData checkpointData;
 
-    public Robot(ScreenLevel1 screenLevel1) {
-        this.screenLevel1 = screenLevel1;
-        this.assets = screenLevel1.getAssets();
-        this.world = screenLevel1.getWorld();
-        this.contactManager = screenLevel1.getContactManager();
-        this.checkpointData = screenLevel1.getCheckpointData();
-        this.shakeEffect = screenLevel1.getShakeEffect();
+    public Robot(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+        this.assets = playScreen.getAssets();
+        this.world = playScreen.getWorld();
+        this.contactManager = playScreen.getContactManager();
+        this.checkpointData = playScreen.getCheckpointData();
+        this.shakeEffect = playScreen.getShakeEffect();
         createRobotB2d();
 
         this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
@@ -151,17 +152,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
         }
 
-        // First checkpoint
-        if(!checkpointData.isFirstCheckpointActivated()) {
-            checkFirstCheckpoint();
-        }
-        // Second checkpoint
-        else if(!checkpointData.isSecondCheckpointActivated()) {
-            checkSecondCheckpoint();
-        }
-        else if(!checkpointData.isThirdCheckpointActivated()) {
-            checkThirdCheckpoint();
-        }
+        // handle checkpoints
+        handleCheckpoints();
 
         // keep robot within map
         if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
@@ -178,6 +170,20 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             if(checkpointData.getHealth() <= 0) {
                 checkpointData.setHealth(100); // to decide: should the robot restore its health when falling in the water?
             }
+        }
+    }
+
+    private void handleCheckpoints() {
+        // First checkpoint
+        if(!checkpointData.isFirstCheckpointActivated()) {
+            checkFirstCheckpoint();
+        }
+        // Second checkpoint
+        else if(!checkpointData.isSecondCheckpointActivated()) {
+            checkSecondCheckpoint();
+        }
+        else if(!checkpointData.isThirdCheckpointActivated()) {
+            checkThirdCheckpoint();
         }
     }
 
@@ -327,8 +333,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     // getter for the ScreenLevel1
-    public ScreenLevel1 getScreenLevel1() {
-        return screenLevel1;
+    public PlayScreen getPlayScreen() {
+        return playScreen;
     }
 
     // getter for the Body
@@ -338,7 +344,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
-        Gdx.input.setInputProcessor(onLadder ? screenLevel1.getLadderClimbHandler() : null);
+        Gdx.input.setInputProcessor(onLadder ? playScreen.getLadderClimbHandler() : null);
 
         // if on ladder, turn off gravity
         body.setGravityScale(onLadder ? 0 : 1);
@@ -351,7 +357,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             Gdx.app.log("Robot", "On ladder, velocity in y set to zero");
 
             // check if UP key was pressed right before getting on the ladder
-            screenLevel1.getLadderClimbHandler().checkForClimbTimer();
+            playScreen.getLadderClimbHandler().checkForClimbTimer();
         }
     }
 
@@ -455,7 +461,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
             Gdx.app.log("Robot", "Checkpoints deleted");
             FileSaver.getCheckpointFile().delete();
-            screenLevel1.setCheckpointDataDeleted(true);
+            playScreen.setCheckpointDataDeleted(true);
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
              * reset their spawning and delete the file */
@@ -464,7 +470,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 FileSaver.getCollectedItemsFile().delete();
             }
             else {
-                screenLevel1.setNewItemCollected(false);
+                playScreen.setNewItemCollected(false);
             }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {

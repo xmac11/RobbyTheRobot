@@ -16,7 +16,7 @@ import static com.robot.game.util.Constants.*;
 
 public class Hud {
 
-    private ScreenLevel1 screenLevel1;
+    private PlayScreen playScreen;
     private Assets assets;
     private CheckpointData checkpointData;
     private Viewport hudViewport;
@@ -29,10 +29,10 @@ public class Hud {
     private GlyphLayout scoreGlyphLayout;
     private GlyphLayout livesGlyphLayout;
 
-    public Hud(ScreenLevel1 screenLevel1) {
-        this.screenLevel1 = screenLevel1;
-        this.assets = screenLevel1.getAssets();
-        this.checkpointData = screenLevel1.getCheckpointData();
+    public Hud(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+        this.assets = playScreen.getAssets();
+        this.checkpointData = playScreen.getCheckpointData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT * 1.35f / PPM);
 
         this.frame = assets.hudAssets.frame;

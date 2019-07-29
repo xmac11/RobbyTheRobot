@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.screens.ScreenLevel1;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.sprites.*;
 
 import static com.robot.game.util.Constants.*;
@@ -21,21 +21,23 @@ public class ObjectParser {
     int polylines = 0;
     int polygons = 0;
 
-    private ScreenLevel1 screenLevel1;
+    private PlayScreen playScreen;
     private Assets assets;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
 
-    public ObjectParser(ScreenLevel1 screenLevel1, World world, Array<MapObjects> layersObjectArray) {
-        this.screenLevel1 = screenLevel1;
-        this.assets = screenLevel1.getAssets();
-        this.world = world;
+    public ObjectParser(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+        this.assets = playScreen.getAssets();
+        this.world = playScreen.getWorld();
+
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         this.collectables = new DelayedRemovalArray<>();
-        for(MapObjects objects: layersObjectArray)
+
+        for(MapObjects objects: playScreen.getLayersObjectArray())
             createTiledObjects(world, objects);
 
         System.out.println("Rectangles: " + rectangles + ", polylines: " + polylines + ", polygons: " + polygons);
@@ -184,12 +186,12 @@ public class ObjectParser {
         }
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            InteractivePlatform fallingPlatform = new FallingPlatform(screenLevel1, body, fixtureDef, object);
+            InteractivePlatform fallingPlatform = new FallingPlatform(playScreen, body, fixtureDef, object);
             this.interactivePlatforms.add(fallingPlatform);
         }
         // create moving platform
         else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            InteractivePlatform movingPlatform = new MovingPlatform(screenLevel1, body, fixtureDef, object);
+            InteractivePlatform movingPlatform = new MovingPlatform(playScreen, body, fixtureDef, object);
             this.interactivePlatforms.add(movingPlatform);
         }
         // create enemies
@@ -197,10 +199,10 @@ public class ObjectParser {
 
             // create bats
             if(object.getProperties().containsKey(BAT_PROPERTY))
-                this.enemies.add(new Bat(screenLevel1, body, fixtureDef, object));
+                this.enemies.add(new Bat(playScreen, body, fixtureDef, object));
             // create crabs
             else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
-                this.enemies.add(new Crab(screenLevel1, body, fixtureDef, object));
+                this.enemies.add(new Crab(playScreen, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
@@ -213,11 +215,11 @@ public class ObjectParser {
             if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id"))) {
                 // create powerups
                 if(object.getProperties().containsKey(POWERUP_PROPERTY)) {
-                    this.collectables.add(new PowerUp(screenLevel1, body, fixtureDef, object));
+                    this.collectables.add(new PowerUp(playScreen, body, fixtureDef, object));
                 }
                 // create burgers
                 else
-                    this.collectables.add(new Burger(screenLevel1, body, fixtureDef, object));
+                    this.collectables.add(new Burger(playScreen, body, fixtureDef, object));
             }
         }
         // create ground

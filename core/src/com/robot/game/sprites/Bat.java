@@ -6,14 +6,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.*;
 
 public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
 
-    public Bat(ScreenLevel1 screenLevel1, Body body, FixtureDef fixtureDef, MapObject object) {
-        super(screenLevel1, body, fixtureDef, object);
+    public Bat(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+        super(playScreen, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
 

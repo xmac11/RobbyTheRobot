@@ -27,7 +27,7 @@ public class PointsRenderer {
 
     public PointsRenderer(Robot robot) {
         this.robot = robot;
-        this.assets = robot.getScreenLevel1().getAssets();
+        this.assets = robot.getPlayScreen().getAssets();
         this.enemyPointsToDraw = new ObjectMap<>();
         this.itemPointsToDraw = new ObjectMap<>();
         this.plusPointsFont = assets.smallFontAssets.smallFont;

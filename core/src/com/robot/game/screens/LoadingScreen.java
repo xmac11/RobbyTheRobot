@@ -42,7 +42,7 @@ public class LoadingScreen extends ScreenAdapter {
 //        loadingScreenViewport.getCamera().update();
 
         // clear game screen
-        Gdx.gl.glClearColor(0f / 255, 108f / 255, 108f / 255, 1);
+        Gdx.gl.glClearColor(0f / 255, 139f / 255, 139f / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if(!assets.getAssetManager().update()) {

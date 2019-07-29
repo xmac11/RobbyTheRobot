@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.Assets;
 
@@ -21,9 +22,9 @@ public abstract class InteractivePlatform extends Sprite {
     protected  float height;
     private Sprite interactivePlatformSprite;
 
-    protected InteractivePlatform(ScreenLevel1 screenLevel1, Body body, MapObject object) {
-        this.assets = screenLevel1.getAssets();
-        this.world = screenLevel1.getWorld();
+    protected InteractivePlatform(PlayScreen playScreen, Body body, MapObject object) {
+        this.assets = playScreen.getAssets();
+        this.world = playScreen.getWorld();
         this.body = body;
         this.vX = (float) object.getProperties().get("vX");
         this.vY = (float) object.getProperties().get("vY");

@@ -48,7 +48,7 @@ public class StaticMethods {
     public static void queueForPointsRenderer(Robot robot, Collectable collectable) {
         // if collectable is a burger put the value 1 (alpha), else put the robot's initial health (before increasing it)
         float value = collectable instanceof Burger ? 1 : (float) robot.getCheckpointData().getHealth();
-        robot.getScreenLevel1().getPointsRenderer().getItemPointsToDraw().put(collectable, value);
+        robot.getPlayScreen().getPointsRenderer().getItemPointsToDraw().put(collectable, value);
     }
 
     // setter to change the mask bits of a fixture

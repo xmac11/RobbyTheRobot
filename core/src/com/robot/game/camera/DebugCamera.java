@@ -21,7 +21,7 @@ public class DebugCamera {
         this.viewport = viewport;
         this.camera = viewport.getCamera();
         this.robot = robot;
-        this.shakeEffect = robot.getScreenLevel1().getShakeEffect();
+        this.shakeEffect = robot.getPlayScreen().getShakeEffect();
         this.following = true;
     }
 

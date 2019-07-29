@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 
 import static com.robot.game.util.Constants.LEVEL_1_TMX;
+import static com.robot.game.util.Constants.LEVEL_2_TMX;
 
 public class Assets {
 
@@ -75,6 +76,7 @@ public class Assets {
          * https://github.com/libgdx/libgdx/wiki/Tile-maps */
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(LEVEL_1_TMX, TiledMap.class);
+        assetManager.load(LEVEL_2_TMX, TiledMap.class);
 
         assetManager.load("sprites.pack", TextureAtlas.class);
         assetManager.load("background.png", Texture.class);
@@ -117,10 +119,12 @@ public class Assets {
     }
 
     public class TiledMapAssets {
-        public TiledMap tiledMap;
+        public TiledMap tiledMapLevel1;
+        public TiledMap tiledMapLevel2;
 
         public TiledMapAssets() {
-            this.tiledMap = assetManager.get(LEVEL_1_TMX);
+            this.tiledMapLevel1 = assetManager.get(LEVEL_1_TMX);
+            this.tiledMapLevel2 = assetManager.get(LEVEL_2_TMX);
         }
     }
 

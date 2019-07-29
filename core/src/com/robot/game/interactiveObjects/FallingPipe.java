@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
-import com.robot.game.screens.ScreenLevel1;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
 
 public class FallingPipe extends Sprite {
 
-    private ScreenLevel1 screenLevel1;
+    private PlayScreen playScreen;
     private Assets assets;
     private World world;
     private Body body;
@@ -21,10 +21,10 @@ public class FallingPipe extends Sprite {
     private boolean cache;
     private boolean flagToCancelVelocity;
 
-    public FallingPipe(ScreenLevel1 screenLevel1, boolean cache) {
-        this.screenLevel1 = screenLevel1;
-        this.assets = screenLevel1.getAssets();
-        this.world = screenLevel1.getWorld();
+    public FallingPipe(PlayScreen playScreen, boolean cache) {
+        this.playScreen = playScreen;
+        this.assets = playScreen.getAssets();
+        this.world = playScreen.getWorld();
         this.cache = cache;
         createPipeB2d();
 
@@ -38,7 +38,7 @@ public class FallingPipe extends Sprite {
 //        BodyDef bodyDef = new BodyDef();
 //        bodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        BodyDef bodyDef = screenLevel1.getPipeBodyCache().getBodyDef();
+        BodyDef bodyDef = playScreen.getPipeBodyCache().getBodyDef();
 
         if(cache) {
             bodyDef.position.set(5112 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
@@ -47,16 +47,16 @@ public class FallingPipe extends Sprite {
             bodyDef.awake = false;
         }
         // if robot is almost still, create pipe on top of it
-        else if(Math.abs(screenLevel1.getRobot().getBody().getLinearVelocity().x) < 2f) {
-            bodyDef.position.set(screenLevel1.getRobot().getBody().getPosition().x,
-                    screenLevel1.getViewport().getWorldHeight());
+        else if(Math.abs(playScreen.getRobot().getBody().getLinearVelocity().x) < 2f) {
+            bodyDef.position.set(playScreen.getRobot().getBody().getPosition().x,
+                    playScreen.getViewport().getWorldHeight());
             bodyDef.gravityScale = 1;
             bodyDef.awake = true;
         }
         // else create pipe somewhere in front of it
         else {
-            bodyDef.position.set(screenLevel1.getRobot().getBody().getPosition().x + MathUtils.random(96f / PPM, 192 / PPM),
-                                 screenLevel1.getViewport().getWorldHeight());
+            bodyDef.position.set(playScreen.getRobot().getBody().getPosition().x + MathUtils.random(96f / PPM, 192 / PPM),
+                                 playScreen.getViewport().getWorldHeight());
             bodyDef.gravityScale = 1;
             bodyDef.awake = true;
         }
@@ -65,7 +65,7 @@ public class FallingPipe extends Sprite {
         this.body = world.createBody(bodyDef);
 
         // create fixture
-        FixtureDef fixtureDef = screenLevel1.getPipeBodyCache().getFixtureDef();
+        FixtureDef fixtureDef = playScreen.getPipeBodyCache().getFixtureDef();
 
         PolygonShape recShape = new PolygonShape();
 //        recShape.setAsBox(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
