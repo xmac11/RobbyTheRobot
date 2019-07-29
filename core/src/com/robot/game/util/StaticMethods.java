@@ -60,7 +60,7 @@ public class StaticMethods {
 
     // setter to change the category bits of a fixture
     public static void setCategoryBit(Fixture fixture, short categoryBits) {
-        Filter filter = new Filter();
+        Filter filter = fixture.getFilterData();
         filter.categoryBits = categoryBits;
         fixture.setFilterData(filter);
     }
