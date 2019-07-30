@@ -155,7 +155,7 @@ public final class Constants {
     public static final float LOADING_FRAME_HEIGHT = 53;
         // bar
     public static final float LOADING_BAR_OFFSET_X = 265;
-    public static final float LOADING_BAR_OFFSET_Y = 19.5f;
+    public static final float LOADING_BAR_OFFSET_Y = 20f;
     public static final float LOADING_BAR_WIDTH = 530;
     public static final float LOADING_BAR_HEIGHT = 40;
         // progress (LoadingScreen)
