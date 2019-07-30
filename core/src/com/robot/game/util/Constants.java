@@ -34,6 +34,7 @@ public final class Constants {
     public static final String CRAB_OBJECT = "Crab obj";
     public static final String SPIKE_OBJECT = "Spike obj";
     public static final String COLLECTABLE_OBJECT = "Collectable obj";
+    public static final String WALL_OBJECT = "Wall obj";
 
     // COLLISIONS
 
@@ -90,13 +91,15 @@ public final class Constants {
 
         // Movement
     public static final float ROBOT_MAX_HOR_SPEED = 5;
+    public static final float BREAK_GROUND_FACTOR = 0.96f;
+    public static final float BREAK_AIR_FACTOR = 0.99f;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_SPEED = 5;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
     public static final float ROBOT_COYOTE_TIMER = 0.15f;
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
     public static final float ROBOT_CLIMB_TIMER = 0.3f;
-    public static final Vector2 LEFT_IMPULSE_ON_MOVING_PLATFORM = new Vector2(-0.2f, 0); // this is for the case of the horizontally moving platform to the right
+    public static final Vector2 LEFT_IMPULSE_ON_MOVING_PLATFORM = new Vector2(-0.15f, 0); // this is for the case of the horizontally moving platform to the right
 
         // Flickering
     public static final float FLICKER_TIME = 0.75f;

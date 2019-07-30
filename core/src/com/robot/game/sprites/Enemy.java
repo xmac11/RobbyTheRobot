@@ -162,7 +162,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
                 }
             }
         }
-        System.out.println(System.nanoTime() - start);
     }
 
     // parse json file to get the waypoints of the platform the enemy should follow

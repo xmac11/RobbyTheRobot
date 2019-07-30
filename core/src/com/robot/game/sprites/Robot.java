@@ -109,7 +109,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.body.createFixture(fixtureDef).setUserData("feet");
 
         recShape.dispose();
-        //        circleShape.dispose();
     }
 
     public void update(float delta) {
@@ -117,26 +116,34 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // first process input
         processInput(delta);
 
+        // update robot when on interactive platform
         if(isOnInteractivePlatform && interactivePlatform != null) {
 
             // platform moving vertically, set robot's vY to platform's vY
             if(interactivePlatform.getBody().getLinearVelocity().y != 0) {
-                body.setLinearVelocity(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().y);
+                body.setLinearVelocity(body.getLinearVelocity().x * BREAK_GROUND_FACTOR, interactivePlatform.getBody().getLinearVelocity().y);
             }
 
             // platform moving horizontally to the right, apply force to robot so it moves with it
             else if(interactivePlatform.getBody().getLinearVelocity().x != 0 ) {
-                body.applyForceToCenter(-0.6f * body.getMass() * world.getGravity().y, 0, true);
+                if(body.getFixtureList().size != 0 && interactivePlatform.getBody().getFixtureList().size != 0)
+                    body.applyForceToCenter(
+                            -(float) Math.sqrt(body.getFixtureList().first().getFriction() * interactivePlatform.getBody().getFixtureList().first().getFriction())
+                            * body.getMass() * world.getGravity().y, 0, true);
+
+                // if robot moved on platform, and therefore gained higher speed, lerp its speed towards the platform's speed
+                if(body.getLinearVelocity().x != interactivePlatform.getBody().getLinearVelocity().x)
+                    body.setLinearVelocity(MathUtils.lerp(body.getLinearVelocity().x, interactivePlatform.getBody().getLinearVelocity().x, 0.05f), body.getLinearVelocity().y);
             }
         }
 
-        // apply additional force when object is falling in order to land faster
+        // apply additional force when robot is falling in order to land faster
         if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform && !onLadder) {
             body.applyForceToCenter(0, -7.5f, true);
         }
 
         // attach robot sprite to body
-        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM); // for rectangle
+        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
 
         // if robot is invulnerable
         if(invulnerable) {
@@ -227,9 +234,15 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         }
 
-        // left-right keys released -> if body is moving, break
-        else if(body.getLinearVelocity().x != 0) {
-            float targetVelocity = body.getLinearVelocity().x * 0.96f;
+        // left-right keys released -> if body is moving on the ground, break
+        else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() != 0 && !isOnInteractivePlatform) {
+            float targetVelocity = body.getLinearVelocity().x * BREAK_GROUND_FACTOR;
+            temp.x = body.getMass() * (targetVelocity - currentVelocity);
+            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+        }
+        // left-right keys released -> if body is moving in the air, break
+        else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() == 0 && !isOnInteractivePlatform) {
+            float targetVelocity = body.getLinearVelocity().x * BREAK_AIR_FACTOR;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
         }
@@ -308,7 +321,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         //// Debug keys for checkpoints ////
         //if(DEBUG_ON)
             toggleDebugCheckpoints();
-
     }
 
     public void draw(SpriteBatch batch, float delta) {
@@ -446,7 +458,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     private void checkThirdCheckpoint() {
-        if( Math.abs( (body.getPosition().x - THIRD_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
+        if( Math.abs( (body.getPosition().x - THIRD_CHECKPOINT_LOCATION.x - 80 / PPM) * PPM )  <= CHECKPOINT_TOLERANCE) {
             Gdx.app.log("Robot","Third checkpoint activated!");
             checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
             checkpointData.setThirdCheckpointActivated(true);

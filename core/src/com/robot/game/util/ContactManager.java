@@ -66,7 +66,7 @@ public class ContactManager implements ContactListener {
 
             // robot - falling pipe
             case ROBOT_CATEGORY | PIPE_CATEGORY:
-            robotPipeBegin(contact.getWorldManifold(), fixA, fixB);
+            robotPipeBegin(fixA, fixB);
             break;
 
             // ground - falling pipe
@@ -369,11 +369,9 @@ public class ContactManager implements ContactListener {
         Gdx.app.log("ContactManager","Robot collected item");
     }
 
-    private void robotPipeBegin(WorldManifold manifold, Fixture fixA, Fixture fixB) {
+    private void robotPipeBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
         FallingPipe pipe;
-        Vector2 normal = manifold.getNormal();
-        Vector2[] points = manifold.getPoints();
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
@@ -395,6 +393,10 @@ public class ContactManager implements ContactListener {
             // shake the camera
             robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
         }
+
+        // finally change the pipe's category bit so it cannot harm the robot again if it stays on its head
+        if(pipe.getBody().getFixtureList().size != 0)
+            StaticMethods.setCategoryBit(pipe.getBody().getFixtureList().first(), PIPE_ON_GROUND_CATEGORY);
     }
 
     private void feetPipeOnGroundBegin(Fixture fixA, Fixture fixB) {

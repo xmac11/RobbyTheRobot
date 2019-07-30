@@ -22,6 +22,8 @@ public class ScreenLevel2 extends PlayScreen{
         // create tiled objects
         super.layersObjectArray = new Array<>();
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(WALL_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 
         // create object parser
         super.objectParser = new ObjectParser(this);
@@ -29,7 +31,6 @@ public class ScreenLevel2 extends PlayScreen{
         // create interactive platforms
         super.interactivePlatforms = objectParser.getInteractivePlatforms();
 
-        System.out.println(interactivePlatforms.size);
     }
 
     protected void update(float delta) {
@@ -60,13 +61,22 @@ public class ScreenLevel2 extends PlayScreen{
         this.update(delta);
 
         // clear game screen
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.render();
 
         game.getBatch().begin();
+
+        // render interactive platforms
+        for(InteractivePlatform platform: interactivePlatforms) {
+            if(!platform.isDestroyed()) {
+                platform.draw(game.getBatch());
+            }
+        }
+
         robot.draw(game.getBatch(), delta);
+
         game.getBatch().end();
 
         //render box2d debug rectangles

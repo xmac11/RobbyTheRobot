@@ -1,5 +1,6 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.robot.game.sprites.*;
@@ -56,6 +57,7 @@ public class StaticMethods {
         Filter filter = new Filter();
         filter.maskBits = maskBits;
         fixture.setFilterData(filter);
+        Gdx.app.log("StaticMethods", "Mask bits changed");
     }
 
     // setter to change the category bits of a fixture
@@ -63,5 +65,6 @@ public class StaticMethods {
         Filter filter = fixture.getFilterData();
         filter.categoryBits = categoryBits;
         fixture.setFilterData(filter);
+        Gdx.app.log("StaticMethods", "Category bits changed");
     }
 }
