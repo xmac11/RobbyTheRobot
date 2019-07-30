@@ -28,6 +28,7 @@
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="288"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="false"/>
     <property name="startX" type="float" value="-1"/>
@@ -41,6 +42,7 @@
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="288"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="false"/>
     <property name="startX" type="float" value="-1"/>
@@ -54,6 +56,7 @@
    <properties>
     <property name="endX" type="float" value="2848"/>
     <property name="endY" type="float" value="-1"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>
@@ -67,6 +70,7 @@
    <properties>
     <property name="delay" type="float" value="0.75"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -75,6 +79,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -83,6 +88,7 @@
    <properties>
     <property name="delay" type="float" value="0.25"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -91,6 +97,7 @@
    <properties>
     <property name="delay" type="float" value="0.2"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -99,6 +106,7 @@
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -107,6 +115,7 @@
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -115,6 +124,7 @@
    <properties>
     <property name="delay" type="float" value="0.1"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -123,6 +133,7 @@
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="1000"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>

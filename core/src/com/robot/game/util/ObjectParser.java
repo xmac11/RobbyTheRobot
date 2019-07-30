@@ -143,15 +143,10 @@ public class ObjectParser {
             fixtureDef.filter.maskBits = LADDER_MASK;
             fixtureDef.isSensor = true;
         }
-        // falling platform
-        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            fixtureDef.filter.categoryBits = FALLING_PLATFORM_CATEGORY;
-            fixtureDef.filter.maskBits = FALLING_PLATFORM_MASK;
-        }
-        // moving platform
-        else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            fixtureDef.filter.categoryBits = MOVING_PLATFORM_CATEGORY;
-            fixtureDef.filter.maskBits = MOVING_PLATFORM_MASK;
+        // interactive platform
+        else if(object.getProperties().containsKey(INTERACTIVE_PLATFORM_PROPERTY)) {
+            fixtureDef.filter.categoryBits = INTERACTIVE_PLATFORM_CATEGORY;
+            fixtureDef.filter.maskBits = INTERACTIVE_PLATFORM_MASK;
         }
         // enemy
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
@@ -188,14 +183,18 @@ public class ObjectParser {
             String description = (String) object.getProperties().get(LADDER_PROPERTY);
             new Ladder(body, fixtureDef, description);
         }
-        // create falling platform
-        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            this.interactivePlatforms.add(new FallingPlatform(playScreen, body, fixtureDef, object));
+        // create interactive platforms
+        else if(object.getProperties().containsKey(INTERACTIVE_PLATFORM_PROPERTY)) {
+            // create falling platform
+            if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
+                this.interactivePlatforms.add(new FallingPlatform(playScreen, body, fixtureDef, object));
+            }
+            // create moving platform
+            else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
+                this.interactivePlatforms.add(new MovingPlatform(playScreen, body, fixtureDef, object));
+            }
         }
-        // create moving platform
-        else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            this.interactivePlatforms.add(new MovingPlatform(playScreen, body, fixtureDef, object));
-        }
+
         // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
 
@@ -203,7 +202,7 @@ public class ObjectParser {
             if(object.getProperties().containsKey(BAT_PROPERTY))
                 this.enemies.add(new Bat(playScreen, body, fixtureDef, object));
             // create crabs
-            else //if(object.getProperties().containsKey(SPIDER_PROPERTY))
+            else if(object.getProperties().containsKey(CRAB_PROPERTY))
                 this.enemies.add(new Crab(playScreen, body, fixtureDef, object));
         }
         // create spikes

@@ -40,13 +40,8 @@ public class ContactManager implements ContactListener {
                 break;
 
             // robot - falling platform
-            case ROBOT_CATEGORY | FALLING_PLATFORM_CATEGORY:
-                robotFallingPlatBegin(normal, fixA, fixB);
-                break;
-
-            // robot - moving platform
-            case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                robotMovingPlatBegin(normal, fixA, fixB);
+            case ROBOT_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY:
+                robotInteractivePlatBegin(normal, fixA, fixB);
                 break;
 
             // robot - spikes
@@ -116,20 +111,23 @@ public class ContactManager implements ContactListener {
         }
     }
 
-    // robot - falling platform collision begins
-    private void robotFallingPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
+    // robot - interactive platform collision begins
+    private void robotInteractivePlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
-        FallingPlatform fallingPlatform;
+        InteractivePlatform interactivePlatform;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
-            fallingPlatform = (FallingPlatform) fixB.getUserData();
+            interactivePlatform = (InteractivePlatform) fixB.getUserData();
 
             if(normal.y <= -1/Math.sqrt(2)) {
-                // move platform vertically
-                fallingPlatform.setFlagToMove(true);
-                robot.setOnInteractivePlatform(fallingPlatform, true);
-                Gdx.app.log("ContactManager", "On falling platform");
+                Gdx.app.log("ContactManager", "On interactive platform");
+
+                if(interactivePlatform instanceof FallingPlatform)
+                    robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
+
+                else if(interactivePlatform instanceof MovingPlatform)
+                    robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
             }
             else if(normal.y >= 1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
@@ -140,12 +138,16 @@ public class ContactManager implements ContactListener {
         }
         else {
             robot = (Robot) fixB.getUserData();
-            fallingPlatform = (FallingPlatform) fixA.getUserData();
+            interactivePlatform = (InteractivePlatform) fixA.getUserData();
 
             if(normal.y >= 1/Math.sqrt(2)) {
-                fallingPlatform.setFlagToMove(true);
-                robot.setOnInteractivePlatform(fallingPlatform, true);
-                Gdx.app.log("ContactManager", "On falling platform");
+                Gdx.app.log("ContactManager", "On interactive platform");
+
+                if(interactivePlatform instanceof FallingPlatform)
+                    robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
+
+                else if(interactivePlatform instanceof MovingPlatform)
+                    robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
             }
             else if(normal.y <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
@@ -154,59 +156,22 @@ public class ContactManager implements ContactListener {
             else if(normal.x <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from the left");
         }
+    }
 
-        // make robot stop on platform
-//        robot.getBody().setLinearVelocity( robot.getBody().getLinearVelocity().x, fallingPlatform.getBody().getLinearVelocity().y );
+    // robot - falling platform collision begins
+    private void robotFallingPlatBegin(Robot robot, FallingPlatform fallingPlatform) {
+        fallingPlatform.setFlagToMove(true);
+        robot.setOnInteractivePlatform(fallingPlatform, true);
     }
 
     // robot - moving platform collision begins
-    private void robotMovingPlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
-        Robot robot;
-        MovingPlatform movingPlatform;
+    private void robotMovingPlatBegin(Robot robot, MovingPlatform movingPlatform) {
 
-        if(fixA.getUserData() instanceof Robot) {
-            robot = (Robot) fixA.getUserData();
-            movingPlatform = (MovingPlatform) fixB.getUserData();
+        robot.setOnInteractivePlatform(movingPlatform, true);
 
-            if(normal.y <= -1/Math.sqrt(2)) {
-
-                Gdx.app.log("ContactManager", "On moving platform");
-                robot.setOnInteractivePlatform(movingPlatform, true);
-
-                // if platform is waiting and has not been already activated, move it
-                if(movingPlatform.isWaiting() && !movingPlatform.isActivated()) {
-                    movingPlatform.movePlatform();
-                }
-            }
-            else if(normal.y >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from below");
-            else if(normal.x <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from the right");
-            else if(normal.x >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from the left");
-
-        }
-        else {
-            robot = (Robot) fixB.getUserData();
-            movingPlatform = (MovingPlatform) fixA.getUserData();
-
-            if(normal.y >= 1/Math.sqrt(2)) {
-
-                Gdx.app.log("ContactManager", "On moving platform");
-                robot.setOnInteractivePlatform(movingPlatform, true);
-
-                // if platform is waiting and has not been already activated, move it
-                if(movingPlatform.isWaiting() && !movingPlatform.isActivated()) {
-                    movingPlatform.movePlatform();
-                }
-            }
-            else if(normal.y <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from below");
-            else if(normal.x >= 1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from the right");
-            else if(normal.x <= -1/Math.sqrt(2))
-                Gdx.app.log("ContactManager","Robot hit platform from the left");
-        }
+        // if platform is waiting and has not been already activated, move it
+        if(movingPlatform.isWaiting() && !movingPlatform.isActivated())
+            movingPlatform.movePlatform();
     }
 
     private void robotSpikesBegin(Fixture fixA, Fixture fixB) {
@@ -510,13 +475,10 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | LADDER_CATEGORY:
                 robotLadderEnd(fixA, fixB);
                 break;
-            // robot - falling platform
-            case ROBOT_CATEGORY | FALLING_PLATFORM_CATEGORY:
-                robotFallingPlatEnd(fixA, fixB); // this does nothing right now
-                break;
-            // robot - moving platform
-            case ROBOT_CATEGORY | MOVING_PLATFORM_CATEGORY:
-                robotMovingPlatEnd(fixA, fixB);
+
+            // robot - interactive platform
+            case ROBOT_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY:
+                robotInteractivePlatEnd(fixA, fixB);
                 break;
 
             // robot - spikes
@@ -555,40 +517,22 @@ public class ContactManager implements ContactListener {
         }
     }
 
-    // robot - falling platform collision ends
-    private void robotFallingPlatEnd(Fixture fixA, Fixture fixB) {
+    // robot - interactive platform collision ends
+    private void robotInteractivePlatEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
-        FallingPlatform fallingPlatform;
+        InteractivePlatform interactivePlatform;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
-            fallingPlatform = (FallingPlatform) fixB.getUserData();
+            interactivePlatform = (InteractivePlatform) fixB.getUserData();
         }
         else {
             robot = (Robot) fixB.getUserData();
-            fallingPlatform = (FallingPlatform) fixA.getUserData();
-        }
-        robot.setOnInteractivePlatform(fallingPlatform, false);
-        Gdx.app.log("ContactManager", "Off falling platform");
-    }
-
-    // robot - moving platform collision ends
-    private void robotMovingPlatEnd(Fixture fixA, Fixture fixB) {
-        Robot robot;
-        MovingPlatform movingPlatform;
-
-        if(fixA.getUserData() instanceof Robot) {
-            robot = (Robot) fixA.getUserData();
-            movingPlatform = (MovingPlatform) fixB.getUserData();
-        }
-        else {
-            robot = (Robot) fixB.getUserData();
-            movingPlatform = (MovingPlatform) fixA.getUserData();
+            interactivePlatform = (InteractivePlatform) fixA.getUserData();
         }
 
-        // remove the robot from the moving platform
-        robot.setOnInteractivePlatform(null, false);
-        Gdx.app.log("ContactManager", "Off moving platform");
+        robot.setOnInteractivePlatform(interactivePlatform, false);
+        Gdx.app.log("ContactManager", "Off interactive platform");
     }
 
     private void feetPipeOnGroundEnd(Fixture fixA, Fixture fixB) {

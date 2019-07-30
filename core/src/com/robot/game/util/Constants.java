@@ -12,7 +12,6 @@ public final class Constants {
     public static final float PPM = 32;
     public static final float DEBUG_CAM_SPEED = 32;
 
-
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
     public static final String LEVEL_1_JSON = "files/level1.json";
@@ -34,32 +33,30 @@ public final class Constants {
     public static final short ROBOT_CATEGORY = 1;
     public static final short GROUND_CATEGORY = 2;
     public static final short LADDER_CATEGORY = 4;
-    public static final short FALLING_PLATFORM_CATEGORY = 8;
-    public static final short MOVING_PLATFORM_CATEGORY = 16;
-    public static final short ROBOT_FEET_CATEGORY = 32;
-    public static final short ENEMY_CATEGORY = 64;
-    public static final short SPIKE_CATEGORY = 128;
-    public static final short COLLECTABLE_CATEGORY = 256;
-    public static final short PIPE_CATEGORY = 512;
-    public static final short PIPE_ON_GROUND_CATEGORY = 1024;
-    public static final short WALLJUMP_CATEGORY = 2048;
+    public static final short INTERACTIVE_PLATFORM_CATEGORY = 8;
+    public static final short ROBOT_FEET_CATEGORY = 16;
+    public static final short ENEMY_CATEGORY = 32;
+    public static final short SPIKE_CATEGORY = 64;
+    public static final short COLLECTABLE_CATEGORY = 128;
+    public static final short PIPE_CATEGORY = 256;
+    public static final short PIPE_ON_GROUND_CATEGORY = 512;
+    public static final short WALLJUMP_CATEGORY = 1024;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
-    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY
-                                            | ENEMY_CATEGORY | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY
+    public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | ENEMY_CATEGORY
+                                            | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY
                                             | WALLJUMP_CATEGORY;
     public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
-    public static final short FALLING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
-    public static final short MOVING_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
-    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
+    public static final short INTERACTIVE_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short ENEMY_MASK = ROBOT_CATEGORY /*| GROUND_CATEGORY*/;
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short WALLJUMP_MASK = ROBOT_CATEGORY;
-    public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | FALLING_PLATFORM_CATEGORY | MOVING_PLATFORM_CATEGORY;
+    public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY;
 
     // Robot
 
@@ -95,7 +92,7 @@ public final class Constants {
     public static final float ROBOT_JUMP_TIMEOUT = 0.3f;
     public static final float ROBOT_CLIMB_TIMER = 0.3f;
     public static final Vector2 LEFT_IMPULSE_ON_MOVING_PLATFORM = new Vector2(-0.15f, 0); // this is for the case of the horizontally moving platform to the right
-    public static final Vector2 WALL_CLIMBING_IMPULSE = new Vector2(4, 4.5f);
+    public static final Vector2 WALL_JUMPING_IMPULSE = new Vector2(6, 4.5f);
 
         // Flickering
     public static final float FLICKER_TIME = 0.75f;
@@ -104,6 +101,7 @@ public final class Constants {
     public static final String LADDER_PROPERTY = "ladder";
     public static final String LADDER_CORE_DESCRIPTION = "core";
     public static final String LADDER_BOTTOM_DESCRIPTION = "bottom";
+    public static final String INTERACTIVE_PLATFORM_PROPERTY = "interactivePlatform";
     public static final String FALLING_PLATFORM_PROPERTY = "falling";
     public static final String MOVING_PLATFORM_PROPERTY = "moving";
     public static final String WALL_JUMPING_PROPERTY = "wallJumping";

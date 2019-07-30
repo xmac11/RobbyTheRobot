@@ -64,7 +64,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // wall climbing
     private boolean isWallClimbing;
     private int direction;
-    private Vector2 tempWallClimbingImpulse = new Vector2();
+    private Vector2 tempWallJumpingImpulse = new Vector2();
 
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -239,17 +239,17 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         // left-right keys released -> if body is moving on the ground, break
-        else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() != 0 && !isOnInteractivePlatform) {
+        else if(body.getLinearVelocity().x != 0 /*&& contactManager.getFootContactCounter() != 0*/ && !isOnInteractivePlatform) {
             float targetVelocity = body.getLinearVelocity().x * BREAK_GROUND_FACTOR;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
         }
         // left-right keys released -> if body is moving in the air, break
-        else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() == 0 && !isOnInteractivePlatform) {
+        /*else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() == 0 && !isOnInteractivePlatform) {
             float targetVelocity = body.getLinearVelocity().x * BREAK_AIR_FACTOR;
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
             body.applyLinearImpulse(temp, body.getWorldCenter(), true);
-        }
+        }*/
 
         // Jumping
         /* I use three timers:
@@ -262,7 +262,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
          *
          *  coyoteTimer is used to enable jumping off an edge if not fully grounded
          *  When the player is NOT grounded, it is reduced by "delta" at every frame.
-         *  When the player is grounded again, it is set to a value, e.g. 0.2 seconds.
+         *  When the player is grounded again (or is on a wall jumping surface), it is set to a value, e.g. 0.2 seconds.
          *  When the player presses SPACE, in addition to the previous checks, it is checked whether the player
          *  was grounded within the last 0.2 seconds.
          *  If yes, the player jumps evey though it is not grounded right now. At this point the timer is reset to zero.
@@ -303,9 +303,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED + interactivePlatform.getBody().getLinearVelocity().y);
             }
             else if(isWallClimbing) {
-                tempWallClimbingImpulse.set(WALL_CLIMBING_IMPULSE.x * direction, WALL_CLIMBING_IMPULSE.y);
-                body.applyLinearImpulse(tempWallClimbingImpulse, body.getWorldCenter(), true);
-                System.out.println("wall climbing impulse");
+                tempWallJumpingImpulse.set(WALL_JUMPING_IMPULSE.x * direction, WALL_JUMPING_IMPULSE.y);
+                body.applyLinearImpulse(tempWallJumpingImpulse, body.getWorldCenter(), true);
             }
 
             // robot jumps from the ground
