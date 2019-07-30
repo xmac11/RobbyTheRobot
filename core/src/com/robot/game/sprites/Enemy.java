@@ -16,13 +16,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.*;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Steerable<Vector2> {
 
+    protected PlayScreen playScreen;
     protected Assets assets;
 
     // Box2D
@@ -72,6 +72,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     protected float deadElapsed;
 
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
         this.world = playScreen.getWorld();
         this.body = body;
@@ -149,7 +150,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
                 if(child2.get(j).getAttributes().get("id").equals(platformID)) {
 
                     this.x = Float.valueOf(child2.get(j).getAttributes().get("x"));
-                    this.y = MAP_HEIGHT - Float.valueOf(child2.get(j).getAttributes().get("y"));
+                    this.y = playScreen.getMapHeight() - Float.valueOf(child2.get(j).getAttributes().get("y"));
 
                     XmlReader.Element properties = child2.get(j).getChildByName("properties");
                     Array<XmlReader.Element> property = properties.getChildrenByNameRecursively("property");
@@ -194,7 +195,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
                         this.width = child2.get(j).getFloat("width");
                         this.height = child2.get(j).getFloat("height");
                         this.x = child2.get(j).getFloat("x");
-                        this.y = MAP_HEIGHT - child2.get(j).getFloat("y") - height; // to get the bottom left corner
+                        this.y = playScreen.getMapHeight() - child2.get(j).getFloat("y") - height; // to get the bottom left corner
                     }
                 }
             }

@@ -78,6 +78,11 @@ public class ContactManager implements ContactListener {
             case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
             feetPipeOnGroundBegin(fixA, fixB);
             break;
+
+            // robot - wall jumping
+            case ROBOT_CATEGORY | WALLJUMP_CATEGORY:
+            robotWallBegin(normal, fixA, fixB);
+            break;
         }
 
 
@@ -435,6 +440,54 @@ public class ContactManager implements ContactListener {
         fallingPipe.setFlagToSleep(true);
     }
 
+    private void robotWallBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
+        Robot robot;
+        boolean bool = false;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+
+            if (normal.x <= -1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot hit wall from the right");
+                bool = true;
+                robot.setDirection(1);
+            }
+            else if(normal.x >= 1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot hit wall from the left");
+                bool = true;
+                robot.setDirection(-1);
+            }
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+
+            if(normal.x >= 1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot hit wall from the right");
+                bool = true;
+                robot.setDirection(1);
+            }
+            else if(normal.x <= -1/Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot hit wall from the left");
+                bool = true;
+                robot.setDirection(-1);
+            }
+        }
+
+        /*if(bool && !robot.getPlayScreen().wallJumpHandler.equals(Gdx.input.getInputProcessor())) {
+            Gdx.input.setInputProcessor(robot.getPlayScreen().wallJumpHandler);
+            System.out.println("Input processor was set");
+        }*/
+
+        if(bool && footContactCounter == 0) {
+            robot.setWallClimbing(true);
+            robot.setCoyoteTimer(ROBOT_COYOTE_TIMER);
+            Gdx.app.log("ContactManager", "WallClimbing = true");
+            Gdx.app.log("ContactManager", "coyote timer set");
+        }
+
+
+    }
+
     @Override
     public void endContact(Contact contact) {
         // Get the two fixtures that contact
@@ -475,6 +528,11 @@ public class ContactManager implements ContactListener {
             case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
                 feetPipeOnGroundEnd(fixA, fixB);
                 break;
+
+            // robot - wall jumping
+            case ROBOT_CATEGORY | WALLJUMP_CATEGORY:
+            robotWallEnd(fixA, fixB);
+            break;
         }
     }
 
@@ -563,6 +621,18 @@ public class ContactManager implements ContactListener {
             spike = (Spike) fixA.getUserData();
             Gdx.app.log("ContactManager","Spike collision ended");
         }
+    }
+
+    private void robotWallEnd(Fixture fixA, Fixture fixB) {
+        Robot robot;
+
+        if(fixA.getUserData() instanceof Robot)
+            robot = (Robot) fixA.getUserData();
+        else
+            robot = (Robot) fixB.getUserData();
+
+        robot.setWallClimbing(false);
+        Gdx.app.log("ContactManager", "WallClimbing = false");
     }
 
     @Override

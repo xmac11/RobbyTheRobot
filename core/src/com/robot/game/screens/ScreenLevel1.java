@@ -59,8 +59,8 @@ public class ScreenLevel1 extends PlayScreen {
         super.collectables = objectParser.getCollectables();
 
         // create parallax
-        this.parallaxBackground = new Parallax(viewport, robot, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
-        this.parallaxBarrels = new Parallax(viewport, robot, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
+        this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
+        this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
 
 
 

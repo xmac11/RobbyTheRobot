@@ -12,7 +12,6 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.InteractivePlatform;
 import com.robot.game.interactiveObjects.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.*;
 
 import static com.robot.game.util.Constants.*;
@@ -62,6 +61,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     // Game data
     private CheckpointData checkpointData;
 
+    // wall climbing
+    private boolean isWallClimbing;
+    private int direction;
+    private Vector2 tempWallClimbingImpulse = new Vector2();
+
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
@@ -82,7 +86,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(checkpointData.getSpawnLocation()); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(checkpointData.getSpawnLocation() /*1184 / PPM, 320 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -165,8 +169,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         // keep robot within map
         if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
             body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
-        if(body.getPosition().x > (MAP_WIDTH - ROBOT_BODY_WIDTH / 2) / PPM)
-            body.setTransform((MAP_WIDTH - ROBOT_BODY_WIDTH / 2) / PPM, body.getPosition().y, 0);
+        if(body.getPosition().x > (playScreen.getMapWidth() - ROBOT_BODY_WIDTH / 2) / PPM)
+            body.setTransform((playScreen.getMapWidth() - ROBOT_BODY_WIDTH / 2) / PPM, body.getPosition().y, 0);
 
         // conditions for robot to die
         if((body.getPosition().y < 0 || checkpointData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {
@@ -257,8 +261,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
          *  is reset to zero.
          *
          *  coyoteTimer is used to enable jumping off an edge if not fully grounded
-         *  It is reduced by "delta" at every frame.
-         *  When the player is grounded, coyoteTimer is set to a value, e.g. 0.2 seconds.
+         *  When the player is NOT grounded, it is reduced by "delta" at every frame.
+         *  When the player is grounded again, it is set to a value, e.g. 0.2 seconds.
          *  When the player presses SPACE, in addition to the previous checks, it is checked whether the player
          *  was grounded within the last 0.2 seconds.
          *  If yes, the player jumps evey though it is not grounded right now. At this point the timer is reset to zero.
@@ -270,11 +274,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
          *  whether jumpTimeout is higher than a certain value, e.g. 0.3 seconds.
          *  If yes the player jumps and the timeout is reset to zero */
         jumpTimer -= delta;
-        coyoteTimer -= delta;
+        if(contactManager.getFootContactCounter() == 0) coyoteTimer -= delta;
         jumpTimeout += delta;
 
         // when the robot is grounded, start coyote timer
-        if(contactManager.getFootContactCounter() > 0)
+        if(contactManager.getFootContactCounter() > 0 && coyoteTimer != ROBOT_COYOTE_TIMER)
             coyoteTimer = ROBOT_COYOTE_TIMER;
 
         // when space is pressed, start jump timer
@@ -298,6 +302,12 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
                 // when platform is moving upwards, the velocity is not sufficient to make the player jump, so the velocity of the platform is also added
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED + interactivePlatform.getBody().getLinearVelocity().y);
             }
+            else if(isWallClimbing) {
+                tempWallClimbingImpulse.set(WALL_CLIMBING_IMPULSE.x * direction, WALL_CLIMBING_IMPULSE.y);
+                body.applyLinearImpulse(tempWallClimbingImpulse, body.getWorldCenter(), true);
+                System.out.println("wall climbing impulse");
+            }
+
             // robot jumps from the ground
             else {
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED); // here I set the velocity since the impulse did not have impact when the player was falling
@@ -317,6 +327,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             climbTimer = ROBOT_CLIMB_TIMER;
             Gdx.app.log("Robot","UP key pressed in robot class -> climbTimer was set");
         }
+
+//        System.out.println(Math.signum(body.getLinearVelocity().x));
+//        System.out.println(body.getLinearVelocity().x);
 
         //// Debug keys for checkpoints ////
         //if(DEBUG_ON)
@@ -434,6 +447,18 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
     public ShakeEffect getShakeEffect() {
         return shakeEffect;
+    }
+
+    public void setCoyoteTimer(float coyoteTimer) {
+        this.coyoteTimer = coyoteTimer;
+    }
+
+    public void setWallClimbing(boolean wallClimbing) {
+        isWallClimbing = wallClimbing;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
     }
 
     // Checkpoints

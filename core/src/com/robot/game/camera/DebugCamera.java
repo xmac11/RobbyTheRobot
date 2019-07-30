@@ -5,23 +5,26 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.sprites.Robot;
 
 import static com.robot.game.util.Constants.*;
 
 public class DebugCamera {
 
+    private PlayScreen playScreen;
     private Viewport viewport;
     private Camera camera;
     private Robot robot;
     private ShakeEffect shakeEffect;
     private boolean following;
 
-    public DebugCamera(Viewport viewport, Robot robot) {
-        this.viewport = viewport;
+    public DebugCamera(PlayScreen playScreen) {
+        this.playScreen = playScreen;
+        this.viewport = playScreen.getViewport();
         this.camera = viewport.getCamera();
-        this.robot = robot;
-        this.shakeEffect = robot.getPlayScreen().getShakeEffect();
+        this.robot = playScreen.getRobot();
+        this.shakeEffect = playScreen.getShakeEffect();
         this.following = true;
     }
 
@@ -68,10 +71,10 @@ public class DebugCamera {
         if(following) {
             camera.position.x = MathUtils.clamp(camera.position.x,
                     viewport.getWorldWidth() / 2,
-                    MAP_WIDTH / PPM - viewport.getWorldWidth() / 2);
+                    playScreen.getMapWidth() / PPM - viewport.getWorldWidth() / 2);
             camera.position.y = MathUtils.clamp(camera.position.y,
                     viewport.getWorldHeight() / 2,
-                    MAP_HEIGHT / PPM - viewport.getWorldHeight() / 2);
+                    playScreen.getMapHeight() / PPM - viewport.getWorldHeight() / 2);
         }
         camera.update();
     }

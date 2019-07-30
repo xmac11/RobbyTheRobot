@@ -6,7 +6,6 @@ import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.screens.PlayScreen;
@@ -101,8 +100,8 @@ public class ObjectParser {
                 createFixture(body, fixtureDef, object);
 
                 shape.dispose();
-            }
-            else continue;*/
+            }*/
+            else continue;
         }
     }
 
@@ -171,6 +170,11 @@ public class ObjectParser {
             fixtureDef.filter.maskBits = COLLECTABLE_MASK;
             fixtureDef.isSensor = true;
         }
+        // wall jumping
+        else if(object.getProperties().containsKey("wallJumping")) {
+            fixtureDef.filter.categoryBits = WALLJUMP_CATEGORY;
+            fixtureDef.filter.maskBits = WALLJUMP_MASK;
+        }
         // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
@@ -186,13 +190,11 @@ public class ObjectParser {
         }
         // create falling platform
         else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
-            InteractivePlatform fallingPlatform = new FallingPlatform(playScreen, body, fixtureDef, object);
-            this.interactivePlatforms.add(fallingPlatform);
+            this.interactivePlatforms.add(new FallingPlatform(playScreen, body, fixtureDef, object));
         }
         // create moving platform
         else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
-            InteractivePlatform movingPlatform = new MovingPlatform(playScreen, body, fixtureDef, object);
-            this.interactivePlatforms.add(movingPlatform);
+            this.interactivePlatforms.add(new MovingPlatform(playScreen, body, fixtureDef, object));
         }
         // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
@@ -221,6 +223,10 @@ public class ObjectParser {
                 else
                     this.collectables.add(new Burger(playScreen, body, fixtureDef, object));
             }
+        }
+        // create wall jumping surface
+        else if(object.getProperties().containsKey(WALL_JUMPING_PROPERTY)) {
+            body.createFixture(fixtureDef).setUserData(WALL_JUMPING_PROPERTY);
         }
         // create ground
         else {

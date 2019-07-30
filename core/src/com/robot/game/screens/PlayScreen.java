@@ -39,6 +39,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     // Tiled map variables
     protected TiledMap tiledMap;
     protected OrthogonalTiledMapRenderer mapRenderer;
+    protected float mapWidth;
+    protected float mapHeight;
 
     // checkpoint data
     protected CheckpointData checkpointData;
@@ -103,6 +105,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.game = game;
         this.assets = game.getAssets();
         this.tiledMap = tiledMap;
+
+        int tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
+        this.mapWidth = tiledMap.getProperties().get("width", Integer.class) * tileSize;
+        this.mapHeight = tiledMap.getProperties().get("height", Integer.class) * tileSize;
         this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // if file with game data exists, load it, otherwise create new one
@@ -154,7 +160,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.pointsRenderer = new PointsRenderer(robot);
 
         // create debug camera
-        this.debugCamera = new DebugCamera(viewport, robot);
+        this.debugCamera = new DebugCamera(this);
 
         // create hud
         this.hud = new Hud(this);
@@ -279,6 +285,14 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public PipeBodyCache getPipeBodyCache() {
         return pipeBodyCache;
+    }
+
+    public float getMapWidth() {
+        return mapWidth;
+    }
+
+    public float getMapHeight() {
+        return mapHeight;
     }
 
     protected void checkIfDead() {

@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.screens.ScreenLevel1;
 
 import static com.robot.game.util.Constants.*;
 

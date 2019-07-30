@@ -42,7 +42,7 @@ public class FallingPipe extends Sprite {
 
         if(cache) {
             bodyDef.position.set(5112 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
-                                 (MAP_HEIGHT - 24) / PPM);
+                                 (playScreen.getMapHeight() - 24) / PPM);
             bodyDef.gravityScale = 0;
             bodyDef.awake = false;
         }
