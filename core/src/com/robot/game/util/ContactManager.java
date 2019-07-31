@@ -123,6 +123,7 @@ public class ContactManager implements ContactListener {
     private void robotInteractivePlatBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         InteractivePlatform interactivePlatform;
+        boolean onPlatform = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
@@ -130,12 +131,7 @@ public class ContactManager implements ContactListener {
 
             if(normal.y <= -1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "On interactive platform");
-
-                if(interactivePlatform instanceof FallingPlatform)
-                    robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
-
-                else if(interactivePlatform instanceof MovingPlatform)
-                    robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
+                onPlatform = true;
             }
             else if(normal.y >= 1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
@@ -150,12 +146,7 @@ public class ContactManager implements ContactListener {
 
             if(normal.y >= 1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "On interactive platform");
-
-                if(interactivePlatform instanceof FallingPlatform)
-                    robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
-
-                else if(interactivePlatform instanceof MovingPlatform)
-                    robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
+                onPlatform = true;
             }
             else if(normal.y <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from below");
@@ -163,6 +154,15 @@ public class ContactManager implements ContactListener {
                 Gdx.app.log("ContactManager","Robot hit platform from the right");
             else if(normal.x <= -1/Math.sqrt(2))
                 Gdx.app.log("ContactManager","Robot hit platform from the left");
+        }
+
+        // if onPlatform flag was set
+        if(onPlatform) {
+            if(interactivePlatform instanceof FallingPlatform)
+                robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
+
+            else if(interactivePlatform instanceof MovingPlatform)
+                robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
         }
     }
 
@@ -228,6 +228,7 @@ public class ContactManager implements ContactListener {
     private void robotEnemyBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         Enemy enemy;
+        boolean steppedOnEnemy = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
@@ -235,21 +236,7 @@ public class ContactManager implements ContactListener {
 
             if(normal.y <= -1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
-                enemy.setFlagToKill();
-
-                // if following a path, disable it
-                if(enemy.isAiPathFollowing()) {
-                    enemy.getFollowPath().setEnabled(false);
-                }
-
-                // stop enemy
-                enemy.getBody().setLinearVelocity(0, 0);
-                // set enemy's mask bits to "nothing"
-                StaticMethods.setMaskBit(fixB, NOTHING_MASK);
-                // increase points
-                StaticMethods.increaseScore(robot, enemy);
-                // add enemy to the HashMap in order to render the points gained
-                robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+                steppedOnEnemy = true;
             }
             else {
                 if (normal.y >= 1 / Math.sqrt(2))
@@ -258,16 +245,6 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager", "Robot hit enemy from the right");
                 else if (normal.x >= 1 / Math.sqrt(2))
                     Gdx.app.log("ContactManager", "Robot hit enemy from the left");
-
-                // decrease robot's health
-                StaticMethods.decreaseHealth(robot, enemy);
-                //add enemy to HashMap in order to render the damage incurred
-                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
-                // make it flicker
-                robot.setFlicker(true);
-                // shake camera
-                robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
-                Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
         }
         else {
@@ -276,24 +253,7 @@ public class ContactManager implements ContactListener {
 
             if(normal.y >= 1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
-                enemy.setFlagToKill();
-
-                // if following a path, disable it
-                if(enemy.isAiPathFollowing()) {
-                    enemy.getFollowPath().setEnabled(false);
-                }
-
-                // stop enemy
-                enemy.getBody().setLinearVelocity(0, 0);
-
-                // set enemy's mask bits to "nothing"
-                StaticMethods.setMaskBit(fixA, NOTHING_MASK);
-
-                // increase points
-                StaticMethods.increaseScore(robot, enemy);
-
-                // add enemy to the HashMap in order to render the points gained
-                robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+                steppedOnEnemy = true;
             }
             else {
                 if(normal.y <= -1/Math.sqrt(2))
@@ -302,20 +262,44 @@ public class ContactManager implements ContactListener {
                     Gdx.app.log("ContactManager","Robot hit enemy from the right");
                 else if(normal.x <= -1/Math.sqrt(2))
                     Gdx.app.log("ContactManager","Robot hit enemy from the left");
-
-                // decrease robot's health
-                StaticMethods.decreaseHealth(robot, enemy);
-
-                //add enemy to HashMap in order to render the damage incurred
-                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
-
-                // make it flicker
-                robot.setFlicker(true);
-
-                // shake camera
-                robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
-                Gdx.app.log("ContactManager","Robot health " + robot.getCheckpointData().getHealth() + "%");
             }
+        }
+
+        // if steppedOnEnemy flag was set
+        if(steppedOnEnemy) {
+            enemy.setFlagToKill();
+
+            // if following a path, disable it
+            if(enemy.isAiPathFollowing()) {
+                enemy.getFollowPath().setEnabled(false);
+            }
+
+            // stop enemy
+            enemy.getBody().setLinearVelocity(0, 0);
+
+            // set enemy's mask bits to "nothing"
+            StaticMethods.setMaskBit(fixB, NOTHING_MASK);
+
+            // increase points
+            StaticMethods.increaseScore(robot, enemy);
+
+            // add enemy to the HashMap in order to render the points gained
+            robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+        }
+        // otherwise it means that the robot was hit by an enemy
+        else {
+            // decrease robot's health
+            StaticMethods.decreaseHealth(robot, enemy);
+
+            //add enemy to HashMap in order to render the damage incurred
+            robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+
+            // make it flicker
+            robot.setFlicker(true);
+
+            // shake camera
+            robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+            Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }
     }
 
@@ -331,6 +315,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             collectable = (Collectable) fixA.getUserData();
         }
+
         // increase score for collectable
         StaticMethods.increaseScore(robot, collectable);
 
