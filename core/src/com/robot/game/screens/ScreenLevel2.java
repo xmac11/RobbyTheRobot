@@ -24,6 +24,7 @@ public class ScreenLevel2 extends PlayScreen{
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(WALL_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
 
         // create object parser
         super.objectParser = new ObjectParser(this);

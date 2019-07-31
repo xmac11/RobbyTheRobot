@@ -82,6 +82,10 @@ public class ContactManager implements ContactListener {
             case ROBOT_CATEGORY | WALLJUMP_CATEGORY:
             robotWallBegin(normal, fixA, fixB);
             break;
+
+            // robot - trampoline
+            case ROBOT_CATEGORY | TRAMPOLINE_CATEGORY:
+            robotTrampolineBegin(normal, fixA, fixB);
         }
 
 
@@ -421,19 +425,19 @@ public class ContactManager implements ContactListener {
 
     private void robotWallBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
-        boolean bool = false;
+        boolean wallJumpActivated = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
 
             if (normal.x <= -1 / Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot hit wall from the right");
-                bool = true;
+                wallJumpActivated = true;
                 robot.setDirection(1);
             }
             else if(normal.x >= 1 / Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot hit wall from the left");
-                bool = true;
+                wallJumpActivated = true;
                 robot.setDirection(-1);
             }
         }
@@ -442,29 +446,51 @@ public class ContactManager implements ContactListener {
 
             if(normal.x >= 1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot hit wall from the right");
-                bool = true;
+                wallJumpActivated = true;
                 robot.setDirection(1);
             }
             else if(normal.x <= -1/Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot hit wall from the left");
-                bool = true;
+                wallJumpActivated = true;
                 robot.setDirection(-1);
             }
         }
 
-        /*if(bool && !robot.getPlayScreen().wallJumpHandler.equals(Gdx.input.getInputProcessor())) {
-            Gdx.input.setInputProcessor(robot.getPlayScreen().wallJumpHandler);
-            System.out.println("Input processor was set");
-        }*/
-
-        if(bool && footContactCounter == 0) {
+        // if wall jump was activated and the robot is in the air
+        if(wallJumpActivated && footContactCounter == 0) {
             robot.setWallClimbing(true);
             robot.setCoyoteTimer(ROBOT_COYOTE_TIMER);
             Gdx.app.log("ContactManager", "WallClimbing = true");
             Gdx.app.log("ContactManager", "coyote timer set");
         }
+    }
 
+    private void robotTrampolineBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
+        Robot robot;
+        boolean onTrampoline = false;
 
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+
+            if(normal.y <= -1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot stepped on trampoline");
+                onTrampoline = true;
+            }
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+
+            if(normal.y >= 1 / Math.sqrt(2)) {
+                Gdx.app.log("ContactManager", "Robot stepped on trampoline");
+                onTrampoline = true;
+            }
+        }
+
+        // if robot is on trampoline
+        if(onTrampoline) {
+            robot.getBody().setLinearVelocity(robot.getBody().getLinearVelocity().x, 0);
+            robot.getBody().applyLinearImpulse(new Vector2(0, 10), robot.getBody().getWorldCenter(), true);
+        }
     }
 
     @Override

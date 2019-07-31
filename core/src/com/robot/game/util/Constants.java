@@ -41,12 +41,13 @@ public final class Constants {
     public static final short PIPE_CATEGORY = 256;
     public static final short PIPE_ON_GROUND_CATEGORY = 512;
     public static final short WALLJUMP_CATEGORY = 1024;
+    public static final short TRAMPOLINE_CATEGORY = 2048;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | ENEMY_CATEGORY
                                             | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY
-                                            | WALLJUMP_CATEGORY;
+                                            | WALLJUMP_CATEGORY | TRAMPOLINE_CATEGORY;
     public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short INTERACTIVE_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
@@ -56,6 +57,7 @@ public final class Constants {
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short WALLJUMP_MASK = ROBOT_CATEGORY;
+    public static final short TRAMPOLINE_MASK = ROBOT_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY;
 
     // Robot
@@ -105,6 +107,7 @@ public final class Constants {
     public static final String FALLING_PLATFORM_PROPERTY = "falling";
     public static final String MOVING_PLATFORM_PROPERTY = "moving";
     public static final String WALL_JUMPING_PROPERTY = "wallJumping";
+    public static final String TRAMPOLINE_PROPERTY = "trampoline";
 
     // Enemies
     public static final String ENEMY_PROPERTY = "enemy";

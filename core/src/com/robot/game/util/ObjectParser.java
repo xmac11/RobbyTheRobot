@@ -174,11 +174,17 @@ public class ObjectParser {
             fixtureDef.isSensor = true;
         }
         // wall jumping
-        else if(object.getProperties().containsKey("wallJumping")) {
+        else if(object.getProperties().containsKey(WALL_JUMPING_PROPERTY)) {
             fixtureDef.filter.categoryBits = WALLJUMP_CATEGORY;
             fixtureDef.filter.maskBits = WALLJUMP_MASK;
         }
-        // ground
+        // trampoline
+        else if(object.getProperties().containsKey(TRAMPOLINE_PROPERTY)) {
+            fixtureDef.filter.categoryBits = TRAMPOLINE_CATEGORY;
+            fixtureDef.filter.maskBits = TRAMPOLINE_MASK;
+            fixtureDef.restitution = 0.0f;
+        }
+            // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
             fixtureDef.filter.maskBits = GROUND_MASK;
