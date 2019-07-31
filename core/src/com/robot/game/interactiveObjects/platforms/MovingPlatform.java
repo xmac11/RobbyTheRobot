@@ -69,10 +69,6 @@ public class MovingPlatform extends InteractivePlatform {
         return false;
     }
 
-    public void movePlatform() {
-        body.setLinearVelocity(vX, vY);
-    }
-
     // reverse velocity of a moving platform
     private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
         if(reverseVx)
