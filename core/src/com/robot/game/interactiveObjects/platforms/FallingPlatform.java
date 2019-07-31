@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects.platforms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -29,9 +30,10 @@ public class FallingPlatform extends InteractivePlatform {
     public void update(float delta) {
 
         // if body is out of bounds, destroy it
-        if(body.getPosition().y < 0 && !isDestroyed) {
+        if(body.getPosition().y < 0 /*&& !isDestroyed*/) {
             world.destroyBody(body);
             isDestroyed = true;
+            Gdx.app.log("FallingPlatform", "Body destroyed");
         }
 
         if(flagToMove) {

@@ -29,8 +29,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
     public void update(float delta) {
         // if bat is flagged to be killed
         if(flagToKill) {
-            if(deadElapsed >= DEAD_TIMER)
+            if(deadElapsed >= DEAD_TIMER) {
                 body.setLinearVelocity(0, -8);
+                flagToKill = false;
+            }
             else
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
         }

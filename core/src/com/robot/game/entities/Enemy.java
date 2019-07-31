@@ -238,6 +238,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     protected void destroyBody() {
         world.destroyBody(body);
         isDestroyed = true;
+        Gdx.app.log("Enemy", "Body destroyed");
     }
 
     public boolean isAiPathFollowing() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="104">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="106">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -43,6 +43,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -65,6 +66,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -73,6 +75,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -81,6 +84,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -89,6 +93,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -97,6 +102,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -105,6 +111,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -113,6 +120,7 @@
    <properties>
     <property name="delay" type="float" value="0.5"/>
     <property name="falling" value=""/>
+    <property name="interactivePlatform" value=""/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-8"/>
    </properties>
@@ -124,6 +132,7 @@
    <properties>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="2000"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>
@@ -147,6 +156,7 @@
    <properties>
     <property name="endX" type="float" value="0"/>
     <property name="endY" type="float" value="0"/>
+    <property name="interactivePlatform" value=""/>
     <property name="moving" value=""/>
     <property name="shouldStop" type="bool" value="false"/>
     <property name="startX" type="float" value="0"/>
