@@ -4,8 +4,11 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.robot.game.util.Damaging;
 
-public class Spike {
+import static com.robot.game.util.Constants.DAMAGE_FROM_SPIKE;
+
+public class Spike implements Damaging {
 
     private Body body;
     private FixtureDef fixtureDef;
@@ -27,6 +30,11 @@ public class Spike {
         }*/
 
         body.createFixture(fixtureDef).setUserData(this);
+    }
+
+    @Override
+    public int getDamage() {
+        return DAMAGE_FROM_SPIKE;
     }
 
     public boolean mightBeWalked() {

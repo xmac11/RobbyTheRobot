@@ -66,4 +66,8 @@ public class Crab extends Enemy {
         super.draw(batch); // call to Sprite superclass
     }
 
+    @Override
+    public int getDamage() {
+        return DAMAGE_FROM_CRAB;
+    }
 }

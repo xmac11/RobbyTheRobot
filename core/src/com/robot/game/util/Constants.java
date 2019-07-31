@@ -194,7 +194,7 @@ public final class Constants {
     public static final float PIPES_END_X = 6528;
     public static final float PIPES_SPAWNING_PERIOD = 1.5f;
 
-    // PointsRenderer (health bar for powerup)
+    // FeedbackRenderer (health bar for powerup)
     public static final float POWERUP_FRAME_WIDTH = FRAME_WIDTH / 2f;
     public static final float POWERUP_FRAME_HEIGHT = FRAME_HEIGHT / 2f;
     // health bar

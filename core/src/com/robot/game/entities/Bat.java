@@ -72,6 +72,10 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
         super.draw(batch); // call to Sprite superclass
     }
 
+    @Override
+    public int getDamage() {
+        return DAMAGE_FROM_BAT;
+    }
 }
 
 

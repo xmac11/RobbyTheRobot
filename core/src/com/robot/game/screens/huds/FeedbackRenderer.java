@@ -5,29 +5,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.collectables.Burger;
-import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.entities.Enemy;
 import com.robot.game.entities.Robot;
+import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.util.Assets;
+import com.robot.game.util.Damaging;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class PointsRenderer {
+public class FeedbackRenderer {
 
     private Robot robot;
     private Assets assets;
     private ObjectMap<Enemy, Float> pointsForEnemyToDraw;
-    private ObjectMap<Object, Float> damageFromHitToDraw;
+    private ObjectMap<Damaging, Float> damageFromHitToDraw;
     private ObjectMap<Collectable, Float> itemPointsToDraw;
     private BitmapFont feedbackFont;
     private TextureRegion frame;
     private TextureRegion greenBar;
     private TextureRegion redBar;
 
-    public PointsRenderer(Robot robot) {
+    public FeedbackRenderer(Robot robot) {
         this.robot = robot;
         this.assets = robot.getPlayScreen().getAssets();
         this.pointsForEnemyToDraw = new ObjectMap<>();
@@ -47,8 +47,8 @@ public class PointsRenderer {
             renderPointsFromEnemy(batch, delta, enemyKey);
         }
 
-        for(Object objectKey: damageFromHitToDraw.keys()) {
-            renderDamageFromHit(batch, delta, objectKey);
+        for(Damaging damagingKey: damageFromHitToDraw.keys()) {
+            renderDamageFromHit(batch, delta, damagingKey);
         }
 
         // draw any points gained from collecting items
@@ -86,33 +86,24 @@ public class PointsRenderer {
         }
     }
 
-    private void renderDamageFromHit(SpriteBatch batch, float delta, Object objectKey) {
-        float alpha = damageFromHitToDraw.get(objectKey);
+    private void renderDamageFromHit(SpriteBatch batch, float delta, Damaging damagingtKey) {
+        float alpha = damageFromHitToDraw.get(damagingtKey);
         feedbackFont.setColor(153f / 255, 0, 0, 1); // to decide: always keep alpha = 1 or decrease it
 
         if(alpha > 0) {
             feedbackFont.draw(batch,
-                    "-" + determineDamage(objectKey) + "HP",
+                    "-" + damagingtKey.getDamage() + "HP",
                     robot.getBody().getPosition().x,
                     robot.getBody().getPosition().y + 40 / PPM + (1 - alpha) /*/ 1.5f*/,
                     0,
                     Align.center,
                     false);
 
-            damageFromHitToDraw.put(objectKey, alpha - 1.5f * delta);
+            damageFromHitToDraw.put(damagingtKey, alpha - 1.5f * delta);
         }
         else {
-            damageFromHitToDraw.remove(objectKey);
+            damageFromHitToDraw.remove(damagingtKey);
         }
-    }
-
-    private int determineDamage(Object objectKey) {
-        if(objectKey instanceof Enemy)
-            return StaticMethods.getDamageFromEnemy((Enemy) objectKey);
-        else if(objectKey instanceof FallingPipe)
-            return DAMAGE_FROM_PIPE;
-        else //if(objectKey instanceof Spike)
-            return DAMAGE_FROM_SPIKE;
     }
 
     private void renderPointsFromBurger(SpriteBatch batch, float delta, Collectable collectableKey) {
@@ -164,7 +155,7 @@ public class PointsRenderer {
                 itemPointsToDraw.remove(collectableKey);
             }
             else {
-                batch.draw(initialHelath >= 40 ? greenBar : redBar, // for powerup animation use green bar for >= 40
+                batch.draw(initialHelath >= 45 ? greenBar : redBar, // for powerup animation use green bar for >= 45
                         robot.getBody().getPosition().x - POWERUP_BAR_OFFSET_X / PPM,
                         robot.getBody().getPosition().y + 32 / PPM + POWERUP_BAR_OFFSET_Y / PPM,
                         (POWERUP_BAR_WIDTH * initialHelath / 100) / PPM,
@@ -179,7 +170,7 @@ public class PointsRenderer {
         return pointsForEnemyToDraw;
     }
 
-    public ObjectMap<Object, Float> getDamageFromHitToDraw() {
+    public ObjectMap<Damaging, Float> getDamageFromHitToDraw() {
         return damageFromHitToDraw;
     }
 

@@ -24,8 +24,8 @@ import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.entities.Enemy;
 import com.robot.game.entities.Robot;
+import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
-import com.robot.game.screens.huds.PointsRenderer;
 import com.robot.game.util.*;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
@@ -87,7 +87,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected float pipeElapsed;
 
     // points to draw
-    protected PointsRenderer pointsRenderer;
+    protected FeedbackRenderer feedbackRenderer;
 
     // camera variables
     protected OrthographicCamera camera;
@@ -163,7 +163,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
 
         // points to draw
-        this.pointsRenderer = new PointsRenderer(robot);
+        this.feedbackRenderer = new FeedbackRenderer(robot);
 
         // create debug camera
         this.debugCamera = new DebugCamera(this);
@@ -285,8 +285,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         return collectableHandler;
     }
 
-    public PointsRenderer getPointsRenderer() {
-        return pointsRenderer;
+    public FeedbackRenderer getFeedbackRenderer() {
+        return feedbackRenderer;
     }
 
     public PipeBodyCache getPipeBodyCache() {

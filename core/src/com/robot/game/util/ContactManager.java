@@ -198,7 +198,7 @@ public class ContactManager implements ContactListener {
             // decrease health
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
             //add spike to HashMap in order to render the damage incurred
-            robot.getPlayScreen().getPointsRenderer().getDamageFromHitToDraw().put(spike, 1f);
+            robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(spike, 1f);
             // make it invulnerable
             robot.setInvulnerable(1f);
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
@@ -245,7 +245,7 @@ public class ContactManager implements ContactListener {
                 // increase points
                 StaticMethods.increaseScore(robot, enemy);
                 // add enemy to the HashMap in order to render the points gained
-                robot.getPlayScreen().getPointsRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
             }
             else {
                 if (normal.y >= 1 / Math.sqrt(2))
@@ -258,7 +258,7 @@ public class ContactManager implements ContactListener {
                 // decrease robot's health
                 StaticMethods.decreaseHealth(robot, enemy);
                 //add enemy to HashMap in order to render the damage incurred
-                robot.getPlayScreen().getPointsRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
                 // make it flicker
                 robot.setFlicker(true);
                 // shake camera
@@ -289,7 +289,7 @@ public class ContactManager implements ContactListener {
                 StaticMethods.increaseScore(robot, enemy);
 
                 // add enemy to the HashMap in order to render the points gained
-                robot.getPlayScreen().getPointsRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
             }
             else {
                 if(normal.y <= -1/Math.sqrt(2))
@@ -303,7 +303,7 @@ public class ContactManager implements ContactListener {
                 StaticMethods.decreaseHealth(robot, enemy);
 
                 //add enemy to HashMap in order to render the damage incurred
-                robot.getPlayScreen().getPointsRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
 
                 // make it flicker
                 robot.setFlicker(true);
@@ -368,7 +368,7 @@ public class ContactManager implements ContactListener {
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_PIPE);
 
             //add pipe to HashMap in order to render the damage incurred
-            robot.getPlayScreen().getPointsRenderer().getDamageFromHitToDraw().put(pipe, 1f);
+            robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(pipe, 1f);
 
             // make it invulnerable for 1 second
             robot.setInvulnerable(1f);

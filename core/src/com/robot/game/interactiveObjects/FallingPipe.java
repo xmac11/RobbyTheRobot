@@ -7,10 +7,11 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
+import com.robot.game.util.Damaging;
 
 import static com.robot.game.util.Constants.*;
 
-public class FallingPipe extends Sprite {
+public class FallingPipe extends Sprite implements Damaging {
 
     private PlayScreen playScreen;
     private Assets assets;
@@ -113,6 +114,11 @@ public class FallingPipe extends Sprite {
     @Override
     public void draw(Batch batch) {
         pipeSprite.draw(batch);
+    }
+
+    @Override
+    public int getDamage() {
+        return DAMAGE_FROM_PIPE;
     }
 
     public Body getBody() {

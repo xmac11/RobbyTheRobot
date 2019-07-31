@@ -17,10 +17,11 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.*;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
+import com.robot.game.util.Damaging;
 
 import static com.robot.game.util.Constants.*;
 
-public abstract class Enemy extends Sprite implements Steerable<Vector2> {
+public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damaging {
 
     protected PlayScreen playScreen;
     protected Assets assets;
@@ -131,6 +132,9 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2> {
     }
 
     public abstract void update(float delta);
+
+    @Override
+    public abstract int getDamage();
 
     public boolean isDestroyed() {
         return isDestroyed;

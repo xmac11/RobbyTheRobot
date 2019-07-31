@@ -191,7 +191,7 @@ public class ScreenLevel1 extends PlayScreen {
 
         // render points to draw
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
-        pointsRenderer.draw(game.getBatch(), delta);
+        feedbackRenderer.draw(game.getBatch(), delta);
 
         /*if(pointsToDraw.size != 0)
             pointsToDraw.clear();*/
