@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
-import com.robot.game.interactiveObjects.InteractivePlatform;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.util.ObjectParser;
 
 import static com.robot.game.util.Constants.*;

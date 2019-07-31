@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.InteractivePlatform;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Enemy;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.entities.Enemy;
 import com.robot.game.util.ObjectParser;
 
 import static com.robot.game.util.Constants.*;

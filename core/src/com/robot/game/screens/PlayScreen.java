@@ -18,11 +18,17 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.InteractivePlatform;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Enemy;
-import com.robot.game.sprites.Robot;
+import com.robot.game.interactiveObjects.collectables.CollectableHandler;
+import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.entities.Enemy;
+import com.robot.game.entities.Robot;
+import com.robot.game.screens.huds.Hud;
+import com.robot.game.screens.huds.PointsRenderer;
 import com.robot.game.util.*;
+import com.robot.game.util.checkpoints.CheckpointData;
+import com.robot.game.util.checkpoints.FileSaver;
 import org.json.simple.JSONArray;
 
 import static com.robot.game.util.Constants.*;
@@ -81,7 +87,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected float pipeElapsed;
 
     // points to draw
-    protected  PointsRenderer pointsRenderer;
+    protected PointsRenderer pointsRenderer;
 
     // camera variables
     protected OrthographicCamera camera;

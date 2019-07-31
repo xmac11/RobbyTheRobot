@@ -3,7 +3,10 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.robot.game.sprites.*;
+import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.collectables.PowerUp;
+import com.robot.game.entities.*;
 
 import static com.robot.game.util.Constants.*;
 

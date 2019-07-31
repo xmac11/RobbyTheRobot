@@ -1,4 +1,4 @@
-package com.robot.game.sprites;
+package com.robot.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.Steerable;

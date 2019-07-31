@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.huds;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.sprites.Burger;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Enemy;
-import com.robot.game.sprites.Robot;
+import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.entities.Enemy;
+import com.robot.game.entities.Robot;
 import com.robot.game.util.Assets;
 import com.robot.game.util.StaticMethods;
 

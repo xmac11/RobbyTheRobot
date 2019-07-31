@@ -8,8 +8,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
+import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.collectables.CollectableHandler;
+import com.robot.game.interactiveObjects.collectables.PowerUp;
+import com.robot.game.interactiveObjects.ladder.Ladder;
+import com.robot.game.interactiveObjects.platforms.FallingPlatform;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.sprites.*;
+import com.robot.game.entities.*;
 
 import static com.robot.game.util.Constants.*;
 

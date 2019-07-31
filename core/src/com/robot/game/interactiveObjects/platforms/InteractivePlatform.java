@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects;
+package com.robot.game.interactiveObjects.platforms;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

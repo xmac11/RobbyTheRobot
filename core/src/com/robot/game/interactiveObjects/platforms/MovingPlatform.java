@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects;
+package com.robot.game.interactiveObjects.platforms;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;

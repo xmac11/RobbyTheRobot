@@ -1,10 +1,10 @@
-package com.robot.game.util;
+package com.robot.game.interactiveObjects.ladder;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.robot.game.sprites.Robot;
+import com.robot.game.entities.Robot;
 
 import static com.robot.game.util.Constants.*;
 

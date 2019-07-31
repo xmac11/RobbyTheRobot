@@ -4,10 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.sprites.Collectable;
-import com.robot.game.sprites.Enemy;
-import com.robot.game.sprites.PowerUp;
-import com.robot.game.sprites.Robot;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.ladder.Ladder;
+import com.robot.game.interactiveObjects.platforms.FallingPlatform;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.platforms.MovingPlatform;
+import com.robot.game.entities.Enemy;
+import com.robot.game.interactiveObjects.collectables.PowerUp;
+import com.robot.game.entities.Robot;
 
 import static com.robot.game.util.Constants.*;
 

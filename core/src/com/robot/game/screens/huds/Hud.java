@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.huds;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
-import com.robot.game.util.CheckpointData;
+import com.robot.game.util.checkpoints.CheckpointData;
 
 import static com.robot.game.util.Constants.*;
 
@@ -26,6 +27,7 @@ public class Hud {
 
     private Texture lives; // this will become a TextureRegion when finalized
     private BitmapFont font;
+    private BitmapFont hpFont;
     private GlyphLayout scoreGlyphLayout;
     private GlyphLayout livesGlyphLayout;
 
@@ -40,6 +42,7 @@ public class Hud {
         this.redBar = assets.hudAssets.redBar;
         this.lives = assets.hudAssets.lives;
         this.font = assets.fontAssets.font;
+        this.hpFont = assets.smallFontAssets.smallFont;
         this.scoreGlyphLayout = assets.hudAssets.scoreGlyphLayout;
         this.livesGlyphLayout = assets.hudAssets.livesGlyphLayout;
 
@@ -62,6 +65,16 @@ public class Hud {
                 hudViewport.getWorldHeight() - (BAR_OFFSET_Y + PADDING) / PPM,
                 (BAR_WIDTH * checkpointData.getHealth() / 100) / PPM,
                 BAR_HEIGHT / PPM);
+
+        // draw HP font within the health bar
+        hpFont.setColor(/*233f / 255, 233f / 255, 233f / 255, 1*/ Color.WHITE); // 70 / 233 / WHITE
+        hpFont.draw(batch,
+                "HP: " + checkpointData.getHealth(),
+                (PADDING + BAR_OFFSET_X + BAR_WIDTH / 2) / PPM,
+                    hudViewport.getWorldHeight() - (PADDING + BAR_OFFSET_Y / 2.2f) / PPM,
+                0,
+                Align.center,
+                false);
 
         // draw score label (SCORE)
         font.setColor(255f / 255, 192f / 255, 43f / 255, 1);

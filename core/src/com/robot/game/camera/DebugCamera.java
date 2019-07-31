@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.sprites.Robot;
+import com.robot.game.entities.Robot;
 
 import static com.robot.game.util.Constants.*;
 

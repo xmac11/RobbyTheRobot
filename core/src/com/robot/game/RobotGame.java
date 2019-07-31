@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.LoadingScreen;
 import com.robot.game.screens.ScreenLevel1;
 import com.robot.game.util.Assets;
-import com.robot.game.util.FileSaver;
-import com.robot.game.util.CheckpointData;
+import com.robot.game.util.checkpoints.FileSaver;
+import com.robot.game.util.checkpoints.CheckpointData;
 
 public class RobotGame extends Game {
 

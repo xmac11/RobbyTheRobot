@@ -1,4 +1,4 @@
-package com.robot.game.sprites;
+package com.robot.game.interactiveObjects.collectables;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
-import com.robot.game.util.CollectableHandler;
 import org.json.simple.JSONObject;
 
 public abstract class Collectable extends Sprite {

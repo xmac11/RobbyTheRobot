@@ -1,4 +1,4 @@
-package com.robot.game.sprites;
+package com.robot.game.interactiveObjects.collectables;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,7 +9,7 @@ import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
 
-public class Burger extends  Collectable{
+public class Burger extends Collectable {
 
 
     private Sprite burgerSprite;

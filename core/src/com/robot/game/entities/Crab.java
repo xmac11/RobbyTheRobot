@@ -1,4 +1,4 @@
-package com.robot.game.sprites;
+package com.robot.game.entities;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
