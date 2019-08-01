@@ -178,8 +178,8 @@ public class ContactManager implements ContactListener {
 
         robot.setOnInteractivePlatform(movingPlatform, true);
 
-        // if platform is waiting and has not been already activated, move it
-        if(movingPlatform.isWaiting() && !movingPlatform.isActivated())
+        // if platform is waiting and has not been already stopped, move it
+        if(movingPlatform.isWaiting() && !movingPlatform.isStopped())
             movingPlatform.movePlatform();
     }
 

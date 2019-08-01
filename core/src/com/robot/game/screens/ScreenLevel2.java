@@ -7,7 +7,6 @@ import com.robot.game.RobotGame;
 import com.robot.game.entities.Enemy;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
-import com.robot.game.util.ObjectParser;
 
 import static com.robot.game.util.Constants.*;
 
@@ -30,17 +29,8 @@ public class ScreenLevel2 extends PlayScreen{
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
-        // create object parser
-        super.objectParser = new ObjectParser(this);
-
-        // create enemies
-        super.enemies = objectParser.getEnemies();
-
-        // create collectables
-        super.collectables = objectParser.getCollectables();
-
-        // create interactive platforms
-        super.interactivePlatforms = objectParser.getInteractivePlatforms();
+        // creates objectParser, interactivePlatforms, enemies and collectables
+        super.createCommonObjectLayers();
 
         // create trampoline
         super.trampoline = objectParser.getTrampoline();
@@ -48,8 +38,10 @@ public class ScreenLevel2 extends PlayScreen{
     }
 
     protected void update(float delta) {
+        // update common elements
         super.commonUpdates(delta);
 
+        // update view
         super.updateViews(delta);
     }
 
@@ -66,34 +58,19 @@ public class ScreenLevel2 extends PlayScreen{
 
         game.getBatch().begin();
 
-        // render interactive platforms
-        for(InteractivePlatform platform: interactivePlatforms) {
-            if(!platform.isDestroyed()) {
-                platform.draw(game.getBatch());
-            }
-        }
-
-        // render enemies
-        for(Enemy enemy: enemies) {
-            if(!enemy.isDestroyed()) {
-                enemy.draw(game.getBatch());
-            }
-        }
-
-        // render collectables
-        for(Collectable collectable: collectables) {
-            if(!collectable.isDestroyed())
-                collectable.draw(game.getBatch());
-        }
-
-        robot.draw(game.getBatch(), delta);
+        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer, hud)
+        super.commonRendering(delta);
 
         trampoline.draw(game.getBatch());
 
         game.getBatch().end();
 
         //render box2d debug rectangles
-        if(DEBUG_ON)
+        if(DEBUG_ON) {
             debugRenderer.render(world, viewport.getCamera().combined);
+        }
+
+        // finally, check if robot is dead
+        super.checkIfDead();
     }
 }

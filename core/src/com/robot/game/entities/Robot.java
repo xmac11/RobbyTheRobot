@@ -502,7 +502,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             playScreen.setCheckpointDataDeleted(true);
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-             * reset their spawning and delete the file */
+             * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(playScreen.getLevelID());
                 FileSaver.getCollectedItemsFile().delete();

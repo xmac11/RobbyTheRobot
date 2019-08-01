@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.LoadingScreen;
 import com.robot.game.screens.ScreenLevel1;
+import com.robot.game.screens.ScreenLevel2;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -53,11 +54,20 @@ public class RobotGame extends Game {
 		return batch;
 	}
 
-	public void respawn(CheckpointData checkpointData) {
+	public void respawn(CheckpointData checkpointData, int levelID) {
 		Gdx.app.log("RobotGame", "Respawning...");
 		// first save game data, then restart game
 		FileSaver.saveCheckpointData(checkpointData);
-		setScreen(new ScreenLevel1(this));
+
+		switch(levelID) {
+			case 1:
+				setScreen(new ScreenLevel1(this));
+				break;
+			case 2:
+				setScreen(new ScreenLevel2(this));
+				break;
+		}
+
 	}
 
 }

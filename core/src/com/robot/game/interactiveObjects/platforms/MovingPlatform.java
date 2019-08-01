@@ -1,7 +1,7 @@
 package com.robot.game.interactiveObjects.platforms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.screens.PlayScreen;
@@ -48,7 +48,6 @@ public class MovingPlatform extends InteractivePlatform {
                 stop();
                 activated = true;
                 stopped = true;
-                System.out.println("stop");
             }
             else if(outOfRangeX())
                 reverseVelocity(true, false);
@@ -95,6 +94,7 @@ public class MovingPlatform extends InteractivePlatform {
     // stop platform
     private void stop() {
         body.setLinearVelocity(0, 0);
+        Gdx.app.log("MovingPlatform", "Platform stopped");
     }
 
     public boolean isWaiting() {
@@ -105,7 +105,7 @@ public class MovingPlatform extends InteractivePlatform {
         return shouldStop;
     }
 
-    public boolean isActivated() {
-        return activated;
+    public boolean isStopped() {
+        return stopped;
     }
 }

@@ -9,11 +9,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
-import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
-import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.entities.Enemy;
-import com.robot.game.util.ObjectParser;
+import com.robot.game.interactiveObjects.FallingPipe;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 
 import static com.robot.game.util.Constants.*;
 
@@ -21,6 +20,13 @@ public class ScreenLevel1 extends PlayScreen {
 
     private int[] backgroundWallLayer;
     private int[] mapLayers;
+
+    // earthquake
+    private boolean earthquakeHappened;
+    private boolean pipesStartedFalling;
+    private boolean pipesDisabled;
+    private float pipeStartTime;
+    private float pipeElapsed;
 
     // parallax scrolling
     private Parallax parallaxBackground;
@@ -46,31 +52,19 @@ public class ScreenLevel1 extends PlayScreen {
         this.backgroundWallLayer = new int[] {0};
         this.mapLayers = new int[] {1, 2, 3, 4, 5, 6, 8, 9, 10};
 
-        // create object parser
-        super.objectParser = new ObjectParser(this);
-
-        // create interactive platforms
-        super.interactivePlatforms = objectParser.getInteractivePlatforms();
-
-        // create enemies
-        super.enemies = objectParser.getEnemies();
-
-        // create collectables
-        super.collectables = objectParser.getCollectables();
+        // creates objectParser, interactivePlatforms, enemies and collectables
+        super.createCommonObjectLayers();
 
         // create parallax
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
         this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
 
-
-
-//        this.pipePool = new PipePool(this, 16, 25);
-
         //System.out.println(tiledMapLevel1.getLayers().get(GROUND_OBJECT).getObjects().get(250)); // error
-        System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size());
+        System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size()); // this should be zero when the game starts
     }
 
     private void update(float delta) {
+        // update common elements
         super.commonUpdates(delta);
 
         // handle earthquake
@@ -81,6 +75,7 @@ public class ScreenLevel1 extends PlayScreen {
             fallingPipe.update(delta);
         }
 
+        // update view
         super.updateViews(delta);
 
         //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
@@ -118,43 +113,14 @@ public class ScreenLevel1 extends PlayScreen {
         // render foreground (waves and barrels)
         parallaxBarrels.draw(game.getBatch());
 
-        // render interactive platforms
-        for(InteractivePlatform platform: interactivePlatforms) {
-            if(!platform.isDestroyed()) {
-                platform.draw(game.getBatch());
-            }
-        }
-
-        // render robot
-        robot.draw(game.getBatch(), delta);
-
-        // render enemies
-        for(Enemy enemy: enemies) {
-            if(!enemy.isDestroyed()) {
-                enemy.draw(game.getBatch());
-            }
-        }
-
-        // render collectables
-        for(Collectable collectable: collectables) {
-            if(!collectable.isDestroyed())
-                collectable.draw(game.getBatch());
-        }
+        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer, hud)
+        super.commonRendering(delta);
 
         // render falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.draw(game.getBatch());
         }
 
-        // render points to draw
-        // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
-        feedbackRenderer.draw(game.getBatch(), delta);
-
-        /*if(pointsToDraw.size != 0)
-            pointsToDraw.clear();*/
-
-        // render Hud
-        hud.draw(game.getBatch());
         game.getBatch().end();
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);

@@ -81,12 +81,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // falling pipes
     protected DelayedRemovalArray<FallingPipe> fallingPipes;
-    protected boolean earthquakeHappened;
-    protected boolean pipesStartedFalling;
-    protected boolean pipesDisabled;
     protected PipeBodyCache pipeBodyCache;
-    protected float pipeStartTime;
-    protected float pipeElapsed;
 
     // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
@@ -186,6 +181,20 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     }*/
 
+    protected void createCommonObjectLayers() {
+        // create object parser
+        this.objectParser = new ObjectParser(this);
+
+        // create interactive platforms
+        this.interactivePlatforms = objectParser.getInteractivePlatforms();
+
+        // create enemies
+        this.enemies = objectParser.getEnemies();
+
+        // create collectables
+        this.collectables = objectParser.getCollectables();
+    }
+
     protected void commonUpdates(float delta) {
         // perform physics simulation
         world.step(1 / 60f, 8, 3);
@@ -236,6 +245,38 @@ public abstract class PlayScreen extends ScreenAdapter {
         // only render what the camera can see
         mapRenderer.setView(camera);
         game.getBatch().setProjectionMatrix(camera.combined);
+    }
+
+    protected void commonRendering(float delta) {
+        // render interactive platforms
+        for(InteractivePlatform platform: interactivePlatforms) {
+            if(!platform.isDestroyed()) {
+                platform.draw(game.getBatch());
+            }
+        }
+
+        // render robot
+        robot.draw(game.getBatch(), delta);
+
+        // render enemies
+        for(Enemy enemy: enemies) {
+            if(!enemy.isDestroyed()) {
+                enemy.draw(game.getBatch());
+            }
+        }
+
+        // render collectables
+        for(Collectable collectable: collectables) {
+            if(!collectable.isDestroyed())
+                collectable.draw(game.getBatch());
+        }
+
+        // render feedback
+        // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
+        feedbackRenderer.draw(game.getBatch(), delta);
+
+        // render Hud
+        hud.draw(game.getBatch());
     }
 
     @Override
@@ -356,7 +397,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected void checkIfDead() {
         // robot died but has remaining lives
         if(robot.isDead() && checkpointData.getLives() >= 0) {
-            Gdx.app.log("ScreenLevel1", "Player died");
+            Gdx.app.log("PlayScreen", "Player died");
             // loop through all items that have been collected and disable their spawning
             for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
                 collectableHandler.setSpawn(collectableID, false);
@@ -367,23 +408,23 @@ public abstract class PlayScreen extends ScreenAdapter {
                 doNotSaveInHide = true;
             }
             // finally restart the game
-            game.respawn(checkpointData);
+            game.respawn(checkpointData, levelID);
         }
         // robot died and has no remaining lives
         else if(robot.isDead()) {
-            Gdx.app.log("ScreenLevel1", "Player died, no more lives left :(");
+            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
 
             // reset checkpoint data
             checkpointData.setDefaultData();
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-             * reset their spawning and delete the file */
+             * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
                 FileSaver.getCollectedItemsFile().delete();
             }
             // finally restart the game
-            game.respawn(checkpointData);
+            game.respawn(checkpointData, levelID);
         }
     }
 }
