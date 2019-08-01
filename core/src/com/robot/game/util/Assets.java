@@ -35,6 +35,8 @@ public class Assets {
     public FontAssets fontAssets;
     public SmallFontAssets smallFontAssets;
 
+    public TrampolineAssets trampolineAssets;
+
     public Assets() {
         this.assetManager = new AssetManager();
     }
@@ -111,6 +113,8 @@ public class Assets {
         this.collectableAssets = new CollectableAssets(atlas);
         this.pipeAssets = new PipeAssets(atlas);
         this.smallFontAssets = new SmallFontAssets();
+
+        this.trampolineAssets = new TrampolineAssets(atlas);
     }
 
     public void dispose() {
@@ -158,6 +162,8 @@ public class Assets {
                 framesArray.add(atlas.findRegion("bat_dead" + i));
             }
             this.batDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
         }
     }
 
@@ -181,6 +187,8 @@ public class Assets {
                 framesArray.add(atlas.findRegion("crab_dead" + i));
             }
             this.crabDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
         }
     }
 
@@ -259,6 +267,16 @@ public class Assets {
 
         private PipeAssets(TextureAtlas atlas) {
             this.debris = atlas.findRegion("debris");
+        }
+    }
+
+    public class TrampolineAssets {
+        public final TextureAtlas.AtlasRegion trampolineFull;
+        public final TextureAtlas.AtlasRegion trampolineHalf;
+
+        private TrampolineAssets(TextureAtlas atlas) {
+            this.trampolineFull = atlas.findRegion("trampoline1");
+            this.trampolineHalf = atlas.findRegion("trampoline2");
         }
     }
 

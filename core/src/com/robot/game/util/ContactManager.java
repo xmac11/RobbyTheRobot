@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.ladder.Ladder;
@@ -104,7 +105,7 @@ public class ContactManager implements ContactListener {
             ladder = (Ladder) fixA.getUserData();
         }
 
-        // every time robot is hits the bottom of the ladder, turn off gravity and enable up-down keys
+        // every time robot hits the bottom of the ladder, turn off gravity and enable up-down keys
         // this mimics the case where the robot is on the ladder and falls down to the bottom
         if(ladder.getDescription().equals(LADDER_BOTTOM_DESCRIPTION)) {
             Gdx.app.log("ContactManager", "On bottom ladder");
@@ -452,10 +453,12 @@ public class ContactManager implements ContactListener {
 
     private void robotTrampolineBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
+        Trampoline trampoline;
         boolean onTrampoline = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
+            trampoline = (Trampoline) fixB.getUserData();
 
             if(normal.y <= -1 / Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on trampoline");
@@ -464,6 +467,8 @@ public class ContactManager implements ContactListener {
         }
         else {
             robot = (Robot) fixB.getUserData();
+            trampoline = (Trampoline) fixA.getUserData();
+
 
             if(normal.y >= 1 / Math.sqrt(2)) {
                 Gdx.app.log("ContactManager", "Robot stepped on trampoline");
@@ -473,8 +478,11 @@ public class ContactManager implements ContactListener {
 
         // if robot is on trampoline
         if(onTrampoline) {
-            robot.getBody().setLinearVelocity(robot.getBody().getLinearVelocity().x, 0);
-            robot.getBody().applyLinearImpulse(new Vector2(0, 10), robot.getBody().getWorldCenter(), true);
+//            trampoline.trampolineSprite.setTexture(trampoline.playScreen.getAssets().trampolineAssets.t2);
+            trampoline.setStartTimeAnim(TimeUtils.nanoTime());
+            trampoline.setActivated(true);
+            robot.getBody().setLinearVelocity(0, 0);
+            robot.getBody().applyLinearImpulse(new Vector2(0, 9.5f), robot.getBody().getWorldCenter(), true);
         }
     }
 

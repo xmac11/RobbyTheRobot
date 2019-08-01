@@ -18,6 +18,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.FallingPipe;
+import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.CollectableHandler;
 import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
@@ -76,7 +77,6 @@ public abstract class PlayScreen extends ScreenAdapter {
     // enemies
     protected DelayedRemovalArray<Enemy> enemies;
 
-
     // falling pipes
     protected DelayedRemovalArray<FallingPipe> fallingPipes;
     protected boolean earthquakeHappened;
@@ -86,7 +86,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected float pipeStartTime;
     protected float pipeElapsed;
 
-    // points to draw
+    // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
 
     // camera variables
@@ -100,6 +100,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected JSONArray collectedItems;
     protected boolean newItemCollected;
     protected boolean doNotSaveInHide;
+
+    // trampoline
+    public Trampoline trampoline;
 
     // Hud
     protected Hud hud;

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -205,5 +205,9 @@ public final class Constants {
     public static final float POWERUP_BAR_OFFSET_Y = 2.5f;
     public static final float POWERUP_BAR_WIDTH = BAR_WIDTH / 2f;
     public static final float POWERUP_BAR_HEIGHT = BAR_HEIGHT / 2f;
+
+    // Trampoline
+    public static final float TRAMPOLINE_WIDTH = 32f;
+    public static final float TRAMPOLINE_HEIGHT = 32f;
 
 }

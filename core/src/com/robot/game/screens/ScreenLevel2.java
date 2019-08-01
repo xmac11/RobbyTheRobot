@@ -32,6 +32,8 @@ public class ScreenLevel2 extends PlayScreen{
         // create interactive platforms
         super.interactivePlatforms = objectParser.getInteractivePlatforms();
 
+        super.trampoline = objectParser.trampoline;
+
     }
 
     protected void update(float delta) {
@@ -77,6 +79,8 @@ public class ScreenLevel2 extends PlayScreen{
         }
 
         robot.draw(game.getBatch(), delta);
+
+        trampoline.draw(game.getBatch());
 
         game.getBatch().end();
 

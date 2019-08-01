@@ -34,6 +34,7 @@ public class ObjectParser {
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
+    public Trampoline trampoline;
 
     public ObjectParser(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -182,7 +183,6 @@ public class ObjectParser {
         else if(object.getProperties().containsKey(TRAMPOLINE_PROPERTY)) {
             fixtureDef.filter.categoryBits = TRAMPOLINE_CATEGORY;
             fixtureDef.filter.maskBits = TRAMPOLINE_MASK;
-            fixtureDef.restitution = 0.0f;
         }
             // ground
         else {
@@ -208,7 +208,6 @@ public class ObjectParser {
                 this.interactivePlatforms.add(new MovingPlatform(playScreen, body, fixtureDef, object));
             }
         }
-
         // create enemies
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
 
@@ -240,6 +239,10 @@ public class ObjectParser {
         // create wall jumping surface
         else if(object.getProperties().containsKey(WALL_JUMPING_PROPERTY)) {
             body.createFixture(fixtureDef).setUserData(WALL_JUMPING_PROPERTY);
+        }
+        // create trampoline
+        else if(object.getProperties().containsKey(TRAMPOLINE_PROPERTY)) {
+            this.trampoline = new Trampoline(playScreen, body, fixtureDef);
         }
         // create ground
         else {

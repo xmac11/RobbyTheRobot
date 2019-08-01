@@ -2131,7 +2131,7 @@
 					{
 						"name": "shouldSpawn",
 						"type": "bool",
-						"value": true
+						"value": false
 					}
 				],
 				"height": 16
