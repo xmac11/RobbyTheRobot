@@ -63,8 +63,8 @@ public class FileSaver {
     }
 
     /** When the robot dies and has no more lives, this method reads the saved file of collected items
-     * (whose spawning has been disabled) and resets their spawning to TRUE */
-    public static void resetSpawningOfCollectables() {
+     * (whose spawning has been disabled) and resets their spawning in the corresponding level to TRUE */
+    public static void resetSpawningOfCollectables(int levelID) {
 
         Gdx.app.log("FileSaver", "Collectables reset");
 
@@ -73,7 +73,7 @@ public class FileSaver {
 
         for(Object object: jsonArray) {
             JSONObject obj = (JSONObject) object;
-            FileSaver.resetSpawningOfCollectable((long) obj.get("id"));
+            FileSaver.resetSpawningOfCollectable((long) obj.get("id"), levelID);
         }
     }
 
@@ -100,11 +100,12 @@ public class FileSaver {
         return collectedItemsFile;
     }
 
-    /** Given the ID of the collectable item to be reset to be spawned, the method reads the tiled map json file,
-     *  overrides the boolean value of whether a particular collectable should be respawned to TRUE.
+    /** Given the ID of the collectable item to be reset to be spawned and the level it refers to,
+     *  the method reads the tiled map json file, overrides the boolean value of whether a particular
+     *  collectable should be respawned to TRUE.
      *  Finally saves the tiled map json file */
-    public static void resetSpawningOfCollectable(long collectableID) {
-        FileHandle file = Gdx.files.local(LEVEL_1_JSON);
+    public static void resetSpawningOfCollectable(long collectableID, int levelID) {
+        FileHandle file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
         JSONObject root = null;
 
         try {

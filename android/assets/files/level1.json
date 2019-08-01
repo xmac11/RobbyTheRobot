@@ -1295,11 +1295,6 @@
 						"value": ""
 					},
 					{
-						"name": "offset",
-						"type": "float",
-						"value": 8
-					},
-					{
 						"name": "startX",
 						"type": "float",
 						"value": -1
@@ -1421,11 +1416,6 @@
 						"value": ""
 					},
 					{
-						"name": "offset",
-						"type": "float",
-						"value": 0
-					},
-					{
 						"name": "startX",
 						"type": "float",
 						"value": 2750
@@ -1489,11 +1479,6 @@
 						"value": ""
 					},
 					{
-						"name": "offset",
-						"type": "float",
-						"value": 8
-					},
-					{
 						"name": "startX",
 						"type": "float",
 						"value": 2750
@@ -1550,11 +1535,6 @@
 						"name": "enemy",
 						"type": "string",
 						"value": ""
-					},
-					{
-						"name": "offset",
-						"type": "float",
-						"value": 8
 					},
 					{
 						"name": "startX",
@@ -1615,11 +1595,6 @@
 						"value": ""
 					},
 					{
-						"name": "offset",
-						"type": "float",
-						"value": 8
-					},
-					{
 						"name": "startX",
 						"type": "float",
 						"value": -1
@@ -1676,11 +1651,6 @@
 						"name": "enemy",
 						"type": "string",
 						"value": ""
-					},
-					{
-						"name": "offset",
-						"type": "float",
-						"value": 8
 					},
 					{
 						"name": "startX",
@@ -2131,7 +2101,7 @@
 					{
 						"name": "shouldSpawn",
 						"type": "bool",
-						"value": false
+						"value": true
 					}
 				],
 				"height": 16

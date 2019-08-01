@@ -245,7 +245,6 @@
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
     <property name="enemy" value=""/>
-    <property name="offset" type="float" value="8"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="72"/>
     <property name="vX" type="float" value="0"/>
@@ -273,7 +272,6 @@
     <property name="endY" type="float" value="1000"/>
     <property name="enemy" value=""/>
     <property name="noRestitution" value=""/>
-    <property name="offset" type="float" value="0"/>
     <property name="startX" type="float" value="2750"/>
     <property name="startY" type="float" value="-1"/>
     <property name="vX" type="float" value="2.3"/>
@@ -288,7 +286,6 @@
     <property name="endY" type="float" value="1000"/>
     <property name="enemy" value=""/>
     <property name="noRestitution" value=""/>
-    <property name="offset" type="float" value="8"/>
     <property name="startX" type="float" value="2750"/>
     <property name="startY" type="float" value="-1"/>
     <property name="vX" type="float" value="-2.3"/>
@@ -302,7 +299,6 @@
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
     <property name="enemy" value=""/>
-    <property name="offset" type="float" value="8"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="72"/>
     <property name="vX" type="float" value="0"/>
@@ -316,7 +312,6 @@
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
     <property name="enemy" value=""/>
-    <property name="offset" type="float" value="8"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="112"/>
     <property name="vX" type="float" value="0"/>
@@ -330,7 +325,6 @@
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="280"/>
     <property name="enemy" value=""/>
-    <property name="offset" type="float" value="8"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="144"/>
     <property name="vX" type="float" value="0"/>

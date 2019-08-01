@@ -14,10 +14,8 @@ public final class Constants {
 
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
-    public static final String LEVEL_1_JSON = "files/level1.json";
-
     public static final String LEVEL_2_TMX = "level2/level2.tmx";
-//    public static final String LEVEL_2_JSON = "files/level1.json";
+    public static final String FOLDER_NAME = "files/";
 
     public static final String GROUND_OBJECT = "Ground obj";
     public static final String LADDER_OBJECT = "Ladder obj";
@@ -209,5 +207,6 @@ public final class Constants {
     // Trampoline
     public static final float TRAMPOLINE_WIDTH = 32f;
     public static final float TRAMPOLINE_HEIGHT = 32f;
+    public static final Vector2 TRAMPOLINE_IMPULSE = new Vector2(0, 9.5f);
 
 }

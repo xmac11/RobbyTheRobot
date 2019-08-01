@@ -17,6 +17,9 @@ import static com.robot.game.util.Constants.*;
 
 public class CollectableHandler {
 
+    // reference of the current level
+    private int levelID;
+
     // This JSONArray stores all JSONObject of the collected items
     private JSONArray collectedItems;
 
@@ -24,15 +27,16 @@ public class CollectableHandler {
      * collected them. Thee will be disabled altogether when the robot dies, so as not to slow down the game when it is in progress. */
     private Array<Integer> itemsToDisableSpawning;
 
-    public CollectableHandler() {
+    public CollectableHandler(int levelID) {
+        this.levelID = levelID;
         this.collectedItems = new JSONArray();
         this.itemsToDisableSpawning = new Array<>();
     }
 
     // parse json map file to determine if a collectable object should be spawned
-    public static boolean shouldSpawn(int collectableID) {
+    public boolean shouldSpawn(int collectableID) {
         JsonReader reader = new JsonReader();
-        JsonValue root = reader.parse(Gdx.files.internal(LEVEL_1_JSON));
+        JsonValue root = reader.parse(Gdx.files.internal(FOLDER_NAME + "level" + levelID + ".json"));
         JsonValue child1 = root.get("layers");
 
         boolean shouldBreakI = false;
@@ -69,7 +73,7 @@ public class CollectableHandler {
     // parse json map file and override the boolean value of whether a particular collectable should be respawned
     public void setSpawn(int collectableID, boolean bool) {
 
-        FileHandle file = Gdx.files.local(LEVEL_1_JSON);
+        FileHandle file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
         JSONObject root = null;
 
         try {

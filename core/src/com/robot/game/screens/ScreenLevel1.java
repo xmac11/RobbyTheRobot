@@ -27,7 +27,7 @@ public class ScreenLevel1 extends PlayScreen {
     private Parallax parallaxBarrels;
 
     public ScreenLevel1(RobotGame game) {
-        super(game, game.getAssets().tiledMapAssets.tiledMapLevel1);
+        super(game, game.getAssets().tiledMapAssets.tiledMapLevel1, 1);
     }
 
     @Override
@@ -71,50 +71,7 @@ public class ScreenLevel1 extends PlayScreen {
     }
 
     private void update(float delta) {
-        // perform physics simulation
-        world.step(1 / 60f, 8, 3);
-
-        // update interactive platforms (do this first if robot should be moving along with it)
-        for(int i = 0; i < interactivePlatforms.size; i++) {
-            InteractivePlatform platform = interactivePlatforms.get(i);
-            // if robot is within a certain distance from the platform, activate the platform
-            //            if(Math.abs(platform.getBody().getCameraDisplacement().x - robot.getBody().getCameraDisplacement().x) < viewport.getWorldWidth())
-            //                platform.getBody().setActive(true);
-            //            else
-            //                platform.getBody().setActive(false);
-
-            // if platform is active, update it
-            platform.update(delta);
-
-            // if platform is destroyed, remove from array
-            if(platform.isDestroyed())
-                interactivePlatforms.removeIndex(i);
-        }
-
-        // update robot
-        robot.update(delta);
-
-        // update enemies
-        for(int i = 0; i < enemies.size; i++) {
-            Enemy enemy = enemies.get(i);
-            enemy.update(delta);
-
-            // for path-following bat that is activated when the robot gets near it
-           if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
-                enemy.getBody().setActive(true);
-
-            if(enemy.isDestroyed())
-                enemies.removeIndex(i);
-        }
-
-        // update collectables
-        for(int i = 0; i < collectables.size; i++) {
-            Collectable collectable = collectables.get(i);
-            collectable.update(delta);
-
-            if(collectable.isDestroyed())
-                collectables.removeIndex(i);
-        }
+        super.commonUpdates(delta);
 
         // handle earthquake
         handleEarthquake();

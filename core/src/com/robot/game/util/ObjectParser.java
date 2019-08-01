@@ -34,7 +34,7 @@ public class ObjectParser {
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
-    public Trampoline trampoline;
+    private Trampoline trampoline;
 
     public ObjectParser(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -226,7 +226,7 @@ public class ObjectParser {
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
 
             // check if collectable should spawn (i.e. it has not been already collected)
-            if(CollectableHandler.shouldSpawn((int) object.getProperties().get("id"))) {
+            if(playScreen.getCollectableHandler().shouldSpawn((int) object.getProperties().get("id"))) {
                 // create powerups
                 if(object.getProperties().containsKey(POWERUP_PROPERTY)) {
                     this.collectables.add(new PowerUp(playScreen, body, fixtureDef, object));
@@ -265,4 +265,7 @@ public class ObjectParser {
         return collectables;
     }
 
+    public Trampoline getTrampoline() {
+        return trampoline;
+    }
 }

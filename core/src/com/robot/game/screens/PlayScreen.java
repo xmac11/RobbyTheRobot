@@ -40,6 +40,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     // main class reference
     protected RobotGame game;
 
+    protected int levelID;
+
     // assets
     protected Assets assets;
 
@@ -110,10 +112,11 @@ public abstract class PlayScreen extends ScreenAdapter {
     // debug lines for AI paths
     protected ShapeRenderer shapeRenderer;
 
-    public PlayScreen(RobotGame game, TiledMap tiledMap) {
+    public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.assets = game.getAssets();
         this.tiledMap = tiledMap;
+        this.levelID = levelID;
 
         int tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         this.mapWidth = tiledMap.getProperties().get("width", Integer.class) * tileSize;
@@ -146,7 +149,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             this.debugRenderer = new Box2DDebugRenderer();
 
         // create collectable handler
-        this.collectableHandler = new CollectableHandler();
+        this.collectableHandler = new CollectableHandler(levelID);
         this.collectedItems = collectableHandler.getCollectedItems();
 
         // create shake effect
@@ -182,6 +185,48 @@ public abstract class PlayScreen extends ScreenAdapter {
     public void show() {
 
     }*/
+
+    protected void commonUpdates(float delta) {
+        // perform physics simulation
+        world.step(1 / 60f, 8, 3);
+
+        // update interactive platforms (do this first if robot should be moving along with it)
+        for(int i = 0; i < interactivePlatforms.size; i++) {
+            InteractivePlatform platform = interactivePlatforms.get(i);
+
+            // if platform is active, update it
+            platform.update(delta);
+
+            // if platform is destroyed, remove from array
+            if(platform.isDestroyed())
+                interactivePlatforms.removeIndex(i);
+        }
+
+        // update robot
+        robot.update(delta);
+
+        // update enemies
+        for(int i = 0; i < enemies.size; i++) {
+            Enemy enemy = enemies.get(i);
+            enemy.update(delta);
+
+            // for path-following bat that is activated when the robot gets near it
+            if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
+                enemy.getBody().setActive(true);
+
+            if(enemy.isDestroyed())
+                enemies.removeIndex(i);
+        }
+
+        // update collectables
+        for(int i = 0; i < collectables.size; i++) {
+            Collectable collectable = collectables.get(i);
+            collectable.update(delta);
+
+            if(collectable.isDestroyed())
+                collectables.removeIndex(i);
+        }
+    }
 
     protected void updateViews(float delta) {
         // update camera
@@ -304,6 +349,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         return mapHeight;
     }
 
+    public int getLevelID() {
+        return levelID;
+    }
+
     protected void checkIfDead() {
         // robot died but has remaining lives
         if(robot.isDead() && checkpointData.getLives() >= 0) {
@@ -330,7 +379,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
              * reset their spawning and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
-                FileSaver.resetSpawningOfCollectables();
+                FileSaver.resetSpawningOfCollectables(levelID);
                 FileSaver.getCollectedItemsFile().delete();
             }
             // finally restart the game

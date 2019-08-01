@@ -478,11 +478,10 @@ public class ContactManager implements ContactListener {
 
         // if robot is on trampoline
         if(onTrampoline) {
-//            trampoline.trampolineSprite.setTexture(trampoline.playScreen.getAssets().trampolineAssets.t2);
             trampoline.setStartTimeAnim(TimeUtils.nanoTime());
             trampoline.setActivated(true);
             robot.getBody().setLinearVelocity(0, 0);
-            robot.getBody().applyLinearImpulse(new Vector2(0, 9.5f), robot.getBody().getWorldCenter(), true);
+            robot.getBody().applyLinearImpulse(TRAMPOLINE_IMPULSE, robot.getBody().getWorldCenter(), true);
         }
     }
 

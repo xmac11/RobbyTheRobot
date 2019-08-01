@@ -19,6 +19,8 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
 
+import java.io.File;
+
 import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damaging {
@@ -172,7 +174,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
     // parse json file to get the waypoints of the platform the enemy should follow
     private void parseJson() {
         JsonReader reader = new JsonReader();
-        JsonValue root =  reader.parse(Gdx.files.internal(LEVEL_1_JSON));
+        JsonValue root =  reader.parse(Gdx.files.internal(FOLDER_NAME + "level" + playScreen.getLevelID() + ".json"));
         JsonValue child1 = root.get("layers");
 
         //System.out.println(child1.size);

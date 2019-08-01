@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
+import com.robot.game.entities.Enemy;
+import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.util.ObjectParser;
 
@@ -12,7 +14,7 @@ import static com.robot.game.util.Constants.*;
 public class ScreenLevel2 extends PlayScreen{
 
     public ScreenLevel2(RobotGame game) {
-        super(game, game.getAssets().tiledMapAssets.tiledMapLevel2);
+        super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
     }
 
     @Override
@@ -24,36 +26,29 @@ public class ScreenLevel2 extends PlayScreen{
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(WALL_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
         // create object parser
         super.objectParser = new ObjectParser(this);
 
+        // create enemies
+        super.enemies = objectParser.getEnemies();
+
+        // create collectables
+        super.collectables = objectParser.getCollectables();
+
         // create interactive platforms
         super.interactivePlatforms = objectParser.getInteractivePlatforms();
 
-        super.trampoline = objectParser.trampoline;
+        // create trampoline
+        super.trampoline = objectParser.getTrampoline();
 
     }
 
     protected void update(float delta) {
-        // perform physics simulation
-        world.step(1 / 60f, 8, 3);
-
-        // update interactive platforms (do this first if robot should be moving along with it)
-        for(int i = 0; i < interactivePlatforms.size; i++) {
-            InteractivePlatform platform = interactivePlatforms.get(i);
-
-            // if platform is active, update it
-            platform.update(delta);
-
-            // if platform is destroyed, remove from array
-            if(platform.isDestroyed())
-                interactivePlatforms.removeIndex(i);
-        }
-
-        // update robot
-        robot.update(delta);
+        super.commonUpdates(delta);
 
         super.updateViews(delta);
     }
@@ -76,6 +71,19 @@ public class ScreenLevel2 extends PlayScreen{
             if(!platform.isDestroyed()) {
                 platform.draw(game.getBatch());
             }
+        }
+
+        // render enemies
+        for(Enemy enemy: enemies) {
+            if(!enemy.isDestroyed()) {
+                enemy.draw(game.getBatch());
+            }
+        }
+
+        // render collectables
+        for(Collectable collectable: collectables) {
+            if(!collectable.isDestroyed())
+                collectable.draw(game.getBatch());
         }
 
         robot.draw(game.getBatch(), delta);
