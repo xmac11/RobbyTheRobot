@@ -58,10 +58,14 @@ public class ScreenLevel2 extends PlayScreen{
 
         game.getBatch().begin();
 
-        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer, hud)
+        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
 
+        // render trampoline
         trampoline.draw(game.getBatch());
+
+        // finally render Hud (hud should be drawn last since it uses a different projection matrix)
+        hud.draw(game.getBatch());
 
         game.getBatch().end();
 

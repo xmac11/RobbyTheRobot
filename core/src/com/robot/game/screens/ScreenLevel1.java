@@ -113,13 +113,16 @@ public class ScreenLevel1 extends PlayScreen {
         // render foreground (waves and barrels)
         parallaxBarrels.draw(game.getBatch());
 
-        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer, hud)
+        // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
 
         // render falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.draw(game.getBatch());
         }
+
+        // finally render Hud (hud should be drawn last since it uses a different projection matrix)
+        hud.draw(game.getBatch());
 
         game.getBatch().end();
 

@@ -17,7 +17,6 @@ public class MovingPlatform extends InteractivePlatform {
     private boolean waiting;
     private boolean shouldStop;
     private boolean stopped;
-    private boolean activated;
     private boolean horizontal;
 
     // will probably need to pass the whole map object
@@ -46,7 +45,6 @@ public class MovingPlatform extends InteractivePlatform {
         if(horizontal) {
             if(shouldStop && outOfRangeX() && !stopped) {
                 stop();
-                activated = true;
                 stopped = true;
             }
             else if(outOfRangeX())
@@ -56,7 +54,6 @@ public class MovingPlatform extends InteractivePlatform {
         else {
             if(shouldStop && outOfRangeY() && !stopped) {
                 stop();
-                activated = true;
                 stopped = true;
             }
             else if (outOfRangeY())

@@ -99,7 +99,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected boolean doNotSaveInHide;
 
     // trampoline
-    public Trampoline trampoline;
+    protected Trampoline trampoline;
 
     // Hud
     protected Hud hud;
@@ -274,9 +274,6 @@ public abstract class PlayScreen extends ScreenAdapter {
         // render feedback
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
         feedbackRenderer.draw(game.getBatch(), delta);
-
-        // render Hud
-        hud.draw(game.getBatch());
     }
 
     @Override
