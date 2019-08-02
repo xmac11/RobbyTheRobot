@@ -207,8 +207,10 @@ public abstract class PlayScreen extends ScreenAdapter {
             platform.update(delta);
 
             // if platform is destroyed, remove from array
-            if(platform.isDestroyed())
+            if(platform.isDestroyed()) {
                 interactivePlatforms.removeIndex(i);
+                Gdx.app.log("PlayScreen", "Platform was removed from array");
+            }
         }
 
         // update robot
@@ -223,8 +225,10 @@ public abstract class PlayScreen extends ScreenAdapter {
             if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
                 enemy.getBody().setActive(true);
 
-            if(enemy.isDestroyed())
+            if(enemy.isDestroyed()) {
                 enemies.removeIndex(i);
+                Gdx.app.log("PlayScreen", "Enemy was removed from array");
+            }
         }
 
         // update collectables
@@ -232,8 +236,10 @@ public abstract class PlayScreen extends ScreenAdapter {
             Collectable collectable = collectables.get(i);
             collectable.update(delta);
 
-            if(collectable.isDestroyed())
+            if(collectable.isDestroyed()) {
                 collectables.removeIndex(i);
+                Gdx.app.log("PlayScreen", "Collectable was removed from array");
+            }
         }
     }
 

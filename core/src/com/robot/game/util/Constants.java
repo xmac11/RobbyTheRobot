@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -40,6 +40,7 @@ public final class Constants {
     public static final short PIPE_ON_GROUND_CATEGORY = 512;
     public static final short WALLJUMP_CATEGORY = 1024;
     public static final short TRAMPOLINE_CATEGORY = 2048;
+    public static final short PROJECTILE_CATEGORY = 4096;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
@@ -56,6 +57,7 @@ public final class Constants {
     public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short WALLJUMP_MASK = ROBOT_CATEGORY;
     public static final short TRAMPOLINE_MASK = ROBOT_CATEGORY;
+    public static final short PROJECTILE_MASK = ROBOT_CATEGORY;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY;
 
     // Robot

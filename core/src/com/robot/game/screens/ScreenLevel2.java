@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
 import com.robot.game.entities.Enemy;
+import com.robot.game.interactiveObjects.TankBall;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 
@@ -35,11 +36,13 @@ public class ScreenLevel2 extends PlayScreen{
         // create trampoline
         super.trampoline = objectParser.getTrampoline();
 
+        new TankBall(this);
     }
 
     protected void update(float delta) {
         // update common elements
         super.commonUpdates(delta);
+
 
         // update view
         super.updateViews(delta);

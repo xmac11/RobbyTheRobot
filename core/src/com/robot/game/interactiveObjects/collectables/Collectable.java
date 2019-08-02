@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects.collectables;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -48,6 +49,7 @@ public abstract class Collectable extends Sprite {
     protected void destroyBody() {
         world.destroyBody(body);
         isDestroyed = true;
+        Gdx.app.log("Collectable", "Body destroyed");
     }
 
     public Body getBody() {
