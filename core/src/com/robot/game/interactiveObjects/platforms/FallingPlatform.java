@@ -31,9 +31,7 @@ public class FallingPlatform extends InteractivePlatform {
 
         // if body is out of bounds, destroy it
         if(body.getPosition().y < 0 /*&& !isDestroyed*/) {
-            world.destroyBody(body);
-            isDestroyed = true;
-            Gdx.app.log("FallingPlatform", "Body destroyed");
+            destroyBody();
         }
 
         if(flagToMove) {
@@ -57,9 +55,12 @@ public class FallingPlatform extends InteractivePlatform {
         super.attachSprite();
     }
 
-    @Override
-    public boolean isDestroyed() {
-        return isDestroyed;
+    private void destroyBody() {
+        world.destroyBody(body);
+        Gdx.app.log("FallingPlatform", "Body destroyed");
+
+        playScreen.getInteractivePlatforms().removeValue(this, false);
+        Gdx.app.log("FallingPlatform", "Platform was removed from array");
     }
 
     public void setFlagToMove(boolean flagToMove) {

@@ -12,6 +12,7 @@ import static com.robot.game.util.Constants.PPM;
 
 public abstract class InteractivePlatform extends Sprite {
 
+    protected PlayScreen playScreen;
     protected Assets assets;
     protected World world;
     protected Body body;
@@ -22,6 +23,7 @@ public abstract class InteractivePlatform extends Sprite {
     private Sprite interactivePlatformSprite;
 
     protected InteractivePlatform(PlayScreen playScreen, Body body, MapObject object) {
+        this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
         this.world = playScreen.getWorld();
         this.body = body;
@@ -39,7 +41,6 @@ public abstract class InteractivePlatform extends Sprite {
     }
 
     public abstract void update(float delta);
-    public abstract boolean isDestroyed();
 
     public void draw(SpriteBatch batch) {
        interactivePlatformSprite.draw(batch);

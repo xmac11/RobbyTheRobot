@@ -64,12 +64,6 @@ public class MovingPlatform extends InteractivePlatform {
         super.attachSprite();
     }
 
-    // moving platforms are never destroyed
-    @Override
-    public boolean isDestroyed() {
-        return false;
-    }
-
     // reverse velocity of a moving platform
     private void reverseVelocity(boolean reverseVx, boolean reverseVy) {
         if(reverseVx)

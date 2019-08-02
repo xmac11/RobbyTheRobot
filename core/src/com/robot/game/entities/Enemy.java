@@ -19,8 +19,6 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
 
-import java.io.File;
-
 import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damaging {
@@ -65,7 +63,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     protected boolean aiPathFollowing;
     protected boolean flagToKill;
-    protected boolean isDestroyed;
 
     // animation
     protected TextureRegion textureRegion;
@@ -137,10 +134,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     @Override
     public abstract int getDamage();
-
-    public boolean isDestroyed() {
-        return isDestroyed;
-    }
 
     // parse xml to get the waypoints of the platform the enemy should follow
     private void parseXml() {
@@ -243,8 +236,10 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     protected void destroyBody() {
         world.destroyBody(body);
-        isDestroyed = true;
         Gdx.app.log("Enemy", "Body destroyed");
+
+        playScreen.getEnemies().removeValue(this, false);
+        Gdx.app.log("Enemy", "Enemy was removed from array");
     }
 
     public boolean isAiPathFollowing() {

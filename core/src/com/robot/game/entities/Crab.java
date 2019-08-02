@@ -27,7 +27,7 @@ public class Crab extends Enemy {
     public void update(float delta) {
         if(flagToKill) {
             if(deadElapsed >= DEAD_TIMER)
-                destroyBody();
+                super.destroyBody();
             else
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
         }

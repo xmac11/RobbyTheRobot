@@ -20,7 +20,6 @@ public abstract class Collectable extends Sprite {
     private MapObject object;
     private JSONObject temp;
     private boolean flagToCollect;
-    private boolean isDestroyed;
 
     public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
@@ -48,16 +47,14 @@ public abstract class Collectable extends Sprite {
 
     protected void destroyBody() {
         world.destroyBody(body);
-        isDestroyed = true;
         Gdx.app.log("Collectable", "Body destroyed");
+
+        playScreen.getCollectables().removeValue(this, false);
+        Gdx.app.log("Collectable", "Collectable was removed from array");
     }
 
     public Body getBody() {
         return body;
-    }
-
-    public boolean isDestroyed() {
-        return isDestroyed;
     }
 
     public MapObject getObject() {

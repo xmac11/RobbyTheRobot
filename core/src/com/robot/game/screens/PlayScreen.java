@@ -210,16 +210,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // update interactive platforms (do this first if robot should be moving along with it)
         for(int i = 0; i < interactivePlatforms.size; i++) {
-            InteractivePlatform platform = interactivePlatforms.get(i);
-
-            // if platform is active, update it
-            platform.update(delta);
-
-            // if platform is destroyed, remove from array
-            if(platform.isDestroyed()) {
-                interactivePlatforms.removeIndex(i);
-                Gdx.app.log("PlayScreen", "Platform was removed from array");
-            }
+            interactivePlatforms.get(i).update(delta);
         }
 
         // update robot
@@ -233,22 +224,11 @@ public abstract class PlayScreen extends ScreenAdapter {
             // for path-following bat that is activated when the robot gets near it
             if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
                 enemy.getBody().setActive(true);
-
-            if(enemy.isDestroyed()) {
-                enemies.removeIndex(i);
-                Gdx.app.log("PlayScreen", "Enemy was removed from array");
-            }
         }
 
         // update collectables
         for(int i = 0; i < collectables.size; i++) {
-            Collectable collectable = collectables.get(i);
-            collectable.update(delta);
-
-            if(collectable.isDestroyed()) {
-                collectables.removeIndex(i);
-                Gdx.app.log("PlayScreen", "Collectable was removed from array");
-            }
+            collectables.get(i).update(delta);
         }
     }
 
@@ -265,9 +245,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected void commonRendering(float delta) {
         // render interactive platforms
         for(InteractivePlatform platform: interactivePlatforms) {
-            if(!platform.isDestroyed()) {
                 platform.draw(game.getBatch());
-            }
         }
 
         // render robot
@@ -275,14 +253,11 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // render enemies
         for(Enemy enemy: enemies) {
-            if(!enemy.isDestroyed()) {
                 enemy.draw(game.getBatch());
-            }
         }
 
         // render collectables
         for(Collectable collectable: collectables) {
-            if(!collectable.isDestroyed())
                 collectable.draw(game.getBatch());
         }
 
@@ -376,6 +351,18 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public Array<MapObjects> getLayersObjectArray() {
         return layersObjectArray;
+    }
+
+    public DelayedRemovalArray<InteractivePlatform> getInteractivePlatforms() {
+        return interactivePlatforms;
+    }
+
+    public DelayedRemovalArray<Enemy> getEnemies() {
+        return enemies;
+    }
+
+    public DelayedRemovalArray<Collectable> getCollectables() {
+        return collectables;
     }
 
     public void setNewItemCollected(boolean newItemCollected) {
