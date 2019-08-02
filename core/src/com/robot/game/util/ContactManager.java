@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.FallingPlatform;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;

@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects.platforms;
+package com.robot.game.interactiveObjects.fallingPipes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -6,12 +6,11 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.entities.Robot;
-import com.robot.game.interactiveObjects.FallingPipe;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
 
-public class FallingPipeHandler {
+public class FallingPipeSpawner {
 
     private PlayScreen playScreen;
     private Robot robot;
@@ -25,7 +24,7 @@ public class FallingPipeHandler {
     private float pipeStartTime;
     private float pipeElapsed;
 
-    public FallingPipeHandler(PlayScreen playScreen) {
+    public FallingPipeSpawner(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
         this.fallingPipes = playScreen.getFallingPipes();
@@ -55,6 +54,7 @@ public class FallingPipeHandler {
                 // follow up earthquakes with probability 45%
                 if(MathUtils.random() > 0.55f)
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
+
                 fallingPipes.add(new FallingPipe(playScreen, false));
             }
         }
@@ -63,7 +63,7 @@ public class FallingPipeHandler {
     private void checkForEarthquake() {
         // if robot is in the shake area and the shake is not already active, start it
         if(Math.abs(robot.getBody().getPosition().x * PPM - PIPES_START_X) <= 48) {
-            Gdx.app.log("FallingPipeHandler", "Earthquake activated");
+            Gdx.app.log("FallingPipeSpawner", "Earthquake activated");
             shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
             earthquakeHappened = true;
         }
@@ -72,7 +72,6 @@ public class FallingPipeHandler {
     private boolean checkDisablingPipes() {
         return robot.getBody().getPosition().x > PIPES_END_X / PPM;
     }
-
 
     public boolean shouldSpawnPipe() {
         if(pipeElapsed >= PIPES_SPAWNING_PERIOD) {

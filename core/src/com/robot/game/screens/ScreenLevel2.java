@@ -3,11 +3,11 @@ package com.robot.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
-import com.robot.game.entities.Enemy;
 import com.robot.game.interactiveObjects.TankBall;
-import com.robot.game.interactiveObjects.collectables.Collectable;
-import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.TankBallPool;
+import com.robot.game.interactiveObjects.TankBallSpawner;
 
 import static com.robot.game.util.Constants.*;
 
@@ -36,13 +36,22 @@ public class ScreenLevel2 extends PlayScreen{
         // create trampoline
         super.trampoline = objectParser.getTrampoline();
 
-        new TankBall(this);
+        super.tankBalls = new DelayedRemovalArray<>();
+        super.tankBallPool = new TankBallPool(this);
+        super.tankBallSpawner = new TankBallSpawner(this);
     }
 
     protected void update(float delta) {
         // update common elements
         super.commonUpdates(delta);
 
+        tankBallSpawner.handleSpawning();
+        System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
+
+        for(int i = 0; i < tankBalls.size; i++) {
+            TankBall tankBall = tankBalls.get(i);
+            tankBall.update(delta);
+        }
 
         // update view
         super.updateViews(delta);

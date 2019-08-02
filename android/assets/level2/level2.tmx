@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="212">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="33" nextobjectid="214">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -223,6 +223,7 @@
   <object id="209" x="4576" y="608" width="112" height="16"/>
   <object id="210" x="4352" y="704" width="112" height="16"/>
   <object id="211" x="4576" y="816" width="144" height="16"/>
+  <object id="213" x="4512" y="944" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="17" name="Spike obj">
   <object id="154" x="288" y="960" width="48" height="16">
@@ -414,5 +415,6 @@
   <object id="30" x="2320" y="304" width="18" height="50"/>
   <object id="175" x="2336" y="720" width="18" height="50"/>
   <object id="203" x="4448" y="928" width="18" height="50"/>
+  <object id="212" x="4512" y="928" width="16" height="16"/>
  </objectgroup>
 </map>

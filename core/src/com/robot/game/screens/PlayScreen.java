@@ -17,7 +17,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
-import com.robot.game.interactiveObjects.FallingPipe;
+import com.robot.game.interactiveObjects.TankBall;
+import com.robot.game.interactiveObjects.TankBallPool;
+import com.robot.game.interactiveObjects.TankBallSpawner;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.CollectableHandler;
 import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
@@ -100,6 +103,12 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // trampoline
     protected Trampoline trampoline;
+
+    // tank balls
+//    protected TankBall tankBall;
+    public DelayedRemovalArray<TankBall> tankBalls;
+    public TankBallPool tankBallPool;
+    public TankBallSpawner tankBallSpawner;
 
     // Hud
     protected Hud hud;

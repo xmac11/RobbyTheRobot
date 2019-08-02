@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
-import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.platforms.FallingPipeHandler;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
 
 import static com.robot.game.util.Constants.*;
 
@@ -18,7 +18,7 @@ public class ScreenLevel1 extends PlayScreen {
     private int[] mapLayers;
 
     // earthquake and falling pipes
-    private FallingPipeHandler fallingPipeHandler;
+    private FallingPipeSpawner fallingPipeSpawner;
 
     // parallax scrolling
     private Parallax parallaxBackground;
@@ -48,7 +48,7 @@ public class ScreenLevel1 extends PlayScreen {
         super.createCommonObjectLayers();
 
         // create falling pipe handler
-        this.fallingPipeHandler = new FallingPipeHandler(this);
+        this.fallingPipeSpawner = new FallingPipeSpawner(this);
 
         // create parallax
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
@@ -63,7 +63,7 @@ public class ScreenLevel1 extends PlayScreen {
         super.commonUpdates(delta);
 
         // handle earthquake
-        fallingPipeHandler.handleEarthquake();
+        fallingPipeSpawner.handleEarthquake();
 
         // update falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
