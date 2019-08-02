@@ -3,16 +3,12 @@ package com.robot.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
-import com.robot.game.entities.Enemy;
 import com.robot.game.interactiveObjects.FallingPipe;
-import com.robot.game.interactiveObjects.collectables.Collectable;
-import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.platforms.FallingPipeHandler;
 
 import static com.robot.game.util.Constants.*;
 
@@ -21,12 +17,8 @@ public class ScreenLevel1 extends PlayScreen {
     private int[] backgroundWallLayer;
     private int[] mapLayers;
 
-    // earthquake
-    private boolean earthquakeHappened;
-    private boolean pipesStartedFalling;
-    private boolean pipesDisabled;
-    private float pipeStartTime;
-    private float pipeElapsed;
+    // earthquake and falling pipes
+    private FallingPipeHandler fallingPipeHandler;
 
     // parallax scrolling
     private Parallax parallaxBackground;
@@ -55,6 +47,9 @@ public class ScreenLevel1 extends PlayScreen {
         // creates objectParser, interactivePlatforms, enemies and collectables
         super.createCommonObjectLayers();
 
+        // create falling pipe handler
+        this.fallingPipeHandler = new FallingPipeHandler(this);
+
         // create parallax
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
         this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
@@ -68,7 +63,7 @@ public class ScreenLevel1 extends PlayScreen {
         super.commonUpdates(delta);
 
         // handle earthquake
-        handleEarthquake();
+        fallingPipeHandler.handleEarthquake();
 
         // update falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
@@ -155,61 +150,6 @@ public class ScreenLevel1 extends PlayScreen {
 
         // finally, check if robot is dead
         super.checkIfDead();
-    }
-
-
-    private void handleEarthquake() {
-        if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled)
-            checkForEarthquake();
-
-        if(earthquakeHappened) {
-            // activate cached pipes
-            for(FallingPipe fallingPipe : fallingPipes) {
-                fallingPipe.getBody().setAwake(true);
-                fallingPipe.getBody().setGravityScale(1);
-            }
-            this.pipeStartTime = TimeUtils.nanoTime() + 3 / MathUtils.nanoToSec; //add extra 3 seconds timeout initially
-            earthquakeHappened = false;
-            pipesStartedFalling = true;
-        }
-
-        if(pipesStartedFalling && !pipesDisabled) {
-            if(checkDisablingPipes())
-                this.pipesDisabled = true;
-
-            if(!pipesDisabled && shouldSpawnPipe()) {
-                // follow up earthquakes with probability 45%
-                if(MathUtils.random() > 0.55f)
-                        shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
-                fallingPipes.add(new FallingPipe(this, false));
-            }
-        }
-    }
-
-    private void checkForEarthquake() {
-        // if robot is in the shake area and the shake is not already active, start it
-        if(Math.abs(robot.getBody().getPosition().x * PPM - PIPES_START_X) <= 48) {
-            Gdx.app.log("ScreenLevel1", "Earthquake activated");
-            shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
-            earthquakeHappened = true;
-        }
-    }
-
-    private boolean checkDisablingPipes() {
-        return robot.getBody().getPosition().x > PIPES_END_X / PPM;
-    }
-
-
-    public boolean shouldSpawnPipe() {
-        if(pipeElapsed >= PIPES_SPAWNING_PERIOD) {
-            this.pipeStartTime = TimeUtils.nanoTime();
-            this.pipeElapsed = 0;
-            return true;
-        }
-        else  {
-            this.pipeElapsed = (TimeUtils.nanoTime() - pipeStartTime) * MathUtils.nanoToSec;
-            return false;
-        }
     }
 
 }
