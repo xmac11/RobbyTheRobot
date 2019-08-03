@@ -52,15 +52,14 @@ public class ScreenLevel2 extends PlayScreen{
             TankBall tankBall = tankBalls.get(i);
             tankBall.update(delta);
         }
-
-        // update view
-        super.updateViews(delta);
     }
 
     @Override
     public void render(float delta) {
         // first perform all necessary updates
         this.update(delta);
+        // update view
+        super.updateViews(delta);
 
         // clear game screen
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);

@@ -39,7 +39,7 @@ public class Parallax {
         this.height = height / PPM;
     }
 
-    public void draw(SpriteBatch batch) {
+    public void update(float delta) {
         // if the robot is in the beginning or the end of the map
         if(robot.getBody().getPosition().x < camera.position.x || robot.getBody().getPosition().x > playScreen.getMapWidth() / PPM - viewport.getWorldWidth() ) {
             //srcX += 0;
@@ -66,7 +66,9 @@ public class Parallax {
             else
                 srcX -= robot.getBody().getLinearVelocity().x;
         }
+    }
 
+    public void draw(SpriteBatch batch) {
         batch.draw(texture, 0, y, width, height, (int) (srcX * speedScale),0, texture.getWidth(), texture.getHeight(),false,false);
     }
 }

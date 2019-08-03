@@ -43,11 +43,9 @@ public abstract class InteractivePlatform extends Sprite {
     public abstract void update(float delta);
 
     public void draw(SpriteBatch batch) {
-       interactivePlatformSprite.draw(batch);
-    }
-
-    protected void attachSprite() {
+        // attach platform sprite to body
         interactivePlatformSprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
+        interactivePlatformSprite.draw(batch);
     }
 
     public void movePlatform() {

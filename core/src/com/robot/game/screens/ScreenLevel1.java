@@ -62,6 +62,10 @@ public class ScreenLevel1 extends PlayScreen {
         // update common elements
         super.commonUpdates(delta);
 
+        // update parallax
+        parallaxBackground.update(delta);
+        parallaxBarrels.update(delta);
+
         // handle earthquake
         fallingPipeSpawner.handleEarthquake();
 
@@ -69,9 +73,6 @@ public class ScreenLevel1 extends PlayScreen {
         for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.update(delta);
         }
-
-        // update view
-        super.updateViews(delta);
 
         //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
         //        System.out.println("Number of enemies: " + enemies.size);
@@ -82,6 +83,9 @@ public class ScreenLevel1 extends PlayScreen {
     public void render(float delta) {
         // first perform all necessary updates
         this.update(delta);
+
+        // update view
+        super.updateViews(delta);
 
         // clear game screen
         Gdx.gl.glClearColor(0, 0, 0, 1);

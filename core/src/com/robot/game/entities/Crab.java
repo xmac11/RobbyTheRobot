@@ -46,23 +46,29 @@ public class Crab extends Enemy {
         }
         else if(!aiPathFollowing && getPosition().x < startX / PPM || getPosition().x > endX / PPM)
             reverseVelocity(true, false);
+
+        // calculate the elapsed time of the animation
+        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
     }
 
     @Override
     public void draw(Batch batch) {
-        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
-
+        // determine the appropriate texture region of the animation
         if(!flagToKill) {
-            textureRegion = assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
+            super.textureRegion = assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
         }
         else {
-            textureRegion = assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
+            super.textureRegion = assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
         }
-
-        // set the appropriate region and attach sprite to body
+        // set the appropriate texture region
         setRegion(textureRegion);
+
+        // attach enemy sprite to body
         setPosition(body.getPosition().x - CRAB_WIDTH / 2 / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
+
+        // rotate sprite with body
         setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+
         super.draw(batch); // call to Sprite superclass
     }
 

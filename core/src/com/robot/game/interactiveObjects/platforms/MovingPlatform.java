@@ -59,9 +59,6 @@ public class MovingPlatform extends InteractivePlatform {
             else if (outOfRangeY())
                 this.reverseVelocity(false, true);
         }
-
-        // attach sprite to body
-        super.attachSprite();
     }
 
     // reverse velocity of a moving platform

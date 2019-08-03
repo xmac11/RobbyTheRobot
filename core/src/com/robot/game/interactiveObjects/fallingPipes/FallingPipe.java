@@ -96,17 +96,16 @@ public class FallingPipe extends Sprite implements Damaging {
         if(flagToCancelVelocity) {
             body.setLinearVelocity( 0, 0);
         }
+    }
 
+    @Override
+    public void draw(Batch batch) {
         // attach sprite to body
         pipeSprite.setPosition(body.getPosition().x - PIPE_WIDTH / 2 / PPM, body.getPosition().y - PIPE_HEIGHT / 2 / PPM);
 
         // rotate sprite with body
         pipeSprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 
-    }
-
-    @Override
-    public void draw(Batch batch) {
         pipeSprite.draw(batch);
     }
 

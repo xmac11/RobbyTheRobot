@@ -88,7 +88,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(checkpointData.getSpawnLocation() /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/ /*4350 / PPM, 780 / PPM*/
+        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ 3416 / PPM, 780 / PPM /*4350 / PPM, 780 / PPM*/
                 /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
@@ -148,9 +148,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         if(body.getLinearVelocity().y < 0 && !isOnInteractivePlatform && !onLadder) {
             body.applyForceToCenter(0, -7.5f, true);
         }
-
-        // attach robot sprite to body
-        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
 
         // if robot is invulnerable
         if(invulnerable) {
@@ -339,6 +336,10 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     public void draw(SpriteBatch batch, float delta) {
+
+        // attach robot sprite to body
+        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+
         // if not flickering, draw sprite
         if(!flicker)
             robotSprite.draw(batch);

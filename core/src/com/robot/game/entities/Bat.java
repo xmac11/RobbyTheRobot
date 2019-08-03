@@ -53,12 +53,14 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
             else if(outOfRangeY())
                 reverseVelocity(false, true);
         }
+
+        // calculate the elapsed time of the animation
+        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
     }
 
     @Override
     public void draw(Batch batch) {
-        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
-
+        // determine the appropriate texture region of the animation
         if(!flagToKill) {
             textureRegion = assets.batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
         }
@@ -66,9 +68,12 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
             textureRegion = assets.batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
         }
 
-        // set the appropriate region and attach sprite to body
+        // set the appropriate texture region
         setRegion(textureRegion);
+
+        // attach sprite to body
         setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
+
         super.draw(batch); // call to Sprite superclass
     }
 

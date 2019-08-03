@@ -50,9 +50,6 @@ public class FallingPlatform extends InteractivePlatform {
                 elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
             }
         }
-
-        // attach sprite to body
-        super.attachSprite();
     }
 
     private void destroyBody() {
