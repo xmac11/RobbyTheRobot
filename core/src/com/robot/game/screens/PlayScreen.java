@@ -84,7 +84,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // falling pipes
     protected DelayedRemovalArray<FallingPipe> fallingPipes;
-    protected PipeBodyCache pipeBodyCache;
 
     // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
@@ -167,7 +166,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // create falling pipes and cache 5 pipes
         this.fallingPipes = new DelayedRemovalArray<>();
-        this.pipeBodyCache = new PipeBodyCache();
         for(int i = 0; i < 5; i++) {
             fallingPipes.add(new FallingPipe(this, true));
         }
@@ -375,10 +373,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public FeedbackRenderer getFeedbackRenderer() {
         return feedbackRenderer;
-    }
-
-    public PipeBodyCache getPipeBodyCache() {
-        return pipeBodyCache;
     }
 
     public float getMapWidth() {

@@ -36,10 +36,8 @@ public class FallingPipe extends Sprite implements Damaging {
 
     private void createPipeB2d() {
         // create body
-//        BodyDef bodyDef = new BodyDef();
-//        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        BodyDef bodyDef = playScreen.getPipeBodyCache().getBodyDef();
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         if(cache) {
             bodyDef.position.set(5112 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
@@ -51,22 +49,18 @@ public class FallingPipe extends Sprite implements Damaging {
         else if(Math.abs(playScreen.getRobot().getBody().getLinearVelocity().x) < 2f) {
             bodyDef.position.set(playScreen.getRobot().getBody().getPosition().x,
                     playScreen.getViewport().getWorldHeight());
-            bodyDef.gravityScale = 1;
-            bodyDef.awake = true;
         }
         // else create pipe somewhere in front of it
         else {
             bodyDef.position.set(playScreen.getRobot().getBody().getPosition().x + MathUtils.random(96f / PPM, 192 / PPM),
                                  playScreen.getViewport().getWorldHeight());
-            bodyDef.gravityScale = 1;
-            bodyDef.awake = true;
         }
 
         bodyDef.angle =  (float) Math.PI / 3 * MathUtils.random(-1f, 1f);
         this.body = world.createBody(bodyDef);
 
         // create fixture
-        FixtureDef fixtureDef = playScreen.getPipeBodyCache().getFixtureDef();
+        FixtureDef fixtureDef = new FixtureDef();
 
         PolygonShape recShape = new PolygonShape();
 //        recShape.setAsBox(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
