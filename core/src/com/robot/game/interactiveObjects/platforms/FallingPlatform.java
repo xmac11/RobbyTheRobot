@@ -15,7 +15,6 @@ public class FallingPlatform extends InteractivePlatform {
     private float elapsed;
     private boolean flagToMove;
     private boolean falling;
-    private boolean isDestroyed;
     private boolean toggle;
 
     public FallingPlatform(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {

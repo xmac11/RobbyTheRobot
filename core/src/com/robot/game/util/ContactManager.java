@@ -88,6 +88,11 @@ public class ContactManager implements ContactListener {
             // robot - trampoline
             case ROBOT_CATEGORY | TRAMPOLINE_CATEGORY:
             robotTrampolineBegin(normal, fixA, fixB);
+            break;
+
+            case ROBOT_CATEGORY | ENEMY_PROJECTILE_CATEGORY:
+            robotProjectileBegin(fixA, fixB);
+            break;
         }
 
 
@@ -203,8 +208,10 @@ public class ContactManager implements ContactListener {
         if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
             // decrease health
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
-            //add spike to HashMap in order to render the damage incurred
+
+            //add spike (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(spike, 1f);
+
             // make it invulnerable
             robot.setInvulnerable(1f);
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
@@ -285,7 +292,7 @@ public class ContactManager implements ContactListener {
             // increase points
             StaticMethods.increaseScore(robot, enemy);
 
-            // add enemy to the HashMap in order to render the points gained
+            // add enemy (damaging object) to the HashMap in order to render the points gained
             robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
         }
         // otherwise it means that the robot was hit by an enemy
@@ -293,7 +300,7 @@ public class ContactManager implements ContactListener {
             // decrease robot's health
             StaticMethods.decreaseHealth(robot, enemy);
 
-            //add enemy to HashMap in order to render the damage incurred
+            //add enemy (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
 
             // make it flicker
@@ -358,7 +365,7 @@ public class ContactManager implements ContactListener {
             // decrease health
             robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_PIPE);
 
-            //add pipe to HashMap in order to render the damage incurred
+            //add pipe (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(pipe, 1f);
 
             // make it invulnerable for 1 second
@@ -484,6 +491,36 @@ public class ContactManager implements ContactListener {
             robot.getBody().setLinearVelocity(0, 0);
             robot.getBody().applyLinearImpulse(TRAMPOLINE_IMPULSE, robot.getBody().getWorldCenter(), true);
         }
+    }
+
+    private void robotProjectileBegin(Fixture fixA, Fixture fixB) {
+        Robot robot;
+        TankBall tankBall;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            tankBall = (TankBall) fixB.getUserData();
+        }
+        else  {
+            robot = (Robot) fixB.getUserData();
+            tankBall = (TankBall) fixA.getUserData();
+        }
+
+        tankBall.setExploded(true);
+        tankBall.getBody().setLinearVelocity(0, 0 );
+
+        // decrease robot's health
+        StaticMethods.decreaseHealth(robot, tankBall);
+
+        //add tank ball (damaging object) to HashMap in order to render the damage incurred
+        robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(tankBall, 1f);
+
+        // make it flicker
+        robot.setFlicker(true);
+
+        // shake camera
+        robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+        Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
     }
 
     @Override

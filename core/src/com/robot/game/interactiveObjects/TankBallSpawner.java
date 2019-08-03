@@ -7,8 +7,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
 
 public class TankBallSpawner {
-    int count;
-
     private PlayScreen playScreen;
     private TankBallPool tankBallPool;
     private float tankStartTime;
@@ -21,14 +19,9 @@ public class TankBallSpawner {
 
     public void handleSpawning() {
         if(tankElapsed > 2f) {
-
-            count++;
-            if(count > 1)
-                System.out.println("stop");
-
             TankBall tankBall = tankBallPool.obtain();
             tankBall.createTankBallB2d();
-            tankBall.getBody().applyLinearImpulse(new Vector2(0, 4), tankBall.getBody().getWorldCenter(), true);
+            tankBall.getBody().applyLinearImpulse(new Vector2(0, 10), tankBall.getBody().getWorldCenter(), true);
             playScreen.tankBalls.add(tankBall);
 
             this.tankStartTime = TimeUtils.nanoTime();

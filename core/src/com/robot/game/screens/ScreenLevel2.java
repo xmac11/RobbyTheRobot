@@ -46,7 +46,7 @@ public class ScreenLevel2 extends PlayScreen{
         super.commonUpdates(delta);
 
         tankBallSpawner.handleSpawning();
-        System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
+        //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
 
         for(int i = 0; i < tankBalls.size; i++) {
             TankBall tankBall = tankBalls.get(i);
@@ -74,6 +74,11 @@ public class ScreenLevel2 extends PlayScreen{
 
         // render trampoline
         trampoline.draw(game.getBatch());
+
+        // render fireballs
+        for(TankBall tankBall: tankBalls) {
+            tankBall.draw(game.getBatch());
+        }
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());

@@ -18,8 +18,8 @@ public class StaticMethods {
     }
 
     // decrease robot's health depending on the enemy that hit it
-    public static void decreaseHealth(Robot robot, Enemy enemy) {
-        robot.getCheckpointData().decreaseHealth( StaticMethods.getDamageFromEnemy(enemy) );
+    public static void decreaseHealth(Robot robot, Damaging damaging) {
+        robot.getCheckpointData().decreaseHealth(damaging.getDamage());
     }
 
     public static void increaseHealth(Robot robot, PowerUp powerUp) {
@@ -32,11 +32,6 @@ public class StaticMethods {
     // get the number of points that should be added depending on the enemy killed
     public static int getPointsForEnemy(Enemy enemy) {
         return enemy instanceof Bat ? POINTS_FOR_BAT : POINTS_FOR_CRAB;
-    }
-
-    // get the damage depending on the enemy that hit it
-    public static int getDamageFromEnemy(Enemy enemy) {
-        return enemy instanceof Bat ? DAMAGE_FROM_BAT : DAMAGE_FROM_CRAB;
     }
 
     // increase score depending on item collected
