@@ -45,11 +45,10 @@ public class ScreenLevel2 extends PlayScreen{
         // update common elements
         super.commonUpdates(delta);
 
-        tankBallSpawner.handleSpawning();
+        tankBallSpawner.update(delta);
         //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
 
-        for(int i = 0; i < tankBalls.size; i++) {
-            TankBall tankBall = tankBalls.get(i);
+        for(TankBall tankBall: tankBalls) {
             tankBall.update(delta);
         }
     }

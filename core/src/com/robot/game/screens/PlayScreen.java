@@ -104,10 +104,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected Trampoline trampoline;
 
     // tank balls
-//    protected TankBall tankBall;
-    public DelayedRemovalArray<TankBall> tankBalls;
-    public TankBallPool tankBallPool;
-    public TankBallSpawner tankBallSpawner;
+    protected DelayedRemovalArray<TankBall> tankBalls;
+    protected TankBallPool tankBallPool;
+    protected TankBallSpawner tankBallSpawner;
 
     // Hud
     protected Hud hud;
@@ -207,8 +206,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         world.step(1 / 60f, 8, 3);
 
         // update interactive platforms (do this first if robot should be moving along with it)
-        for(int i = 0; i < interactivePlatforms.size; i++) {
-            interactivePlatforms.get(i).update(delta);
+        for(InteractivePlatform interactivePlatform: interactivePlatforms) {
+            interactivePlatform.update(delta);
         }
 
         // update robot
@@ -225,8 +224,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
 
         // update collectables
-        for(int i = 0; i < collectables.size; i++) {
-            collectables.get(i).update(delta);
+        for(Collectable collectable: collectables) {
+            collectable.update(delta);
         }
     }
 
@@ -385,6 +384,14 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public int getLevelID() {
         return levelID;
+    }
+
+    public DelayedRemovalArray<TankBall> getTankBalls() {
+        return tankBalls;
+    }
+
+    public TankBallPool getTankBallPool() {
+        return tankBallPool;
     }
 
     protected void checkIfDead() {

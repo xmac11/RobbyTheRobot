@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Damaging;
 
@@ -16,6 +17,7 @@ import static com.robot.game.util.Constants.*;
 public class TankBall extends Sprite implements Damaging, Pool.Poolable {
 
     private PlayScreen playScreen;
+    private Robot robot;
     private World world;
     private Body body;
     private boolean exploded;
@@ -23,20 +25,20 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
 
     private float explosionStartTime;
     private float explosionElapsed;
-
     private Vector2 explosionPosition = new Vector2();
 
     public TankBall(PlayScreen playScreen) {
         this.playScreen = playScreen;
+        this.robot = playScreen.getRobot();
         this.world = playScreen.getWorld();
 
         this.tankBallSprite = new Sprite(playScreen.getAssets().tankBallAssets.tankBallTexture);
-        tankBallSprite.setSize(16f / PPM, 24f / PPM);
+        tankBallSprite.setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
     }
 
     public void createTankBallB2d() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody; /////////
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(4520 / PPM, 96 / PPM);
         this.body = world.createBody(bodyDef);
 
@@ -44,7 +46,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         FixtureDef fixtureDef = new FixtureDef();
 
         PolygonShape recShape = new PolygonShape();
-        recShape.setAsBox(16f / 2 / PPM, 24f / 2 / PPM);
+        recShape.setAsBox(TANKBALL_WIDTH / 2 / PPM, TANKBALL_HEIGHT / 2 / PPM);
         fixtureDef.shape = recShape;
         fixtureDef.density = 1.0f;
         fixtureDef.filter.categoryBits = ENEMY_PROJECTILE_CATEGORY;
@@ -64,11 +66,11 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
 
             world.destroyBody(body);
 
-            playScreen.tankBalls.removeValue(this, false); // false in order to use .equals()
+            playScreen.getTankBalls().removeValue(this, false); // false in order to use .equals()
             Gdx.app.log("TankBall", "TankBall was removed from array");
 
-            playScreen.tankBallPool.free(this);
-            Gdx.app.log("TankBall", "free");
+            playScreen.getTankBallPool().free(this);
+            Gdx.app.log("TankBall", "Tank ball was freed back into the pool");
 
         }
     }
@@ -77,12 +79,10 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
     public void draw(Batch batch) {
         if(exploded) {
             tankBallSprite.setTexture(playScreen.getAssets().tankBallAssets.textureAnimation.getKeyFrame(explosionElapsed));
-            tankBallSprite.setPosition(explosionPosition.x, explosionPosition.y);
-            tankBallSprite.setSize(16f / PPM, 24f / PPM);
         }
 
         else {
-            tankBallSprite.setPosition(body.getPosition().x - (16f / 2) / PPM, body.getPosition().y - 24f / 2 / PPM);
+            tankBallSprite.setPosition(body.getPosition().x - TANKBALL_WIDTH / 2 / PPM, body.getPosition().y - TANKBALL_HEIGHT / 2 / PPM);
         }
 
         tankBallSprite.draw(batch);
@@ -95,7 +95,8 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
     public void setExploded(boolean exploded) {
         this.exploded = exploded;
         this.explosionStartTime = TimeUtils.nanoTime();
-        this.explosionPosition.set(playScreen.getRobot().getBody().getPosition().x, playScreen.getRobot().getBody().getPosition().y);
+        this.explosionPosition.set(robot.getBody().getPosition().x - 32f / 2 / PPM, robot.getBody().getPosition().y - 32f / 2 / PPM);
+        this.tankBallSprite.setBounds(explosionPosition.x, explosionPosition.y, 32 / PPM, 32 / PPM);
     }
 
     private boolean animationFinished() {
@@ -111,6 +112,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
     @Override
     public void reset() {
         tankBallSprite.setTexture(playScreen.getAssets().tankBallAssets.tankBallTexture);
+        tankBallSprite.setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
         exploded = false;
         explosionStartTime = 0;
         explosionElapsed = 0;

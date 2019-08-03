@@ -506,8 +506,11 @@ public class ContactManager implements ContactListener {
             tankBall = (TankBall) fixA.getUserData();
         }
 
+        // set flag to play explosion animation
         tankBall.setExploded(true);
+        // stop tank ball and set its gravity to zero
         tankBall.getBody().setLinearVelocity(0, 0 );
+        tankBall.getBody().setGravityScale(0);
 
         // decrease robot's health
         StaticMethods.decreaseHealth(robot, tankBall);

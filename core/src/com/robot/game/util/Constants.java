@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -211,5 +211,10 @@ public final class Constants {
     public static final float TRAMPOLINE_WIDTH = 32f;
     public static final float TRAMPOLINE_HEIGHT = 32f;
     public static final Vector2 TRAMPOLINE_IMPULSE = new Vector2(0, 9.5f);
+
+    // Tank
+    public static final float TANKBALL_WIDTH = 16;
+    public static final float TANKBALL_HEIGHT = 24;
+    public static final Vector2 TANKBALL_IMPULSE = new Vector2(0, 10);
 
 }

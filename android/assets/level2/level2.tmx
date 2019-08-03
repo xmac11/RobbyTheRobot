@@ -47,8 +47,7 @@
    <property name="trampoline" value=""/>
   </properties>
   <object id="48" x="0" y="400" width="160" height="32"/>
-  <object id="51" x="0" y="976" width="448" height="16"/>
-  <object id="53" x="448" y="976" width="176" height="48"/>
+  <object id="51" x="0" y="976" width="624" height="48"/>
   <object id="54" x="720" y="976" width="176" height="48"/>
   <object id="55" x="992" y="976" width="480" height="48"/>
   <object id="56" x="1472" y="1008" width="336" height="16"/>
@@ -226,15 +225,15 @@
   <object id="213" x="4512" y="944" width="16" height="32"/>
  </objectgroup>
  <objectgroup id="17" name="Spike obj">
-  <object id="154" x="288" y="960" width="48" height="16">
+  <object id="154" x="294" y="960" width="36" height="16">
    <properties>
-    <property name="mightWalk" type="bool" value="false"/>
+    <property name="mightWalk" type="bool" value="true"/>
     <property name="spike" value=""/>
    </properties>
   </object>
-  <object id="155" x="400" y="960" width="48" height="16">
+  <object id="155" x="406" y="960" width="36" height="16">
    <properties>
-    <property name="mightWalk" type="bool" value="false"/>
+    <property name="mightWalk" type="bool" value="true"/>
     <property name="spike" value=""/>
    </properties>
   </object>
