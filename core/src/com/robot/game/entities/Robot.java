@@ -12,6 +12,7 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
+import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
@@ -79,6 +80,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private RayCastCallback callback;
     private Vector2 rayPointStart = new Vector2(), rayPointEnd = new Vector2();
     private Fixture closestFixture;
+    public float rayCastStartTime;
+    public float rayCastElapsed;
+    public boolean rayAnimActive;
 
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -95,8 +99,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         // create ray cast callback
         this.callback = (Fixture fixture, Vector2 point, Vector2 normal, float fraction) -> {
-            // if ray intersects with ladder, ignore it
-            if(fixture.getUserData() instanceof Ladder) {
+            // if ray intersects with ladder or tank ball, ignore it
+            if(fixture.getUserData() instanceof Ladder || fixture.getUserData() instanceof TankBall) {
                 return 1;
             }
             this.rayPointEnd.set(point);
@@ -238,7 +242,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
 
             // GRADUAL ACCELERATION
-            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_HOR_SPEED);
+            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.15f, ROBOT_MAX_HOR_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
 
             // CONSTANT SPEED OR GRADUAL ACCELERATION
@@ -260,7 +264,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
             else {
                 // GRADUAL ACCELERATION
-                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_HOR_SPEED);
+                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.15f, -ROBOT_MAX_HOR_SPEED);
                 temp.x = body.getMass() * (targetVelocity - currentVelocity);
                 body.applyLinearImpulse(temp, body.getWorldCenter(), true);
             }
@@ -361,6 +365,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+            this.rayCastStartTime = TimeUtils.nanoTime();
+            this.rayAnimActive = true;
+
             if(facing == Facing.RIGHT) {
                 rayPointStart.set(body.getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
                 rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, body.getPosition().y);

@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -122,7 +124,6 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected boolean rayStarted;
     protected Vector2 tempRayPointEnd = new Vector2();
 
-
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.assets = game.getAssets();
@@ -187,8 +188,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         // create hud
         this.hud = new Hud(this);
 
-        if(DEBUG_ON)
-            this.shapeRenderer = new ShapeRenderer();
+        // create shape renderer
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     /*@Override
@@ -302,9 +303,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "dispose");
         mapRenderer.dispose();
         world.dispose();
+        shapeRenderer.dispose();
         if(DEBUG_ON) {
             debugRenderer.dispose();
-            shapeRenderer.dispose();
         }
     }
 
@@ -443,31 +444,80 @@ public abstract class PlayScreen extends ScreenAdapter {
                 }
 
             }
-            if(rayStarted) {
-                shapeRenderer.setColor(Color.CYAN);
-
-                if(robot.facing == Robot.Facing.RIGHT) {
-                    tempRayPointEnd.add(2f, 0);
-                    if(tempRayPointEnd.x > robot.getRayPointEnd().x + SCREEN_WIDTH / 2f / PPM)
-                        rayStarted = false;
-
-                    // lerp from start point to end point.
-                    // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
-                    shapeRenderer.line(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0),
-                                       tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
-                }
-                else if(robot.facing == Robot.Facing.LEFT) {
-                    tempRayPointEnd.sub(2f, 0);
-                    if(tempRayPointEnd.x < robot.getRayPointEnd().x - SCREEN_WIDTH / 2f / PPM)
-                        rayStarted = false;
-
-                    shapeRenderer.line(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 2 / PPM, 0),
-                                       tempRayPointEnd.x < robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
-                }
-            }
-
             shapeRenderer.end();
         }
+    }
+
+    protected void renderLaser() {
+        if(rayStarted) {
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            Gdx.app.log("PlayScreen", "Drawing laser");
+//            shapeRenderer.setColor(Color.CYAN);
+
+            if(robot.facing == Robot.Facing.RIGHT) {
+                tempRayPointEnd.add(2f, 0);
+                if(tempRayPointEnd.x > robot.getRayPointEnd().x + SCREEN_WIDTH / 2f / PPM)
+                    rayStarted = false;
+
+                // lerp from start point to end point.
+                // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
+                /*shapeRenderer.rectLine(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0),
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd, 2 / PPM);*/
+                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
+                        robot.getBody().getPosition().y,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().x: tempRayPointEnd.x,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().y: tempRayPointEnd.y,
+                        2 / PPM,
+                        Color.GREEN,
+                        Color.CYAN);
+
+                /*shapeRenderer.setColor(Color.WHITE);
+                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
+                        robot.getBody().getPosition().y + 1f / PPM,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().x: tempRayPointEnd.x,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().y + 1f / PPM : tempRayPointEnd.y + 1f / PPM,
+                        0.5f / PPM);
+                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
+                        robot.getBody().getPosition().y - 1f / PPM,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().x: tempRayPointEnd.x,
+                        tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd().y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
+                        0.5f / PPM);*/
+            }
+            else if(robot.facing == Robot.Facing.LEFT) {
+                tempRayPointEnd.sub(2f, 0);
+                if(tempRayPointEnd.x < robot.getRayPointEnd().x - SCREEN_WIDTH / 2f / PPM)
+                    rayStarted = false;
+
+                /*shapeRenderer.rectLine(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 2 / PPM, 0),
+                        tempRayPointEnd.x < robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd, 2 / PPM);*/
+                shapeRenderer.rectLine(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM,
+                        robot.getBody().getPosition().y,
+                        tempRayPointEnd.x < robot.getRayPointEnd().x ? robot.getRayPointEnd().x: tempRayPointEnd.x,
+                        tempRayPointEnd.x < robot.getRayPointEnd().x ? robot.getRayPointEnd().y: tempRayPointEnd.y,
+                        2 / PPM,
+                        Color.GREEN,
+                        Color.CYAN);
+            }
+            shapeRenderer.end();
+        }
+
+        if(robot.rayAnimActive) {
+            if(robot.rayCastElapsed > 0.2f) {
+                robot.rayAnimActive = false;
+                robot.rayCastStartTime = 0;
+                robot.rayCastElapsed = 0;
+            }
+            else {
+                game.getBatch().begin();
+                game.getBatch().setProjectionMatrix(camera.combined);
+                game.getBatch().draw(assets.laserAssets.textureAnimation.getKeyFrame(robot.rayCastElapsed), robot.getRayPointEnd().x - 64f / 2 / PPM, robot.getRayPointEnd().y - 64f / 2 / PPM, 64f / PPM, 64f / PPM);
+                game.getBatch().end();
+
+                robot.rayCastElapsed = (TimeUtils.nanoTime() - robot.rayCastStartTime) * MathUtils.nanoToSec;
+            }
+        }
+
     }
 
     protected void checkIfDead() {

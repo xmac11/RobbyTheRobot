@@ -38,6 +38,8 @@ public class Assets {
     public TrampolineAssets trampolineAssets;
     public TankBallAssets tankBallAssets;
 
+    public LaserAssets laserAssets;
+
     public Assets() {
         this.assetManager = new AssetManager();
     }
@@ -117,6 +119,8 @@ public class Assets {
 
         this.trampolineAssets = new TrampolineAssets(atlas);
         this.tankBallAssets = new TankBallAssets(atlas);
+
+        this.laserAssets = new LaserAssets();
     }
 
     public void dispose() {
@@ -294,6 +298,24 @@ public class Assets {
                 framesArray.add(atlas.findRegion("tankExplosion" + i));
             }
             this.tankExplosionAnimation = new Animation<>(0.1f, framesArray);
+
+            framesArray.clear();
+        }
+    }
+
+    public class LaserAssets {
+
+//        public Texture laserTexture;
+        public final Animation<Texture> textureAnimation;
+
+        private LaserAssets() {
+//            this.laserTexture = new Texture("level2/laserExplosion1.png");
+
+            Array<Texture> framesArray = new Array<>();
+            for(int i = 1; i <= 4; i++) {
+                framesArray.add(new Texture("level2/laserExplosion" + i + ".png"));
+            }
+            this.textureAnimation = new Animation<>(0.05f, framesArray);
 
             framesArray.clear();
         }
