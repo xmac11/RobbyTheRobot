@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -127,30 +128,8 @@ public class ScreenLevel1 extends PlayScreen {
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
-        //render box2d debug rectangles
-        if(DEBUG_ON) {
-            debugRenderer.render(world, viewport.getCamera().combined);
 
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (int i = 0; i < enemies.size; i++) {
-                if (enemies.get(i).getPlatformID() != null) {
-                    int k = enemies.get(i).getWayPoints().size;
-                    Vector2[] points = new Vector2[k];
-
-                    for (int j = 0; j < k; j++) {
-                        points[j] = enemies.get(i).getWayPoints().get(j);
-                    }
-
-                    for (int j = 0; j < k - 1; j++) {
-                        points[j] = enemies.get(i).getWayPoints().get(j);
-                        shapeRenderer.line(points[j], points[j + 1]);
-                    }
-                }
-
-            }
-            shapeRenderer.end();
-        }
+        super.renderDebugLines();
 
         // finally, check if robot is dead
         super.checkIfDead();

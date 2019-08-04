@@ -2,6 +2,7 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -113,6 +114,10 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // debug lines for AI paths
     protected ShapeRenderer shapeRenderer;
+
+    protected boolean rayStarted;
+    protected Vector2 tempRayPointEnd = new Vector2();
+
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -293,8 +298,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "dispose");
         mapRenderer.dispose();
         world.dispose();
-        if(DEBUG_ON)
+        if(DEBUG_ON) {
             debugRenderer.dispose();
+            shapeRenderer.dispose();
+        }
     }
 
 
@@ -392,6 +399,49 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public TankBallPool getTankBallPool() {
         return tankBallPool;
+    }
+
+    public void setRayStarted(boolean rayStarted) {
+        this.rayStarted = rayStarted;
+    }
+
+    public Vector2 getTempRayPointEnd() {
+        return tempRayPointEnd;
+    }
+
+    protected void renderDebugLines() {
+        //render box2d debug rectangles
+        if(DEBUG_ON) {
+            debugRenderer.render(world, viewport.getCamera().combined);
+
+            shapeRenderer.setProjectionMatrix(camera.combined);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            for (int i = 0; i < enemies.size; i++) {
+                if (enemies.get(i).getPlatformID() != null) {
+                    int k = enemies.get(i).getWayPoints().size;
+                    Vector2[] points = new Vector2[k];
+
+                    for (int j = 0; j < k; j++) {
+                        points[j] = enemies.get(i).getWayPoints().get(j);
+                    }
+
+                    for (int j = 0; j < k - 1; j++) {
+                        points[j] = enemies.get(i).getWayPoints().get(j);
+                        shapeRenderer.line(points[j], points[j + 1]);
+                    }
+                }
+
+            }
+            if(rayStarted) {
+                shapeRenderer.setColor(Color.CYAN);
+                tempRayPointEnd.add(2f, 0);
+                if(tempRayPointEnd.x > robot.getRayPointEnd().x + SCREEN_WIDTH / PPM)
+                    rayStarted = false;
+                shapeRenderer.line(/*robot.getRayPointStart()*/robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0), tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
+            }
+
+            shapeRenderer.end();
+        }
     }
 
     protected void checkIfDead() {

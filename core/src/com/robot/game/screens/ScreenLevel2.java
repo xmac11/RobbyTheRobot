@@ -45,7 +45,7 @@ public class ScreenLevel2 extends PlayScreen{
         // update common elements
         super.commonUpdates(delta);
 
-        tankBallSpawner.update(delta);
+        tankBallSpawner.update();
         //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
 
         for(TankBall tankBall: tankBalls) {
@@ -84,10 +84,7 @@ public class ScreenLevel2 extends PlayScreen{
 
         game.getBatch().end();
 
-        //render box2d debug rectangles
-        if(DEBUG_ON) {
-            debugRenderer.render(world, viewport.getCamera().combined);
-        }
+        super.renderDebugLines();
 
         // finally, check if robot is dead
         super.checkIfDead();

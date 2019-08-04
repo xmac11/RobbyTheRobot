@@ -25,7 +25,7 @@ public class TankBallSpawner {
         this.tankBallPool = playScreen.getTankBallPool();
     }
 
-    public void update(float delta) {
+    public void update() {
         // first check if tank should be activated / disabled
         if(!tankActivated && !tankDisabled) {
             checkForTankActivation();
