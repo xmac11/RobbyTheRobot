@@ -445,10 +445,25 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
             if(rayStarted) {
                 shapeRenderer.setColor(Color.CYAN);
-                tempRayPointEnd.add(2f, 0);
-                if(tempRayPointEnd.x > robot.getRayPointEnd().x + SCREEN_WIDTH / PPM)
-                    rayStarted = false;
-                shapeRenderer.line(/*robot.getRayPointStart()*/robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0), tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
+
+                if(robot.facing == Robot.Facing.RIGHT) {
+                    tempRayPointEnd.add(2f, 0);
+                    if(tempRayPointEnd.x > robot.getRayPointEnd().x + SCREEN_WIDTH / 2f / PPM)
+                        rayStarted = false;
+
+                    // lerp from start point to end point.
+                    // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
+                    shapeRenderer.line(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0),
+                                       tempRayPointEnd.x > robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
+                }
+                else if(robot.facing == Robot.Facing.LEFT) {
+                    tempRayPointEnd.sub(2f, 0);
+                    if(tempRayPointEnd.x < robot.getRayPointEnd().x - SCREEN_WIDTH / 2f / PPM)
+                        rayStarted = false;
+
+                    shapeRenderer.line(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 2 / PPM, 0),
+                                       tempRayPointEnd.x < robot.getRayPointEnd().x ? robot.getRayPointEnd() : tempRayPointEnd);
+                }
             }
 
             shapeRenderer.end();

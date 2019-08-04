@@ -23,6 +23,9 @@ import static com.robot.game.util.Constants.*;
 
 public class Robot extends Sprite /*extends InputAdapter*/ {
 
+    public enum Facing {RIGHT , LEFT}
+    public Facing facing;
+
     private Assets assets;
     private Sprite robotSprite;
     private PlayScreen playScreen;
@@ -84,6 +87,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.contactManager = playScreen.getContactManager();
         this.checkpointData = playScreen.getCheckpointData();
         this.shakeEffect = playScreen.getShakeEffect();
+        this.facing = Facing.RIGHT;
         createRobotB2d();
 
         this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
@@ -228,6 +232,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if(facing != Facing.RIGHT) {
+                facing = Facing.RIGHT;
+                Gdx.app.log("Robot", "facing = " + facing);
+            }
+
             // GRADUAL ACCELERATION
             float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_HOR_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
@@ -239,6 +248,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
 
         // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if(facing != Facing.LEFT) {
+                facing = Facing.LEFT;
+                Gdx.app.log("Robot", "facing = " + facing);
+            }
+
             // this is for the case of the horizontally moving platform that will stop under the ladder
             // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
             if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop() && interactivePlatform.getvX() != 0) {
@@ -347,8 +361,14 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-            rayPointStart.set(body.getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
-            rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, body.getPosition().y);
+            if(facing == Facing.RIGHT) {
+                rayPointStart.set(body.getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
+                rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, body.getPosition().y);
+            }
+            else {
+                rayPointStart.set(body.getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
+                rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, body.getPosition().y);
+            }
             playScreen.setRayStarted(true);
             playScreen.getTempRayPointEnd().set(rayPointStart);
             world.rayCast(callback, rayPointStart, rayPointEnd);
@@ -366,9 +386,20 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     }
 
     public void draw(SpriteBatch batch, float delta) {
+        if(facing == Facing.RIGHT) {
+            if(robotSprite.isFlipX())
+                robotSprite.flip(true, false);
 
-        // attach robot sprite to body
-        robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            // attach robot sprite to body
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+        }
+        else if(facing == Facing.LEFT) {
+            if(!robotSprite.isFlipX())
+                robotSprite.flip(true, false);
+
+            // attach robot sprite to body
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 8.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+        }
 
         // if not flickering, draw sprite
         if(!flicker)
