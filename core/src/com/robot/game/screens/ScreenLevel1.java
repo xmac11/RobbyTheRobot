@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -82,8 +83,14 @@ public class ScreenLevel1 extends PlayScreen {
 
     @Override
     public void render(float delta) {
-        // first perform all necessary updates
-        this.update(delta);
+
+        // check if game was paused
+        super.processGameStateInput();
+
+        // if game is not paused, perform all necessary updates
+        if(!paused) {
+            this.update(delta);
+        }
 
         // update view
         super.updateViews(delta);

@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,7 +45,10 @@ public abstract class PlayScreen extends ScreenAdapter {
     // main class reference
     protected RobotGame game;
 
+    // reference to current level
     protected int levelID;
+
+    protected boolean paused;
 
     // assets
     protected Assets assets;
@@ -407,6 +411,13 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public Vector2 getTempRayPointEnd() {
         return tempRayPointEnd;
+    }
+
+    protected void processGameStateInput() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            paused = !paused;
+            Gdx.app.log("PlayScreen", "Paused = " + paused);
+        }
     }
 
     protected void renderDebugLines() {

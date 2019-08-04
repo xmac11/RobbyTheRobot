@@ -47,7 +47,7 @@ public class ScreenLevel2 extends PlayScreen{
         super.commonUpdates(delta);
 
         tankBallSpawner.update();
-        System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
+        //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
 
         for(TankBall tankBall: tankBalls) {
             tankBall.update(delta);
@@ -56,8 +56,14 @@ public class ScreenLevel2 extends PlayScreen{
 
     @Override
     public void render(float delta) {
-        // first perform all necessary updates
-        this.update(delta);
+
+        // check if game was paused
+        super.processGameStateInput();
+
+        // if game is not paused, perform all necessary updates
+        if(!paused) {
+            this.update(delta);
+        }
         // update view
         super.updateViews(delta);
 
