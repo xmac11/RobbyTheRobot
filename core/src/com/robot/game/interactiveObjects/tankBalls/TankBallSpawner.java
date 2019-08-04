@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects;
+package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
@@ -38,8 +38,6 @@ public class TankBallSpawner {
         if(tankActivated) {
             handleSpawning();
         }
-
-
     }
 
     private void checkForTankActivation() {
@@ -62,7 +60,7 @@ public class TankBallSpawner {
     }
 
     private void handleSpawning() {
-        if(tankElapsed > 2f) {
+        if(tankElapsed > TANKBALL_SPWANING_PERIOD) {
             TankBall tankBall = tankBallPool.obtain();
             tankBall.createTankBallB2d();
             tankBall.getBody().applyLinearImpulse(TANKBALL_IMPULSE, tankBall.getBody().getWorldCenter(), true);

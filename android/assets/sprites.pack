@@ -157,9 +157,58 @@ debris
   orig: 24, 60
   offset: 0, 0
   index: -1
+tankExplosion1
+  rotate: false
+  xy: 402, 383
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion2
+  rotate: false
+  xy: 327, 327
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion3
+  rotate: false
+  xy: 266, 293
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion4
+  rotate: false
+  xy: 99, 17
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion5
+  rotate: false
+  xy: 495, 433
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion6
+  rotate: false
+  xy: 651, 830
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankFire
+  rotate: false
+  xy: 593, 704
+  size: 20, 28
+  orig: 20, 28
+  offset: 0, 0
+  index: -1
 movingplatform
   rotate: false
-  xy: 402, 407
+  xy: 821, 941
   size: 32, 8
   orig: 32, 8
   offset: 0, 0

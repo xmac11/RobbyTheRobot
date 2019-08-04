@@ -116,7 +116,7 @@ public class Assets {
         this.smallFontAssets = new SmallFontAssets();
 
         this.trampolineAssets = new TrampolineAssets(atlas);
-        this.tankBallAssets = new TankBallAssets();
+        this.tankBallAssets = new TankBallAssets(atlas);
     }
 
     public void dispose() {
@@ -283,17 +283,19 @@ public class Assets {
     }
 
     public class TankBallAssets {
-        public final Texture tankBallTexture;
-        public final Animation<Texture> textureAnimation;
+        public final TextureAtlas.AtlasRegion tankFire;
+        public final Animation<TextureRegion> tankExplosionAnimation;
 
-        private TankBallAssets() {
-            this.tankBallTexture = new Texture("level2/tankFire.png"); // add this to atlas when finalized
+        private TankBallAssets(TextureAtlas atlas) {
+            this.tankFire = atlas.findRegion("tankFire");
 
-            Array<Texture> framesArray = new Array<>();
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 6; i++) {
-                framesArray.add(new Texture("level2/explosion" + i + ".png"));
+                framesArray.add(atlas.findRegion("tankExplosion" + i));
             }
-            this.textureAnimation = new Animation<>(0.1f, framesArray);
+            this.tankExplosionAnimation = new Animation<>(0.1f, framesArray);
+
+            framesArray.clear();
         }
     }
 

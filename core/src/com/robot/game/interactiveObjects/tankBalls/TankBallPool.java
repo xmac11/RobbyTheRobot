@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects;
+package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.utils.Pool;
 import com.robot.game.screens.PlayScreen;
@@ -10,8 +10,6 @@ public class TankBallPool extends Pool<TankBall> {
     public TankBallPool(PlayScreen playScreen) {
         this.playScreen = playScreen;
     }
-
-
 
     @Override
     protected TankBall newObject() {
