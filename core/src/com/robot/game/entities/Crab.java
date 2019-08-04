@@ -44,7 +44,7 @@ public class Crab extends Enemy {
             if(Math.abs(vY) >= 0.1f)
                 body.setTransform(body.getWorldCenter(), (float) Math.atan2(-vY, -vX));
         }
-        else if(!aiPathFollowing && getPosition().x < startX / PPM || getPosition().x > endX / PPM)
+        else if(!aiPathFollowing && outOfRangeX())
             reverseVelocity(true, false);
 
         // calculate the elapsed time of the animation

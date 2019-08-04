@@ -276,6 +276,7 @@ public class ContactManager implements ContactListener {
 
         // if steppedOnEnemy flag was set
         if(steppedOnEnemy) {
+            enemy.setDead(true);
             enemy.setFlagToKill();
 
             // if following a path, disable it

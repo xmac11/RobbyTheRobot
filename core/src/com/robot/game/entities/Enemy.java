@@ -63,6 +63,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     protected boolean aiPathFollowing;
     protected boolean flagToKill;
+    protected boolean dead; // only used for bat
 
     // animation
     protected TextureRegion textureRegion;
@@ -375,5 +376,9 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     public Array<Vector2> getWayPoints() {
         return wayPoints;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 }
