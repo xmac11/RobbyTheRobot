@@ -3,7 +3,6 @@ package com.robot.game.interactiveObjects.fallingPipes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
@@ -12,7 +11,6 @@ import static com.robot.game.util.Constants.*;
 
 public class FallingPipeSpawner {
 
-    private PlayScreen playScreen;
     private Robot robot;
     private DelayedRemovalArray<FallingPipe> fallingPipes;
     private ShakeEffect shakeEffect;
@@ -21,20 +19,17 @@ public class FallingPipeSpawner {
     private boolean pipesStartedFalling;
     private boolean pipesDisabled;
 
-    private float pipeStartTime;
     private float pipeElapsed;
-
-    public FallingPipePool fallingPipePool;
+    private FallingPipePool fallingPipePool;
 
     public FallingPipeSpawner(PlayScreen playScreen) {
-        this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
         this.fallingPipes = playScreen.getFallingPipes();
         this.shakeEffect = playScreen.getShakeEffect();
         this.fallingPipePool = playScreen.fallingPipePool;
     }
 
-    public void update() {
+    public void update(float delta) {
         if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled)
             checkForEarthquake();
 
@@ -44,7 +39,7 @@ public class FallingPipeSpawner {
                 fallingPipe.getBody().setAwake(true);
                 fallingPipe.getBody().setGravityScale(1);
             }
-            this.pipeStartTime = TimeUtils.nanoTime() + 3 / MathUtils.nanoToSec; //add extra 3 seconds timeout initially
+            pipeElapsed = -3f; //add extra 3 seconds timeout initially
             earthquakeHappened = false;
             pipesStartedFalling = true;
         }
@@ -53,7 +48,7 @@ public class FallingPipeSpawner {
             if(checkDisablingPipes())
                 this.pipesDisabled = true;
 
-            if(!pipesDisabled && shouldSpawnPipe()) {
+            if(!pipesDisabled && shouldSpawnPipe(delta)) {
                 // follow up earthquakes with probability 45%
                 if(MathUtils.random() > 0.55f) {
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
@@ -80,14 +75,13 @@ public class FallingPipeSpawner {
         return robot.getBody().getPosition().x > PIPES_END_X / PPM;
     }
 
-    public boolean shouldSpawnPipe() {
+    public boolean shouldSpawnPipe(float delta) {
         if(pipeElapsed >= PIPES_SPAWNING_PERIOD) {
-            this.pipeStartTime = TimeUtils.nanoTime();
             this.pipeElapsed = 0;
             return true;
         }
         else  {
-            this.pipeElapsed = (TimeUtils.nanoTime() - pipeStartTime) * MathUtils.nanoToSec;
+            this.pipeElapsed += delta;
             return false;
         }
     }

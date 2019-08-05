@@ -72,7 +72,7 @@ public class ScreenLevel1 extends PlayScreen {
         parallaxBarrels.update(delta);
 
         // handle earthquake
-        fallingPipeSpawner.update();
+        fallingPipeSpawner.update(delta);
         //System.out.println("active " + fallingPipes.size + ", free " + fallingPipePool.getFree());
 
         // update falling pipes
