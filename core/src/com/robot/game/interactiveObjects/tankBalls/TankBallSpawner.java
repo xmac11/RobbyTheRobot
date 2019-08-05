@@ -61,9 +61,16 @@ public class TankBallSpawner {
 
     private void handleSpawning() {
         if(tankElapsed > TANKBALL_SPWANING_PERIOD) {
+            // obtain tank ball from pool
             TankBall tankBall = tankBallPool.obtain();
+
+            // create its box2d body
             tankBall.createTankBallB2d();
+
+            // apply impulse
             tankBall.getBody().applyLinearImpulse(TANKBALL_IMPULSE, tankBall.getBody().getWorldCenter(), true);
+
+            // add it to array
             playScreen.getTankBalls().add(tankBall);
 
             this.tankStartTime = TimeUtils.nanoTime();

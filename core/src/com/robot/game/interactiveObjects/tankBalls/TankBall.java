@@ -62,8 +62,8 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         }
 
         if(body.getPosition().y > playScreen.getCamera().position.y + playScreen.getViewport().getWorldHeight() / 2 || animationFinished()) {
-
             world.destroyBody(body);
+            Gdx.app.log("TankBall", "Body destroyed");
 
             playScreen.getTankBalls().removeValue(this, false); // false in order to use .equals()
             Gdx.app.log("TankBall", "TankBall was removed from array");

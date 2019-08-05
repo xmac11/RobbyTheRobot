@@ -24,14 +24,17 @@ public class FallingPipeSpawner {
     private float pipeStartTime;
     private float pipeElapsed;
 
+    public FallingPipePool fallingPipePool;
+
     public FallingPipeSpawner(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
         this.fallingPipes = playScreen.getFallingPipes();
         this.shakeEffect = playScreen.getShakeEffect();
+        this.fallingPipePool = playScreen.fallingPipePool;
     }
 
-    public void handleEarthquake() {
+    public void update() {
         if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled)
             checkForEarthquake();
 
@@ -52,10 +55,14 @@ public class FallingPipeSpawner {
 
             if(!pipesDisabled && shouldSpawnPipe()) {
                 // follow up earthquakes with probability 45%
-                if(MathUtils.random() > 0.55f)
+                if(MathUtils.random() > 0.55f) {
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
+                }
 
-                fallingPipes.add(new FallingPipe(playScreen, false));
+                // obtain pipe from pool, create its body and add it to array
+                FallingPipe fallingPipe = fallingPipePool.obtain();
+                fallingPipe.createPipeB2d();
+                fallingPipes.add(fallingPipe);
             }
         }
     }

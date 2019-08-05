@@ -73,12 +73,8 @@ public class ContactManager implements ContactListener {
 
             // ground - falling pipe
             case GROUND_CATEGORY | PIPE_CATEGORY:
+            case GROUND_CATEGORY | PIPE_ON_GROUND_CATEGORY:
             groundPipeBegin(fixA, fixB);
-            break;
-
-            // feet - pipe on ground
-            case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
-            feetPipeOnGroundBegin(fixA, fixB);
             break;
 
             // robot - wall jumping
@@ -383,40 +379,17 @@ public class ContactManager implements ContactListener {
             StaticMethods.setCategoryBit(pipe.getBody().getFixtureList().first(), PIPE_ON_GROUND_CATEGORY);
     }
 
-    private void feetPipeOnGroundBegin(Fixture fixA, Fixture fixB) {
-        FallingPipe fallingPipe;
-
-        if(fixA.getUserData() instanceof  FallingPipe) {
-            fallingPipe = (FallingPipe) fixA.getUserData();
-        }
-        else {
-            fallingPipe = (FallingPipe) fixB.getUserData();
-        }
-
-        // robot is on a pipe; turn on flag to set pipe's velocity to zero so as not to move with the robot
-        fallingPipe.setFlagToCancelVelocity(true);
-        Gdx.app.log("ContactManager", "Robot stepped on pipe. Flag to cancel pipe's velocity activated.");
-    }
-
     private void groundPipeBegin(Fixture fixA, Fixture fixB) {
         FallingPipe fallingPipe;
 
         if(fixA.getUserData() instanceof FallingPipe) {
             fallingPipe = (FallingPipe) fixA.getUserData();
-            //StaticMethods.setMaskBit(fixA, NOTHING_MASK);
-
-            // change category bits
-            StaticMethods.setCategoryBit(fixA, PIPE_ON_GROUND_CATEGORY);
+            StaticMethods.setMaskBit(fixA, NOTHING_MASK);
         }
         else {
             fallingPipe = (FallingPipe) fixB.getUserData();
-            //StaticMethods.setMaskBit(fixB, NOTHING_MASK);
-
-            // change category bits
-            StaticMethods.setCategoryBit(fixB, PIPE_ON_GROUND_CATEGORY);
+            StaticMethods.setMaskBit(fixB, NOTHING_MASK);
         }
-        // set flagToCancelVelocity for pipes that are on the floor to sleep
-        fallingPipe.setFlagToSleep(true);
     }
 
     private void robotWallBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
@@ -561,11 +534,6 @@ public class ContactManager implements ContactListener {
                 robotSpikesEnd(fixA, fixB);
                 break;
 
-            // feet - pipe on ground
-            case ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY:
-                feetPipeOnGroundEnd(fixA, fixB);
-                break;
-
             // robot - wall jumping
             case ROBOT_CATEGORY | WALLJUMP_CATEGORY:
             robotWallEnd(fixA, fixB);
@@ -608,22 +576,6 @@ public class ContactManager implements ContactListener {
 
         robot.setOnInteractivePlatform(interactivePlatform, false);
         Gdx.app.log("ContactManager", "Off interactive platform");
-    }
-
-    private void feetPipeOnGroundEnd(Fixture fixA, Fixture fixB) {
-        FallingPipe fallingPipe;
-
-        if(fixA.getUserData() instanceof FallingPipe) {
-            fallingPipe = (FallingPipe) fixA.getUserData();
-        }
-        else {
-            fallingPipe = (FallingPipe) fixB.getUserData();
-
-        }
-
-        // robot got off the pipe; turn off flag to set pipe's velocity to zero
-        fallingPipe.setFlagToCancelVelocity(false);
-        Gdx.app.log("ContactManager", "Robot stepped off pipe. Flag to cancel pipe's velocity disabled.");
     }
 
     // this just prints statements

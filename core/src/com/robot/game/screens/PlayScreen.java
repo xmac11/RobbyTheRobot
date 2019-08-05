@@ -18,6 +18,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipePool;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
@@ -89,6 +91,8 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // falling pipes
     protected DelayedRemovalArray<FallingPipe> fallingPipes;
+    public FallingPipePool fallingPipePool;
+    protected FallingPipeSpawner fallingPipeSpawner;
 
     // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
@@ -171,12 +175,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // create ladder climb handler
         this.ladderClimbHandler = new LadderClimbHandler(robot);
-
-        // create falling pipes and cache 5 pipes
-        this.fallingPipes = new DelayedRemovalArray<>();
-        for(int i = 0; i < 5; i++) {
-            fallingPipes.add(new FallingPipe(this, true));
-        }
 
         // points to draw
         this.feedbackRenderer = new FeedbackRenderer(robot);
