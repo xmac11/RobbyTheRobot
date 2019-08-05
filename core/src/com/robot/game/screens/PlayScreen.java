@@ -410,6 +410,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         return laserHandler;
     }
 
+    public boolean isPaused() {
+        return paused;
+    }
+
     protected void processGameStateInput() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             paused = !paused;

@@ -38,7 +38,7 @@ public class DebugCamera {
         // if following, follow robot, else move camera according to input
         if(following) {
 
-            if(shakeEffect.isShakeON()) {
+            if(shakeEffect.isShakeON() && !playScreen.isPaused()) {
                 shakeEffect.update();
                 camera.translate(shakeEffect.getCameraDisplacement());
             }
