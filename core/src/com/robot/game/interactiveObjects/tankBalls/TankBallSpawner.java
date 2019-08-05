@@ -16,7 +16,6 @@ public class TankBallSpawner {
     private boolean tankActivated;
     private boolean tankDisabled;
 
-    private float tankStartTime;
     private float tankElapsed;
 
     public TankBallSpawner(PlayScreen playScreen) {
@@ -25,7 +24,7 @@ public class TankBallSpawner {
         this.tankBallPool = playScreen.getTankBallPool();
     }
 
-    public void update() {
+    public void update(float delta) {
         // first check if tank should be activated / disabled
         if(!tankActivated && !tankDisabled) {
             checkForTankActivation();
@@ -36,7 +35,7 @@ public class TankBallSpawner {
 
         // if it is activated, handle spawning
         if(tankActivated) {
-            handleSpawning();
+            handleSpawning(delta);
         }
     }
 
@@ -59,7 +58,7 @@ public class TankBallSpawner {
         }
     }
 
-    private void handleSpawning() {
+    private void handleSpawning(float delta) {
         if(tankElapsed > TANKBALL_SPWANING_PERIOD) {
             // obtain tank ball from pool
             TankBall tankBall = tankBallPool.obtain();
@@ -73,12 +72,11 @@ public class TankBallSpawner {
             // add it to array
             playScreen.getTankBalls().add(tankBall);
 
-            this.tankStartTime = TimeUtils.nanoTime();
             this.tankElapsed = 0;
             Gdx.app.log("TankBallSpawner", "New tank ball was created");
         }
         else {
-            this.tankElapsed = (TimeUtils.nanoTime() - tankStartTime) * MathUtils.nanoToSec;
+            this.tankElapsed += delta;
         }
     }
 }
