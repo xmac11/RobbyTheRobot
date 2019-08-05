@@ -68,13 +68,13 @@ public class ScreenLevel1 extends PlayScreen {
         parallaxBackground.update(delta);
         parallaxBarrels.update(delta);
 
-        // handle earthquake
-        fallingPipeSpawner.handleEarthquake();
-
         // update falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.update(delta);
         }
+
+        // handle earthquake
+        fallingPipeSpawner.handleEarthquake();
 
         //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
         //        System.out.println("Number of enemies: " + enemies.size);
@@ -130,11 +130,11 @@ public class ScreenLevel1 extends PlayScreen {
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());
-
         game.getBatch().end();
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
+        laserHandler.render(game.getBatch(), shapeRenderer);
 
         super.renderDebugLines();
 

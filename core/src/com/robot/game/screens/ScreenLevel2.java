@@ -49,9 +49,11 @@ public class ScreenLevel2 extends PlayScreen{
         // update common elements
         super.commonUpdates(delta);
 
+        // update tank ball spawner
         tankBallSpawner.update();
         //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
 
+        // update tank balls
         for(TankBall tankBall: tankBalls) {
             tankBall.update(delta);
         }
@@ -95,7 +97,7 @@ public class ScreenLevel2 extends PlayScreen{
 
 
         // render any laser shot
-        super.renderLaser();
+        laserHandler.render(game.getBatch(), shapeRenderer);
 
         super.renderDebugLines();
 

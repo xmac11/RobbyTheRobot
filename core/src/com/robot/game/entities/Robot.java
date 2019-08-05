@@ -9,14 +9,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.camera.ShakeEffect;
-import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
-import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
-import com.robot.game.util.StaticMethods;
+import com.robot.game.util.raycast.MyRayCastCallback;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
 
@@ -75,14 +73,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
     private int direction;
     private Vector2 tempWallJumpingImpulse = new Vector2();
 
-
     // ray cast callback
-    private RayCastCallback callback;
-    private Vector2 rayPointStart = new Vector2(), rayPointEnd = new Vector2();
-    private Fixture closestFixture;
-    public float rayCastStartTime;
-    public float rayCastElapsed;
-    public boolean rayAnimActive;
+    private MyRayCastCallback callback;
 
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -98,15 +90,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
         // create ray cast callback
-        this.callback = (Fixture fixture, Vector2 point, Vector2 normal, float fraction) -> {
-            // if ray intersects with ladder or tank ball, ignore it
-            if(fixture.getUserData() instanceof Ladder || fixture.getUserData() instanceof TankBall) {
-                return 1;
-            }
-            this.rayPointEnd.set(point);
-            this.closestFixture = fixture;
-            return fraction;
-        };
+        this.callback = new MyRayCastCallback();
 
         //Gdx.input.setInputProcessor(this);
     }
@@ -116,8 +100,8 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 110 / PPM*/ /*500 / PPM, 110 / PPM*/  /*1900 / PPM, 110 / PPM *//*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/
-                4350 / PPM, 780 / PPM /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(/*checkpointData.getSpawnLocation()*//* 80 / PPM, 110 / PPM*/ /*500 / PPM, 110 / PPM*/  /*1900 / PPM, 110 / PPM *//*2410 / PPM, 780 / PPM*/ 3416 / PPM, 780 / PPM
+                /*4350 / PPM, 780 / PPM*/ /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -242,7 +226,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
 
             // GRADUAL ACCELERATION
-            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.15f, ROBOT_MAX_HOR_SPEED);
+            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_HOR_SPEED);
             temp.x = body.getMass() * (targetVelocity - currentVelocity);
 
             // CONSTANT SPEED OR GRADUAL ACCELERATION
@@ -264,7 +248,7 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
             else {
                 // GRADUAL ACCELERATION
-                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.15f, -ROBOT_MAX_HOR_SPEED);
+                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_HOR_SPEED);
                 temp.x = body.getMass() * (targetVelocity - currentVelocity);
                 body.applyLinearImpulse(temp, body.getWorldCenter(), true);
             }
@@ -364,27 +348,11 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             Gdx.app.log("Robot","UP key pressed in robot class -> climbTimer was set");
         }
 
+        // laser shot
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-            this.rayCastStartTime = TimeUtils.nanoTime();
-            this.rayAnimActive = true;
-
-            if(facing == Facing.RIGHT) {
-                rayPointStart.set(body.getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
-                rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, body.getPosition().y);
-            }
-            else {
-                rayPointStart.set(body.getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y);
-                rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, body.getPosition().y);
-            }
-            playScreen.setRayStarted(true);
-            playScreen.getTempRayPointEnd().set(rayPointStart);
-            world.rayCast(callback, rayPointStart, rayPointEnd);
-
-            // determine action depending on the result of the raycast
-            resolveRayCast();
+            playScreen.getLaserHandler().startRayCast();
         }
 
-//        System.out.println(Math.signum(body.getLinearVelocity().x));
 //        System.out.println(body.getLinearVelocity().x);
 
         //// Debug keys for checkpoints ////
@@ -532,6 +500,10 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         this.direction = direction;
     }
 
+    public MyRayCastCallback getCallback() {
+        return callback;
+    }
+
     // Checkpoints
     private void checkFirstCheckpoint() {
         if( Math.abs( (body.getPosition().x - FIRST_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
@@ -561,49 +533,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             FileSaver.saveCheckpointData(checkpointData);
         }
     }
-
-    public Vector2 getRayPointStart() {
-        return rayPointStart;
-    }
-
-    public Vector2 getRayPointEnd() {
-        return rayPointEnd;
-    }
-
-    private void resolveRayCast() {
-        if(closestFixture == null) return;
-        if(closestFixture.getUserData() == null) return;
-
-        if("ground".equals(closestFixture.getUserData())) {
-            Gdx.app.log("Robot", "Raycast hit ground");
-        }
-        else if(closestFixture.getUserData() instanceof Enemy) {
-
-            Enemy enemy = (Enemy) closestFixture.getUserData();
-
-            enemy.setDead(true);
-            enemy.setFlagToKill();
-
-            // if following a path, disable it
-            if (enemy.isAiPathFollowing()) {
-                enemy.getFollowPath().setEnabled(false);
-            }
-
-            // stop enemy
-            enemy.getBody().setLinearVelocity(0, 0);
-
-            // set enemy's mask bits to "nothing"
-            StaticMethods.setMaskBit(closestFixture, NOTHING_MASK);
-
-            // increase points
-            StaticMethods.increaseScore(Robot.this, enemy);
-
-            // add enemy (damaging object) to the HashMap in order to render the points gained
-            playScreen.getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
-            Gdx.app.log("Robot", "Raycast hit enemy");
-        }
-    }
-
 
     // Debug keys for checkpoints
 

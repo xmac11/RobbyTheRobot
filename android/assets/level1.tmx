@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="105" nextobjectid="288">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="105" nextobjectid="289">
  <tileset firstgid="1" source="wall.tsx"/>
  <tileset firstgid="17" source="pipe_water.tsx"/>
  <tileset firstgid="41" source="tiles.tsx"/>
@@ -189,13 +189,6 @@
    </properties>
    <polyline points="0,0 -16,0 -16,80 0,80 0.00555556,84.3622 16.0111,84.3889 16,80"/>
   </object>
-  <object id="176" x="2832" y="432">
-   <properties>
-    <property name="mightWalk" type="bool" value="false"/>
-    <property name="spike" value=""/>
-   </properties>
-   <polyline points="0,-2.27273 -11.9318,-8.18182 -2,-15.625 -12.0682,-24.0682 0,-29.3636"/>
-  </object>
   <object id="193" x="2736" y="324" width="32" height="12">
    <properties>
     <property name="mightWalk" type="bool" value="true"/>
@@ -207,6 +200,12 @@
    <properties>
     <property name="mightWalk" type="bool" value="true"/>
     <property name="respawnID" type="int" value="1"/>
+    <property name="spike" value=""/>
+   </properties>
+  </object>
+  <object id="288" x="2820" y="404" width="12" height="24">
+   <properties>
+    <property name="mightWalk" type="bool" value="false"/>
     <property name="spike" value=""/>
    </properties>
   </object>

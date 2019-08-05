@@ -120,7 +120,7 @@ public class Assets {
         this.trampolineAssets = new TrampolineAssets(atlas);
         this.tankBallAssets = new TankBallAssets(atlas);
 
-        this.laserAssets = new LaserAssets();
+        this.laserAssets = new LaserAssets(atlas);
     }
 
     public void dispose() {
@@ -305,17 +305,15 @@ public class Assets {
 
     public class LaserAssets {
 
-//        public Texture laserTexture;
-        public final Animation<Texture> textureAnimation;
+        public final Animation<TextureRegion> laserExplosionAnimation;
 
-        private LaserAssets() {
-//            this.laserTexture = new Texture("level2/laserExplosion1.png");
+        private LaserAssets(TextureAtlas atlas) {
 
-            Array<Texture> framesArray = new Array<>();
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 4; i++) {
-                framesArray.add(new Texture("level2/laserExplosion" + i + ".png"));
+                framesArray.add(atlas.findRegion("laserExplosion" + i));
             }
-            this.textureAnimation = new Animation<>(0.05f, framesArray);
+            this.laserExplosionAnimation = new Animation<>(0.05f, framesArray);
 
             framesArray.clear();
         }

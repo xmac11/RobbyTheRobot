@@ -150,9 +150,37 @@ bat5
   orig: 96, 43
   offset: 0, 0
   index: -1
+laserExplosion1
+  rotate: false
+  xy: 625, 798
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+laserExplosion2
+  rotate: false
+  xy: 691, 807
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+laserExplosion3
+  rotate: false
+  xy: 625, 732
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+laserExplosion4
+  rotate: false
+  xy: 691, 741
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
 debris
   rotate: false
-  xy: 625, 802
+  xy: 266, 265
   size: 24, 60
   orig: 24, 60
   offset: 0, 0
@@ -173,35 +201,35 @@ tankExplosion2
   index: -1
 tankExplosion3
   rotate: false
-  xy: 266, 293
+  xy: 99, 17
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 tankExplosion4
   rotate: false
-  xy: 99, 17
+  xy: 495, 433
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 tankExplosion5
   rotate: false
-  xy: 495, 433
+  xy: 292, 293
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 tankExplosion6
   rotate: false
-  xy: 651, 830
+  xy: 436, 383
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 tankFire
   rotate: false
-  xy: 593, 704
+  xy: 789, 893
   size: 20, 28
   orig: 20, 28
   offset: 0, 0

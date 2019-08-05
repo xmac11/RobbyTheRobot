@@ -69,7 +69,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
             Gdx.app.log("TankBall", "TankBall was removed from array");
 
             playScreen.getTankBallPool().free(this);
-            Gdx.app.log("TankBall", "Tank ball was freed back into the pool");
+            Gdx.app.log("TankBall", "TankBall was freed back into the pool");
 
         }
     }
