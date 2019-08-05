@@ -275,6 +275,8 @@ public class ContactManager implements ContactListener {
         if(steppedOnEnemy) {
             enemy.setDead(true);
             enemy.setFlagToKill();
+            // set enemy's mask bits to "nothing"
+            enemy.flagToChangeMask = true;
 
             // if following a path, disable it
             if(enemy.isAiPathFollowing()) {
@@ -284,9 +286,6 @@ public class ContactManager implements ContactListener {
             // stop enemy
             enemy.getBody().setLinearVelocity(0, 0);
 
-            // set enemy's mask bits to "nothing"
-            StaticMethods.setMaskBit(fixB, NOTHING_MASK);
-
             // increase points
             StaticMethods.increaseScore(robot, enemy);
 
@@ -295,6 +294,11 @@ public class ContactManager implements ContactListener {
         }
         // otherwise it means that the robot was hit by an enemy
         else {
+            // set enemy to be a sensor
+            if(enemy.getBody().getFixtureList().size != 0) {
+                enemy.getBody().getFixtureList().first().setSensor(true);
+            }
+
             // decrease robot's health
             StaticMethods.decreaseHealth(robot, enemy);
 
@@ -534,6 +538,10 @@ public class ContactManager implements ContactListener {
                 robotSpikesEnd(fixA, fixB);
                 break;
 
+            case ROBOT_CATEGORY | ENEMY_CATEGORY:
+                robotEnemyEnd(fixA, fixB);
+                break;
+
             // robot - wall jumping
             case ROBOT_CATEGORY | WALLJUMP_CATEGORY:
             robotWallEnd(fixA, fixB);
@@ -594,6 +602,25 @@ public class ContactManager implements ContactListener {
         }
     }
 
+    private void robotEnemyEnd(Fixture fixA, Fixture fixB) {
+        Robot robot;
+        Enemy enemy;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            enemy = (Enemy) fixB.getUserData();
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            enemy = (Enemy) fixA.getUserData();
+        }
+
+        // disable enemy's sensor when contact ends
+        if(enemy.getBody().getFixtureList().size != 0) {
+            enemy.getBody().getFixtureList().first().setSensor(false);
+        }
+    }
+
     private void robotWallEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
 
@@ -612,14 +639,34 @@ public class ContactManager implements ContactListener {
         // Get the two fixtures that contact
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+        Vector2 normal = contact.getWorldManifold().getNormal();
 
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch(collisionID) {
+
             // robot - enemy
             case ROBOT_CATEGORY | ENEMY_CATEGORY:
-                contact.setEnabled(false);
-//                Gdx.app.log("ContactManager","Contact was disabled");
+                Robot robot;
+                Enemy enemy;
+
+                if(fixA.getUserData() instanceof Robot) {
+                    robot = (Robot) fixA.getUserData();
+                    enemy = (Enemy) fixB.getUserData();
+
+                    // robot was hit by enemy
+                    if (normal.y >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2))
+                        contact.setEnabled(false);
+                }
+                else {
+                    robot = (Robot) fixB.getUserData();
+                    enemy = (Enemy) fixA.getUserData();
+
+                    // robot was hit by enemy
+                    if(normal.y <= -1/Math.sqrt(2) || normal.x >= 1/Math.sqrt(2) || normal.x <= -1/Math.sqrt(2))
+                        contact.setEnabled(false);
+                }
+                break;
         }
     }
 

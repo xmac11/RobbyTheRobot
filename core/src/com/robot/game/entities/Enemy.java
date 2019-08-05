@@ -72,6 +72,8 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
     protected float deadStartTime;
     protected float deadElapsed;
 
+    public boolean flagToChangeMask;
+
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();

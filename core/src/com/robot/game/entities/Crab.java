@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
@@ -25,6 +26,11 @@ public class Crab extends Enemy {
 
     @Override
     public void update(float delta) {
+        if(flagToChangeMask && body.getFixtureList().size != 0) {
+            StaticMethods.setMaskBit(body.getFixtureList().first(), NOTHING_MASK);
+            flagToChangeMask = false;
+        }
+
         if(flagToKill) {
             if(deadElapsed >= DEAD_TIMER)
                 super.destroyBody();

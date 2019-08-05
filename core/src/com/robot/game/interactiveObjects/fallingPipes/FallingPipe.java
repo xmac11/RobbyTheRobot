@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
+import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
@@ -20,6 +21,8 @@ public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
     private Body body;
 //    private Sprite pipeSprite;
     private boolean cache;
+
+    public boolean flagToChangeCategory;
 
     public FallingPipe(PlayScreen playScreen, boolean cache) {
         this.playScreen = playScreen;
@@ -83,6 +86,11 @@ public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
     }
 
     public void update(float delta) {
+        if(flagToChangeCategory && body.getFixtureList().size != 0) {
+            StaticMethods.setCategoryBit(body.getFixtureList().first(), PIPE_ON_GROUND_CATEGORY);
+            flagToChangeCategory = false;
+        }
+
         if(body.getPosition().y < 0) {
             world.destroyBody(body);
             Gdx.app.log("FallingPipe","Body destroyed");
