@@ -32,10 +32,13 @@ public class Crab extends Enemy {
         }
 
         if(flagToKill) {
-            if(deadElapsed >= DEAD_TIMER)
+            if(deadElapsed >= DEAD_TIMER && !destroyed) {
                 super.destroyBody();
-            else
+                destroyed = true;
+            }
+            else {
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
+            }
         }
 
         if(aiPathFollowing && steeringBehavior != null) {

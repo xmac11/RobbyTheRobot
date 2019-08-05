@@ -20,6 +20,7 @@ public abstract class Collectable extends Sprite {
     private MapObject object;
     private JSONObject temp;
     private boolean flagToCollect;
+    private boolean destroyed;
 
     public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
@@ -36,8 +37,9 @@ public abstract class Collectable extends Sprite {
     }
 
     public void update(float delta) {
-        if(flagToCollect) {
+        if(flagToCollect && !destroyed) {
             destroyBody();
+            destroyed = true;
         }
     }
 

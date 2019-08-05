@@ -63,6 +63,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     protected boolean aiPathFollowing;
     protected boolean flagToKill;
+    protected boolean destroyed;
     protected boolean dead; // only used for bat
 
     // animation

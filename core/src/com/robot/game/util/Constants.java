@@ -169,7 +169,7 @@ public final class Constants {
     public static final int DAMAGE_FROM_CRAB = 20;
     public static final int DAMAGE_FROM_SPIKE = 25;
     public static final int DAMAGE_FROM_PIPE = 25;
-    public static final int DAMAGE_FROM_ENEMY_PROJECTILE = 0;
+    public static final int DAMAGE_FROM_ENEMY_PROJECTILE = 25;
 
     // Shake when damage
     public static final float HIT_SHAKE_INTENSITY = 0.15f;

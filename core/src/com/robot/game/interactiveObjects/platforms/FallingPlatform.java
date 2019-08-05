@@ -15,6 +15,7 @@ public class FallingPlatform extends InteractivePlatform {
     private float elapsed;
     private boolean flagToMove;
     private boolean falling;
+    private boolean destroyed;
     private boolean toggle;
 
     public FallingPlatform(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
@@ -29,15 +30,16 @@ public class FallingPlatform extends InteractivePlatform {
     public void update(float delta) {
 
         // if body is out of bounds, destroy it
-        if(body.getPosition().y < 0 /*&& !isDestroyed*/) {
+        if(body.getPosition().y < 0 && !destroyed) {
             destroyBody();
+            destroyed = true;
         }
 
         if(flagToMove) {
             if(elapsed >= delay) {
                 movePlatform();
                 flagToMove = false;
-                falling = true;
+                //falling = true;
             }
             else {
                 /*if(toggle)
@@ -65,7 +67,7 @@ public class FallingPlatform extends InteractivePlatform {
         this.flagToMove = flagToMove;
     }
 
-    public boolean isFalling() {
+    /*public boolean isFalling() {
         return falling;
-    }
+    }*/
 }

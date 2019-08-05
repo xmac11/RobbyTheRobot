@@ -39,12 +39,14 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
                 body.setLinearVelocity(0, -8);
                 flagToKill = false;
             }
-            else
+            else {
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
+            }
         }
         // if the bat is out of the map (dead), destroy it
-        else if(body.getPosition().y < 0) {
+        else if(body.getPosition().y < 0 && !destroyed) {
             super.destroyBody();
+            destroyed = true;
         }
         else if(!dead){
             if(aiPathFollowing && steeringBehavior != null) {
