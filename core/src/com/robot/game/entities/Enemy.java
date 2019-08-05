@@ -72,7 +72,7 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
     protected float deadStartTime;
     protected float deadElapsed;
 
-    public boolean flagToChangeMask;
+    protected boolean flagToChangeMask;
 
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
@@ -92,7 +92,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
             this.object = object;
 
             if(platformID != null) {
-//                parseXml();
                 // parse json file to get the waypoints of the platform the enemy should follow
                 parseJson();
 
@@ -137,35 +136,6 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     @Override
     public abstract int getDamage();
-
-    // parse xml to get the waypoints of the platform the enemy should follow
-    private void parseXml() {
-        float start =  System.nanoTime();
-        XmlReader reader = new XmlReader();
-        XmlReader.Element root = reader.parse(Gdx.files.internal(LEVEL_1_TMX));
-        Array<XmlReader.Element> child1 = root.getChildrenByNameRecursively("objectgroup");
-
-        for(int i = 0; i < child1.size; i++) {
-            Array<XmlReader.Element> child2 = child1.get(i).getChildrenByNameRecursively("object");
-
-            for(int j = 0; j < child2.size; j++){
-                if(child2.get(j).getAttributes().get("id").equals(platformID)) {
-
-                    this.x = Float.valueOf(child2.get(j).getAttributes().get("x"));
-                    this.y = playScreen.getMapHeight() - Float.valueOf(child2.get(j).getAttributes().get("y"));
-
-                    XmlReader.Element properties = child2.get(j).getChildByName("properties");
-                    Array<XmlReader.Element> property = properties.getChildrenByNameRecursively("property");
-                    for(int k = 0; k < property.size; k++) {
-                        if(property.get(k).getAttributes().get("name").equals("width"))
-                            this.width = Float.valueOf(property.get(k).getAttributes().get("value"));
-                        else if(property.get(k).getAttributes().get("name").equals("height"))
-                            this.height =  Float.valueOf(property.get(k).getAttributes().get("value"));
-                    }
-                }
-            }
-        }
-    }
 
     // parse json file to get the waypoints of the platform the enemy should follow
     private void parseJson() {
@@ -223,12 +193,12 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     // check if enemy is outside its moving range in x-direction
     protected boolean outOfRangeX() {
-        return body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM;
+        return body.getPosition().x <= startX / PPM || body.getPosition().x >= endX / PPM;
     }
 
     // check if enemy is outside its moving range in y-direction
     protected boolean outOfRangeY() {
-        return body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM;
+        return body.getPosition().y <= startY / PPM || body.getPosition().y >= endY / PPM;
     }
 
     public void setFlagToKill() {
@@ -378,6 +348,10 @@ public abstract class Enemy extends Sprite implements Steerable<Vector2>, Damagi
 
     public Array<Vector2> getWayPoints() {
         return wayPoints;
+    }
+
+    public void setFlagToChangeMask(boolean flagToChangeMask) {
+        this.flagToChangeMask = flagToChangeMask;
     }
 
     public void setDead(boolean dead) {

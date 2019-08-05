@@ -13,7 +13,7 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
+public class FallingPipe extends Sprite implements Damaging {
 
     private PlayScreen playScreen;
     private Assets assets;
@@ -22,7 +22,9 @@ public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
 //    private Sprite pipeSprite;
     private boolean cache;
 
-    public boolean flagToChangeCategory;
+    private boolean flagToSleep;
+    private boolean flagToCancelVelocity;
+    private boolean flagToChangeCategory;
 
     public FallingPipe(PlayScreen playScreen, boolean cache) {
         this.playScreen = playScreen;
@@ -91,15 +93,22 @@ public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
             flagToChangeCategory = false;
         }
 
-        if(body.getPosition().y < 0) {
-            world.destroyBody(body);
-            Gdx.app.log("FallingPipe","Body destroyed");
+        if(flagToSleep && body.getLinearVelocity().isZero()) {
 
-            playScreen.getFallingPipes().removeValue(this, false);
-            Gdx.app.log("FallingPipe","Pipe was removed from array");
+            // change parameters so that robot can walk on pipe
+            if(body.getFixtureList().size != 0) {
+                body.getFixtureList().first().setRestitution(0);
+                body.getFixtureList().first().setFriction(0.1f);
+            }
 
-            playScreen.fallingPipePool.free(this);
-            Gdx.app.log("FallingPipe","Pipe  was freed back into the pool");
+            body.setAwake(false);
+            flagToSleep = false;
+            Gdx.app.log("FallingPipe","Pipe on ground stopped. Parameters changed, sleep activated");
+        }
+
+        // robot is on pipe; set pipe's velocity to zero so as not to move with the robot
+        if(flagToCancelVelocity) {
+            body.setLinearVelocity( 0, 0);
         }
     }
 
@@ -123,9 +132,15 @@ public class FallingPipe extends Sprite implements Damaging, Pool.Poolable {
         return body;
     }
 
-    @Override
-    public void reset() {
-        if(cache)
-            cache = false;
+    public void setFlagToSleep(boolean flagToSleep) {
+        this.flagToSleep = flagToSleep;
+    }
+
+    public void setFlagToChangeCategory(boolean flagToChangeCategory) {
+        this.flagToChangeCategory = flagToChangeCategory;
+    }
+
+    public void setFlagToCancelVelocity(boolean flagToCancelVelocity) {
+        this.flagToCancelVelocity = flagToCancelVelocity;
     }
 }

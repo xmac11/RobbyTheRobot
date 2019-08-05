@@ -1,14 +1,20 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
+import com.robot.game.entities.Enemy;
+import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
-import com.robot.game.interactiveObjects.fallingPipes.FallingPipePool;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 
 import static com.robot.game.util.Constants.*;
 
@@ -18,6 +24,7 @@ public class ScreenLevel1 extends PlayScreen {
     private int[] mapLayers;
 
     // earthquake and falling pipes
+    private FallingPipeSpawner fallingPipeSpawner;
 
     // parallax scrolling
     private Parallax parallaxBackground;
@@ -51,9 +58,8 @@ public class ScreenLevel1 extends PlayScreen {
         for(int i = 0; i < 5; i++) {
             fallingPipes.add(new FallingPipe(this, true));
         }
-        // create falling pipe pool and spawner
-        super.fallingPipePool = new FallingPipePool(this);
-        super.fallingPipeSpawner = new FallingPipeSpawner(this);
+        // create falling pipe handler
+        this.fallingPipeSpawner = new FallingPipeSpawner(this);
 
         // create parallax
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
@@ -71,14 +77,13 @@ public class ScreenLevel1 extends PlayScreen {
         parallaxBackground.update(delta);
         parallaxBarrels.update(delta);
 
-        // handle earthquake
-        fallingPipeSpawner.update(delta);
-        //System.out.println("active " + fallingPipes.size + ", free " + fallingPipePool.getFree());
-
         // update falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
             fallingPipe.update(delta);
         }
+
+        // handle earthquake
+        fallingPipeSpawner.update(delta);
 
         //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
         //        System.out.println("Number of enemies: " + enemies.size);
@@ -144,6 +149,28 @@ public class ScreenLevel1 extends PlayScreen {
 
         // finally, check if robot is dead
         super.checkIfDead();
+
+        /*// set dead bodies to null
+        for(Enemy enemy: enemies) {
+            if(enemy.getBody().getFixtureList().size == 0 && !feedbackRenderer.getDamageFromHitToDraw().containsKey(enemy)
+            && !feedbackRenderer.getPointsForEnemyToDraw().containsKey(enemy)) {
+                enemy.setBodyToNull();
+                Gdx.app.log("ScreenLevel1", "Enemy body set to null");
+            }
+        }
+
+        for(Collectable collectable: collectables) {
+            if(collectable.getBody().getFixtureList().size == 0 && !feedbackRenderer.getItemPointsToDraw().containsKey(collectable)) {
+                collectable.setBodyToNull();
+                Gdx.app.log("ScreenLevel1", "Collectable body set to null");
+            }
+        }
+
+        for(InteractivePlatform interactivePlatform: interactivePlatforms) {
+            if(interactivePlatform.getBody().getFixtureList().size == 0) {
+                interactivePlatform.setBodyToNull();
+            }
+        }*/
     }
 
 }

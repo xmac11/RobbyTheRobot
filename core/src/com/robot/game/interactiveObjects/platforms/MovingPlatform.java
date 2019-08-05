@@ -71,12 +71,12 @@ public class MovingPlatform extends InteractivePlatform {
 
     // check if moving platform is outside its moving range in x-direction
     private boolean outOfRangeX() {
-        return body.getPosition().x < startX / PPM || body.getPosition().x > endX / PPM;
+        return body.getPosition().x <= startX / PPM || body.getPosition().x >= endX / PPM;
     }
 
     // check if moving platform is outside its moving range in y-direction
     private boolean outOfRangeY() {
-        return body.getPosition().y < startY / PPM || body.getPosition().y > endY / PPM;
+        return body.getPosition().y <= startY / PPM || body.getPosition().y >= endY / PPM;
     }
 
     // stop platform

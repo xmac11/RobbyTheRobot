@@ -18,29 +18,29 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
-import com.robot.game.interactiveObjects.fallingPipes.FallingPipePool;
+import com.robot.game.entities.Enemy;
+import com.robot.game.entities.Robot;
+import com.robot.game.interactiveObjects.Trampoline;
+import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.collectables.CollectableHandler;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
+import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
+import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
-import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
-import com.robot.game.interactiveObjects.Trampoline;
-import com.robot.game.interactiveObjects.collectables.CollectableHandler;
-import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
-import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
-import com.robot.game.interactiveObjects.collectables.Collectable;
-import com.robot.game.entities.Enemy;
-import com.robot.game.entities.Robot;
 import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
-import com.robot.game.util.raycast.LaserHandler;
-import com.robot.game.util.*;
+import com.robot.game.util.Assets;
+import com.robot.game.util.ContactManager;
+import com.robot.game.util.ObjectParser;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
+import com.robot.game.util.raycast.LaserHandler;
 import org.json.simple.JSONArray;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
 public abstract class PlayScreen extends ScreenAdapter {
 
@@ -91,8 +91,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // falling pipes
     protected DelayedRemovalArray<FallingPipe> fallingPipes;
-    public FallingPipePool fallingPipePool;
-    protected FallingPipeSpawner fallingPipeSpawner;
 
     // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
@@ -226,11 +224,14 @@ public abstract class PlayScreen extends ScreenAdapter {
         // update enemies
         for(int i = 0; i < enemies.size; i++) {
             Enemy enemy = enemies.get(i);
-            enemy.update(delta);
 
             // for path-following bat that is activated when the robot gets near it
-            if(Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM)
+            if(!enemy.getBody().isActive() && Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM) {
                 enemy.getBody().setActive(true);
+                Gdx.app.log("PlayScreen", "Enemy was set active");
+            }
+
+            enemy.update(delta);
         }
 
         // update collectables

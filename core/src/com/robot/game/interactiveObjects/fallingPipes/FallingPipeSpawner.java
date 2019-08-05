@@ -11,6 +11,7 @@ import static com.robot.game.util.Constants.*;
 
 public class FallingPipeSpawner {
 
+    private PlayScreen playScreen;
     private Robot robot;
     private DelayedRemovalArray<FallingPipe> fallingPipes;
     private ShakeEffect shakeEffect;
@@ -20,13 +21,12 @@ public class FallingPipeSpawner {
     private boolean pipesDisabled;
 
     private float pipeElapsed;
-    private FallingPipePool fallingPipePool;
 
     public FallingPipeSpawner(PlayScreen playScreen) {
+        this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
         this.fallingPipes = playScreen.getFallingPipes();
         this.shakeEffect = playScreen.getShakeEffect();
-        this.fallingPipePool = playScreen.fallingPipePool;
     }
 
     public void update(float delta) {
@@ -54,10 +54,7 @@ public class FallingPipeSpawner {
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
                 }
 
-                // obtain pipe from pool, create its body and add it to array
-                FallingPipe fallingPipe = fallingPipePool.obtain();
-                fallingPipe.createPipeB2d();
-                fallingPipes.add(fallingPipe);
+                fallingPipes.add(new FallingPipe(playScreen, false));
             }
         }
     }
