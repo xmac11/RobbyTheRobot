@@ -1248,11 +1248,6 @@
 				"type": "",
 				"properties": [
 					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
-					{
 						"name": "bat",
 						"type": "string",
 						"value": ""
@@ -1364,11 +1359,6 @@
 				"type": "",
 				"properties": [
 					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
-					{
 						"name": "bat",
 						"type": "string",
 						"value": ""
@@ -1426,11 +1416,6 @@
 				"id": 129,
 				"type": "",
 				"properties": [
-					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
 					{
 						"name": "bat",
 						"type": "string",
@@ -1490,11 +1475,6 @@
 				"type": "",
 				"properties": [
 					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
-					{
 						"name": "bat",
 						"type": "string",
 						"value": ""
@@ -1548,11 +1528,6 @@
 				"type": "",
 				"properties": [
 					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
-					{
 						"name": "bat",
 						"type": "string",
 						"value": ""
@@ -1605,11 +1580,6 @@
 				"id": 235,
 				"type": "",
 				"properties": [
-					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
 					{
 						"name": "bat",
 						"type": "string",
@@ -1733,11 +1703,6 @@
 				"id": 94,
 				"type": "",
 				"properties": [
-					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
 					{
 						"name": "crab",
 						"type": "string",
@@ -1898,11 +1863,6 @@
 				"type": "",
 				"properties": [
 					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
-					{
 						"name": "crab",
 						"type": "string",
 						"value": ""
@@ -1955,11 +1915,6 @@
 				"id": 232,
 				"type": "",
 				"properties": [
-					{
-						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": false
-					},
 					{
 						"name": "crab",
 						"type": "string",

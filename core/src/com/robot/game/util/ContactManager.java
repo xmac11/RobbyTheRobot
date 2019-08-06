@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.EnemyAI;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
@@ -283,8 +284,8 @@ public class ContactManager implements ContactListener {
             enemy.setFlagToChangeMask(true);
 
             // if following a path, disable it
-            if(enemy.isAiPathFollowing()) {
-                enemy.getFollowPath().setEnabled(false);
+            if(enemy instanceof EnemyAI) {
+                ((EnemyAI) enemy).getFollowPath().setEnabled(false);
             }
 
             // stop enemy

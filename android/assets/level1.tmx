@@ -239,7 +239,6 @@
  <objectgroup id="91" name="Bat obj">
   <object id="89" x="1786" y="256" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
@@ -265,7 +264,6 @@
   </object>
   <object id="126" x="2736" y="306" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="2914"/>
     <property name="endY" type="float" value="1000"/>
@@ -279,7 +277,6 @@
   </object>
   <object id="129" x="2900" y="226" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="2914"/>
     <property name="endY" type="float" value="1000"/>
@@ -293,7 +290,6 @@
   </object>
   <object id="161" x="1450" y="432" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
@@ -306,7 +302,6 @@
   </object>
   <object id="233" x="4586" y="336" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="248"/>
@@ -319,7 +314,6 @@
   </object>
   <object id="235" x="4666" y="304" width="28" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="bat" value=""/>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="280"/>
@@ -344,7 +338,6 @@
  <objectgroup id="93" name="Crab obj">
   <object id="94" x="940" y="176" width="24" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="crab" value=""/>
     <property name="endX" type="float" value="980"/>
     <property name="endY" type="float" value="-1"/>
@@ -381,7 +374,6 @@
   </object>
   <object id="230" x="528" y="352" width="24" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="crab" value=""/>
     <property name="endX" type="float" value="672"/>
     <property name="endY" type="float" value="-1"/>
@@ -394,7 +386,6 @@
   </object>
   <object id="232" x="576" y="352" width="24" height="16">
    <properties>
-    <property name="aiPathFollowing" type="bool" value="false"/>
     <property name="crab" value=""/>
     <property name="endX" type="float" value="720"/>
     <property name="endY" type="float" value="-1"/>

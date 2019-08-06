@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
-import com.robot.game.interactiveObjects.collectables.CollectableHandler;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.FallingPlatform;
@@ -55,7 +54,11 @@ public class ObjectParser {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY))
+            if(object.getProperties().containsKey("fish")) {
+                bodyDef.type = BodyDef.BodyType.DynamicBody;
+                bodyDef.gravityScale = 0;
+            }
+            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY))
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
             else
                 bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -212,11 +215,21 @@ public class ObjectParser {
         else if(object.getProperties().containsKey(ENEMY_PROPERTY)) {
 
             // create bats
-            if(object.getProperties().containsKey(BAT_PROPERTY))
-                this.enemies.add(new Bat(playScreen, body, fixtureDef, object));
+            if(object.getProperties().containsKey(BAT_PROPERTY)) {
+                if(object.getProperties().containsKey("aiPathFollowing"))
+                    this.enemies.add(new BatAI(playScreen, body, fixtureDef, object));
+                else
+                    this.enemies.add(new BatPatrolling(playScreen, body, fixtureDef, object));
+            }
             // create crabs
-            else if(object.getProperties().containsKey(CRAB_PROPERTY))
-                this.enemies.add(new Crab(playScreen, body, fixtureDef, object));
+            else if(object.getProperties().containsKey(CRAB_PROPERTY)) {
+                if(object.getProperties().containsKey("aiPathFollowing"))
+                    this.enemies.add(new CrabAI(playScreen, body, fixtureDef, object));
+                else
+                    this.enemies.add(new CrabPatrolling(playScreen, body, fixtureDef, object));
+            }
+            /*else if(object.getProperties().containsKey("fish"))
+                this.enemies.add(new Fish(playScreen, body, fixtureDef, object));*/
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {

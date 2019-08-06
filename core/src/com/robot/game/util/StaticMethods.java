@@ -31,7 +31,10 @@ public class StaticMethods {
 
     // get the number of points that should be added depending on the enemy killed
     public static int getPointsForEnemy(Enemy enemy) {
-        return enemy instanceof Bat ? POINTS_FOR_BAT : POINTS_FOR_CRAB;
+        if(enemy instanceof BatAI || enemy instanceof BatPatrolling)
+            return POINTS_FOR_BAT;
+        else //if(enemy instanceof CrabAI || enemy instanceof CrabPatrolling)
+            return POINTS_FOR_CRAB;
     }
 
     // increase score depending on item collected

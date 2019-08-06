@@ -10,17 +10,14 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Constants.PPM;
 
-public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
+public class BatPatrolling extends EnemyPatrolling {
 
-    public Bat(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public BatPatrolling(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
-
-        if(object.getProperties().containsKey("waitForPlayer")) {
-            body.setActive(false);
-        }
 
         // set the size of the bat sprite
         setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
@@ -49,16 +46,11 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
             destroyed = true;
         }
         else if(!dead){
-            if(aiPathFollowing && steeringBehavior != null) {
-                steeringBehavior.calculateSteering(steeringOutput);
-                applySteering(steeringOutput, delta);
-            }
-
             // bat moving horizontally
-            else if(horizontal && outOfRangeX())
+            if(horizontal && outOfRangeX())
                 reverseVelocity(true, false);
 
-            // bat moving vertically
+                // bat moving vertically
             else if(outOfRangeY())
                 reverseVelocity(false, true);
         }
@@ -91,5 +83,3 @@ public class Bat extends Enemy /*implements Steerable<Vector2>*/ {
         return DAMAGE_FROM_BAT;
     }
 }
-
-

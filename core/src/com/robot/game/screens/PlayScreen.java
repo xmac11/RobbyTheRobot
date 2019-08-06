@@ -19,6 +19,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.entities.Enemy;
+import com.robot.game.entities.EnemyAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -415,6 +416,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         return paused;
     }
 
+    public ShapeRenderer getShapeRenderer() {
+        return shapeRenderer;
+    }
+
     protected void processGameStateInput() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             paused = !paused;
@@ -429,21 +434,9 @@ public abstract class PlayScreen extends ScreenAdapter {
 
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for (int i = 0; i < enemies.size; i++) {
-                if (enemies.get(i).getPlatformID() != null) {
-                    int k = enemies.get(i).getWayPoints().size;
-                    Vector2[] points = new Vector2[k];
-
-                    for (int j = 0; j < k; j++) {
-                        points[j] = enemies.get(i).getWayPoints().get(j);
-                    }
-
-                    for (int j = 0; j < k - 1; j++) {
-                        points[j] = enemies.get(i).getWayPoints().get(j);
-                        shapeRenderer.line(points[j], points[j + 1]);
-                    }
-                }
-
+            for(Enemy enemy: enemies) {
+                if(enemy instanceof EnemyAI)
+                    ((EnemyAI) enemy).drawAiPath();
             }
             shapeRenderer.end();
         }

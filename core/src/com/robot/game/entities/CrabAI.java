@@ -11,9 +11,9 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class Crab extends Enemy {
+public class CrabAI extends EnemyAI {
 
-    public Crab(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public CrabAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);
@@ -41,7 +41,7 @@ public class Crab extends Enemy {
             }
         }
 
-        if(aiPathFollowing && steeringBehavior != null) {
+        if(steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
             applySteering(steeringOutput, delta);
 
@@ -53,8 +53,6 @@ public class Crab extends Enemy {
             if(Math.abs(vY) >= 0.1f)
                 body.setTransform(body.getWorldCenter(), (float) Math.atan2(-vY, -vX));
         }
-        else if(!aiPathFollowing && outOfRangeX())
-            reverseVelocity(true, false);
 
         // calculate the elapsed time of the animation
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;

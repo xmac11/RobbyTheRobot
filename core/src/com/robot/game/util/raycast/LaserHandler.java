@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Enemy;
+import com.robot.game.entities.EnemyAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
@@ -150,8 +151,8 @@ public class LaserHandler {
             enemy.setFlagToKill();
 
             // if following a path, disable it
-            if (enemy.isAiPathFollowing()) {
-                enemy.getFollowPath().setEnabled(false);
+            if(enemy instanceof EnemyAI) {
+                ((EnemyAI) enemy).getFollowPath().setEnabled(false);
             }
 
             // stop enemy
