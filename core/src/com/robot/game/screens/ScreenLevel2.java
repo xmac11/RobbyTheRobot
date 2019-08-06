@@ -48,9 +48,9 @@ public class ScreenLevel2 extends PlayScreen {
         super.tankBallSpawner = new TankBallSpawner(this);
 
         // create parallax water
-        this.parallaxWater1 = new Parallax(this, new Texture("level2/waterAnimation1.png"),
+        this.parallaxWater1 = new Parallax(this, assets.parallaxAssets.waterTexture,
                 1f, 624, 0, 80, 48, true, false);
-        this.parallaxWater2 = new Parallax(this, new Texture("level2/waterAnimation1.png"),
+        this.parallaxWater2 = new Parallax(this, assets.parallaxAssets.waterTexture,
                 1f, 912, 0, 80, 48, true, false);
     }
 

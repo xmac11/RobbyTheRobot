@@ -178,9 +178,30 @@ laserExplosion4
   orig: 64, 64
   offset: 0, 0
   index: -1
+fish1
+  rotate: false
+  xy: 266, 261
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
+fish2
+  rotate: false
+  xy: 266, 195
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
+fish_dead
+  rotate: false
+  xy: 266, 129
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
 debris
   rotate: false
-  xy: 266, 265
+  xy: 757, 811
   size: 24, 60
   orig: 24, 60
   offset: 0, 0
@@ -215,7 +236,7 @@ tankExplosion4
   index: -1
 tankExplosion5
   rotate: false
-  xy: 292, 293
+  xy: 305, 293
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

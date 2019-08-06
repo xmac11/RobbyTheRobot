@@ -88,6 +88,14 @@ public class Assets {
         assetManager.load("sprites.pack", TextureAtlas.class);
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
+
+        // load splash textures
+        for(int i = 1; i <= 7; i++) {
+            assetManager.load("level2/splash" + i + ".png", Texture.class);
+        }
+
+        // load water (level 2)
+        assetManager.load("level2/waterAnimation.png", Texture.class);
     }
 
     // creates assets for loading screen
@@ -123,7 +131,7 @@ public class Assets {
         this.trampolineAssets = new TrampolineAssets(atlas);
         this.tankBallAssets = new TankBallAssets(atlas);
         this.laserAssets = new LaserAssets(atlas);
-        this.fishAssets = new FishAssets();
+        this.fishAssets = new FishAssets(atlas);
         this.splashAssets = new SplashAssets();
     }
 
@@ -203,19 +211,19 @@ public class Assets {
     }
 
     public class FishAssets {
-        public final Animation<Texture> textureAnimation;
-        public final Texture deadFish;
+        public final Animation<TextureRegion> textureAnimation;
+        public final TextureRegion deadFish;
 
-        private FishAssets() {
-            Array<Texture> framesArray = new Array<>();
+        private FishAssets(TextureAtlas atlas) {
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(new Texture("level2/fish" + i + ".png"));
+                framesArray.add(atlas.findRegion("fish" + i));
             }
             this.textureAnimation = new Animation<>(0.15f, framesArray);
 
             framesArray.clear();
 
-            this.deadFish = new Texture("level2/fish_dead.png");
+            this.deadFish = atlas.findRegion("fish_dead");
         }
     }
 
@@ -232,10 +240,12 @@ public class Assets {
     public class ParallaxAssets {
         public final Texture backgroundTexture;
         public final Texture barrelsTexture;
+        public final Texture waterTexture;
 
         private ParallaxAssets() {
             this.backgroundTexture = assetManager.get("background.png");
             this.barrelsTexture = assetManager.get("barrels.png");
+            this.waterTexture = assetManager.get("level2/waterAnimation.png");
         }
     }
 
@@ -346,7 +356,7 @@ public class Assets {
         private SplashAssets() {
             Array<Texture> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
-                framesArray.add(new Texture("level2/up_splash_0" + i + ".png"));
+                framesArray.add(assetManager.get("level2/splash" + i + ".png"));
             }
             this.splashAnimation = new Animation<>(0.05f, framesArray);
 
