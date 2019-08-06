@@ -1,4 +1,4 @@
-package com.robot.game.entities;
+package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;

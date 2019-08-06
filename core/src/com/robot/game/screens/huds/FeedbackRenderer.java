@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.robot.game.entities.Enemy;
+import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -18,7 +18,6 @@ import static com.robot.game.util.Constants.*;
 public class FeedbackRenderer {
 
     private Robot robot;
-    private Assets assets;
     private ObjectMap<Enemy, Float> pointsForEnemyToDraw;
     private ObjectMap<Damaging, Float> damageFromHitToDraw;
     private ObjectMap<Collectable, Float> itemPointsToDraw;
@@ -29,12 +28,12 @@ public class FeedbackRenderer {
 
     public FeedbackRenderer(Robot robot) {
         this.robot = robot;
-        this.assets = robot.getPlayScreen().getAssets();
         this.pointsForEnemyToDraw = new ObjectMap<>();
         this.damageFromHitToDraw = new ObjectMap<>();
         this.itemPointsToDraw = new ObjectMap<>();
-        this.feedbackFont = assets.smallFontAssets.smallFont;
 
+        Assets assets = robot.getPlayScreen().getAssets();
+        this.feedbackFont = assets.smallFontAssets.smallFont;
         this.frame = assets.hudAssets.frame;
         this.greenBar = assets.hudAssets.greenBar;
         this.redBar = assets.hudAssets.redBar;

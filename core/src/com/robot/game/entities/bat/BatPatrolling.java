@@ -1,4 +1,4 @@
-package com.robot.game.entities;
+package com.robot.game.entities.bat;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
@@ -62,15 +63,12 @@ public class BatPatrolling extends EnemyPatrolling {
     @Override
     public void draw(Batch batch) {
         // determine the appropriate texture region of the animation
-        if(!flagToKill) {
-            textureRegion = assets.batAssets.batFlyAnimation.getKeyFrame(elapsedAnim);
+        if(!dead) {
+            setRegion(assets.batAssets.batFlyAnimation.getKeyFrame(elapsedAnim));
         }
         else {
-            textureRegion = assets.batAssets.batDeadAnimation.getKeyFrame(elapsedAnim);
+            setRegion(assets.batAssets.batDeadAnimation.getKeyFrame(elapsedAnim));
         }
-
-        // set the appropriate texture region
-        setRegion(textureRegion);
 
         // attach sprite to body
         setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);

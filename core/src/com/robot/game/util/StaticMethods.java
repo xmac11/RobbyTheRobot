@@ -3,6 +3,11 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.bat.BatAI;
+import com.robot.game.entities.bat.BatPatrolling;
+import com.robot.game.entities.crab.CrabAI;
+import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
@@ -33,8 +38,10 @@ public class StaticMethods {
     public static int getPointsForEnemy(Enemy enemy) {
         if(enemy instanceof BatAI || enemy instanceof BatPatrolling)
             return POINTS_FOR_BAT;
-        else //if(enemy instanceof CrabAI || enemy instanceof CrabPatrolling)
+        else if(enemy instanceof CrabAI || enemy instanceof CrabPatrolling)
             return POINTS_FOR_CRAB;
+        else //if(enemy instanceof Fish)
+            return POINTS_FOR_FISH;
     }
 
     // increase score depending on item collected

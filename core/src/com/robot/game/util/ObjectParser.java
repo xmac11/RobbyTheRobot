@@ -7,6 +7,11 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.bat.BatAI;
+import com.robot.game.entities.bat.BatPatrolling;
+import com.robot.game.entities.crab.CrabAI;
+import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -228,8 +233,8 @@ public class ObjectParser {
                 else
                     this.enemies.add(new CrabPatrolling(playScreen, body, fixtureDef, object));
             }
-            /*else if(object.getProperties().containsKey("fish"))
-                this.enemies.add(new Fish(playScreen, body, fixtureDef, object));*/
+            else if(object.getProperties().containsKey("fish"))
+                this.enemies.add(new Fish(playScreen, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {

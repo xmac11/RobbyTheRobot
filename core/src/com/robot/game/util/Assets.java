@@ -35,10 +35,12 @@ public class Assets {
     public FontAssets fontAssets;
     public SmallFontAssets smallFontAssets;
 
+    // level 2
     public TrampolineAssets trampolineAssets;
     public TankBallAssets tankBallAssets;
-
     public LaserAssets laserAssets;
+    public FishAssets fishAssets;
+    public SplashAssets splashAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -117,10 +119,12 @@ public class Assets {
         this.pipeAssets = new PipeAssets(atlas);
         this.smallFontAssets = new SmallFontAssets();
 
+        // level2
         this.trampolineAssets = new TrampolineAssets(atlas);
         this.tankBallAssets = new TankBallAssets(atlas);
-
         this.laserAssets = new LaserAssets(atlas);
+        this.fishAssets = new FishAssets();
+        this.splashAssets = new SplashAssets();
     }
 
     public void dispose() {
@@ -195,6 +199,23 @@ public class Assets {
             this.crabDeadAnimation = new Animation<>(0.3f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
 
             framesArray.clear();
+        }
+    }
+
+    public class FishAssets {
+        public final Animation<Texture> textureAnimation;
+        public final Texture deadFish;
+
+        private FishAssets() {
+            Array<Texture> framesArray = new Array<>();
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(new Texture("level2/fish" + i + ".png"));
+            }
+            this.textureAnimation = new Animation<>(0.15f, framesArray);
+
+            framesArray.clear();
+
+            this.deadFish = new Texture("level2/fish_dead.png");
         }
     }
 
@@ -314,6 +335,20 @@ public class Assets {
                 framesArray.add(atlas.findRegion("laserExplosion" + i));
             }
             this.laserExplosionAnimation = new Animation<>(0.05f, framesArray);
+
+            framesArray.clear();
+        }
+    }
+
+    public class SplashAssets {
+        public final Animation<Texture> splashAnimation;
+
+        private SplashAssets() {
+            Array<Texture> framesArray = new Array<>();
+            for(int i = 1; i <= 7; i++) {
+                framesArray.add(new Texture("level2/up_splash_0" + i + ".png"));
+            }
+            this.splashAnimation = new Animation<>(0.05f, framesArray);
 
             framesArray.clear();
         }

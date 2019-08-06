@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.EnemyAI;
+import com.robot.game.entities.Fish;
+import com.robot.game.entities.abstractEnemies.EnemyAI;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
@@ -12,7 +13,7 @@ import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.FallingPlatform;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
-import com.robot.game.entities.Enemy;
+import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
@@ -245,7 +246,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixA.getUserData();
             enemy = (Enemy) fixB.getUserData();
 
-            if(normal.y <= -1/Math.sqrt(2)) {
+            if(normal.y <= -1/Math.sqrt(2) && !(enemy instanceof Fish)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 steppedOnEnemy = true;
             }
@@ -262,7 +263,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             enemy = (Enemy) fixA.getUserData();
 
-            if(normal.y >= 1/Math.sqrt(2)) {
+            if(normal.y >= 1/Math.sqrt(2) && !(enemy instanceof Fish)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 steppedOnEnemy = true;
             }

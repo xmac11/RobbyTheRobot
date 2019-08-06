@@ -1,25 +1,15 @@
-package com.robot.game.entities;
+package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.steer.SteeringBehavior;
-import com.badlogic.gdx.ai.steer.behaviors.FollowPath;
-import com.badlogic.gdx.ai.steer.utils.paths.LinePath;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.*;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
-
-import static com.robot.game.util.Constants.*;
 
 public abstract class Enemy extends Sprite implements Damaging {
 
@@ -34,10 +24,9 @@ public abstract class Enemy extends Sprite implements Damaging {
 
     protected boolean flagToKill;
     protected boolean destroyed;
-    protected boolean dead; // only used for bat
+    protected boolean dead; // only used for bat (otherwise continues to move up and down after dead)
 
     // animation
-    protected TextureRegion textureRegion;
     protected float startTimeAnim;
     protected float elapsedAnim;
     protected float deadStartTime;
@@ -71,8 +60,6 @@ public abstract class Enemy extends Sprite implements Damaging {
             body.setLinearVelocity(body.getLinearVelocity().x, -body.getLinearVelocity().y);
     }
 
-
-
     public void setFlagToKill() {
         this.flagToKill = true;
         // keep track of the time enemy was killed
@@ -87,14 +74,16 @@ public abstract class Enemy extends Sprite implements Damaging {
         Gdx.app.log("Enemy", "Enemy was removed from array");
     }
 
-
-
     public Body getBody() {
         return body;
     }
 
     public void setFlagToChangeMask(boolean flagToChangeMask) {
         this.flagToChangeMask = flagToChangeMask;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     public void setDead(boolean dead) {

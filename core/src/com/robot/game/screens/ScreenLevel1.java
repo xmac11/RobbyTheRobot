@@ -1,20 +1,13 @@
 package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
-import com.robot.game.entities.Enemy;
-import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
-import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 
 import static com.robot.game.util.Constants.*;
 
@@ -62,8 +55,8 @@ public class ScreenLevel1 extends PlayScreen {
         this.fallingPipeSpawner = new FallingPipeSpawner(this);
 
         // create parallax
-        this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 192, 260, false);
-        this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 75, true);
+        this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 0, 192, mapWidth, 260, false, true);
+        this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 0, mapWidth, 75, true, true);
 
         //System.out.println(tiledMapLevel1.getLayers().get(GROUND_OBJECT).getObjects().get(250)); // error
         System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size()); // this should be zero when the game starts

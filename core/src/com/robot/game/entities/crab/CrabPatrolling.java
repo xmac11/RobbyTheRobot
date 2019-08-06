@@ -1,4 +1,4 @@
-package com.robot.game.entities;
+package com.robot.game.entities.crab;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
@@ -51,14 +52,12 @@ public class CrabPatrolling extends EnemyPatrolling {
     @Override
     public void draw(Batch batch) {
         // determine the appropriate texture region of the animation
-        if(!flagToKill) {
-            super.textureRegion = assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim);
+        if(!dead) {
+            setRegion(assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim));
         }
         else {
-            super.textureRegion = assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim);
+            setRegion(assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim));
         }
-        // set the appropriate texture region
-        setRegion(textureRegion);
 
         // attach enemy sprite to body
         setPosition(body.getPosition().x - CRAB_WIDTH / 2 / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);

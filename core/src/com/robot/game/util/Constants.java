@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -124,6 +124,11 @@ public final class Constants {
     public static final float CRAB_WIDTH = 24;
     public static final float CRAB_HEIGHT = 16;
 
+        // Fish
+    public static final float FISH_WIDTH = 16;
+    public static final float FISH_HEIGHT = 28;
+    public static final Vector2 FISH_IMPULSE = new Vector2(0, 8f);
+
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
     public static final String POWERUP_PROPERTY = "powerup";
@@ -167,6 +172,7 @@ public final class Constants {
     // Damage
     public static final int DAMAGE_FROM_BAT = 25;
     public static final int DAMAGE_FROM_CRAB = 20;
+    public static final int DAMAGE_FROM_FISH = 20;
     public static final int DAMAGE_FROM_SPIKE = 25;
     public static final int DAMAGE_FROM_PIPE = 25;
     public static final int DAMAGE_FROM_ENEMY_PROJECTILE = 25;
@@ -178,6 +184,7 @@ public final class Constants {
     // Points - Health
     public static final int POINTS_FOR_BAT = 100;
     public static final int POINTS_FOR_CRAB = 50;
+    public static final int POINTS_FOR_FISH = 50;
     public static final int POINTS_FOR_BURGER = 25;
     public static final int HEALTH_FOR_POWERUP = 25;
 

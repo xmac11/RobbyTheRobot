@@ -13,7 +13,7 @@ public class Parallax {
 
     private Texture texture;
 
-    private float y, width, height;
+    private float x, y, width, height;
     private int srcX;
 
     private PlayScreen playScreen;
@@ -22,8 +22,9 @@ public class Parallax {
     private Robot robot;
     private float speedScale;
     private boolean waterFlow;
+    private boolean bindWithRobot;
 
-    public Parallax(PlayScreen playScreen, Texture texture, float speedScale, float y, float height, boolean waterFlow) {
+    public Parallax(PlayScreen playScreen, Texture texture, float speedScale, float x, float y, float width, float height, boolean waterFlow, boolean bindWithRobot) {
         this.playScreen = playScreen;
         this.viewport = playScreen.getViewport();
         this.camera = viewport.getCamera();
@@ -31,44 +32,53 @@ public class Parallax {
         this.texture = texture;
         this.speedScale = speedScale;
         this.waterFlow = waterFlow;
+        this.bindWithRobot = bindWithRobot;
 
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
+        this.x = x / PPM;
         this.y = y / PPM;
-        this.width =  playScreen.getMapWidth() / PPM;
+        this.width =  width / PPM;
         this.height = height / PPM;
     }
 
     public void update(float delta) {
-        // if the robot is in the beginning or the end of the map
-        if(robot.getBody().getPosition().x < camera.position.x || robot.getBody().getPosition().x > playScreen.getMapWidth() / PPM - viewport.getWorldWidth() ) {
-            //srcX += 0;
-            if(waterFlow)
-                srcX += 1;
+        // background water moves independently with robot's velocity
+        if(!bindWithRobot && waterFlow) {
+            srcX += 1;
         }
-        // for keeping robot in the lhs of the screen (instead of the above "if")
+        // background moves according to robot's velocity
+        else {
+            // if the robot is in the beginning or the end of the map
+            if(robot.getBody().getPosition().x < camera.position.x || robot.getBody().getPosition().x > playScreen.getMapWidth() / PPM - viewport.getWorldWidth()) {
+                //srcX += 0;
+                if (waterFlow)
+                    srcX += 1;
+            }
+            // for keeping robot in the lhs of the screen (instead of the above "if")
         /*if(robot.getBody().getPosition().x < viewport.getWorldWidth() / 2 || robot.getBody().getPosition().x > MAP_WIDTH / PPM - viewport.getWorldWidth()) {
             //srcX += 0;
             if(waterFlow)
                 srcX += 1;
         }*/
-        else {
-            // for water image
-            if(waterFlow) {
-                if(robot.getBody().getLinearVelocity().x > 4f)
-                    srcX += 2;
-                else if( robot.getBody().getLinearVelocity().x < -4f)
-                    srcX += 1.5;
+            else {
+                // for water image
+                if(waterFlow) {
+                    if(robot.getBody().getLinearVelocity().x > 4f)
+                        srcX += 2;
+                    else if(robot.getBody().getLinearVelocity().x < -4f)
+                        srcX += 1.5;
+                    else
+                        srcX += 1;
+                }
+                // for background image
                 else
-                    srcX += 1;
+                    srcX -= robot.getBody().getLinearVelocity().x;
             }
-            // for background image
-            else
-                srcX -= robot.getBody().getLinearVelocity().x;
         }
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(texture, 0, y, width, height, (int) (srcX * speedScale),0, texture.getWidth(), texture.getHeight(),false,false);
+        batch.draw(texture, x, y, width, height, (int) (srcX * speedScale),0, texture.getWidth(), texture.getHeight(),false,false);
     }
 }

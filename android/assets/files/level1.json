@@ -1302,8 +1302,8 @@
 				"properties": [
 					{
 						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": true
+						"type": "string",
+						"value": ""
 					},
 					{
 						"name": "aiSpeed",
@@ -1758,8 +1758,8 @@
 				"properties": [
 					{
 						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": true
+						"type": "string",
+						"value": ""
 					},
 					{
 						"name": "aiSpeed",
@@ -1811,8 +1811,8 @@
 				"properties": [
 					{
 						"name": "aiPathFollowing",
-						"type": "bool",
-						"value": true
+						"type": "string",
+						"value": ""
 					},
 					{
 						"name": "aiSpeed",

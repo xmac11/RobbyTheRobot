@@ -1,4 +1,4 @@
-package com.robot.game.entities;
+package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.Steerable;
@@ -18,12 +18,10 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
 public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
 
     // EnemyAI
-    protected boolean aiPathFollowing;
     protected SteeringBehavior<Vector2> steeringBehavior;
     protected SteeringAcceleration<Vector2> steeringOutput;
     protected FollowPath<Vector2, LinePath.LinePathParam> followPath;
@@ -53,7 +51,6 @@ public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
         this.offsetY = (float) object.getProperties().get("offsetY");
         this.platformID = (String) object.getProperties().get("platformID");
         this.object = object;
-        this.aiPathFollowing = true;
 
         if(platformID != null) {
             // parse json file to get the waypoints of the platform the enemy should follow
@@ -68,7 +65,7 @@ public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
             this.linePath = new LinePath<>(wayPoints, false);
             float pathOffset = (float) object.getProperties().get("pathOffset");
             this.followPath = new FollowPath<>(this, linePath, pathOffset).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(8f);
-            this.setSteeringBehavior(followPath);
+            this.steeringBehavior = followPath;
             this.steeringOutput = new SteeringAcceleration<>(new Vector2());
 
             this.maxLinearSpeed = (float) object.getProperties().get("aiSpeed");
@@ -139,10 +136,6 @@ public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
                 shapeRenderer.line(points[j], points[j + 1]);
             }
         }
-    }
-
-    public boolean isAiPathFollowing() {
-        return aiPathFollowing;
     }
 
     @Override

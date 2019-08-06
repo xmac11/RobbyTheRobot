@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.Enemy;
-import com.robot.game.entities.EnemyAI;
+import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.abstractEnemies.EnemyAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
@@ -51,17 +51,30 @@ public class LaserHandler {
         rayCastStarted = true;
         rayAnimActive = true;
 
-        determineRayPointStart();
+        determineRayPoints();
 
         // start from rayPointStart (and will lerp until rayPointEnd)
         tempRayPointEnd.set(rayPointStart);
+
+        /*if(rayPointEnd.isZero()) {
+            if(robot.facing == Robot.Facing.RIGHT) {
+                rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
+                rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
+            }
+            else if(robot.facing == Robot.Facing.LEFT) {
+                rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
+                rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
+            }
+        }*/
 
         // execute the raycast
         world.rayCast(callback, rayPointStart, rayPointEnd);
 
         this.closestFixture = callback.getClosestFixture();
-        this.rayPointEnd = callback.getRayPointEnd();
-        callback.closestFixture = null;
+        if(!callback.getRayPointEnd().isZero()) {
+            this.rayPointEnd = callback.getRayPointEnd();
+        }
+        callback.setClosestFixture(null);
 
         // determine action depending on the result of the raycast
         resolveRayCast();
@@ -125,14 +138,14 @@ public class LaserHandler {
         handleAnimation(batch);
     }
 
-    private void determineRayPointStart() {
+    private void determineRayPoints() {
         if(robot.facing == Robot.Facing.RIGHT) {
             rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
+            rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / 2 / PPM, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
         else if(robot.facing == Robot.Facing.LEFT) {
             rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
+            rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / 2 / PPM, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
     }
 
@@ -141,14 +154,16 @@ public class LaserHandler {
         if(closestFixture.getUserData() == null) return;
 
         if("ground".equals(closestFixture.getUserData())) {
-            Gdx.app.log("Robot", "Raycast hit ground");
+            Gdx.app.log("LaserHandler", "Raycast hit ground");
         }
-        else if(closestFixture.getUserData() instanceof Enemy) {
+        else if(closestFixture.getUserData() instanceof Enemy && !((Enemy) closestFixture.getUserData()).isDead()) {
 
             Enemy enemy = (Enemy) closestFixture.getUserData();
 
             enemy.setDead(true);
             enemy.setFlagToKill();
+            // set enemy's mask bits to "nothing"
+            enemy.setFlagToChangeMask(true);
 
             // if following a path, disable it
             if(enemy instanceof EnemyAI) {
@@ -158,21 +173,18 @@ public class LaserHandler {
             // stop enemy
             enemy.getBody().setLinearVelocity(0, 0);
 
-            // set enemy's mask bits to "nothing"
-            StaticMethods.setMaskBit(closestFixture, NOTHING_MASK);
-
             // increase points
             StaticMethods.increaseScore(robot, enemy);
 
             // add enemy (damaging object) to the HashMap in order to render the points gained
             playScreen.getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
-            Gdx.app.log("Robot", "Raycast hit enemy");
+            Gdx.app.log("LaserHandler", "Raycast hit enemy");
         }
     }
 
     private void handleAnimation(SpriteBatch batch) {
         if(rayAnimActive) {
-            if(rayCastElapsed > 0.2f) {
+            if(rayCastElapsed > 0.2f) { // 0.05f * 4
                 rayAnimActive = false;
                 rayCastStartTime = 0;
                 rayCastElapsed = 0;

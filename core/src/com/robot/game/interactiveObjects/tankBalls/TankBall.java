@@ -79,7 +79,6 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         if(exploded) {
             setRegion(playScreen.getAssets().tankBallAssets.tankExplosionAnimation.getKeyFrame(explosionElapsed));
         }
-
         else {
             setPosition(body.getPosition().x - TANKBALL_WIDTH / 2 / PPM, body.getPosition().y - TANKBALL_HEIGHT / 2 / PPM);
         }
