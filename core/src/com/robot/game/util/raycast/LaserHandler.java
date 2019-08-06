@@ -139,13 +139,15 @@ public class LaserHandler {
     }
 
     private void determineRayPoints() {
+        // facing right
         if(robot.facing == Robot.Facing.RIGHT) {
             rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / 2 / PPM, robot.getBody().getPosition().y); // raycast until the end of the screen
+            rayPointEnd.set(playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
+        // facing left
         else if(robot.facing == Robot.Facing.LEFT) {
             rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / 2 / PPM, robot.getBody().getPosition().y); // raycast until the end of the screen
+            rayPointEnd.set(playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
     }
 
