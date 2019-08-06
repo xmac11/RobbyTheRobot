@@ -21,6 +21,7 @@ public final class Constants {
     public static final String LADDER_OBJECT = "Ladder obj";
     public static final String BAT_OBJECT = "Bat obj";
     public static final String CRAB_OBJECT = "Crab obj";
+    public static final String FISH_OBJECT = "Fish obj";
     public static final String SPIKE_OBJECT = "Spike obj";
     public static final String COLLECTABLE_OBJECT = "Collectable obj";
     public static final String WALL_OBJECT = "Wall obj";
@@ -71,9 +72,9 @@ public final class Constants {
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
     public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION = new Vector2(2100 / PPM, 160 / PPM);
-    public static final Vector2 SECOND_CHECKPOINT_LOCATION = new Vector2(2880 / PPM, 416 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION = new Vector2(4240 / PPM, 208 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 160 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 416 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 208 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Spike respawn locations
@@ -113,6 +114,7 @@ public final class Constants {
     public static final String ENEMY_PROPERTY = "enemy";
     public static final String BAT_PROPERTY = "bat";
     public static final String CRAB_PROPERTY = "crab";
+    public static final String FISH_PROPERTY = "fish";
     public static final String SPIKE_PROPERTY = "spike";
     public static final float DEAD_TIMER = 1;
 

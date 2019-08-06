@@ -59,7 +59,8 @@ public class ObjectParser {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-            if(object.getProperties().containsKey("fish")) {
+
+            if(object.getProperties().containsKey(FISH_PROPERTY)) {
                 bodyDef.type = BodyDef.BodyType.DynamicBody;
                 bodyDef.gravityScale = 0;
             }
@@ -233,7 +234,7 @@ public class ObjectParser {
                 else
                     this.enemies.add(new CrabPatrolling(playScreen, body, fixtureDef, object));
             }
-            else if(object.getProperties().containsKey("fish"))
+            else if(object.getProperties().containsKey(FISH_PROPERTY))
                 this.enemies.add(new Fish(playScreen, body, fixtureDef, object));
         }
         // create spikes

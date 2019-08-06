@@ -174,9 +174,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             }
         }
 
-        // handle checkpoints
-        handleCheckpoints();
-
         // keep robot within map
         if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
             body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
@@ -192,20 +189,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
             if(checkpointData.getHealth() <= 0) {
                 checkpointData.setHealth(100); // to decide: should the robot restore its health when falling in the water?
             }
-        }
-    }
-
-    private void handleCheckpoints() {
-        // First checkpoint
-        if(!checkpointData.isFirstCheckpointActivated()) {
-            checkFirstCheckpoint();
-        }
-        // Second checkpoint
-        else if(!checkpointData.isSecondCheckpointActivated()) {
-            checkSecondCheckpoint();
-        }
-        else if(!checkpointData.isThirdCheckpointActivated()) {
-            checkThirdCheckpoint();
         }
     }
 
@@ -354,10 +337,6 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         }
 
 //        System.out.println(body.getLinearVelocity().x);
-
-        //// Debug keys for checkpoints ////
-        //if(DEBUG_ON)
-            toggleDebugCheckpoints();
     }
 
     public void draw(SpriteBatch batch, float delta) {
@@ -504,79 +483,9 @@ public class Robot extends Sprite /*extends InputAdapter*/ {
         return callback;
     }
 
-    // Checkpoints
-    private void checkFirstCheckpoint() {
-        if( Math.abs( (body.getPosition().x - FIRST_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE) {
-            Gdx.app.log("Robot","First checkpoint activated!");
-            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
-            checkpointData.setFirstCheckpointActivated(true);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-    }
 
-    private void checkSecondCheckpoint() {
-        if( Math.abs( (body.getPosition().x - SECOND_CHECKPOINT_LOCATION.x) * PPM )  <= CHECKPOINT_TOLERANCE
-                && Math.abs( (body.getPosition().y - SECOND_CHECKPOINT_LOCATION.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
 
-            Gdx.app.log("Robot","Second checkpoint activated!");
-            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
-            checkpointData.setSecondCheckpointActivated(true);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-    }
 
-    private void checkThirdCheckpoint() {
-        if( Math.abs( (body.getPosition().x - THIRD_CHECKPOINT_LOCATION.x - 80 / PPM) * PPM )  <= CHECKPOINT_TOLERANCE) {
-            Gdx.app.log("Robot","Third checkpoint activated!");
-            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
-            checkpointData.setThirdCheckpointActivated(true);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-    }
-
-    // Debug keys for checkpoints
-
-    private void toggleDebugCheckpoints() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
-            Gdx.app.log("Robot", "Checkpoints deleted");
-            FileSaver.getCheckpointFile().delete();
-            playScreen.setCheckpointDataDeleted(true);
-
-            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-             * reset their spawning in the corresponding level and delete the file */
-            if(FileSaver.getCollectedItemsFile().exists()) {
-                FileSaver.resetSpawningOfCollectables(playScreen.getLevelID());
-                FileSaver.getCollectedItemsFile().delete();
-            }
-            else {
-                playScreen.setNewItemCollected(false);
-            }
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
-            Gdx.app.log("Robot", "First checkpoint set");
-            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION);
-            checkpointData.setFirstCheckpointActivated(true);
-            checkpointData.setSecondCheckpointActivated(false);
-            checkpointData.setThirdCheckpointActivated(false);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
-            Gdx.app.log("Robot", "Second checkpoint set");
-            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION);
-            checkpointData.setFirstCheckpointActivated(true);
-            checkpointData.setSecondCheckpointActivated(true);
-            checkpointData.setThirdCheckpointActivated(false);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
-            Gdx.app.log("Robot", "Third checkpoint set");
-            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION);
-            checkpointData.setFirstCheckpointActivated(true);
-            checkpointData.setSecondCheckpointActivated(true);
-            checkpointData.setThirdCheckpointActivated(true);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
-    }
 
 
 

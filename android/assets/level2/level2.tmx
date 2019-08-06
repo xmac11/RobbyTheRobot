@@ -388,21 +388,6 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="32" name="Bat obj">
-  <object id="218" x="3248" y="160" width="28" height="16">
-   <properties>
-    <property name="bat" value=""/>
-    <property name="endX" type="float" value="0"/>
-    <property name="endY" type="float" value="0"/>
-    <property name="enemy" value=""/>
-    <property name="patrolling" value=""/>
-    <property name="startX" type="float" value="0"/>
-    <property name="startY" type="float" value="0"/>
-    <property name="vX" type="float" value="0"/>
-    <property name="vY" type="float" value="0"/>
-   </properties>
-  </object>
- </objectgroup>
  <objectgroup id="33" name="Fish obj">
   <object id="216" x="640" y="966" width="16" height="28">
    <properties>

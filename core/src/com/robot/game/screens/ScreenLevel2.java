@@ -2,7 +2,6 @@ package com.robot.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
@@ -31,8 +30,7 @@ public class ScreenLevel2 extends PlayScreen {
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(WALL_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
-        layersObjectArray.add(tiledMap.getLayers().get(BAT_OBJECT).getObjects());
-        layersObjectArray.add(tiledMap.getLayers().get("Fish obj").getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(FISH_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
