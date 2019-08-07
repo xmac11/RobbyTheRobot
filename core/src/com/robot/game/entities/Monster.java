@@ -64,7 +64,7 @@ public class Monster extends EnemyArriveAI {
         }
 
         if(!activated) {
-            checkIfShouldBeActivated();
+            //checkIfShouldBeActivated();
         }
 
         if(steeringBehavior != null) {

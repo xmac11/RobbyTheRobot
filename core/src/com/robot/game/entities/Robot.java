@@ -26,6 +26,7 @@ import static com.robot.game.util.Enums.Facing.*;
 public class Robot extends Sprite implements Steerable<Vector2> {
 
     private Facing facing;
+    private Facing facingOnPunch;
 
     private Assets assets;
     private Sprite robotSprite;
@@ -47,11 +48,12 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private float invulnerableElapsed;
     private float invulnerabilityPeriod;
 
-    // jump timers
+    // jump/climb/punch timers
     private float jumpTimeout;
     private float jumpTimer;
     private float coyoteTimer;
     private float climbTimer;
+    public float punchTimer;
 
     //CONSTANT SPEED
     //    private final Vector2 ROBOT_IMPULSE;
@@ -102,7 +104,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 110 / PPM*/ 1184 / PPM, 512 / PPM  /*1136 / PPM, 300 / PPM *//*500 / PPM, 110 / PPM*//* 1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/
+        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 110 / PPM*/ 1152 / PPM, 512 / PPM  /*1136 / PPM, 300 / PPM *//*500 / PPM, 110 / PPM*//* 1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/
                 /*4350 / PPM, 780 / PPM*/ /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
@@ -128,6 +130,22 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         fixtureDef.filter.maskBits = ROBOT_FEET_MASK;
         fixtureDef.isSensor = true;
         this.body.createFixture(fixtureDef).setUserData("feet");
+
+        // sensor hand (facing right)
+        recShape.setAsBox(16f / 2 / PPM, 4f / 2 / PPM, new Vector2(17f / PPM, 0), 0);
+        fixtureDef.density = 0;
+        fixtureDef.filter.categoryBits = ROBOT_HAND_CATEGORY;
+        fixtureDef.filter.maskBits = ROBOT_HAND_MASK;
+        fixtureDef.isSensor = true;
+        this.body.createFixture(fixtureDef).setUserData(this);
+
+        // sensor hand (facing left)
+        recShape.setAsBox(16f / 2 / PPM, 4f / 2 / PPM, new Vector2(-17f / PPM, 0), 0);
+        fixtureDef.density = 0;
+        fixtureDef.filter.categoryBits = ROBOT_HAND_CATEGORY;
+        fixtureDef.filter.maskBits = ROBOT_HAND_MASK;
+        fixtureDef.isSensor = true;
+        this.body.createFixture(fixtureDef).setUserData(this);
 
         recShape.dispose();
     }
@@ -283,9 +301,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         if(contactManager.getFootContactCounter() == 0) coyoteTimer -= delta;
         jumpTimeout += delta;
 
-        // when the robot is grounded, start coyote timer
-        if(contactManager.getFootContactCounter() > 0 && coyoteTimer != ROBOT_COYOTE_TIMER)
+        // when the robot is grounded and the timer has not been already set, start coyote timer
+        if(contactManager.getFootContactCounter() > 0 && coyoteTimer != ROBOT_COYOTE_TIMER) {
             coyoteTimer = ROBOT_COYOTE_TIMER;
+        }
 
         // when space is pressed, start jump timer
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
@@ -336,6 +355,13 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         // laser shot
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             playScreen.getLaserHandler().startRayCast();
+        }
+
+        punchTimer -= delta;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+            punchTimer = 0.5f;
+            facingOnPunch = facing;
+            Gdx.app.log("Robot","punchTimer was set, robot is was facing " + facingOnPunch);
         }
 
 //        System.out.println(body.getLinearVelocity().x);
@@ -491,6 +517,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public Facing getFacing() {
         return facing;
+    }
+
+    public Facing getFacingOnPunch() {
+        return facingOnPunch;
     }
 
     @Override

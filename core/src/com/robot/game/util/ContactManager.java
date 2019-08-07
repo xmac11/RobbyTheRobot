@@ -21,6 +21,8 @@ import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.Facing.*;
+
 
 public class ContactManager implements ContactListener {
 
@@ -97,6 +99,10 @@ public class ContactManager implements ContactListener {
 
             case ROBOT_CATEGORY | ENEMY_PROJECTILE_CATEGORY:
                 robotProjectileBegin(fixA, fixB);
+                break;
+
+            case ROBOT_HAND_CATEGORY | ENEMY_CATEGORY:
+                punchEnemyBegin(fixA, fixB);
                 break;
         }
 
@@ -212,7 +218,7 @@ public class ContactManager implements ContactListener {
         // if robot is not invulnerable and is not walking on spikes
         if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
             // decrease health
-            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_SPIKE);
+            StaticMethods.decreaseHealth(robot, spike);
 
             //add spike (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(spike, 1f);
@@ -283,27 +289,7 @@ public class ContactManager implements ContactListener {
 
         // if steppedOnEnemy flag was set
         if(steppedOnEnemy) {
-            enemy.setDead(true);
-            enemy.setFlagToKill();
-            // set enemy's mask bits to "nothing"
-            enemy.setFlagToChangeMask(true);
-
-            // if following a path, disable it
-            if(enemy instanceof EnemyPathFollowingAI) {
-                ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
-            }
-            else if(enemy instanceof EnemyArriveAI) {
-                ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
-            }
-
-            // stop enemy
-            enemy.getBody().setLinearVelocity(0, 0);
-
-            // increase points
-            StaticMethods.increaseScore(robot, enemy);
-
-            // add enemy (damaging object) to the HashMap in order to render the points gained
-            robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+            StaticMethods.killEnemy(robot, enemy);
         }
         // otherwise it means that the robot was hit by an enemy
         else {
@@ -384,7 +370,7 @@ public class ContactManager implements ContactListener {
         // if robot is not invulnerable
         if(!robot.isInvulnerable()) {
             // decrease health
-            robot.getCheckpointData().decreaseHealth(DAMAGE_FROM_PIPE);
+            StaticMethods.decreaseHealth(robot, pipe);
 
             //add pipe (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(pipe, 1f);
@@ -538,6 +524,35 @@ public class ContactManager implements ContactListener {
         // shake camera
         robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
         Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
+    }
+
+    private void punchEnemyBegin(Fixture fixA, Fixture fixB) {
+        Gdx.app.log("ContactManager", "Punch begin");
+        Robot robot;
+        Enemy enemy;
+        boolean punchSuccessful = false;
+
+        if(fixA.getUserData() instanceof Robot) {
+            robot = (Robot) fixA.getUserData();
+            enemy = (Enemy) fixB.getUserData();
+        }
+        else {
+            robot = (Robot) fixB.getUserData();
+            enemy = (Enemy) fixA.getUserData();
+        }
+
+        if(robot.punchTimer > 0) {
+            if((robot.getFacingOnPunch() == RIGHT && robot.getBody().getPosition().x <= enemy.getBody().getPosition().x) ||
+                robot.getFacingOnPunch() == LEFT && robot.getBody().getPosition().x >= enemy.getBody().getPosition().x) {
+                punchSuccessful = true;
+            }
+        }
+
+        if(punchSuccessful) {
+            Gdx.app.log("ContactManager", "Punch successful");
+            robot.punchTimer = 0;
+            StaticMethods.killEnemy(robot, enemy);
+        }
     }
 
     @Override

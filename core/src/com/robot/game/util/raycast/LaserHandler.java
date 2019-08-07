@@ -162,32 +162,9 @@ public class LaserHandler {
         if("ground".equals(closestFixture.getUserData())) {
             Gdx.app.log("LaserHandler", "Raycast hit ground");
         }
-        // so as not to get points for shooting an enemy twice
-        else if(closestFixture.getUserData() instanceof Enemy && !((Enemy) closestFixture.getUserData()).isDead()) {
-
+        else if(closestFixture.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) closestFixture.getUserData();
-
-            enemy.setDead(true);
-            enemy.setFlagToKill();
-            // set enemy's mask bits to "nothing"
-            enemy.setFlagToChangeMask(true);
-
-            // if following a path, disable it
-            if(enemy instanceof EnemyPathFollowingAI) {
-                ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
-            }
-            else if(enemy instanceof EnemyArriveAI) {
-                ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
-            }
-
-            // stop enemy
-            enemy.getBody().setLinearVelocity(0, 0);
-
-            // increase points
-            StaticMethods.increaseScore(robot, enemy);
-
-            // add enemy (damaging object) to the HashMap in order to render the points gained
-            playScreen.getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+            StaticMethods.killEnemy(robot, enemy);
             Gdx.app.log("LaserHandler", "Raycast hit enemy");
         }
     }

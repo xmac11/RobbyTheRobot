@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
+import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.bat.BatAI;
 import com.robot.game.entities.bat.BatPatrolling;
 import com.robot.game.entities.crab.CrabAI;
@@ -74,5 +76,29 @@ public class StaticMethods {
         filter.categoryBits = categoryBits;
         fixture.setFilterData(filter);
         Gdx.app.log("StaticMethods", "Category bits changed");
+    }
+
+    public static void killEnemy(Robot robot, Enemy enemy) {
+        enemy.setDead(true);
+        enemy.setFlagToKill();
+        // set enemy's mask bits to "nothing"
+        enemy.setFlagToChangeMask(true);
+
+        // if following a path, disable it
+        if(enemy instanceof EnemyPathFollowingAI) {
+            ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
+        }
+        else if(enemy instanceof EnemyArriveAI) {
+            ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
+        }
+
+        // stop enemy
+        enemy.getBody().setLinearVelocity(0, 0);
+
+        // increase points
+        StaticMethods.increaseScore(robot, enemy);
+
+        // add enemy (damaging object) to the HashMap in order to render the points gained
+        robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
     }
 }
