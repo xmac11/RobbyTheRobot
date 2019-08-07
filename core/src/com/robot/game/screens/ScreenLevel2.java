@@ -31,6 +31,7 @@ public class ScreenLevel2 extends PlayScreen {
         layersObjectArray.add(tiledMap.getLayers().get(WALL_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(FISH_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get("Monster obj").getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 

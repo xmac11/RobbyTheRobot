@@ -19,7 +19,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.abstractEnemies.EnemyAI;
+import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -434,8 +434,8 @@ public abstract class PlayScreen extends ScreenAdapter {
             shapeRenderer.setProjectionMatrix(camera.combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             for(Enemy enemy: enemies) {
-                if(enemy instanceof EnemyAI)
-                    ((EnemyAI) enemy).drawAiPath();
+                if(enemy instanceof EnemyPathFollowingAI)
+                    ((EnemyPathFollowingAI) enemy).drawAiPath();
             }
             shapeRenderer.end();
         }

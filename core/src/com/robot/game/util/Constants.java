@@ -4,7 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
+    public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -48,11 +49,11 @@ public final class Constants {
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | ENEMY_CATEGORY
                                             | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY
                                             | WALLJUMP_CATEGORY | TRAMPOLINE_CATEGORY | ENEMY_PROJECTILE_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY /*| ENEMY_CATEGORY*/ | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
     public static final short INTERACTIVE_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
-    public static final short ENEMY_MASK = ROBOT_CATEGORY /*| GROUND_CATEGORY*/;
+    public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | ENEMY_CATEGORY; // enemy collides with enemy/ground applies only for dynamic enemies (monster, fish)
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY;

@@ -19,7 +19,7 @@ import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
 
-public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
+public abstract class EnemyPathFollowingAI extends Enemy implements Steerable<Vector2> {
 
     // EnemyAI
     protected SteeringBehavior<Vector2> steeringBehavior;
@@ -43,7 +43,7 @@ public abstract class EnemyAI extends Enemy implements Steerable<Vector2> {
 
     protected ShapeRenderer shapeRenderer;
 
-    public EnemyAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public EnemyPathFollowingAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
         this.shapeRenderer = playScreen.getShapeRenderer();
 

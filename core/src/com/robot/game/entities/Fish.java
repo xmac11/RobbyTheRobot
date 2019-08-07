@@ -30,7 +30,7 @@ public class Fish extends Enemy {
 
         this.initialPosition = new Vector2(body.getPosition());
 
-        // set the size of the crab sprite
+        // set the size of the fish sprite
         setSize(FISH_WIDTH / PPM, FISH_HEIGHT / PPM);
     }
     @Override
@@ -73,7 +73,7 @@ public class Fish extends Enemy {
     @Override
     public void draw(Batch batch) {
         if(!dead) {
-            setRegion(assets.fishAssets.textureAnimation.getKeyFrame(elapsedAnim, true));
+            setRegion(assets.fishAssets.fishAnimation.getKeyFrame(elapsedAnim, true));
         }
         else{
             setRegion(assets.fishAssets.deadFish);
@@ -116,6 +116,6 @@ public class Fish extends Enemy {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_FISH;
+        return DAMAGE_ON ? DAMAGE_FROM_FISH : 0;
     }
 }

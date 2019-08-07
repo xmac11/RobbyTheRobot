@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Fish;
-import com.robot.game.entities.abstractEnemies.EnemyAI;
+import com.robot.game.entities.Monster;
+import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
@@ -246,6 +247,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixA.getUserData();
             enemy = (Enemy) fixB.getUserData();
 
+            // fishes don't die when stepped (they are facing upwards)
             if(normal.y <= -1/Math.sqrt(2) && !(enemy instanceof Fish)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 steppedOnEnemy = true;
@@ -263,6 +265,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
             enemy = (Enemy) fixA.getUserData();
 
+            // fishes don't die when stepped (they are facing upwards)
             if(normal.y >= 1/Math.sqrt(2) && !(enemy instanceof Fish)) {
                 Gdx.app.log("ContactManager", "Robot stepped on enemy");
                 steppedOnEnemy = true;
@@ -285,8 +288,8 @@ public class ContactManager implements ContactListener {
             enemy.setFlagToChangeMask(true);
 
             // if following a path, disable it
-            if(enemy instanceof EnemyAI) {
-                ((EnemyAI) enemy).getFollowPath().setEnabled(false);
+            if(enemy instanceof EnemyPathFollowingAI) {
+                ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
             }
 
             // stop enemy
@@ -303,6 +306,12 @@ public class ContactManager implements ContactListener {
             // set enemy to be a sensor
             if(enemy.getBody().getFixtureList().size != 0) {
                 enemy.getBody().getFixtureList().first().setSensor(true);
+            }
+
+            // if enemy is a Monster (dynamic body) turn off gravity, since it is now a sensor
+            if(enemy instanceof Monster) {
+                enemy.getBody().setGravityScale(0);
+                Gdx.app.log("ContactManager", "Gravity was turned off for the Monster");
             }
 
             // decrease robot's health
@@ -645,6 +654,12 @@ public class ContactManager implements ContactListener {
         // disable enemy's sensor when contact ends
         if(enemy.getBody().getFixtureList().size != 0) {
             enemy.getBody().getFixtureList().first().setSensor(false);
+        }
+
+        // if enemy is a Monster (dynamic body) turn gravity back on
+        if(enemy instanceof Monster) {
+            enemy.getBody().setGravityScale(1);
+            Gdx.app.log("ContactManager", "Gravity was turned back on for the Monster");
         }
     }
 

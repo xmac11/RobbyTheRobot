@@ -41,6 +41,7 @@ public class Assets {
     public LaserAssets laserAssets;
     public FishAssets fishAssets;
     public SplashAssets splashAssets;
+    public MonsterAssets monsterAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -133,6 +134,7 @@ public class Assets {
         this.laserAssets = new LaserAssets(atlas);
         this.fishAssets = new FishAssets(atlas);
         this.splashAssets = new SplashAssets();
+        this.monsterAssets = new MonsterAssets();
     }
 
     public void dispose() {
@@ -211,7 +213,7 @@ public class Assets {
     }
 
     public class FishAssets {
-        public final Animation<TextureRegion> textureAnimation;
+        public final Animation<TextureRegion> fishAnimation;
         public final TextureRegion deadFish;
 
         private FishAssets(TextureAtlas atlas) {
@@ -219,11 +221,19 @@ public class Assets {
             for(int i = 1; i <= 2; i++) {
                 framesArray.add(atlas.findRegion("fish" + i));
             }
-            this.textureAnimation = new Animation<>(0.15f, framesArray);
+            this.fishAnimation = new Animation<>(0.15f, framesArray);
 
             framesArray.clear();
 
             this.deadFish = atlas.findRegion("fish_dead");
+        }
+    }
+
+    public class MonsterAssets {
+        public final Texture monsterTexture;
+
+        private MonsterAssets() {
+            this.monsterTexture = new Texture("level2/monster.png");
         }
     }
 

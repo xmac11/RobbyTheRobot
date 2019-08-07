@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.abstractEnemies.EnemyAI;
+import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class BatAI extends EnemyAI {
+public class BatAI extends EnemyPathFollowingAI {
 
     public BatAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -52,7 +52,7 @@ public class BatAI extends EnemyAI {
         else if(!dead){
             if(steeringBehavior != null) {
                 steeringBehavior.calculateSteering(steeringOutput);
-                applySteering(steeringOutput, delta);
+                super.applySteering(steeringOutput, delta);
             }
         }
 
@@ -78,7 +78,7 @@ public class BatAI extends EnemyAI {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_BAT;
+        return DAMAGE_ON ? DAMAGE_FROM_BAT : 0;
     }
 
 }

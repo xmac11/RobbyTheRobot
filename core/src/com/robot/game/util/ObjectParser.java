@@ -33,7 +33,6 @@ public class ObjectParser {
     int polygons = 0;
 
     private PlayScreen playScreen;
-    private Assets assets;
     private World world;
     private DelayedRemovalArray<InteractivePlatform> interactivePlatforms;
     private DelayedRemovalArray<Enemy> enemies;
@@ -42,7 +41,6 @@ public class ObjectParser {
 
     public ObjectParser(PlayScreen playScreen) {
         this.playScreen = playScreen;
-        this.assets = playScreen.getAssets();
         this.world = playScreen.getWorld();
 
         this.interactivePlatforms = new DelayedRemovalArray<>();
@@ -50,12 +48,12 @@ public class ObjectParser {
         this.collectables = new DelayedRemovalArray<>();
 
         for(MapObjects objects: playScreen.getLayersObjectArray())
-            createTiledObjects(world, objects);
+            createTiledObjects(objects);
 
         System.out.println("Rectangles: " + rectangles + ", polylines: " + polylines + ", polygons: " + polygons);
     }
 
-    private void createTiledObjects(World world, MapObjects objects) {
+    private void createTiledObjects(MapObjects objects) {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
@@ -64,10 +62,16 @@ public class ObjectParser {
                 bodyDef.type = BodyDef.BodyType.DynamicBody;
                 bodyDef.gravityScale = 0;
             }
-            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY))
+            else if(object.getProperties().containsKey("monster")) {
+                bodyDef.type = BodyDef.BodyType.DynamicBody;
+                bodyDef.fixedRotation = true;
+            }
+            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY)) {
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
-            else
+            }
+            else {
                 bodyDef.type = BodyDef.BodyType.StaticBody;
+            }
             FixtureDef fixtureDef = new FixtureDef();
             Body body;
 
@@ -234,8 +238,12 @@ public class ObjectParser {
                 else
                     this.enemies.add(new CrabPatrolling(playScreen, body, fixtureDef, object));
             }
+            // create fishes
             else if(object.getProperties().containsKey(FISH_PROPERTY))
                 this.enemies.add(new Fish(playScreen, body, fixtureDef, object));
+            // create monsters
+            else if(object.getProperties().containsKey("monster"))
+                this.enemies.add(new Monster(playScreen, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {

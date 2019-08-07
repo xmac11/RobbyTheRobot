@@ -103,7 +103,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_ENEMY_PROJECTILE;
+        return DAMAGE_ON ? DAMAGE_FROM_ENEMY_PROJECTILE : 0;
     }
 
 

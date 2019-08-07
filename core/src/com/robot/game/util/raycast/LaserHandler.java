@@ -10,13 +10,16 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.abstractEnemies.EnemyAI;
+import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.*;
+import static com.robot.game.util.Enums.Facing.*;
+
 
 public class LaserHandler {
 
@@ -87,7 +90,7 @@ public class LaserHandler {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             //            shapeRenderer.setColor(Color.CYAN);
 
-            if(robot.facing == Robot.Facing.RIGHT) {
+            if(robot.getFacing() == RIGHT) {
                 tempRayPointEnd.add(2f, 0);
                 if(tempRayPointEnd.x > rayPointEnd.x + SCREEN_WIDTH / 2f / PPM)
                     rayCastStarted = false;
@@ -116,7 +119,7 @@ public class LaserHandler {
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
                         0.5f / PPM);*/
             }
-            else if(robot.facing == Robot.Facing.LEFT) {
+            else if(robot.getFacing() == LEFT) {
                 tempRayPointEnd.sub(2f, 0);
                 if(tempRayPointEnd.x < rayPointEnd.x - SCREEN_WIDTH / 2f / PPM)
                     rayCastStarted = false;
@@ -140,12 +143,12 @@ public class LaserHandler {
 
     private void determineRayPoints() {
         // facing right
-        if(robot.facing == Robot.Facing.RIGHT) {
+        if(robot.getFacing() == RIGHT) {
             rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
             rayPointEnd.set(playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
         // facing left
-        else if(robot.facing == Robot.Facing.LEFT) {
+        else if(robot.getFacing() == LEFT) {
             rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
             rayPointEnd.set(playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
         }
@@ -168,8 +171,8 @@ public class LaserHandler {
             enemy.setFlagToChangeMask(true);
 
             // if following a path, disable it
-            if(enemy instanceof EnemyAI) {
-                ((EnemyAI) enemy).getFollowPath().setEnabled(false);
+            if(enemy instanceof EnemyPathFollowingAI) {
+                ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
             }
 
             // stop enemy

@@ -125,7 +125,7 @@ public class FallingPipe extends Sprite implements Damaging {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_PIPE;
+        return DAMAGE_ON ? DAMAGE_FROM_PIPE : 0;
     }
 
     public Body getBody() {

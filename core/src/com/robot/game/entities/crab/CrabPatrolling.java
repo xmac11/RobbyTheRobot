@@ -70,6 +70,6 @@ public class CrabPatrolling extends EnemyPatrolling {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_CRAB;
+        return DAMAGE_ON ? DAMAGE_FROM_CRAB : 0;
     }
 }

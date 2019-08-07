@@ -78,6 +78,6 @@ public class BatPatrolling extends EnemyPatrolling {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_BAT;
+        return DAMAGE_ON ? DAMAGE_FROM_BAT : 0;
     }
 }
