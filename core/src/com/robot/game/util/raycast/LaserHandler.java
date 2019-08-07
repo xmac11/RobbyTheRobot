@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
@@ -161,6 +162,7 @@ public class LaserHandler {
         if("ground".equals(closestFixture.getUserData())) {
             Gdx.app.log("LaserHandler", "Raycast hit ground");
         }
+        // so as not to get points for shooting an enemy twice
         else if(closestFixture.getUserData() instanceof Enemy && !((Enemy) closestFixture.getUserData()).isDead()) {
 
             Enemy enemy = (Enemy) closestFixture.getUserData();
@@ -173,6 +175,9 @@ public class LaserHandler {
             // if following a path, disable it
             if(enemy instanceof EnemyPathFollowingAI) {
                 ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
+            }
+            else if(enemy instanceof EnemyArriveAI) {
+                ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
             }
 
             // stop enemy
@@ -189,7 +194,7 @@ public class LaserHandler {
 
     private void handleAnimation(SpriteBatch batch) {
         if(rayAnimActive) {
-            if(rayCastElapsed > 0.2f) { // 0.05f * 4
+            if(rayCastElapsed >= assets.laserAssets.laserExplosionAnimation.getAnimationDuration()) {
                 rayAnimActive = false;
                 rayCastStartTime = 0;
                 rayCastElapsed = 0;

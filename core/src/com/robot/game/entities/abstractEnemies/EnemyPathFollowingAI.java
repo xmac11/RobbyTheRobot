@@ -76,7 +76,7 @@ public abstract class EnemyPathFollowingAI extends Enemy implements Steerable<Ve
         }
     }
 
-    protected void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
+    protected void applySteering(float delta) {
         //        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
 
         if(!steeringOutput.linear.isZero())

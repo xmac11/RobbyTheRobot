@@ -104,7 +104,7 @@ public class Fish extends Enemy {
                     initialPosition.x - 64f / 2 / PPM,
                     initialPosition.y,
                     64f / PPM,
-                    64f / PPM);
+                    48f / PPM);
         }
 
         // animation finished

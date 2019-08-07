@@ -36,6 +36,7 @@ public class CrabAI extends EnemyPathFollowingAI {
             if(deadElapsed >= DEAD_TIMER && !destroyed) {
                 super.destroyBody();
                 destroyed = true;
+                flagToKill = false;
             }
             else {
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
@@ -44,7 +45,7 @@ public class CrabAI extends EnemyPathFollowingAI {
 
         if(steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(steeringOutput, delta);
+            super.applySteering(delta);
 
             // rotate path-following crabs based on their velocity
             float vX = body.getLinearVelocity().x;

@@ -42,13 +42,13 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         this.boundingRadius = 2f;
     }
 
-    protected void applySteering(SteeringAcceleration<Vector2> steeringOutput, float delta) {
+    protected void applySteering(float delta) {
         //        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
 
         if(!steeringOutput.linear.isZero()) {
             body.setLinearVelocity(MathUtils.clamp(getLinearVelocity().x + steeringOutput.linear.x * delta, -maxLinearSpeed, maxLinearSpeed),
                                    getLinearVelocity().y);
-            //            body.setLinearVelocity(getLinearVelocity().mulAdd(steeringOutput.linear, delta).limit(getMaxLinearSpeed()));
+//            body.applyForceToCenter(steeringOutput.linear, true);
         }
 
         //        System.out.println(body.getLinearVelocity());
@@ -159,5 +159,9 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     @Override
     public Location<Vector2> newLocation() {
         return null;
+    }
+
+    public Arrive<Vector2> getArrive() {
+        return arrive;
     }
 }

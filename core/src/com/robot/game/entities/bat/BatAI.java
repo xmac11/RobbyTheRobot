@@ -52,7 +52,7 @@ public class BatAI extends EnemyPathFollowingAI {
         else if(!dead){
             if(steeringBehavior != null) {
                 steeringBehavior.calculateSteering(steeringOutput);
-                super.applySteering(steeringOutput, delta);
+                super.applySteering(delta);
             }
         }
 

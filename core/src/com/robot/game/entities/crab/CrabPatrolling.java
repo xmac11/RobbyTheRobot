@@ -11,7 +11,6 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
 public class CrabPatrolling extends EnemyPatrolling {
 
@@ -36,6 +35,7 @@ public class CrabPatrolling extends EnemyPatrolling {
             if(deadElapsed >= DEAD_TIMER && !destroyed) {
                 super.destroyBody();
                 destroyed = true;
+                flagToKill = false;
             }
             else {
                 deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;

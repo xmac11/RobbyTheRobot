@@ -13,7 +13,6 @@ import static com.robot.game.util.Constants.*;
 public class Trampoline extends Sprite {
 
     private PlayScreen playScreen;
-    private Sprite trampolineSprite;
     private boolean activated;
     private float startTimeAnim;
     private float elapsedAnim;
@@ -23,9 +22,9 @@ public class Trampoline extends Sprite {
         this.playScreen = playScreen;
         body.createFixture(fixtureDef).setUserData(this);
 
-        this.trampolineSprite = new Sprite(playScreen.getAssets().trampolineAssets.trampolineFull);
-        trampolineSprite.setSize(TRAMPOLINE_WIDTH / PPM, TRAMPOLINE_HEIGHT / PPM);
-        trampolineSprite.setPosition(body.getPosition().x - TRAMPOLINE_WIDTH / 2 / PPM, body.getPosition().y - (TRAMPOLINE_HEIGHT / 2 - 4) / PPM);
+        setRegion(playScreen.getAssets().trampolineAssets.trampolineFull);
+        setSize(TRAMPOLINE_WIDTH / PPM, TRAMPOLINE_HEIGHT / PPM);
+        setPosition(body.getPosition().x - TRAMPOLINE_WIDTH / 2 / PPM, body.getPosition().y - (TRAMPOLINE_HEIGHT / 2 - 4) / PPM);
     }
 
     @Override
@@ -33,16 +32,16 @@ public class Trampoline extends Sprite {
 
         if(activated) {
             elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
-            trampolineSprite.setRegion(playScreen.getAssets().trampolineAssets.trampolineHalf);
+            setRegion(playScreen.getAssets().trampolineAssets.trampolineHalf);
 
             if(elapsedAnim > 0.075f) {
                 activated = false;
                 elapsedAnim = 0;
-                trampolineSprite.setRegion(playScreen.getAssets().trampolineAssets.trampolineFull);
+                setRegion(playScreen.getAssets().trampolineAssets.trampolineFull);
             }
         }
 
-        trampolineSprite.draw(batch);
+        super.draw(batch);
     }
 
     public void setStartTimeAnim(float startTimeAnim) {

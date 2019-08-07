@@ -1,5 +1,6 @@
 package com.robot.game.util.raycast;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -18,6 +19,7 @@ public class MyRayCastCallback implements RayCastCallback {
         if(fixture.getUserData() instanceof Ladder
            || fixture.getUserData() instanceof Collectable
            || fixture.getUserData() instanceof TankBall) {
+            Gdx.app.log("MyRayCastCallback", "Raycast ignored" + fixture.getUserData());
             return 1;
         }
         this.rayPointEnd.set(point);

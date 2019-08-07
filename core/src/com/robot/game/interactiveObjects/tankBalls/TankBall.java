@@ -98,7 +98,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
     }
 
     private boolean animationFinished() {
-        return explosionElapsed >= 0.6f;
+        return explosionElapsed >= playScreen.getAssets().tankBallAssets.tankExplosionAnimation.getAnimationDuration();
     }
 
     @Override

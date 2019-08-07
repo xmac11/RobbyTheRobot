@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Fish;
 import com.robot.game.entities.Monster;
+import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -290,6 +291,9 @@ public class ContactManager implements ContactListener {
             // if following a path, disable it
             if(enemy instanceof EnemyPathFollowingAI) {
                 ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
+            }
+            else if(enemy instanceof EnemyArriveAI) {
+                ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
             }
 
             // stop enemy

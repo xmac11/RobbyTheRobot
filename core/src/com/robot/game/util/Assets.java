@@ -90,11 +90,6 @@ public class Assets {
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
 
-        // load splash textures
-        for(int i = 1; i <= 7; i++) {
-            assetManager.load("level2/splash" + i + ".png", Texture.class);
-        }
-
         // load water (level 2)
         assetManager.load("level2/waterAnimation.png", Texture.class);
     }
@@ -133,8 +128,8 @@ public class Assets {
         this.tankBallAssets = new TankBallAssets(atlas);
         this.laserAssets = new LaserAssets(atlas);
         this.fishAssets = new FishAssets(atlas);
-        this.splashAssets = new SplashAssets();
-        this.monsterAssets = new MonsterAssets();
+        this.splashAssets = new SplashAssets(atlas);
+        this.monsterAssets = new MonsterAssets(atlas);
     }
 
     public void dispose() {
@@ -230,10 +225,31 @@ public class Assets {
     }
 
     public class MonsterAssets {
-        public final Texture monsterTexture;
+        public final Animation<TextureRegion> monsterWalkAnim;
+        public final Animation<Texture> monsterAttackAnim;
+        public final Animation<Texture> monsterDeadAnim;
 
-        private MonsterAssets() {
-            this.monsterTexture = new Texture("level2/monster.png");
+        private MonsterAssets(TextureAtlas atlas) {
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            for(int i = 1; i <= 7; i++) {
+                framesArray.add(atlas.findRegion("monster_walk" + i));
+            }
+            this.monsterWalkAnim = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
+
+            Array<Texture> framesArray2 = new Array<>();
+            for(int i = 1; i <= 7; i++) {
+                framesArray2.add(new Texture("level2/monster_attack" + i + ".png"));
+            }
+            this.monsterAttackAnim = new Animation<>(0.1f, framesArray2, Animation.PlayMode.LOOP);
+
+            framesArray2.clear();
+
+            for(int i = 1; i <=5; i++) {
+                framesArray2.add(new Texture("level2/monster_dead" + i + ".png"));
+            }
+            this.monsterDeadAnim = new Animation<>(0.15f, framesArray2);
         }
     }
 
@@ -361,12 +377,12 @@ public class Assets {
     }
 
     public class SplashAssets {
-        public final Animation<Texture> splashAnimation;
+        public final Animation<TextureRegion> splashAnimation;
 
-        private SplashAssets() {
-            Array<Texture> framesArray = new Array<>();
+        private SplashAssets(TextureAtlas atlas) {
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
-                framesArray.add(assetManager.get("level2/splash" + i + ".png"));
+                framesArray.add(atlas.findRegion("splash" + i));
             }
             this.splashAnimation = new Animation<>(0.05f, framesArray);
 
