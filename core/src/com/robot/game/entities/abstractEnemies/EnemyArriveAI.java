@@ -29,7 +29,7 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         super(playScreen, body, fixtureDef, object);
         this.robot = playScreen.getRobot();
 
-        this.arrive = new Arrive<>(this, robot).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(0);
+        this.arrive = new Arrive<>(this, robot).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(1f);
         arrive.setEnabled(false);
 
         this.steeringBehavior = arrive;

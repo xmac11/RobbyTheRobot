@@ -226,10 +226,11 @@ public class Assets {
 
     public class MonsterAssets {
         public final Animation<TextureRegion> monsterWalkAnim;
-        public final Animation<Texture> monsterAttackAnim;
-        public final Animation<Texture> monsterDeadAnim;
+        public final Animation<TextureRegion> monsterAttackAnim;
+        public final Animation<TextureRegion> monsterDeadAnim;
 
         private MonsterAssets(TextureAtlas atlas) {
+
             Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
                 framesArray.add(atlas.findRegion("monster_walk" + i));
@@ -238,18 +239,19 @@ public class Assets {
 
             framesArray.clear();
 
-            Array<Texture> framesArray2 = new Array<>();
             for(int i = 1; i <= 7; i++) {
-                framesArray2.add(new Texture("level2/monster_attack" + i + ".png"));
+                framesArray.add(atlas.findRegion("monster_attack" + i));
             }
-            this.monsterAttackAnim = new Animation<>(0.1f, framesArray2, Animation.PlayMode.LOOP);
+            this.monsterAttackAnim = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP);
 
-            framesArray2.clear();
+            framesArray.clear();
 
             for(int i = 1; i <=5; i++) {
-                framesArray2.add(new Texture("level2/monster_dead" + i + ".png"));
+                framesArray.add(atlas.findRegion("monster_dead" + i));
             }
-            this.monsterDeadAnim = new Animation<>(0.15f, framesArray2);
+            this.monsterDeadAnim = new Animation<>(0.15f, framesArray);
+
+            framesArray.clear();
         }
     }
 

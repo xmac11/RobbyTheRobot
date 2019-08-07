@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.util.Damaging;
 
 import static com.robot.game.util.Constants.DAMAGE_FROM_SPIKE;
+import static com.robot.game.util.Constants.DAMAGE_ON;
 
 public class Spike implements Damaging {
 
@@ -34,7 +35,7 @@ public class Spike implements Damaging {
 
     @Override
     public int getDamage() {
-        return DAMAGE_FROM_SPIKE;
+        return DAMAGE_ON ? DAMAGE_FROM_SPIKE : 0;
     }
 
     public boolean mightBeWalked() {

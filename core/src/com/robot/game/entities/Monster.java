@@ -85,16 +85,17 @@ public class Monster extends EnemyArriveAI {
             setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(0));
         }
         // it has been activated
-        else if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 80 / PPM
+        else if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 64 / PPM
                 && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 8 / PPM) {
             setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(elapsedAnim));
         }
-        /*else if((Math.abs(robot.getBody().getPosition().x - body.getPosition().x) > 256 / PPM
-                || Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) > 48 / PPM)) {
+        else if(robot.isOnLadder()
+                && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 32 / PPM
+                && robot.getBody().getPosition(). y - body.getPosition().y > 16 / PPM) {
             arrive.setEnabled(false);
             activated = false;
             Gdx.app.log("Monster", "Arrive was disabled for monster");
-        }*/
+        }
         else if(!dead) {
             setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
         }
@@ -120,7 +121,7 @@ public class Monster extends EnemyArriveAI {
     }
 
     private void checkIfShouldBeActivated() {
-        if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 256 / PPM
+        if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2 - 32 / PPM
                 && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
             arrive.setEnabled(true);
             activated = true;

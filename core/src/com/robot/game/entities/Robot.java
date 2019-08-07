@@ -36,7 +36,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private ShakeEffect shakeEffect;
 
     // state booleans
-    public boolean onLadder;
+    private boolean onLadder;
     private boolean fallingOffLadder;
     private boolean walkingOnSpikes;
     private boolean dead;
@@ -417,6 +417,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {
         this.interactivePlatform = interactivePlatform;
         this.isOnInteractivePlatform = isOnInteractivePlatform;
+    }
+
+    public boolean isOnLadder() {
+        return onLadder;
     }
 
     public boolean isFallingOffLadder() {
