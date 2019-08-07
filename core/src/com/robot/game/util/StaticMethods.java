@@ -66,7 +66,6 @@ public class StaticMethods {
         filter.maskBits = maskBits;
         fixture.setFilterData(filter);
         Gdx.app.log("StaticMethods", "Mask bits changed");
-        System.out.println(filter.maskBits);
     }
 
     // setter to change the category bits of a fixture
