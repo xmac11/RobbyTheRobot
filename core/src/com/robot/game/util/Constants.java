@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
     public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
@@ -70,7 +70,7 @@ public final class Constants {
     public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_BODY_WIDTH = 18;
     public static final float ROBOT_BODY_HEIGHT = 50;
-    public static final float ROBOT_OFFSET_X = 10;
+    public static final float ROBOT_OFFSET_X = 15;
     public static final float ROBOT_OFFSET_Y = 5;
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
@@ -102,6 +102,10 @@ public final class Constants {
 
         // Flickering
     public static final float FLICKER_TIME = 0.75f;
+
+        // shooting laser
+    public static final float LASER_OFFSET_X = 13 / PPM;
+    public static final float LASER_OFFSET_Y = 6 / PPM;
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";

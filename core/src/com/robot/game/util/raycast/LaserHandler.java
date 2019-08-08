@@ -9,17 +9,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
-import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.Robot;
+import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.*;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.Facing.LEFT;
+import static com.robot.game.util.Enums.Facing.RIGHT;
 
 
 public class LaserHandler {
@@ -35,12 +33,12 @@ public class LaserHandler {
     private Vector2 tempRayPointEnd = new Vector2(); // used to lerp from start point to end point
 
     // boolean used to determine if laser line should be drawn
-    private boolean rayCastStarted;
+    private boolean rayCastActive;
 
     // animation
     private float rayCastStartTime;
     private float rayCastElapsed;
-    private boolean rayAnimActive; // boolean used to determine if laser hit animation should be drawn
+    private boolean rayHitAnimActive; // boolean used to determine if laser hit animation should be drawn
 
     public LaserHandler(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -52,8 +50,8 @@ public class LaserHandler {
 
     public void startRayCast() {
         rayCastStartTime = TimeUtils.nanoTime();
-        rayCastStarted = true;
-        rayAnimActive = true;
+        rayCastActive = true;
+        rayHitAnimActive = true;
 
         determineRayPoints();
 
@@ -86,22 +84,25 @@ public class LaserHandler {
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // draw rectangle line
-        if(rayCastStarted) {
+        if(rayCastActive) {
             shapeRenderer.setProjectionMatrix(playScreen.getCamera().combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             //            shapeRenderer.setColor(Color.CYAN);
 
             if(robot.getFacing() == RIGHT) {
                 tempRayPointEnd.add(2f, 0);
-                if(tempRayPointEnd.x > rayPointEnd.x + SCREEN_WIDTH / 2f / PPM)
-                    rayCastStarted = false;
+                // give a higher range, just to draw the line
+                if(tempRayPointEnd.x > rayPointEnd.x + playScreen.getViewport().getWorldWidth() / 2) {
+                    rayCastActive = false;
+                }
 
                 // lerp from start point to end point.
                 // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
                 /*shapeRenderer.rectLine(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0),
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd : tempRayPointEnd, 2 / PPM);*/
-                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
-                        robot.getBody().getPosition().y,
+                // I'm not using rayPointStart, in order to always draw the laser based on the robot's current position
+                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X,
+                        robot.getBody().getPosition().y + LASER_OFFSET_Y,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y: tempRayPointEnd.y,
                         2 / PPM,
@@ -122,13 +123,16 @@ public class LaserHandler {
             }
             else if(robot.getFacing() == LEFT) {
                 tempRayPointEnd.sub(2f, 0);
-                if(tempRayPointEnd.x < rayPointEnd.x - SCREEN_WIDTH / 2f / PPM)
-                    rayCastStarted = false;
+                // give a higher range, just to draw the line
+                if(tempRayPointEnd.x < rayPointEnd.x - playScreen.getViewport().getWorldWidth() / 2) {
+                    rayCastActive = false;
+                }
 
                 /*shapeRenderer.rectLine(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 2 / PPM, 0),
                         tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd : tempRayPointEnd, 2 / PPM);*/
-                shapeRenderer.rectLine(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM,
-                        robot.getBody().getPosition().y,
+                // I'm not using rayPointStart, in order to always draw the laser based on the robot's current position
+                shapeRenderer.rectLine(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - LASER_OFFSET_X,
+                        robot.getBody().getPosition().y + LASER_OFFSET_Y,
                         tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd.y: tempRayPointEnd.y,
                         2 / PPM,
@@ -145,13 +149,13 @@ public class LaserHandler {
     private void determineRayPoints() {
         // facing right
         if(robot.getFacing() == RIGHT) {
-            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
+            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X, robot.getBody().getPosition().y + LASER_OFFSET_Y);
+            rayPointEnd.set(playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y + LASER_OFFSET_Y); // raycast until the end of the screen
         }
         // facing left
         else if(robot.getFacing() == LEFT) {
-            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-            rayPointEnd.set(playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y); // raycast until the end of the screen
+            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - LASER_OFFSET_X, robot.getBody().getPosition().y + LASER_OFFSET_Y);
+            rayPointEnd.set(playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y + LASER_OFFSET_Y); // raycast until the end of the screen
         }
     }
 
@@ -170,9 +174,9 @@ public class LaserHandler {
     }
 
     private void handleAnimation(SpriteBatch batch) {
-        if(rayAnimActive) {
+        if(rayHitAnimActive) {
             if(rayCastElapsed >= assets.laserAssets.laserExplosionAnimation.getAnimationDuration()) {
-                rayAnimActive = false;
+                rayHitAnimActive = false;
                 rayCastStartTime = 0;
                 rayCastElapsed = 0;
             }

@@ -150,10 +150,21 @@ public class Assets {
     // Robot assets
     public class RobotAssets {
 
-        public final TextureAtlas.AtlasRegion atlasRegion;
+//        public final TextureAtlas.AtlasRegion atlasRegion;
+        public final Texture robotTexture;
+
+        public final Animation<Texture> shootAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
-            this.atlasRegion = atlas.findRegion("robot");
+//            this.atlasRegion = atlas.findRegion("robot");
+            this.robotTexture = new Texture("robot.png");
+
+            Array<Texture> framesArray = new Array<>();
+            /*for(int i = 1; i <= 2; i ++) {
+                framesArray.add(new Texture("level2/shoot" + i + ".png"));
+            }*/
+            framesArray.add(new Texture("level2/shoot.png"));
+            this.shootAnimation = new Animation<>(0.3f, framesArray);
         }
     }
 

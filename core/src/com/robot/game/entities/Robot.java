@@ -40,6 +40,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private boolean onLadder;
     private boolean fallingOffLadder;
     private boolean walkingOnSpikes;
+    private boolean shootingLaser;
     private boolean dead;
 
     // invulnerability
@@ -80,6 +81,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     // ray cast callback
     private MyRayCastCallback callback;
 
+    // animation
+    private float elapsedAnim;
+
+
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
@@ -90,7 +95,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.facing = RIGHT;
         createRobotB2d();
 
-        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
+//        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
+        this.robotSprite = new Sprite(assets.robotAssets.robotTexture);
+
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
         // create ray cast callback
@@ -210,6 +217,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
                 checkpointData.setHealth(100); // to decide: should the robot restore its health when falling in the water?
             }
         }
+
+        // calculate the elapsed time of the animation
+        elapsedAnim += delta;
     }
 
     private void processInput(float delta) {
@@ -355,6 +365,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         // laser shot
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             playScreen.getLaserHandler().startRayCast();
+            this.shootingLaser = true;
+
+            this.elapsedAnim = 0;
         }
 
         punchTimer -= delta;
@@ -368,6 +381,18 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     }
 
     public void draw(SpriteBatch batch, float delta) {
+        // if firing laser
+        if(shootingLaser) {
+            robotSprite.setRegion(assets.robotAssets.shootAnimation.getKeyFrame(0));
+
+            if(elapsedAnim >= assets.robotAssets.shootAnimation.getAnimationDuration())
+                shootingLaser = false;
+        }
+        else {
+            robotSprite.setRegion(assets.robotAssets.robotTexture);
+        }
+
+
         if(facing == RIGHT) {
             if(robotSprite.isFlipX())
                 robotSprite.flip(true, false);
@@ -380,12 +405,13 @@ public class Robot extends Sprite implements Steerable<Vector2> {
                 robotSprite.flip(true, false);
 
             // attach robot sprite to body
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 8.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 12.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
         }
 
         // if not flickering, draw sprite
-        if(!flicker)
+        if(!flicker) {
             robotSprite.draw(batch);
+        }
         // else if flickering
         else {
             // interpolate alpha value between 0 and 1 using sin(x)
