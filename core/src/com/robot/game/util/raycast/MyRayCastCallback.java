@@ -21,7 +21,7 @@ public class MyRayCastCallback implements RayCastCallback {
            || fixture.getUserData() instanceof Collectable
            || fixture.getUserData() instanceof TankBall
            || (fixture.getUserData() instanceof Enemy && ((Enemy) fixture.getUserData()).isDead())) {
-            Gdx.app.log("MyRayCastCallback", "Raycast ignored" + fixture.getUserData());
+            Gdx.app.log("MyRayCastCallback", "Raycast ignored " + fixture.getUserData());
             return -1;
         }
         this.rayPointEnd.set(point);

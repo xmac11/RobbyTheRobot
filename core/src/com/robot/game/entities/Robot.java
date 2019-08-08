@@ -16,13 +16,13 @@ import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
-import com.robot.game.util.HandReference;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.raycast.MyRayCastCallback;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.*;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.Facing;
+import static com.robot.game.util.Enums.Facing.LEFT;
+import static com.robot.game.util.Enums.Facing.RIGHT;
 
 public class Robot extends Sprite implements Steerable<Vector2> {
 
@@ -56,7 +56,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private float jumpTimer;
     private float coyoteTimer;
     private float climbTimer;
-    public float punchTimer;
 
     //CONSTANT SPEED
     //    private final Vector2 ROBOT_IMPULSE;
@@ -140,22 +139,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         fixtureDef.isSensor = true;
         this.body.createFixture(fixtureDef).setUserData("feet");
 
-        // hand (facing right)
-        recShape.setAsBox(16f / 2 / PPM, 4f / 2 / PPM, new Vector2(17f / PPM, 0), 0);
-        fixtureDef.density = 0;
-        fixtureDef.filter.categoryBits = ROBOT_HAND_CATEGORY;
-        fixtureDef.filter.maskBits = ROBOT_HAND_MASK;
-        fixtureDef.isSensor = false;
-        this.body.createFixture(fixtureDef).setUserData(new HandReference(this, "right"));
-
-        // hand (facing left) - initially a sensor
-        recShape.setAsBox(16f / 2 / PPM, 4f / 2 / PPM, new Vector2(-17f / PPM, 0), 0);
-        fixtureDef.density = 0;
-        fixtureDef.filter.categoryBits = ROBOT_HAND_CATEGORY;
-        fixtureDef.filter.maskBits = ROBOT_HAND_MASK;
-        fixtureDef.isSensor = true;
-        this.body.createFixture(fixtureDef).setUserData(new HandReference(this, "left"));
-
         recShape.dispose();
     }
 
@@ -238,21 +221,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             if(facing != RIGHT) {
                 facing = RIGHT;
                 Gdx.app.log("Robot", "facing = " + facing);
-
-                for(int i = 0; i < body.getFixtureList().size; i++) {
-                    Fixture fixture = body.getFixtureList().get(i);
-                    if(fixture.getUserData() instanceof HandReference) {
-                        String description = ((HandReference) fixture.getUserData()).getDescription();
-                        if(description.equals("right")) {
-                            fixture.setSensor(false);
-                            Gdx.app.log("Robot", "Right hand sensor OFF");
-                        }
-                        else if(description.equals("left")) {
-                            fixture.setSensor(true);
-                            Gdx.app.log("Robot", "Left hand sensor ON");
-                        }
-                    }
-                }
             }
 
             // GRADUAL ACCELERATION
@@ -269,21 +237,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             if(facing != LEFT) {
                 facing = LEFT;
                 Gdx.app.log("Robot", "facing = " + facing);
-
-                for(int i = 0; i < body.getFixtureList().size; i++) {
-                    Fixture fixture = body.getFixtureList().get(i);
-                    if(fixture.getUserData() instanceof HandReference) {
-                        String description = ((HandReference) fixture.getUserData()).getDescription();
-                        if(description.equals("left")) {
-                            fixture.setSensor(false);
-                            Gdx.app.log("Robot", "Left hand sensor OFF");
-                        }
-                        else if(description.equals("right")) {
-                            fixture.setSensor(true);
-                            Gdx.app.log("Robot", "Right hand sensor ON");
-                        }
-                    }
-                }
             }
 
             // this is for the case of the horizontally moving platform that will stop under the ladder
@@ -402,13 +355,11 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             this.elapsedAnim = 0;
         }
 
-        punchTimer -= delta;
         if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            punchTimer = 0.5f;
             facingOnPunch = facing;
             punching = true;
             this.elapsedAnim = 0;
-            Gdx.app.log("Robot","punchTimer was set, robot was facing " + facingOnPunch);
+            playScreen.getPunchHandler().startRayCast();
         }
 
 //        System.out.println(body.getLinearVelocity().x);

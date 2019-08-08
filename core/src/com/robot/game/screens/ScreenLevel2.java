@@ -114,7 +114,12 @@ public class ScreenLevel2 extends PlayScreen {
         // render any laser shot
         laserHandler.render(game.getBatch(), shapeRenderer);
 
-        super.renderDebugLines();
+        if(DEBUG_ON) {
+            // render punch lines
+            punchHandler.render(shapeRenderer);
+            // render ai paths
+            super.renderDebugLines();
+        }
 
         // finally, check if robot is dead
         super.checkIfDead();

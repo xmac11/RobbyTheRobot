@@ -6,22 +6,20 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Fish;
 import com.robot.game.entities.Monster;
-import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
-import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
-import com.robot.game.interactiveObjects.*;
+import com.robot.game.entities.Robot;
+import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.interactiveObjects.Spike;
+import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
+import com.robot.game.interactiveObjects.collectables.PowerUp;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.ladder.Ladder;
 import com.robot.game.interactiveObjects.platforms.FallingPlatform;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
-import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.interactiveObjects.collectables.PowerUp;
-import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing.*;
 
 
 public class ContactManager implements ContactListener {
@@ -99,10 +97,6 @@ public class ContactManager implements ContactListener {
 
             case ROBOT_CATEGORY | ENEMY_PROJECTILE_CATEGORY:
                 robotProjectileBegin(fixA, fixB);
-                break;
-
-            case ROBOT_HAND_CATEGORY | ENEMY_CATEGORY:
-                punchEnemyBegin(fixA, fixB);
                 break;
         }
 
@@ -523,37 +517,6 @@ public class ContactManager implements ContactListener {
         Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
     }
 
-    private void punchEnemyBegin(Fixture fixA, Fixture fixB) {
-        Gdx.app.log("ContactManager", "Enemy is within punching distance");
-        Robot robot;
-        Enemy enemy;
-        boolean punchSuccessful = false;
-
-        if(fixA.getUserData() instanceof HandReference) {
-            robot = ((HandReference) fixA.getUserData()).getRobot();
-            enemy = (Enemy) fixB.getUserData();
-        }
-        else {
-            robot = ((HandReference) fixB.getUserData()).getRobot();
-            enemy = (Enemy) fixA.getUserData();
-        }
-
-        if(robot.punchTimer > 0 && !enemy.isPunchResolved()) {
-            if((robot.getFacingOnPunch() == RIGHT && robot.getBody().getPosition().x <= enemy.getBody().getPosition().x) ||
-                robot.getFacingOnPunch() == LEFT && robot.getBody().getPosition().x >= enemy.getBody().getPosition().x) {
-                punchSuccessful = true;
-                enemy.setPunchResolved(true);
-                Gdx.app.log("ContactManager", "Punch was resolved in beginContact()");
-            }
-        }
-
-        if(punchSuccessful) {
-            Gdx.app.log("ContactManager", "Punch successful");
-            robot.punchTimer = 0;
-            StaticMethods.killEnemy(robot, enemy);
-        }
-    }
-
     @Override
     public void endContact(Contact contact) {
         // Get the two fixtures that contact
@@ -746,32 +709,6 @@ public class ContactManager implements ContactListener {
                         contact.setEnabled(false);
                         Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
                     }
-                }
-                break;
-
-            // punch enemy
-            case ROBOT_HAND_CATEGORY | ENEMY_CATEGORY:
-
-                if(fixA.getUserData() instanceof HandReference) {
-                    robot = ((HandReference) fixA.getUserData()).getRobot();
-                    enemy = (Enemy) fixB.getUserData();
-                }
-                else {
-                    robot = ((HandReference) fixB.getUserData()).getRobot();
-                    enemy = (Enemy) fixA.getUserData();
-                }
-
-                // check if robot punched
-                if(robot.punchTimer > 0 && !enemy.isPunchResolved()) {
-                    robot.punchTimer = 0;
-                    StaticMethods.killEnemy(robot, enemy);
-                    enemy.setPunchResolved(true);
-                    Gdx.app.log("ContactManager", "Punch was resolved in presolve()");
-
-                }
-                else {
-                    contact.setEnabled(false);
-                    Gdx.app.log("ContactManager", "Hand-Enemy contact was disabled in presolve()");
                 }
                 break;
         }

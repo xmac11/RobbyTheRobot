@@ -20,20 +20,7 @@ import static com.robot.game.util.Enums.Facing.LEFT;
 import static com.robot.game.util.Enums.Facing.RIGHT;
 
 
-public class LaserHandler {
-
-    private PlayScreen playScreen;
-    private Assets assets;
-    private Robot robot;
-    private World world;
-    private MyRayCastCallback callback;
-
-    private Vector2 rayPointStart = new Vector2(), rayPointEnd = new Vector2();
-    private Fixture closestFixture;
-    private Vector2 tempRayPointEnd = new Vector2(); // used to lerp from start point to end point
-
-    // boolean used to determine if laser line should be drawn
-    private boolean rayCastActive;
+public class LaserHandler extends RayCastHandler {
 
     // animation
     private float rayCastStartTime;
@@ -41,13 +28,10 @@ public class LaserHandler {
     private boolean rayHitAnimActive; // boolean used to determine if laser hit animation should be drawn
 
     public LaserHandler(PlayScreen playScreen) {
-        this.playScreen = playScreen;
-        this.assets = playScreen.getAssets();
-        this.robot = playScreen.getRobot();
-        this.world = playScreen.getWorld();
-        this.callback = robot.getCallback();
+        super(playScreen);
     }
 
+    @Override
     public void startRayCast() {
         rayCastStartTime = TimeUtils.nanoTime();
         rayCastActive = true;
@@ -79,7 +63,7 @@ public class LaserHandler {
         callback.setClosestFixture(null);
 
         // determine action depending on the result of the raycast
-        resolveRayCast();
+        super.resolveRayCast();
     }
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -146,7 +130,8 @@ public class LaserHandler {
         handleAnimation(batch);
     }
 
-    private void determineRayPoints() {
+    @Override
+    public void determineRayPoints() {
         // facing right
         if(robot.getFacing() == RIGHT) {
             rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X, robot.getBody().getPosition().y + LASER_OFFSET_Y);
@@ -159,19 +144,7 @@ public class LaserHandler {
         }
     }
 
-    private void resolveRayCast() {
-        if(closestFixture == null) return;
-        if(closestFixture.getUserData() == null) return;
 
-        if("ground".equals(closestFixture.getUserData())) {
-            Gdx.app.log("LaserHandler", "Raycast hit ground");
-        }
-        else if(closestFixture.getUserData() instanceof Enemy) {
-            Enemy enemy = (Enemy) closestFixture.getUserData();
-            StaticMethods.killEnemy(robot, enemy);
-            Gdx.app.log("LaserHandler", "Raycast hit enemy");
-        }
-    }
 
     private void handleAnimation(SpriteBatch batch) {
         if(rayHitAnimActive) {

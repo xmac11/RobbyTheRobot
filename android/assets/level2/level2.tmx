@@ -456,7 +456,7 @@
     <property name="monster" value=""/>
    </properties>
   </object>
-  <object id="242" x="1392" y="704" width="12" height="48">
+  <object id="242" x="1392" y="704" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
     <property name="facing" value="left"/>

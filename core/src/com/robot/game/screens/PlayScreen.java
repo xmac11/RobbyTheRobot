@@ -38,6 +38,7 @@ import com.robot.game.util.ObjectParser;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
+import com.robot.game.util.raycast.PunchHandler;
 import org.json.simple.JSONArray;
 
 import static com.robot.game.util.Constants.*;
@@ -124,6 +125,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     // laser handler
     protected LaserHandler laserHandler;
 
+    // punch handler
+    protected PunchHandler punchHandler;
+
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.assets = game.getAssets();
@@ -186,8 +190,13 @@ public abstract class PlayScreen extends ScreenAdapter {
         // create shape renderer
         this.shapeRenderer = new ShapeRenderer();
 
+        // TODO: Move these to ScreenLevel2
+
         // create laser handler
         this.laserHandler = new LaserHandler(this);
+
+        // create punch handler
+        this.punchHandler = new PunchHandler(this);
     }
 
     /*@Override
@@ -411,6 +420,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         return laserHandler;
     }
 
+    public PunchHandler getPunchHandler() {
+        return punchHandler;
+    }
+
     public boolean isPaused() {
         return paused;
     }
@@ -428,17 +441,15 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     protected void renderDebugLines() {
         //render box2d debug rectangles
-        if(DEBUG_ON) {
-            debugRenderer.render(world, viewport.getCamera().combined);
+        debugRenderer.render(world, viewport.getCamera().combined);
 
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-            for(Enemy enemy: enemies) {
-                if(enemy instanceof EnemyPathFollowingAI)
-                    ((EnemyPathFollowingAI) enemy).drawAiPath();
-            }
-            shapeRenderer.end();
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        for(Enemy enemy: enemies) {
+            if(enemy instanceof EnemyPathFollowingAI)
+                ((EnemyPathFollowingAI) enemy).drawAiPath();
         }
+        shapeRenderer.end();
     }
 
     protected void checkIfDead() {
