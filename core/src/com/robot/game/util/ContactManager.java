@@ -241,10 +241,6 @@ public class ContactManager implements ContactListener {
         robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
     }
 
-    /* When the robot steps on an enemy, I have to set the enemy’s mask bit to “NOTHING”. As a result, the collision stops at that point, the player
-     * bounces off the enemy as normal and the presolve() method does not get called.
-     * If the mask bit was not set to “NOTHING”, the collision would continue being detected. Then the presolve() method would be called disabling the
-     * collision, so the robot would pass through the enemy and the bounce off the enemy would never take place. */
     private void robotEnemyBegin(Vector2 normal, Fixture fixA, Fixture fixB) {
         Robot robot;
         Enemy enemy;
@@ -297,6 +293,7 @@ public class ContactManager implements ContactListener {
             if(enemy.getBody().getFixtureList().size != 0) {
                 enemy.getBody().getFixtureList().first().setSensor(true);
             }
+            Gdx.app.log("ContactManager", "Enemy sensor = TRUE");
 
             // if enemy is a Monster (dynamic body) turn off gravity, since it is now a sensor
             if(enemy instanceof Monster) {
@@ -527,24 +524,26 @@ public class ContactManager implements ContactListener {
     }
 
     private void punchEnemyBegin(Fixture fixA, Fixture fixB) {
-        Gdx.app.log("ContactManager", "Punch begin");
+        Gdx.app.log("ContactManager", "Enemy is within punching distance");
         Robot robot;
         Enemy enemy;
         boolean punchSuccessful = false;
 
-        if(fixA.getUserData() instanceof Robot) {
-            robot = (Robot) fixA.getUserData();
+        if(fixA.getUserData() instanceof HandReference) {
+            robot = ((HandReference) fixA.getUserData()).getRobot();
             enemy = (Enemy) fixB.getUserData();
         }
         else {
-            robot = (Robot) fixB.getUserData();
+            robot = ((HandReference) fixB.getUserData()).getRobot();
             enemy = (Enemy) fixA.getUserData();
         }
 
-        if(robot.punchTimer > 0) {
+        if(robot.punchTimer > 0 && !enemy.isPunchResolved()) {
             if((robot.getFacingOnPunch() == RIGHT && robot.getBody().getPosition().x <= enemy.getBody().getPosition().x) ||
                 robot.getFacingOnPunch() == LEFT && robot.getBody().getPosition().x >= enemy.getBody().getPosition().x) {
                 punchSuccessful = true;
+                enemy.setPunchResolved(true);
+                Gdx.app.log("ContactManager", "Punch was resolved in beginContact()");
             }
         }
 
@@ -674,6 +673,7 @@ public class ContactManager implements ContactListener {
         if(enemy.getBody().getFixtureList().size != 0) {
             enemy.getBody().getFixtureList().first().setSensor(false);
         }
+        Gdx.app.log("ContactManager", "Enemy sensor = FALSE");
 
         // if enemy is a Monster (dynamic body) turn gravity back on
         if(enemy instanceof Monster) {
@@ -732,16 +732,46 @@ public class ContactManager implements ContactListener {
                     enemy = (Enemy) fixB.getUserData();
 
                     // robot was hit by enemy
-                    if (normal.y >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2))
+                    if(normal.y >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2)) {
                         contact.setEnabled(false);
+                        Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
+                    }
                 }
                 else {
                     robot = (Robot) fixB.getUserData();
                     enemy = (Enemy) fixA.getUserData();
 
                     // robot was hit by enemy
-                    if(normal.y <= -1/Math.sqrt(2) || normal.x >= 1/Math.sqrt(2) || normal.x <= -1/Math.sqrt(2))
+                    if(normal.y <= -1/Math.sqrt(2) || normal.x >= 1/Math.sqrt(2) || normal.x <= -1/Math.sqrt(2)) {
                         contact.setEnabled(false);
+                        Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
+                    }
+                }
+                break;
+
+            // punch enemy
+            case ROBOT_HAND_CATEGORY | ENEMY_CATEGORY:
+
+                if(fixA.getUserData() instanceof HandReference) {
+                    robot = ((HandReference) fixA.getUserData()).getRobot();
+                    enemy = (Enemy) fixB.getUserData();
+                }
+                else {
+                    robot = ((HandReference) fixB.getUserData()).getRobot();
+                    enemy = (Enemy) fixA.getUserData();
+                }
+
+                // check if robot punched
+                if(robot.punchTimer > 0 && !enemy.isPunchResolved()) {
+                    robot.punchTimer = 0;
+                    StaticMethods.killEnemy(robot, enemy);
+                    enemy.setPunchResolved(true);
+                    Gdx.app.log("ContactManager", "Punch was resolved in presolve()");
+
+                }
+                else {
+                    contact.setEnabled(false);
+                    Gdx.app.log("ContactManager", "Hand-Enemy contact was disabled in presolve()");
                 }
                 break;
         }

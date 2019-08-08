@@ -138,6 +138,11 @@ public final class Constants {
     public static final float FISH_HEIGHT = 28;
     public static final Vector2 FISH_IMPULSE = new Vector2(0, 8f);
 
+        // Monster
+    public static final float MONSTER_WIDTH = 38;
+    public static final float MONSTER_HEIGHT = 48;
+
+
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
     public static final String POWERUP_PROPERTY = "powerup";

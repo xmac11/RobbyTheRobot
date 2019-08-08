@@ -22,7 +22,6 @@ public class Monster extends EnemyArriveAI {
 
     private boolean activated;
     private Facing facing;
-    private float alpha = 1;
 
     public Monster(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -41,7 +40,7 @@ public class Monster extends EnemyArriveAI {
             flip(true, false);
         }
 
-        setSize(38 / PPM, 48 / PPM);
+        setSize(MONSTER_WIDTH / PPM, MONSTER_HEIGHT / PPM);
     }
 
     @Override
@@ -64,7 +63,7 @@ public class Monster extends EnemyArriveAI {
         }
 
         if(!activated) {
-            //checkIfShouldBeActivated();
+            checkIfShouldBeActivated();
         }
 
         if(steeringBehavior != null) {
@@ -115,7 +114,7 @@ public class Monster extends EnemyArriveAI {
 
         // attach enemy sprite to body
         if(!dead) {
-            setPosition(body.getPosition().x - 38f / 2 / PPM, body.getPosition().y - 48f / 2 / PPM);
+            setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
         }
         super.draw(batch);
     }

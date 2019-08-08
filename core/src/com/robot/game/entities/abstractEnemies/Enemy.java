@@ -32,7 +32,11 @@ public abstract class Enemy extends Sprite implements Damaging {
     protected float deadStartTime;
     protected float deadElapsed;
 
+    // when dead
     protected boolean flagToChangeMask;
+
+    // punched
+    private boolean punchResolved;
 
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
@@ -88,5 +92,13 @@ public abstract class Enemy extends Sprite implements Damaging {
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public boolean isPunchResolved() {
+        return punchResolved;
+    }
+
+    public void setPunchResolved(boolean punchResolved) {
+        this.punchResolved = punchResolved;
     }
 }
