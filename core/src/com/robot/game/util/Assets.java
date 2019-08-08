@@ -154,6 +154,7 @@ public class Assets {
         public final Texture robotTexture;
 
         public final Animation<Texture> shootAnimation;
+        public final Animation<Texture> punchAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
 //            this.atlasRegion = atlas.findRegion("robot");
@@ -165,6 +166,13 @@ public class Assets {
             }*/
             framesArray.add(new Texture("level2/shoot.png"));
             this.shootAnimation = new Animation<>(0.3f, framesArray);
+
+            framesArray.clear();
+
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(new Texture("level2/punch" + i + ".png"));
+            }
+            this.punchAnimation = new Animation<>(0.1f, framesArray);
         }
     }
 

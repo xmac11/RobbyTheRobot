@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
     public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
@@ -70,7 +70,7 @@ public final class Constants {
     public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_BODY_WIDTH = 18;
     public static final float ROBOT_BODY_HEIGHT = 50;
-    public static final float ROBOT_OFFSET_X = 15;
+    public static final float ROBOT_OFFSET_X = 27;
     public static final float ROBOT_OFFSET_Y = 5;
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;

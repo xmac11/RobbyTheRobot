@@ -41,6 +41,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private boolean fallingOffLadder;
     private boolean walkingOnSpikes;
     private boolean shootingLaser;
+    private boolean punching;
     private boolean dead;
 
     // invulnerability
@@ -371,9 +372,11 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         }
 
         punchTimer -= delta;
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
             punchTimer = 0.5f;
             facingOnPunch = facing;
+            punching = true;
+            this.elapsedAnim = 0;
             Gdx.app.log("Robot","punchTimer was set, robot is was facing " + facingOnPunch);
         }
 
@@ -388,6 +391,12 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             if(elapsedAnim >= assets.robotAssets.shootAnimation.getAnimationDuration())
                 shootingLaser = false;
         }
+        else if(punching) {
+            robotSprite.setRegion(assets.robotAssets.punchAnimation.getKeyFrame(elapsedAnim));
+
+            if(elapsedAnim >= assets.robotAssets.punchAnimation.getAnimationDuration())
+                punching = false;
+        }
         else {
             robotSprite.setRegion(assets.robotAssets.robotTexture);
         }
@@ -398,14 +407,14 @@ public class Robot extends Sprite implements Steerable<Vector2> {
                 robotSprite.flip(true, false);
 
             // attach robot sprite to body
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 2.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 10f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
         }
         else if(facing == LEFT) {
             if(!robotSprite.isFlipX())
                 robotSprite.flip(true, false);
 
             // attach robot sprite to body
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 12.5f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 17f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
         }
 
         // if not flickering, draw sprite
