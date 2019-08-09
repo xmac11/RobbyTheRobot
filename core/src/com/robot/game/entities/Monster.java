@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
-import com.robot.game.entities.abstractEnemies.JumpAI;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
@@ -20,11 +19,9 @@ import static com.robot.game.util.Enums.Facing.*;
 public class Monster extends EnemyArriveAI {
 
     private boolean activated;
-    private JumpAI jumpAI;
 
     public Monster(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
-        this.jumpAI = new JumpAI(playScreen, this);
 
         fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
@@ -45,8 +42,6 @@ public class Monster extends EnemyArriveAI {
 
     @Override
     public void update(float delta) {
-        jumpAI.update();
-
         if(flagToChangeMask && body.getFixtureList().size != 0) {
             Fixture fixture = body.getFixtureList().first();
             StaticMethods.setMaskBit(fixture, fixture.getFilterData().maskBits &= ~ROBOT_CATEGORY); // does not collide with robot anymore
@@ -176,5 +171,4 @@ public class Monster extends EnemyArriveAI {
     public int getDamage() {
         return 0;
     }
-
 }

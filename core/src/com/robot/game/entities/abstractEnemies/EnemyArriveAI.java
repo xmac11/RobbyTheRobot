@@ -192,16 +192,4 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         this.inContactWithRobot = inContactWithRobot;
         Gdx.app.log("EnemyArriveAI", "inContactWithRobot = " + inContactWithRobot);
     }
-
-    public SteeringBehavior<Vector2> getSteeringBehavior() {
-        return steeringBehavior;
-    }
-
-    public void setSteeringBehavior(SteeringBehavior<Vector2> steeringBehavior) {
-        this.steeringBehavior = steeringBehavior;
-    }
-
-    public void setSteeringBehaviorToArrive() {
-        this.steeringBehavior = arrive;
-    }
 }
