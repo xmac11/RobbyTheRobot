@@ -31,6 +31,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private Assets assets;
     private Sprite robotSprite;
     private PlayScreen playScreen;
+    private int levelID;
     private World world;
     private ContactManager contactManager;
     private Body body;
@@ -88,6 +89,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
+        this.levelID = playScreen.getLevelID();
         this.world = playScreen.getWorld();
         this.contactManager = playScreen.getContactManager();
         this.checkpointData = playScreen.getCheckpointData();
@@ -346,7 +348,15 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             Gdx.app.log("Robot","UP key pressed in robot class -> climbTimer was set");
         }
 
-        // laser shot
+        if(levelID > 1) {
+            processInputLaserAndPunching();
+        }
+
+        //        System.out.println(body.getLinearVelocity().x);
+    }
+
+    private void processInputLaserAndPunching() {
+        // shoot laser
         if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             playScreen.getLaserHandler().startRayCast();
             this.shootingLaser = true;
@@ -354,13 +364,12 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             this.elapsedAnim = 0;
         }
 
+        // punch
         if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
             punching = true;
             this.elapsedAnim = 0;
             playScreen.getPunchHandler().startRayCast();
         }
-
-//        System.out.println(body.getLinearVelocity().x);
     }
 
     public void draw(SpriteBatch batch, float delta) {
