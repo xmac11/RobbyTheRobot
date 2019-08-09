@@ -18,24 +18,11 @@ import static com.robot.game.util.Enums.Facing.*;
 
 public class Monster extends EnemyArriveAI {
 
-    private boolean activated;
-
     public Monster(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
-
-        if(object.getProperties().get("facing").equals("right")) {
-            this.facing = RIGHT;
-        }
-        else {
-            this.facing = LEFT;
-        }
-
-        if(facing == LEFT) {
-            flip(true, false);
-        }
 
         setSize(MONSTER_WIDTH / PPM, MONSTER_HEIGHT / PPM);
     }
@@ -43,9 +30,7 @@ public class Monster extends EnemyArriveAI {
     @Override
     public void update(float delta) {
         if(flagToChangeMask && body.getFixtureList().size != 0) {
-            Fixture fixture = body.getFixtureList().first();
-            StaticMethods.setMaskBit(fixture, fixture.getFilterData().maskBits &= ~ROBOT_CATEGORY); // does not collide with robot anymore
-            flagToChangeMask = false;
+            super.removeCollisionWithRobot();
         }
 
         if(flagToKill) {
@@ -61,7 +46,7 @@ public class Monster extends EnemyArriveAI {
 
         // check if enemy should be activated
         if(!activated) {
-            checkIfShouldBeActivated();
+            this.checkIfShouldBeActivated();
         }
 
         // update state
@@ -80,7 +65,7 @@ public class Monster extends EnemyArriveAI {
 
         // update facing direction
         if(!dead) {
-            determineFacingDirection();
+            super.determineFacingDirection();
         }
 
         // calculate the elapsed time of the animation
@@ -92,9 +77,9 @@ public class Monster extends EnemyArriveAI {
         if(!activated) {
             setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(0));
         }
-        // it has been activated
+        // attacking
         else if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 64 / PPM
-                && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 8 / PPM) {
+                && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 16 / PPM) {
             setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(elapsedAnim));
         }
         else if(robot.isOnLadder()
@@ -120,7 +105,7 @@ public class Monster extends EnemyArriveAI {
         }
 
         // check if the texture has to be flipped based on the monster's facing direction
-        this.checkToFlipTexture();
+        super.checkToFlipTexture();
 
         // attach enemy sprite to body
         if(!dead) {
@@ -143,25 +128,7 @@ public class Monster extends EnemyArriveAI {
         }
     }
 
-    private void determineFacingDirection() {
-        if(body.getLinearVelocity().x > 0.5f && facing != RIGHT) {
-            facing = RIGHT;
-        }
-        else if(body.getLinearVelocity().x < -0.5f && facing != LEFT) {
-            facing = LEFT;
-        }
-    }
 
-    private void checkToFlipTexture() {
-        if(facing == RIGHT) {
-            if(isFlipX())
-                flip(true, false);
-        }
-        else if(facing == LEFT) {
-            if(!isFlipX())
-                flip(true, false);
-        }
-    }
 
     private boolean twiceOfDeadAnimationFinished() {
         return deadElapsed >= 2 * playScreen.getAssets().monsterAssets.monsterDeadAnim.getAnimationDuration();

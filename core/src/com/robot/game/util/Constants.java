@@ -23,6 +23,8 @@ public final class Constants {
     public static final String BAT_OBJECT = "Bat obj";
     public static final String CRAB_OBJECT = "Crab obj";
     public static final String FISH_OBJECT = "Fish obj";
+    public static final String MONSTER_OBJECT = "Monster obj";
+    public static final String SNAKE_OBJECT = "Snake obj";
     public static final String SPIKE_OBJECT = "Spike obj";
     public static final String COLLECTABLE_OBJECT = "Collectable obj";
     public static final String WALL_OBJECT = "Wall obj";
@@ -128,6 +130,8 @@ public final class Constants {
     public static final String BAT_PROPERTY = "bat";
     public static final String CRAB_PROPERTY = "crab";
     public static final String FISH_PROPERTY = "fish";
+    public static final String MONSTER_PROPERTY = "monster";
+    public static final String SNAKE_PROPERTY = "snake";
     public static final String SPIKE_PROPERTY = "spike";
     public static final float DEAD_TIMER = 1;
 

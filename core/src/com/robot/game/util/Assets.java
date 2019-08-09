@@ -42,6 +42,7 @@ public class Assets {
     public FishAssets fishAssets;
     public SplashAssets splashAssets;
     public MonsterAssets monsterAssets;
+    public SnakeAssets snakeAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -130,6 +131,7 @@ public class Assets {
         this.fishAssets = new FishAssets(atlas);
         this.splashAssets = new SplashAssets(atlas);
         this.monsterAssets = new MonsterAssets(atlas);
+        this.snakeAssets = new SnakeAssets();
     }
 
     public void dispose() {
@@ -269,6 +271,37 @@ public class Assets {
                 framesArray.add(atlas.findRegion("monster_dead" + i));
             }
             this.monsterDeadAnim = new Animation<>(0.15f, framesArray);
+
+            framesArray.clear();
+        }
+    }
+
+    public class SnakeAssets {
+        public final Animation<Texture> slitherAnimation;
+        public final Animation<Texture> biteAnimation;
+        public final Animation<Texture> deadAnimation;
+
+        private SnakeAssets() {
+            Array<Texture> framesArray = new Array<>();
+
+            for(int i = 1; i <= 5; i++) {
+                framesArray.add(new Texture("level2/slither" + i + ".png"));
+            }
+            this.slitherAnimation = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
+
+            for(int i = 1; i <= 5; i++) {
+                framesArray.add(new Texture("level2/bite" + i + ".png"));
+            }
+            this.biteAnimation = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP);
+
+            framesArray.clear();
+
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(new Texture("level2/snake_dead" + i + ".png"));
+            }
+            this.deadAnimation = new Animation<>(0.1f, framesArray);
 
             framesArray.clear();
         }

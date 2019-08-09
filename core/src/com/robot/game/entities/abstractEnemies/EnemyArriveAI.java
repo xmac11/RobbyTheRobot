@@ -10,10 +10,15 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.robot.game.entities.Monster;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
+import static com.robot.game.util.Constants.ROBOT_CATEGORY;
 import static com.robot.game.util.Enums.Facing;
+import static com.robot.game.util.Enums.Facing.LEFT;
 import static com.robot.game.util.Enums.Facing.RIGHT;
 
 public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> {
@@ -31,12 +36,14 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected boolean inContactWithRobot;
     protected boolean justStarted;
     protected boolean falling;
+    protected boolean activated;
 
     public EnemyArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
         this.robot = playScreen.getRobot();
 
         this.arrive = new Arrive<>(this, robot).setTimeToTarget(0.1f).setArrivalTolerance(0.001f).setDecelerationRadius(1f);
+        // initially disable steering behavior; it will be enabled when robot reaches within a certain distance
         arrive.setEnabled(false);
 
         this.steeringBehavior = arrive;
@@ -47,6 +54,17 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         this.maxAngularSpeed = 3;
         this.maxAngularAcceleration = 3;
         this.boundingRadius = 2f;
+
+        if(object.getProperties().get("facing").equals("right")) {
+            this.facing = RIGHT;
+        }
+        else {
+            this.facing = LEFT;
+        }
+
+        if(facing == LEFT) {
+            flip(true, false);
+        }
     }
 
     protected void applySteering(float delta) {
@@ -54,10 +72,12 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
         if(!steeringOutput.linear.isZero()) {
 
-            // if the enemy finds an obstacle, which is not the robot, and is not just starting moving, jump
-            if(body.getLinearVelocity().isZero() && !justStarted && !inContactWithRobot) {
-                body.applyLinearImpulse(facing == RIGHT ? 1f : -1f, 6f, body.getWorldCenter().x, body.getWorldCenter().y, true);
-                Gdx.app.log("EnemyArriveAI", "Enemy jumped");
+            if(this instanceof Monster) {
+                // if the enemy finds an obstacle, which is not the robot, and is not just starting moving, jump
+                if(body.getLinearVelocity().isZero() && !justStarted && !inContactWithRobot) {
+                    body.applyLinearImpulse(facing == RIGHT ? 1f : -1f, 6f, body.getWorldCenter().x, body.getWorldCenter().y, true);
+                    Gdx.app.log("EnemyArriveAI", "Enemy jumped");
+                }
             }
 
             body.setLinearVelocity(MathUtils.clamp(getLinearVelocity().x + steeringOutput.linear.x * delta, -maxLinearSpeed, maxLinearSpeed),
@@ -71,6 +91,32 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
             //System.out.println(body.getLinearVelocity());
         }
 
+    }
+
+    protected void removeCollisionWithRobot() {
+        Fixture fixture = body.getFixtureList().first();
+        StaticMethods.setMaskBit(fixture, fixture.getFilterData().maskBits &= ~ROBOT_CATEGORY); // does not collide with robot anymore
+        flagToChangeMask = false;
+    }
+
+    protected void determineFacingDirection() {
+        if(body.getLinearVelocity().x > 0.5f && facing != RIGHT) {
+            facing = RIGHT;
+        }
+        else if(body.getLinearVelocity().x < -0.5f && facing != LEFT) {
+            facing = LEFT;
+        }
+    }
+
+    protected void checkToFlipTexture() {
+        if(facing == RIGHT) {
+            if(isFlipX())
+                flip(true, false);
+        }
+        else if(facing == LEFT) {
+            if(!isFlipX())
+                flip(true, false);
+        }
     }
 
     @Override

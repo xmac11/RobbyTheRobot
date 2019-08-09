@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="35" nextobjectid="253">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="36" nextobjectid="254">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -420,13 +420,6 @@
   </object>
  </objectgroup>
  <objectgroup id="34" name="Monster obj">
-  <object id="231" x="1072" y="928" width="24" height="48">
-   <properties>
-    <property name="enemy" value=""/>
-    <property name="facing" value="right"/>
-    <property name="monster" value=""/>
-   </properties>
-  </object>
   <object id="234" x="592" y="704" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
@@ -471,6 +464,15 @@
     <property name="facing" value="left"/>
     <property name="monster" value=""/>
     <property name="noRestitution" value=""/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="35" name="Snake obj">
+  <object id="253" x="1408" y="944" width="32" height="24">
+   <properties>
+    <property name="enemy" value=""/>
+    <property name="facing" value="left"/>
+    <property name="snake" value=""/>
    </properties>
   </object>
  </objectgroup>

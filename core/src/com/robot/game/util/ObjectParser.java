@@ -62,11 +62,12 @@ public class ObjectParser {
                 bodyDef.type = BodyDef.BodyType.DynamicBody;
                 bodyDef.gravityScale = 0;
             }
-            else if(object.getProperties().containsKey("monster")) {
+            else if(object.getProperties().containsKey(MONSTER_PROPERTY) || object.getProperties().containsKey("snake")) {
                 bodyDef.type = BodyDef.BodyType.DynamicBody;
                 bodyDef.fixedRotation = true;
             }
-            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY) || object.getProperties().containsKey(ENEMY_PROPERTY)) {
+            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)
+                    || object.getProperties().containsKey(ENEMY_PROPERTY)) { // all other enemies are Kinematic bodies
                 bodyDef.type = BodyDef.BodyType.KinematicBody;
             }
             else {
@@ -242,8 +243,10 @@ public class ObjectParser {
             else if(object.getProperties().containsKey(FISH_PROPERTY))
                 this.enemies.add(new Fish(playScreen, body, fixtureDef, object));
             // create monsters
-            else if(object.getProperties().containsKey("monster"))
+            else if(object.getProperties().containsKey(MONSTER_PROPERTY))
                 this.enemies.add(new Monster(playScreen, body, fixtureDef, object));
+            else if(object.getProperties().containsKey(SNAKE_PROPERTY))
+                this.enemies.add(new Snake(playScreen, body, fixtureDef, object));
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
