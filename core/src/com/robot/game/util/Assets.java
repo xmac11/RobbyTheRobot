@@ -172,7 +172,7 @@ public class Assets {
             for(int i = 1; i <= 2; i++) {
                 framesArray.add(new Texture("level2/punch" + i + ".png"));
             }
-            this.punchAnimation = new Animation<>(0.1f, framesArray);
+            this.punchAnimation = new Animation<>(0.05f, framesArray);
         }
     }
 

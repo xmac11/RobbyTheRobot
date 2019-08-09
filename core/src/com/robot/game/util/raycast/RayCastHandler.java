@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.robot.game.entities.Monster;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
@@ -37,17 +38,31 @@ public abstract class RayCastHandler {
     public abstract void startRayCast();
     public abstract void determineRayPoints();
 
-    protected void resolveRayCast() {
+    protected void resolveRayCast(float impulseX, float impulseY) {
         if(closestFixture == null) return;
         if(closestFixture.getUserData() == null) return;
 
         if("ground".equals(closestFixture.getUserData())) {
-            Gdx.app.log("LaserHandler", "Raycast hit ground");
+            Gdx.app.log("RayCastHandler", "Raycast hit ground");
         }
         else if(closestFixture.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) closestFixture.getUserData();
-            StaticMethods.killEnemy(robot, enemy);
-            Gdx.app.log("LaserHandler", "Raycast hit enemy");
+
+            // for the case that the enemy overlaps with the robot
+            // in this case, the enemy will have become a sensor with zero gravity
+            if(enemy.getBody().getFixtureList().size != 0) {
+                enemy.getBody().getFixtureList().first().setSensor(false);
+            }
+            Gdx.app.log("RayCastHandler", "Enemy sensor = FALSE");
+
+            // if enemy is a Monster (dynamic body) turn gravity back on
+            if(enemy instanceof Monster && enemy.getBody().getGravityScale() == 0) {
+                enemy.getBody().setGravityScale(1);
+                Gdx.app.log("RayCastHandler", "Gravity was turned back on for the Monster");
+            }
+
+            StaticMethods.killEnemy(robot, enemy, impulseX, impulseY);
+            Gdx.app.log("RayCastHandler", "Raycast hit enemy");
         }
     }
 }

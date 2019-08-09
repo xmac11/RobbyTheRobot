@@ -3,6 +3,7 @@ package com.robot.game.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
@@ -13,9 +14,9 @@ import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
-import com.robot.game.entities.*;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.Facing.*;
 
 public class StaticMethods {
 
@@ -78,10 +79,9 @@ public class StaticMethods {
         Gdx.app.log("StaticMethods", "Category bits changed");
     }
 
-    public static void killEnemy(Robot robot, Enemy enemy) {
+    public static void killEnemy(Robot robot, Enemy enemy, float impulseX, float impulseY) {
         enemy.setDead(true);
         enemy.setFlagToKill();
-        // set enemy's mask bits to "nothing"
         enemy.setFlagToChangeMask(true);
 
         // if following a path, disable it
@@ -94,6 +94,13 @@ public class StaticMethods {
 
         // stop enemy
         enemy.getBody().setLinearVelocity(0, 0);
+
+        // for chasing monsters apply impulse when killed based on robot's facing direction
+        if(enemy instanceof EnemyArriveAI) {
+            enemy.getBody().applyLinearImpulse(robot.getFacing() == RIGHT ? impulseX : -impulseX, impulseY,
+                    enemy.getBody().getWorldCenter().x, enemy.getBody().getWorldCenter().y, true);
+        }
+
 
         // increase points
         StaticMethods.increaseScore(robot, enemy);

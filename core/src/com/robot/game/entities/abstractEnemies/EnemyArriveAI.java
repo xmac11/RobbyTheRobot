@@ -12,6 +12,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.Enums;
+
+import static com.robot.game.util.Enums.Facing;
 
 public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> {
 
@@ -24,6 +27,8 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected float maxLinearSpeed, maxLinearAcceleration;
     protected float maxAngularSpeed, maxAngularAcceleration;
     protected float boundingRadius;
+
+    protected Facing facing;
 
     public EnemyArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -163,5 +168,9 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
     public Arrive<Vector2> getArrive() {
         return arrive;
+    }
+
+    public Facing getFacing() {
+        return facing;
     }
 }

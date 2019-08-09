@@ -13,15 +13,12 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.LEFT;
-import static com.robot.game.util.Enums.Facing.RIGHT;
+import static com.robot.game.util.Enums.Facing.*;
 
 
 public class Monster extends EnemyArriveAI {
 
     private boolean activated;
-    private Facing facing;
 
     public Monster(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -52,7 +49,7 @@ public class Monster extends EnemyArriveAI {
         }
 
         if(flagToKill) {
-            if(deadAnimationFinished()) {
+            if(body.getLinearVelocity().isZero() || twiceOfDeadAnimationFinished()) {
                 super.destroyBody();
                 destroyed = true;
                 flagToKill = false;
@@ -63,7 +60,7 @@ public class Monster extends EnemyArriveAI {
         }
 
         if(!activated) {
-            //checkIfShouldBeActivated();
+            checkIfShouldBeActivated();
         }
 
         if(steeringBehavior != null) {
@@ -72,7 +69,9 @@ public class Monster extends EnemyArriveAI {
         }
 
         // update facing direction
-        determineFacingDirection();
+        if(!dead) {
+            determineFacingDirection();
+        }
 
         // calculate the elapsed time of the animation
         elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
@@ -95,26 +94,26 @@ public class Monster extends EnemyArriveAI {
             activated = false;
             Gdx.app.log("Monster", "Arrive was disabled for monster");
         }
+        // walking
         else if(!dead) {
             setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
         }
+        // dead
         else {
             setSize(48 / PPM, 48 / PPM);
             setRegion(assets.monsterAssets.monsterDeadAnim.getKeyFrame(deadElapsed));
         }
 
-        if(facing == RIGHT) {
-            if(isFlipX())
-                flip(true, false);
-        }
-        else if(facing == LEFT) {
-            if(!isFlipX())
-                flip(true, false);
-        }
+        // check if the texture has to be flipped based on the monster's facing direction
+        this.checkToFlipTexture();
 
         // attach enemy sprite to body
         if(!dead) {
             setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
+        }
+        else {
+            setAlpha(0.6f);
+            setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM - 16f / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
         }
         super.draw(batch);
     }
@@ -137,8 +136,19 @@ public class Monster extends EnemyArriveAI {
         }
     }
 
-    private boolean deadAnimationFinished() {
-        return deadElapsed >= playScreen.getAssets().monsterAssets.monsterDeadAnim.getAnimationDuration();
+    private void checkToFlipTexture() {
+        if(facing == RIGHT) {
+            if(isFlipX())
+                flip(true, false);
+        }
+        else if(facing == LEFT) {
+            if(!isFlipX())
+                flip(true, false);
+        }
+    }
+
+    private boolean twiceOfDeadAnimationFinished() {
+        return deadElapsed >= 2 * playScreen.getAssets().monsterAssets.monsterDeadAnim.getAnimationDuration();
     }
 
     @Override

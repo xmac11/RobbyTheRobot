@@ -40,4 +40,5 @@ public class MyRayCastCallback implements RayCastCallback {
     public void setClosestFixture(Fixture closestFixture) {
         this.closestFixture = closestFixture;
     }
+
 }

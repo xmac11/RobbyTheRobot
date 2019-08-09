@@ -1,14 +1,11 @@
 package com.robot.game.util.raycast;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.LASER_OFFSET_Y;
-import static com.robot.game.util.Enums.Facing.LEFT;
-import static com.robot.game.util.Enums.Facing.RIGHT;
+import static com.robot.game.util.Enums.Facing.*;
 
 public class PunchHandler extends RayCastHandler {
 
@@ -20,7 +17,7 @@ public class PunchHandler extends RayCastHandler {
     public void startRayCast() {
         rayCastActive = true;
 
-        determineRayPoints();
+        this.determineRayPoints();
 
         // start from rayPointStart (and will lerp until rayPointEnd)
         tempRayPointEnd.set(rayPointStart);
@@ -35,20 +32,23 @@ public class PunchHandler extends RayCastHandler {
         callback.setClosestFixture(null);
 
         // determine action depending on the result of the raycast
-        super.resolveRayCast();
+        super.resolveRayCast(PUNCH_IMPULSE_X + Math.abs(robot.getBody().getLinearVelocity().x) / 2, PUNCH_IMPULSE_Y);
     }
 
     @Override
     public void determineRayPoints() {
-        // facing right
+        // start raycast from the opposite edge of where the robot is facing
+        // this is in order to be able to kill an enemy when the robot overlaps with the enemy
+
+        // facing right, start raycast from the left edge of the robot
         if(robot.getFacing() == RIGHT) {
-            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + 4 / PPM);
-            rayPointEnd.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + 16 / PPM, robot.getBody().getPosition().y + 4 / PPM); // raycast 16 pixels to the right
+            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + PUNCH_OFFSET_Y);
+            rayPointEnd.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + PUNCH_RANGE, robot.getBody().getPosition().y + PUNCH_OFFSET_Y); // raycast 24 pixels to the right
         }
-        // facing left
+        // facing left, start raycast from the right edge of the robot
         else if(robot.getFacing() == LEFT) {
-            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + 4 / PPM);
-            rayPointEnd.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - 16 / PPM, robot.getBody().getPosition().y + 4 / PPM); // raycast 16 pixels to the left
+            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + PUNCH_OFFSET_Y);
+            rayPointEnd.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - PUNCH_RANGE, robot.getBody().getPosition().y + PUNCH_OFFSET_Y); // raycast 24 pixels to the left
         }
     }
 
@@ -61,23 +61,31 @@ public class PunchHandler extends RayCastHandler {
 
             if(robot.getFacing() == RIGHT) {
                 tempRayPointEnd.add(2f / PPM, 0);
-                // give a higher range, just to draw the line
                 if(tempRayPointEnd.x > rayPointEnd.x) {
                     rayCastActive = false;
                 }
 
-                // lerp from start point to end point.
-                shapeRenderer.line(rayPointStart, tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd : tempRayPointEnd);
+                // lerp from start point to end point
                 // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
+                shapeRenderer.line(rayPointStart, tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd : tempRayPointEnd);
+
+                if(!rayCastActive) {
+                    callback.getRayPointEnd().set(0, 0);
+                }
             }
             else if(robot.getFacing() == LEFT) {
                 tempRayPointEnd.sub(2f / PPM, 0);
-                // give a higher range, just to draw the line
                 if(tempRayPointEnd.x < rayPointEnd.x) {
                     rayCastActive = false;
                 }
 
+                // lerp from start point to end point
+                // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
                 shapeRenderer.line(rayPointStart, tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd : tempRayPointEnd);
+
+                if(!rayCastActive) {
+                    callback.getRayPointEnd().set(0, 0);
+                }
             }
             shapeRenderer.end();
         }

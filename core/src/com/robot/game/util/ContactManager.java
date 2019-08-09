@@ -279,7 +279,7 @@ public class ContactManager implements ContactListener {
 
         // if steppedOnEnemy flag was set
         if(steppedOnEnemy) {
-            StaticMethods.killEnemy(robot, enemy);
+            StaticMethods.killEnemy(robot, enemy, 0, 0);
         }
         // otherwise it means that the robot was hit by an enemy
         else {

@@ -27,7 +27,6 @@ import static com.robot.game.util.Enums.Facing.RIGHT;
 public class Robot extends Sprite implements Steerable<Vector2> {
 
     private Facing facing;
-    private Facing facingOnPunch;
 
     private Assets assets;
     private Sprite robotSprite;
@@ -356,7 +355,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         }
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            facingOnPunch = facing;
             punching = true;
             this.elapsedAnim = 0;
             playScreen.getPunchHandler().startRayCast();
@@ -368,7 +366,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     public void draw(SpriteBatch batch, float delta) {
         // if firing laser
         if(shootingLaser) {
-            robotSprite.setRegion(assets.robotAssets.shootAnimation.getKeyFrame(0));
+            robotSprite.setRegion(assets.robotAssets.shootAnimation.getKeyFrame(elapsedAnim));
 
             if(elapsedAnim >= assets.robotAssets.shootAnimation.getAnimationDuration())
                 shootingLaser = false;
@@ -383,21 +381,8 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             robotSprite.setRegion(assets.robotAssets.robotTexture);
         }
 
-
-        if(facing == RIGHT) {
-            if(robotSprite.isFlipX())
-                robotSprite.flip(true, false);
-
-            // attach robot sprite to body
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 10f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
-        }
-        else if(facing == LEFT) {
-            if(!robotSprite.isFlipX())
-                robotSprite.flip(true, false);
-
-            // attach robot sprite to body
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 17f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
-        }
+        // check if the texture has to be flipped based on the robot's facing direction
+        this.checkToFlipTexture();
 
         // if not flickering, draw sprite
         if(!flicker) {
@@ -417,6 +402,23 @@ public class Robot extends Sprite implements Steerable<Vector2> {
                 flickerElapsed = 0;
                 alpha = 0;
             }
+        }
+    }
+
+    private void checkToFlipTexture() {
+        if(facing == RIGHT) {
+            if(robotSprite.isFlipX())
+                robotSprite.flip(true, false);
+
+            // attach robot sprite to body
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 10f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+        }
+        else if(facing == LEFT) {
+            if(!robotSprite.isFlipX())
+                robotSprite.flip(true, false);
+
+            // attach robot sprite to body
+            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 25f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
         }
     }
 
@@ -534,10 +536,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public Facing getFacing() {
         return facing;
-    }
-
-    public Facing getFacingOnPunch() {
-        return facingOnPunch;
     }
 
     @Override

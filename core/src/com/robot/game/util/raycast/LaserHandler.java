@@ -1,19 +1,12 @@
 package com.robot.game.util.raycast;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.Robot;
-import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.Assets;
-import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing.LEFT;
@@ -37,7 +30,7 @@ public class LaserHandler extends RayCastHandler {
         rayCastActive = true;
         rayHitAnimActive = true;
 
-        determineRayPoints();
+        this.determineRayPoints();
 
         // start from rayPointStart (and will lerp until rayPointEnd)
         tempRayPointEnd.set(rayPointStart);
@@ -63,7 +56,7 @@ public class LaserHandler extends RayCastHandler {
         callback.setClosestFixture(null);
 
         // determine action depending on the result of the raycast
-        super.resolveRayCast();
+        super.resolveRayCast(LASER_IMPULSE_X, LASER_IMPULSE_Y);
     }
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -74,7 +67,7 @@ public class LaserHandler extends RayCastHandler {
             //            shapeRenderer.setColor(Color.CYAN);
 
             if(robot.getFacing() == RIGHT) {
-                tempRayPointEnd.add(2f, 0);
+                tempRayPointEnd.add(64f / PPM, 0);
                 // give a higher range, just to draw the line
                 if(tempRayPointEnd.x > rayPointEnd.x + playScreen.getViewport().getWorldWidth() / 2) {
                     rayCastActive = false;
@@ -104,9 +97,13 @@ public class LaserHandler extends RayCastHandler {
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
                         0.5f / PPM);*/
+
+                if(!rayCastActive) {
+                    callback.getRayPointEnd().set(0, 0);
+                }
             }
             else if(robot.getFacing() == LEFT) {
-                tempRayPointEnd.sub(2f, 0);
+                tempRayPointEnd.sub(64f / PPM, 0);
                 // give a higher range, just to draw the line
                 if(tempRayPointEnd.x < rayPointEnd.x - playScreen.getViewport().getWorldWidth() / 2) {
                     rayCastActive = false;
@@ -122,6 +119,10 @@ public class LaserHandler extends RayCastHandler {
                         2 / PPM,
                         Color.GREEN,
                         Color.CYAN);
+
+                if(!rayCastActive) {
+                    callback.getRayPointEnd().set(0, 0);
+                }
             }
             shapeRenderer.end();
         }
@@ -132,14 +133,17 @@ public class LaserHandler extends RayCastHandler {
 
     @Override
     public void determineRayPoints() {
-        // facing right
+        // start raycast from the opposite edge of where the robot is facing
+        // this is in order to be able to kill an enemy when the robot overlaps with the enemy
+
+        // facing right, start raycast from the left edge of the robot
         if(robot.getFacing() == RIGHT) {
-            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X, robot.getBody().getPosition().y + LASER_OFFSET_Y);
+            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + LASER_OFFSET_Y);
             rayPointEnd.set(playScreen.getCamera().position.x + playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y + LASER_OFFSET_Y); // raycast until the end of the screen
         }
-        // facing left
+        // facing left, start raycast from the right edge of the robot
         else if(robot.getFacing() == LEFT) {
-            rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - LASER_OFFSET_X, robot.getBody().getPosition().y + LASER_OFFSET_Y);
+            rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y + LASER_OFFSET_Y);
             rayPointEnd.set(playScreen.getCamera().position.x - playScreen.getViewport().getWorldWidth() / 2, robot.getBody().getPosition().y + LASER_OFFSET_Y); // raycast until the end of the screen
         }
     }

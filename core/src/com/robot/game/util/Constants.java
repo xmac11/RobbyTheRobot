@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
     public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
@@ -68,7 +68,7 @@ public final class Constants {
     public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_BODY_WIDTH = 18;
     public static final float ROBOT_BODY_HEIGHT = 50;
-    public static final float ROBOT_OFFSET_X = 27;
+    public static final float ROBOT_OFFSET_X = 35;
     public static final float ROBOT_OFFSET_Y = 5;
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
@@ -104,6 +104,14 @@ public final class Constants {
         // shooting laser
     public static final float LASER_OFFSET_X = 13 / PPM;
     public static final float LASER_OFFSET_Y = 6 / PPM;
+    public static final float LASER_IMPULSE_X = 6f;
+    public static final float LASER_IMPULSE_Y = 4f;
+
+        // punching
+    public static final float PUNCH_RANGE = 24 / PPM;
+    public static final float PUNCH_OFFSET_Y = 6 / PPM;
+    public static final float PUNCH_IMPULSE_X = 3f;
+    public static final float PUNCH_IMPULSE_Y = 2f;
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";
@@ -139,7 +147,6 @@ public final class Constants {
         // Monster
     public static final float MONSTER_WIDTH = 38;
     public static final float MONSTER_HEIGHT = 48;
-
 
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
