@@ -231,15 +231,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         robot.update(delta);
 
         // update enemies
-        for(int i = 0; i < enemies.size; i++) {
-            Enemy enemy = enemies.get(i);
-
-            // for path-following bat that is activated when the robot gets near it
-            if(!enemy.getBody().isActive() && Math.abs(enemy.getBody().getPosition().x - robot.getBody().getPosition().x) < 128 / PPM) {
-                enemy.getBody().setActive(true);
-                Gdx.app.log("PlayScreen", "Enemy was set active");
-            }
-
+        for(Enemy enemy: enemies) {
             enemy.update(delta);
         }
 

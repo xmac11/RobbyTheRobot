@@ -1,5 +1,6 @@
 package com.robot.game.entities.bat;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -19,10 +20,6 @@ public class BatAI extends EnemyPathFollowingAI {
 
         body.createFixture(fixtureDef).setUserData(this);
 
-        if(object.getProperties().containsKey("waitForPlayer")) {
-            body.setActive(false);
-        }
-
         // set the size of the bat sprite
         setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
     }
@@ -32,6 +29,11 @@ public class BatAI extends EnemyPathFollowingAI {
         if(flagToChangeMask && body.getFixtureList().size != 0) {
             StaticMethods.setMaskBit(body.getFixtureList().first(), NOTHING_MASK);
             flagToChangeMask = false;
+        }
+
+        // check if enemy should be activated
+        if(!activated) {
+            this.checkIfShouldBeActivated();
         }
 
         // if bat is flagged to be killed
@@ -74,6 +76,14 @@ public class BatAI extends EnemyPathFollowingAI {
         setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
 
         super.draw(batch); // call to Sprite superclass
+    }
+
+    private void checkIfShouldBeActivated() {
+        if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= activationRange / PPM) {
+            followPath.setEnabled(true);
+            activated = true;
+            Gdx.app.log("BatAI", "FollowPath was activated for bat");
+        }
     }
 
     @Override

@@ -259,7 +259,7 @@
     <property name="offsetY" type="float" value="24"/>
     <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="250"/>
-    <property name="waitForPlayer" value=""/>
+    <property name="waitForPlayer" type="float" value="128"/>
    </properties>
   </object>
   <object id="126" x="2736" y="306" width="28" height="16">

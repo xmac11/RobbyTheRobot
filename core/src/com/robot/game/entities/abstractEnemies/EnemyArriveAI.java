@@ -11,11 +11,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.Facing.RIGHT;
 
 public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> {
 
@@ -23,7 +22,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected SteeringBehavior<Vector2> steeringBehavior;
     protected SteeringAcceleration<Vector2> steeringOutput;
     protected Arrive<Vector2> arrive;
-    protected Robot robot;
 
     protected float maxLinearSpeed, maxLinearAcceleration;
     protected float maxAngularSpeed, maxAngularAcceleration;

@@ -41,6 +41,9 @@ public abstract class EnemyPathFollowingAI extends Enemy implements Steerable<Ve
     protected float offsetX;
     protected float offsetY;
 
+    protected boolean activated;
+    protected float activationRange;
+
     protected ShapeRenderer shapeRenderer;
 
     public EnemyPathFollowingAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
@@ -73,6 +76,16 @@ public abstract class EnemyPathFollowingAI extends Enemy implements Steerable<Ve
             this.maxAngularSpeed = 3;
             this.maxAngularAcceleration = 3;
             this.boundingRadius = 1f;
+
+            // enemy waits for player to be activated
+            if(object.getProperties().containsKey("waitForPlayer")) {
+                this.activated = false;
+                this.followPath.setEnabled(false);
+                this.activationRange = (float) object.getProperties().get("waitForPlayer");
+            }
+            else {
+                this.activated = true;
+            }
         }
     }
 

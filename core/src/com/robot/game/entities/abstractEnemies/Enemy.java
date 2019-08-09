@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
@@ -15,6 +16,7 @@ public abstract class Enemy extends Sprite implements Damaging {
 
     protected PlayScreen playScreen;
     protected Assets assets;
+    protected Robot robot;
 
     // Box2D
     protected World world;
@@ -41,6 +43,7 @@ public abstract class Enemy extends Sprite implements Damaging {
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
+        this.robot = playScreen.getRobot();
         this.world = playScreen.getWorld();
         this.body = body;
         this.fixtureDef = fixtureDef;
