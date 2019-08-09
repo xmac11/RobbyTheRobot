@@ -136,6 +136,6 @@ public class Monster extends EnemyArriveAI {
 
     @Override
     public int getDamage() {
-        return 0;
+        return DAMAGE_ON ? DAMAGE_FROM_MONSTER : 0;
     }
 }

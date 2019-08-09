@@ -65,7 +65,7 @@ public class StaticMethods {
 
     // setter to change the mask bits of a fixture
     public static void setMaskBit(Fixture fixture, short maskBits) {
-        Filter filter = new Filter();
+        Filter filter = fixture.getFilterData();
         filter.maskBits = maskBits;
         fixture.setFilterData(filter);
         Gdx.app.log("StaticMethods", "Mask bits changed");

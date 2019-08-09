@@ -694,6 +694,7 @@ public class ContactManager implements ContactListener {
 
             // robot - enemy
             case ROBOT_CATEGORY | ENEMY_CATEGORY:
+                System.out.println("this");
                 Robot robot;
                 Enemy enemy;
 

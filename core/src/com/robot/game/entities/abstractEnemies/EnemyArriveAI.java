@@ -95,7 +95,9 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
     protected void removeCollisionWithRobot() {
         Fixture fixture = body.getFixtureList().first();
+        System.out.println(fixture.getFilterData().categoryBits + " " + fixture.getFilterData().maskBits);
         StaticMethods.setMaskBit(fixture, fixture.getFilterData().maskBits &= ~ROBOT_CATEGORY); // does not collide with robot anymore
+        System.out.println(fixture.getFilterData().categoryBits + " " +fixture.getFilterData().maskBits);
         flagToChangeMask = false;
     }
 

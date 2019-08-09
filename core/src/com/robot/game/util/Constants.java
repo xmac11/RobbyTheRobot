@@ -196,6 +196,8 @@ public final class Constants {
     public static final int DAMAGE_FROM_BAT = 25;
     public static final int DAMAGE_FROM_CRAB = 20;
     public static final int DAMAGE_FROM_FISH = 20;
+    public static final int DAMAGE_FROM_MONSTER = 25;
+    public static final int DAMAGE_FROM_SNAKE = 20;
     public static final int DAMAGE_FROM_SPIKE = 25;
     public static final int DAMAGE_FROM_PIPE = 25;
     public static final int DAMAGE_FROM_ENEMY_PROJECTILE = 25;
