@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="35" nextobjectid="243">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="35" nextobjectid="246">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -427,13 +427,6 @@
     <property name="monster" value=""/>
    </properties>
   </object>
-  <object id="233" x="528" y="704" width="24" height="48">
-   <properties>
-    <property name="enemy" value=""/>
-    <property name="facing" value="left"/>
-    <property name="monster" value=""/>
-   </properties>
-  </object>
   <object id="234" x="592" y="704" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
@@ -444,19 +437,35 @@
   <object id="236" x="1456" y="576" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
+    <property name="facing" value="right"/>
+    <property name="monster" value=""/>
+    <property name="noRestitution" value=""/>
+   </properties>
+  </object>
+  <object id="241" x="656" y="704" width="24" height="48">
+   <properties>
+    <property name="enemy" value=""/>
+    <property name="facing" value="left"/>
+    <property name="monster" value=""/>
+   </properties>
+  </object>
+  <object id="242" x="1456" y="704" width="24" height="48">
+   <properties>
+    <property name="enemy" value=""/>
     <property name="facing" value="left"/>
     <property name="monster" value=""/>
     <property name="noRestitution" value=""/>
    </properties>
   </object>
-  <object id="241" x="672" y="704" width="24" height="48">
+  <object id="243" x="1168" y="496" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
     <property name="facing" value="right"/>
     <property name="monster" value=""/>
+    <property name="noRestitution" value=""/>
    </properties>
   </object>
-  <object id="242" x="1392" y="704" width="24" height="48">
+  <object id="245" x="816" y="496" width="24" height="48">
    <properties>
     <property name="enemy" value=""/>
     <property name="facing" value="left"/>
@@ -471,7 +480,6 @@
   <object id="3" x="0" y="560">
    <point/>
   </object>
-  <object id="18" x="1248" y="576" width="18" height="50"/>
   <object id="28" x="1504" y="960" width="18" height="50"/>
   <object id="29" x="2240" y="512" width="18" height="50"/>
   <object id="30" x="2320" y="304" width="18" height="50"/>

@@ -1,5 +1,6 @@
 package com.robot.game.entities.abstractEnemies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
@@ -12,9 +13,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.Enums;
 
 import static com.robot.game.util.Enums.Facing;
+import static com.robot.game.util.Enums.Facing.*;
 
 public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> {
 
@@ -29,6 +30,9 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected float boundingRadius;
 
     protected Facing facing;
+    protected boolean inContactWithRobot;
+    protected boolean justStarted;
+    protected boolean falling;
 
     public EnemyArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -51,12 +55,24 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         //        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
 
         if(!steeringOutput.linear.isZero()) {
+
+            // if the enemy finds an obstacle, which is not the robot, and is not just starting moving, jump
+            if(body.getLinearVelocity().isZero() && !justStarted && !inContactWithRobot) {
+                body.applyLinearImpulse(facing == RIGHT ? 1f : -1f, 6f, body.getWorldCenter().x, body.getWorldCenter().y, true);
+                Gdx.app.log("EnemyArriveAI", "Enemy jumped");
+            }
+
             body.setLinearVelocity(MathUtils.clamp(getLinearVelocity().x + steeringOutput.linear.x * delta, -maxLinearSpeed, maxLinearSpeed),
                                    getLinearVelocity().y);
-//            body.applyForceToCenter(steeringOutput.linear, true);
+//            body.applyForceToCenter(steeringOutput.linear.x, 0, true);
+
+            if(justStarted && Math.abs(body.getLinearVelocity().x) > 0.15f) {
+                justStarted = false;
+                Gdx.app.log("EnemyArriveAI", "justStarted = false");
+            }
+            //System.out.println(body.getLinearVelocity());
         }
 
-        //        System.out.println(body.getLinearVelocity());
     }
 
     @Override
@@ -172,5 +188,10 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
     public Facing getFacing() {
         return facing;
+    }
+
+    public void setInContactWithRobot(boolean inContactWithRobot) {
+        this.inContactWithRobot = inContactWithRobot;
+        Gdx.app.log("EnemyArriveAI", "inContactWithRobot = " + inContactWithRobot);
     }
 }

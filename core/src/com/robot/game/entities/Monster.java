@@ -59,11 +59,21 @@ public class Monster extends EnemyArriveAI {
             }
         }
 
+        // check if enemy should be activated
         if(!activated) {
             checkIfShouldBeActivated();
         }
 
-        if(steeringBehavior != null) {
+        // update state
+        if(body.getLinearVelocity().y <= -1f && !falling) {
+            falling = true;
+        }
+        else if(body.getLinearVelocity().y > -1f && falling) {
+            falling = false;
+        }
+
+        // calculate steering
+        if(activated && steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
             super.applySteering(delta);
         }
@@ -92,11 +102,16 @@ public class Monster extends EnemyArriveAI {
                 && robot.getBody().getPosition(). y - body.getPosition().y > 16 / PPM) {
             arrive.setEnabled(false);
             activated = false;
+            justStarted = false;
             Gdx.app.log("Monster", "Arrive was disabled for monster");
         }
         // walking
-        else if(!dead) {
+        else if(!dead && !falling) {
             setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
+        }
+        // falling
+        else if(!dead) {
+            setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(0));
         }
         // dead
         else {
@@ -119,10 +134,11 @@ public class Monster extends EnemyArriveAI {
     }
 
     private void checkIfShouldBeActivated() {
-        if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2 - 32 / PPM
+        if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2 - 48 / PPM
                 && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
             arrive.setEnabled(true);
             activated = true;
+            justStarted = true;
             Gdx.app.log("Monster", "Arrive was activated for monster");
         }
     }

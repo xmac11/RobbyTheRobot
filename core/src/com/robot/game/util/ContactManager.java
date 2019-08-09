@@ -8,6 +8,7 @@ import com.robot.game.entities.Fish;
 import com.robot.game.entities.Monster;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.interactiveObjects.Spike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -289,10 +290,13 @@ public class ContactManager implements ContactListener {
             }
             Gdx.app.log("ContactManager", "Enemy sensor = TRUE");
 
-            // if enemy is a Monster (dynamic body) turn off gravity, since it is now a sensor
-            if(enemy instanceof Monster) {
+            // if enemy is an EnemyArriveAI (dynamic body) turn off gravity, since it is now a sensor
+            if(enemy instanceof EnemyArriveAI) {
                 enemy.getBody().setGravityScale(0);
                 Gdx.app.log("ContactManager", "Gravity was turned off for the Monster");
+
+                // this is used so that the enemy doesn't jump when reaching the robot
+                ((EnemyArriveAI) enemy).setInContactWithRobot(true);
             }
 
             // decrease robot's health
@@ -638,10 +642,13 @@ public class ContactManager implements ContactListener {
         }
         Gdx.app.log("ContactManager", "Enemy sensor = FALSE");
 
-        // if enemy is a Monster (dynamic body) turn gravity back on
-        if(enemy instanceof Monster) {
+        // if enemy is an EnemyArriveAI (dynamic body) turn gravity back on
+        if(enemy instanceof EnemyArriveAI) {
             enemy.getBody().setGravityScale(1);
             Gdx.app.log("ContactManager", "Gravity was turned back on for the Monster");
+
+            // this is used so that the enemy doesn't jump when reaching the robot
+            ((EnemyArriveAI) enemy).setInContactWithRobot(false);
         }
     }
 
