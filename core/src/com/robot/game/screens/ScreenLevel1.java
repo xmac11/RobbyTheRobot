@@ -145,8 +145,6 @@ public class ScreenLevel1 extends PlayScreen {
 
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
-        laserHandler.render(game.getBatch(), shapeRenderer);
-
         if(DEBUG_ON) {
             // render ai paths
             super.renderDebugLines();

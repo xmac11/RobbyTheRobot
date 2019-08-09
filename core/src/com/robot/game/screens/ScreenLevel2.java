@@ -9,6 +9,8 @@ import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
+import com.robot.game.util.raycast.LaserHandler;
+import com.robot.game.util.raycast.PunchHandler;
 
 import static com.robot.game.util.Constants.*;
 
@@ -41,6 +43,12 @@ public class ScreenLevel2 extends PlayScreen {
         // create trampoline
         super.trampoline = objectParser.getTrampoline();
 
+        // create laser handler
+        super.laserHandler = new LaserHandler(this);
+
+        // create punch handler
+        super.punchHandler = new PunchHandler(this);
+
         // create tank balls, pool and spawner
         super.tankBalls = new DelayedRemovalArray<>();
         super.tankBallPool = new TankBallPool(this);
@@ -51,6 +59,7 @@ public class ScreenLevel2 extends PlayScreen {
                 1f, 624, 0, 80, 48, true, false);
         this.parallaxWater2 = new Parallax(this, assets.parallaxAssets.waterTexture,
                 1f, 912, 0, 80, 48, true, false);
+
     }
 
     protected void update(float delta) {

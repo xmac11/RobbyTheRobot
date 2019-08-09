@@ -189,14 +189,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // create shape renderer
         this.shapeRenderer = new ShapeRenderer();
-
-        // TODO: Move these to ScreenLevel2
-
-        // create laser handler
-        this.laserHandler = new LaserHandler(this);
-
-        // create punch handler
-        this.punchHandler = new PunchHandler(this);
     }
 
     /*@Override

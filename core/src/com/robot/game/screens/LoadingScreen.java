@@ -85,7 +85,7 @@ public class LoadingScreen extends ScreenAdapter {
 
             // create all necessary game assets
             assets.createGameAssets();
-            game.setScreen(new ScreenLevel1(game));
+            game.setScreen(new ScreenLevel2(game));
         }
     }
 
