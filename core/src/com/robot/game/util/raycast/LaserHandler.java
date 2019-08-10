@@ -90,13 +90,13 @@ public class LaserHandler extends RayCastHandler {
                         Color.CYAN);
 
                 /*shapeRenderer.setColor(Color.WHITE);
-                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
-                        robot.getBody().getPosition().y + 1f / PPM,
+                shapeRenderer.rectLine(startX,
+                        startY + 1f / PPM,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y + 1f / PPM : tempRayPointEnd.y + 1f / PPM,
                         0.5f / PPM);
-                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM,
-                        robot.getBody().getPosition().y - 1f / PPM,
+                shapeRenderer.rectLine(startX,
+                        startY - 1f / PPM,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
                         0.5f / PPM);*/
@@ -131,8 +131,7 @@ public class LaserHandler extends RayCastHandler {
             shapeRenderer.end();
 
             // render Light
-            playScreen.getPointLight().setPosition(startX,
-                    startY);
+            playScreen.getPointLight().setPosition(startX, startY);
             playScreen.getRayHandler().setCombinedMatrix(playScreen.getCamera());
             playScreen.getRayHandler().updateAndRender();
         }

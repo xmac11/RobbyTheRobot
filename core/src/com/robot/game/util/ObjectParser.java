@@ -1,12 +1,17 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
@@ -40,6 +45,8 @@ public class ObjectParser {
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
     private Trampoline trampoline;
+    private ObjectMap<Integer, Array<Body>> jointMap;
+    public Array<PrismaticJoint> joints;
 
     public ObjectParser(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -48,10 +55,13 @@ public class ObjectParser {
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         this.collectables = new DelayedRemovalArray<>();
+        this.jointMap = new ObjectMap<>();
+        this.joints = new Array<>();
 
         for(MapObjects objects: playScreen.getLayersObjectArray())
             createTiledObjects(objects);
 
+        createJoints();
         System.out.println("Rectangles: " + rectangles + ", polylines: " + polylines + ", polygons: " + polygons);
     }
 
@@ -123,7 +133,7 @@ public class ObjectParser {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             bodyDef.gravityScale = 0;
         }
-        else if(object.getProperties().containsKey("aiArrive")) {
+        else if(object.getProperties().containsKey("aiArrive") || object.getProperties().containsKey("dynamicSpike")) {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             bodyDef.fixedRotation = true;
         }
@@ -273,7 +283,7 @@ public class ObjectParser {
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
-            new Spike(body, fixtureDef, object);
+            new Spike(body, fixtureDef, object, jointMap);
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
@@ -300,7 +310,38 @@ public class ObjectParser {
         // create ground
         else {
             body.createFixture(fixtureDef).setUserData("ground");
+
+            if(object.getProperties().containsKey("prismatic")) {
+                int key = (int) object.getProperties().get("prismatic");
+                Array<Body> bodyArray = jointMap.get(key);
+                if(bodyArray == null) bodyArray = new Array<>();
+                bodyArray.add(body);
+                jointMap.put((Integer) object.getProperties().get("prismatic"), bodyArray);
+            }
         }
+    }
+
+    private void createJoints() {
+        for(Integer i: jointMap.keys()) {
+            Array<Body> bodyArray = jointMap.get(i);
+
+            if(DEBUG_ON && bodyArray.size > 2)
+                throw new IllegalArgumentException("Joint array contains more than 2 bodies");
+
+            PrismaticJointDef jointDef = new PrismaticJointDef();
+            jointDef.bodyA = bodyArray.get(0);
+            jointDef.bodyB = bodyArray.get(1);
+            jointDef.enableLimit = true;
+            jointDef.upperTranslation = /*176 / 2f*/ 0 / PPM;
+            jointDef.localAxisA.set(0, 1);
+
+            jointDef.enableMotor = true;
+            jointDef.maxMotorForce = -100;
+            jointDef.motorSpeed = 20;
+
+            this.joints.add((PrismaticJoint) world.createJoint(jointDef));
+        }
+        Gdx.app.log("ObjectParser", "Joints created");
     }
 
     // getter for the interactive platforms

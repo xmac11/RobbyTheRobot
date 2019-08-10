@@ -5,8 +5,12 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
@@ -20,6 +24,7 @@ import static com.robot.game.util.Constants.*;
 public class ScreenLevel2 extends PlayScreen {
 
     private Array<Parallax> parallaxWaters = new Array<>();
+    int count = 0;
 
     public ScreenLevel2(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
@@ -61,7 +66,7 @@ public class ScreenLevel2 extends PlayScreen {
         super.rayHandler = new RayHandler(world);
 //        rayHandler.setAmbientLight(1);
         rayHandler.setShadows(false);
-        super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 64 / PPM, 0, 0);
+        super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 48 / PPM, 0, 0);
 
         // create parallax water
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
@@ -88,6 +93,18 @@ public class ScreenLevel2 extends PlayScreen {
         // update tank balls
         for(TankBall tankBall: tankBalls) {
             tankBall.update(delta);
+        }
+
+        // joints
+        count = (count + 1) % 540;
+        System.out.println(count);
+        for(PrismaticJoint joint: objectParser.joints) {
+            if(count >= 360) {
+                joint.setLimits(-176 / PPM, Math.max(0, joint.getUpperLimit() - 0.1f));
+            }
+            else if(count >= 180) {
+                joint.setLimits(0, 176 / PPM);
+            }
         }
     }
 
