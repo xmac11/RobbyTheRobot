@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.SpriteDrawing;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
@@ -21,7 +22,7 @@ public class BatPatrolling extends EnemyPatrolling {
         body.createFixture(fixtureDef).setUserData(this);
 
         // set the size of the bat sprite
-        setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
+        sprite.setSize(BAT_WIDTH / PPM, BAT_HEIGHT / PPM);
     }
 
     @Override
@@ -62,18 +63,7 @@ public class BatPatrolling extends EnemyPatrolling {
 
     @Override
     public void draw(Batch batch) {
-        // determine the appropriate texture region of the animation
-        if(!dead) {
-            setRegion(assets.batAssets.batFlyAnimation.getKeyFrame(elapsedAnim));
-        }
-        else {
-            setRegion(assets.batAssets.batDeadAnimation.getKeyFrame(elapsedAnim));
-        }
-
-        // attach sprite to body
-        setPosition(body.getPosition().x - BAT_WIDTH / 2 / PPM, body.getPosition().y - BAT_HEIGHT / 2 / PPM);
-
-        super.draw(batch); // call to Sprite superclass
+        SpriteDrawing.drawBat(batch, sprite, assets, this);
     }
 
     @Override

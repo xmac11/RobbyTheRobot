@@ -113,7 +113,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 110 / PPM*/ /*272 / PPM, 512 / PPM*/  /*1152 / PPM, 512 / PPM */ /*1136 / PPM, 300 / PPM*/  500 / PPM, 110 / PPM /*1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/
+        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 110 / PPM*/ /*272 / PPM, 512 / PPM*/  /*1152 / PPM, 512 / PPM */ 1136 / PPM, 300 / PPM  /*500 / PPM, 110 / PPM*/ /*1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 780 / PPM*/ /*3416 / PPM, 780 / PPM*/
                 /*4350 / PPM, 780 / PPM*/ /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;

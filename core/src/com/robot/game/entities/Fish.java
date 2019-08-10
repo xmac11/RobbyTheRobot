@@ -31,7 +31,7 @@ public class Fish extends Enemy {
         this.initialPosition = new Vector2(body.getPosition());
 
         // set the size of the fish sprite
-        setSize(FISH_WIDTH / PPM, FISH_HEIGHT / PPM);
+        sprite.setSize(FISH_WIDTH / PPM, FISH_HEIGHT / PPM);
     }
     @Override
     public void update(float delta) {
@@ -73,15 +73,15 @@ public class Fish extends Enemy {
     @Override
     public void draw(Batch batch) {
         if(!dead) {
-            setRegion(assets.fishAssets.fishAnimation.getKeyFrame(elapsedAnim, true));
+            sprite.setRegion(assets.fishAssets.fishAnimation.getKeyFrame(elapsedAnim, true));
         }
         else{
-            setRegion(assets.fishAssets.deadFish);
+            sprite.setRegion(assets.fishAssets.deadFish);
         }
 
         // attach enemy sprite to body
-        setPosition(body.getPosition().x - FISH_WIDTH / 2 / PPM, body.getPosition().y - FISH_HEIGHT / 2 / PPM);
-        super.draw(batch);
+        sprite.setPosition(body.getPosition().x - FISH_WIDTH / 2 / PPM, body.getPosition().y - FISH_HEIGHT / 2 / PPM);
+        sprite.draw(batch);
 
         handleSplashAnimation(batch);
     }

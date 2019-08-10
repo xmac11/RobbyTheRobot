@@ -1,6 +1,5 @@
 package com.robot.game.entities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
@@ -21,7 +21,7 @@ public class Monster extends EnemyArriveAI {
         fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
 
-        setSize(MONSTER_WIDTH / PPM, MONSTER_HEIGHT / PPM);
+        sprite.setSize(MONSTER_WIDTH / PPM, MONSTER_HEIGHT / PPM);
     }
 
     @Override
@@ -64,61 +64,53 @@ public class Monster extends EnemyArriveAI {
     @Override
     public void draw(Batch batch) {
         if(!activated) {
-            setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(0));
+            sprite.setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(0));
         }
         // attacking
         else if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 64 / PPM
                 && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 16 / PPM) {
-            setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.monsterAssets.monsterAttackAnim.getKeyFrame(elapsedAnim));
         }
         else if(robot.isOnLadder()
                 && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 32 / PPM
                 && robot.getBody().getPosition(). y - body.getPosition().y > 16 / PPM) {
             arrive.setEnabled(false);
             super.setActivated(false);
-            justStarted = false;
         }
         // walking
         else if(!dead && !falling) {
-            setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
         }
         // falling
         else if(!dead) {
-            setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(0));
+            sprite.setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(0));
         }
         // dead
         else {
-            setSize(48 / PPM, 48 / PPM);
-            setRegion(assets.monsterAssets.monsterDeadAnim.getKeyFrame(deadElapsed));
+            sprite.setSize(48 / PPM, 48 / PPM);
+            sprite.setRegion(assets.monsterAssets.monsterDeadAnim.getKeyFrame(deadElapsed));
         }
 
         // check if the texture has to be flipped based on the monster's facing direction
-        super.checkToFlipTexture();
+        StaticMethods.checkToFlipTexture(sprite, facing);
 
         // attach enemy sprite to body
         if(!dead) {
-            setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
+            sprite.setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
         }
         else {
-            setAlpha(0.6f);
-            setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM - 16f / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
+            sprite.setAlpha(0.6f);
+            sprite.setPosition(body.getPosition().x - MONSTER_WIDTH / 2 / PPM - 16f / PPM, body.getPosition().y - MONSTER_HEIGHT / 2 / PPM);
         }
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
     private void checkIfShouldBeActivated() {
         if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2 - 48 / PPM
-                && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
+                && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 32 / PPM) {
             arrive.setEnabled(true);
             super.setActivated(true);
-            justStarted = true;
         }
-    }
-
-
-
-    private boolean twiceOfDeadAnimationFinished() {
-        return deadElapsed >= 2 * playScreen.getAssets().monsterAssets.monsterDeadAnim.getAnimationDuration();
     }
 
     @Override

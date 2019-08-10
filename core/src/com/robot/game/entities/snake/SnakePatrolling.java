@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing.LEFT;
@@ -26,10 +27,10 @@ public class SnakePatrolling extends EnemyPatrolling {
         }
 
         if(facing == LEFT) {
-            flip(true, false);
+            sprite.flip(true, false);
         }
 
-        setSize(SNAKE_WIDTH / PPM, SNAKE_HEIGHT / PPM);
+        sprite.setSize(SNAKE_WIDTH / PPM, SNAKE_HEIGHT / PPM);
     }
 
     @Override
@@ -44,23 +45,23 @@ public class SnakePatrolling extends EnemyPatrolling {
         // attacking
         if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 64 / PPM
                 && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 48 / PPM) {
-            setRegion(assets.snakeAssets.biteAnimation.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.snakeAssets.biteAnimation.getKeyFrame(elapsedAnim));
         }
         // slithering
         else if(!dead) {
-            setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(elapsedAnim));
         }
         // dead
         else {
-            setRegion(assets.snakeAssets.deadAnimation.getKeyFrame(deadElapsed));
+            sprite.setRegion(assets.snakeAssets.deadAnimation.getKeyFrame(deadElapsed));
         }
 
         // check if the texture has to be flipped based on the monster's facing direction
-        super.checkToFlipTexture();
+        StaticMethods.checkToFlipTexture(sprite, facing);
 
-        setPosition(body.getPosition().x - SNAKE_WIDTH / 2 / PPM, body.getPosition().y - SNAKE_HEIGHT / 2 / PPM + 5 / PPM);
+        sprite.setPosition(body.getPosition().x - SNAKE_WIDTH / 2 / PPM, body.getPosition().y - SNAKE_HEIGHT / 2 / PPM + 5 / PPM);
 
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
 

@@ -1,5 +1,6 @@
 package com.robot.game.entities.abstractEnemies;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -74,17 +75,6 @@ public abstract class EnemyPatrolling extends Enemy {
     // check if enemy is outside its moving range in y-direction
     protected boolean outOfRangeY() {
         return body.getPosition().y <= startY / PPM || body.getPosition().y >= endY / PPM;
-    }
-
-    protected void checkToFlipTexture() {
-        if(facing == RIGHT) {
-            if(isFlipX())
-                flip(true, false);
-        }
-        else if(facing == LEFT) {
-            if(!isFlipX())
-                flip(true, false);
-        }
     }
 
     protected void determineFacingDirection() {

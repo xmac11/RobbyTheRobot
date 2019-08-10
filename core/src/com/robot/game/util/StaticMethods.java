@@ -1,6 +1,7 @@
 package com.robot.game.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.robot.game.entities.Robot;
@@ -16,6 +17,7 @@ import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.Facing;
 import static com.robot.game.util.Enums.Facing.*;
 
 public class StaticMethods {
@@ -107,5 +109,16 @@ public class StaticMethods {
 
         // add enemy (damaging object) to the HashMap in order to render the points gained
         robot.getPlayScreen().getFeedbackRenderer().getPointsForEnemyToDraw().put(enemy, 1f);
+    }
+
+    public static void checkToFlipTexture(Sprite sprite, Facing facing) {
+        if(facing == RIGHT) {
+            if(sprite.isFlipX())
+                sprite.flip(true, false);
+        }
+        else if(facing == LEFT) {
+            if(!sprite.isFlipX())
+                sprite.flip(true, false);
+        }
     }
 }

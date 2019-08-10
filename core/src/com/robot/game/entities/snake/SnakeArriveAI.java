@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
@@ -19,7 +20,8 @@ public class SnakeArriveAI extends EnemyArriveAI {
         fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
 
-        setSize(SNAKE_WIDTH / PPM, SNAKE_HEIGHT / PPM);
+
+        sprite.setSize(SNAKE_WIDTH / PPM, SNAKE_HEIGHT / PPM);
     }
 
     @Override
@@ -54,28 +56,28 @@ public class SnakeArriveAI extends EnemyArriveAI {
     @Override
     public void draw(Batch batch) {
         if(!activated) {
-            setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(0));
+            sprite.setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(0));
         }
         // attacking
         else if(!dead && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 64 / PPM
                 && Math.abs(robot.getBody().getPosition().y - body.getPosition().y) <= 48 / PPM) {
-            setRegion(assets.snakeAssets.biteAnimation.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.snakeAssets.biteAnimation.getKeyFrame(elapsedAnim));
         }
         // slithering
         else if(!dead) {
-            setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(elapsedAnim));
+            sprite.setRegion(assets.snakeAssets.slitherAnimation.getKeyFrame(elapsedAnim));
         }
         // dead
         else {
-            setRegion(assets.snakeAssets.deadAnimation.getKeyFrame(deadElapsed));
+            sprite.setRegion(assets.snakeAssets.deadAnimation.getKeyFrame(deadElapsed));
         }
 
         // check if the texture has to be flipped based on the monster's facing direction
-        super.checkToFlipTexture();
+        StaticMethods.checkToFlipTexture(sprite, facing);
 
-        setPosition(body.getPosition().x - SNAKE_WIDTH / 2 / PPM, body.getPosition().y - SNAKE_HEIGHT / 2 / PPM + 5 / PPM);
+        sprite.setPosition(body.getPosition().x - SNAKE_WIDTH / 2 / PPM, body.getPosition().y - SNAKE_HEIGHT / 2 / PPM + 5 / PPM);
 
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
     private void checkIfShouldBeActivated() {

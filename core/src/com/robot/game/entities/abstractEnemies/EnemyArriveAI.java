@@ -36,7 +36,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
     protected Facing facing;
     protected boolean inContactWithRobot;
-    protected boolean justStarted;
     protected boolean falling;
     protected boolean activated;
 
@@ -65,7 +64,7 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         }
 
         if(facing == LEFT) {
-            flip(true, false);
+            sprite.flip(true, false);
         }
     }
 
@@ -73,15 +72,10 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         //        System.out.println("SteeringX: " + steeringOutput.linear.x + " SteeringY: " + steeringOutput.linear.y);
 
         if(!steeringOutput.linear.isZero()) {
-
             body.setLinearVelocity(MathUtils.clamp(getLinearVelocity().x + steeringOutput.linear.x * delta, -maxLinearSpeed, maxLinearSpeed),
                                    getLinearVelocity().y);
 //            body.applyForceToCenter(steeringOutput.linear.x, 0, true);
 
-            if(justStarted && Math.abs(body.getLinearVelocity().x) > 0.15f) {
-                justStarted = false;
-                Gdx.app.log("EnemyArriveAI", "justStarted = false");
-            }
             //System.out.println(body.getLinearVelocity());
         }
     }
@@ -117,17 +111,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         }
         else if(body.getLinearVelocity().x < -0.5f && facing != LEFT) {
             facing = LEFT;
-        }
-    }
-
-    protected void checkToFlipTexture() {
-        if(facing == RIGHT) {
-            if(isFlipX())
-                flip(true, false);
-        }
-        else if(facing == LEFT) {
-            if(!isFlipX())
-                flip(true, false);
         }
     }
 

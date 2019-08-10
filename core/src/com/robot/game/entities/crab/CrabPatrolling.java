@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.SpriteDrawing;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
@@ -20,7 +21,7 @@ public class CrabPatrolling extends EnemyPatrolling {
         body.createFixture(fixtureDef).setUserData(this);
 
         // set the size of the crab sprite
-        setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
+        sprite.setSize(CRAB_WIDTH / PPM, CRAB_HEIGHT / PPM);
 
     }
 
@@ -31,21 +32,7 @@ public class CrabPatrolling extends EnemyPatrolling {
 
     @Override
     public void draw(Batch batch) {
-        // determine the appropriate texture region of the animation
-        if(!dead) {
-            setRegion(assets.crabAssets.crabWalkAnimation.getKeyFrame(elapsedAnim));
-        }
-        else {
-            setRegion(assets.crabAssets.crabDeadAnimation.getKeyFrame(elapsedAnim));
-        }
-
-        // attach enemy sprite to body
-        setPosition(body.getPosition().x - CRAB_WIDTH / 2 / PPM, body.getPosition().y - CRAB_HEIGHT / 2 / PPM);
-
-        // rotate sprite with body
-        setRotation(body.getAngle() * MathUtils.radiansToDegrees);
-
-        super.draw(batch); // call to Sprite superclass
+        SpriteDrawing.drawCrab(batch, sprite, assets, this);
     }
 
     @Override

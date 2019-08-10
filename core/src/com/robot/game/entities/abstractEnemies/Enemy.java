@@ -1,6 +1,7 @@
 package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,8 +13,9 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
 
-public abstract class Enemy extends Sprite implements Damaging {
+public abstract class Enemy implements Damaging {
 
+    protected Sprite sprite;
     protected PlayScreen playScreen;
     protected Assets assets;
     protected Robot robot;
@@ -37,10 +39,8 @@ public abstract class Enemy extends Sprite implements Damaging {
     // when dead
     protected boolean flagToChangeMask;
 
-    // punched
-    private boolean punchResolved;
-
     public Enemy(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+        this.sprite = new Sprite();
         this.playScreen = playScreen;
         this.assets = playScreen.getAssets();
         this.robot = playScreen.getRobot();
@@ -55,6 +55,7 @@ public abstract class Enemy extends Sprite implements Damaging {
     }
 
     public abstract void update(float delta);
+    public abstract void draw(Batch batch);
 
     @Override
     public abstract int getDamage();
@@ -101,11 +102,7 @@ public abstract class Enemy extends Sprite implements Damaging {
         return robot;
     }
 
-    public boolean isPunchResolved() {
-        return punchResolved;
-    }
-
-    public void setPunchResolved(boolean punchResolved) {
-        this.punchResolved = punchResolved;
+    public float getElapsedAnim() {
+        return elapsedAnim;
     }
 }
