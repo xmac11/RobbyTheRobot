@@ -332,12 +332,13 @@ public class ObjectParser {
             jointDef.bodyA = bodyArray.get(0);
             jointDef.bodyB = bodyArray.get(1);
             jointDef.enableLimit = true;
-            jointDef.upperTranslation = /*176 / 2f*/ 0 / PPM;
+            jointDef.lowerTranslation = -176 / PPM;
+            jointDef.upperTranslation = 176 / 2f / PPM;
             jointDef.localAxisA.set(0, 1);
 
-            jointDef.enableMotor = true;
-            jointDef.maxMotorForce = -100;
-            jointDef.motorSpeed = 20;
+//            jointDef.enableMotor = true;
+//            jointDef.maxMotorForce = -100;
+//            jointDef.motorSpeed = 20;
 
             this.joints.add((PrismaticJoint) world.createJoint(jointDef));
         }

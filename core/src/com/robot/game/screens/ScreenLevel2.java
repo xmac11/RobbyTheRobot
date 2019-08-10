@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
@@ -99,11 +102,21 @@ public class ScreenLevel2 extends PlayScreen {
         count = (count + 1) % 540;
         System.out.println(count);
         for(PrismaticJoint joint: objectParser.joints) {
-            if(count >= 360) {
+            /*if(count >= 360) {
                 joint.setLimits(-176 / PPM, Math.max(0, joint.getUpperLimit() - 0.1f));
             }
             else if(count >= 180) {
                 joint.setLimits(0, 176 / PPM);
+            }*/
+            if(Math.abs(joint.getJointTranslation() - joint.getUpperLimit()) <= 0.1f) {
+                if(joint.getBodyA().getType() == BodyDef.BodyType.DynamicBody) {
+                    joint.getBodyA().applyLinearImpulse(new Vector2(0, 20), joint.getBodyA().getWorldCenter(), true);
+                    System.out.println("!!!!!");
+                }
+                else {
+                    joint.getBodyB().applyLinearImpulse(new Vector2(0, 20), joint.getBodyB().getWorldCenter(), true);
+                    System.out.println("!!!!!");
+                }
             }
         }
     }
