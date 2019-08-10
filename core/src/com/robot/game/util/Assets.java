@@ -93,6 +93,7 @@ public class Assets {
 
         // load water (level 2)
         assetManager.load("level2/waterAnimation.png", Texture.class);
+        assetManager.load("level2/waterAnimationBig.png", Texture.class);
     }
 
     // creates assets for loading screen
@@ -321,11 +322,13 @@ public class Assets {
         public final Texture backgroundTexture;
         public final Texture barrelsTexture;
         public final Texture waterTexture;
+        public final Texture waterTextureBig;
 
         private ParallaxAssets() {
             this.backgroundTexture = assetManager.get("background.png");
             this.barrelsTexture = assetManager.get("barrels.png");
             this.waterTexture = assetManager.get("level2/waterAnimation.png");
+            this.waterTextureBig = assetManager.get("level2/waterAnimationBig.png");
         }
     }
 

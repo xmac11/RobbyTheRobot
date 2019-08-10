@@ -16,8 +16,7 @@ import static com.robot.game.util.Constants.*;
 
 public class ScreenLevel2 extends PlayScreen {
 
-    private Parallax parallaxWater1;
-    private Parallax parallaxWater2;
+    private Array<Parallax> parallaxWaters = new Array<>();
 
     public ScreenLevel2(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
@@ -57,10 +56,12 @@ public class ScreenLevel2 extends PlayScreen {
         super.tankBallSpawner = new TankBallSpawner(this);
 
         // create parallax water
-        this.parallaxWater1 = new Parallax(this, assets.parallaxAssets.waterTexture,
-                1f, 624, 0, 80, 48, true, false);
-        this.parallaxWater2 = new Parallax(this, assets.parallaxAssets.waterTexture,
-                1f, 912, 0, 80, 48, true, false);
+        this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
+                1f, 624, 0, 80, 48, true, false));
+        this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
+                1f, 912, 0, 80, 48, true, false));
+        this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTextureBig,
+                0, 2496, 0 , 1824, 48, false, false));
 
     }
 
@@ -68,8 +69,9 @@ public class ScreenLevel2 extends PlayScreen {
         // update common elements
         super.commonUpdates(delta);
 
-        parallaxWater1.update(delta);
-        parallaxWater2.update(delta);
+        for(Parallax parallax: parallaxWaters) {
+            parallax.update(delta);
+        }
 
         // update tank ball spawner
         tankBallSpawner.update(delta);
@@ -106,8 +108,9 @@ public class ScreenLevel2 extends PlayScreen {
         super.commonRendering(delta);
 
         // render parallax water (render after enemy so that fish are behind)
-        parallaxWater1.draw(game.getBatch());
-        parallaxWater2.draw(game.getBatch());
+        for(Parallax parallax: parallaxWaters) {
+            parallax.draw(game.getBatch());
+        }
 
         // render trampoline
         trampoline.draw(game.getBatch());
