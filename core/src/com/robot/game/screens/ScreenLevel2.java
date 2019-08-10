@@ -37,6 +37,7 @@ public class ScreenLevel2 extends PlayScreen {
         layersObjectArray.add(tiledMap.getLayers().get(SNAKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get("Chase sensor obj").getObjects());
 
         // creates objectParser, interactivePlatforms, enemies and collectables
         super.createCommonObjectLayers();

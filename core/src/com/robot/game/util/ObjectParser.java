@@ -206,7 +206,13 @@ public class ObjectParser {
             fixtureDef.filter.categoryBits = TRAMPOLINE_CATEGORY;
             fixtureDef.filter.maskBits = TRAMPOLINE_MASK;
         }
-            // ground
+        // sensors for disabling arrive ai behavior
+        else if(object.getProperties().containsKey("chaseSensor")) {
+            fixtureDef.filter.categoryBits = CHASE_SENSOR_CATEGORY;
+            fixtureDef.filter.maskBits = CHASE_SENSOR_MASK;
+            fixtureDef.isSensor = true;
+        }
+        // ground
         else {
             fixtureDef.filter.categoryBits = GROUND_CATEGORY;
             fixtureDef.filter.maskBits = GROUND_MASK;

@@ -38,6 +38,7 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected boolean inContactWithRobot;
     protected boolean falling;
     protected boolean activated;
+    protected boolean locked;
 
     public EnemyArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -232,6 +233,11 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     public void setActivated(boolean activated) {
         this.activated = activated;
         Gdx.app.log("EnemyArriveAI", "Arrive = " + String.valueOf(activated).toUpperCase() + " for " + this.getClass());
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+        Gdx.app.log("EnemyArriveAI", "Arrive was locked for " + this.getClass());
     }
 
     public void setInContactWithRobot(boolean inContactWithRobot) {

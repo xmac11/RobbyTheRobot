@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="37" nextobjectid="266">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="38" nextobjectid="272">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -425,6 +425,7 @@
     <property name="enemy" value=""/>
     <property name="facing" value="left"/>
     <property name="monster" value=""/>
+    <property name="noRestitution" value=""/>
    </properties>
   </object>
   <object id="241" x="656" y="704" width="24" height="48">
@@ -433,6 +434,7 @@
     <property name="enemy" value=""/>
     <property name="facing" value="left"/>
     <property name="monster" value=""/>
+    <property name="noRestitution" value=""/>
    </properties>
   </object>
   <object id="242" x="1456" y="704" width="24" height="48">
@@ -453,7 +455,7 @@
     <property name="noRestitution" value=""/>
    </properties>
   </object>
-  <object id="263" x="1200" y="496" width="24" height="48">
+  <object id="263" x="1184" y="496" width="24" height="48">
    <properties>
     <property name="aiArrive" value=""/>
     <property name="enemy" value=""/>
@@ -505,6 +507,20 @@
     <property name="vX" type="float" value="2"/>
     <property name="vY" type="float" value="0"/>
    </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="37" name="Chase sensor obj">
+  <object id="266" x="1232" y="544">
+   <properties>
+    <property name="chaseSensor" value=""/>
+   </properties>
+   <point/>
+  </object>
+  <object id="271" x="480" y="752">
+   <properties>
+    <property name="chaseSensor" value=""/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="3" name="draft">

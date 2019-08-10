@@ -34,7 +34,7 @@ public class SnakeArriveAI extends EnemyArriveAI {
         super.checkIfDead();
 
         // check if enemy should be activated
-        if(!activated) {
+        if(!activated && !locked) {
             this.checkIfShouldBeActivated();
         }
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Fish;
-import com.robot.game.entities.Monster;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
@@ -98,6 +97,11 @@ public class ContactManager implements ContactListener {
 
             case ROBOT_CATEGORY | ENEMY_PROJECTILE_CATEGORY:
                 robotProjectileBegin(fixA, fixB);
+                break;
+
+            // enemy - disable chase sensor:
+            case ENEMY_CATEGORY | CHASE_SENSOR_CATEGORY:
+                enemyChaseSensor(fixA, fixB);
                 break;
         }
 
@@ -519,6 +523,23 @@ public class ContactManager implements ContactListener {
         // shake camera
         robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
         Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
+    }
+
+    private void enemyChaseSensor(Fixture fixA, Fixture fixB) {
+        EnemyArriveAI arriveAI;
+
+        if(fixA.getUserData() instanceof EnemyArriveAI) {
+            arriveAI = (EnemyArriveAI) fixA.getUserData();
+        }
+        else if(fixB.getUserData() instanceof EnemyArriveAI) {
+            arriveAI = (EnemyArriveAI) fixB.getUserData();
+        }
+        else return;
+
+        Gdx.app.log("ContactManager", "Sensor disabled chasing");
+        arriveAI.getArrive().setEnabled(false);
+        arriveAI.setActivated(false);
+        arriveAI.setLocked(true);
     }
 
     @Override
