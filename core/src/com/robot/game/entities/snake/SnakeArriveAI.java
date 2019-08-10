@@ -1,6 +1,5 @@
-package com.robot.game.entities;
+package com.robot.game.entities.snake;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,17 +10,16 @@ import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
-public class Snake extends EnemyArriveAI {
+public class SnakeArriveAI extends EnemyArriveAI {
 
-    public Snake(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public SnakeArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
 
-        setSize(56f / PPM, 32f / PPM);
+        setSize(SNAKE_WIDTH / PPM, SNAKE_HEIGHT / PPM);
     }
 
     @Override
@@ -30,16 +28,8 @@ public class Snake extends EnemyArriveAI {
             super.removeCollisionWithRobot();
         }
 
-        if(flagToKill) {
-            if(deadElapsed >= DEAD_TIMER) {
-                super.destroyBody();
-                destroyed = true;
-                flagToKill = false;
-            }
-            else {
-                deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
-            }
-        }
+        // check if dead
+        super.checkIfDead();
 
         // check if enemy should be activated
         if(!activated) {
@@ -83,7 +73,7 @@ public class Snake extends EnemyArriveAI {
         // check if the texture has to be flipped based on the monster's facing direction
         super.checkToFlipTexture();
 
-        setPosition(body.getPosition().x - 56f / 2 / PPM, body.getPosition().y - 32f / 2 / PPM);
+        setPosition(body.getPosition().x - SNAKE_WIDTH / 2 / PPM, body.getPosition().y - SNAKE_HEIGHT / 2 / PPM + 5 / PPM);
 
         super.draw(batch);
     }
@@ -93,8 +83,7 @@ public class Snake extends EnemyArriveAI {
         if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2
                 && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
             arrive.setEnabled(true);
-            activated = true;
-            Gdx.app.log("Snake", "Arrive was activated for snake");
+            super.setActivated(true);
         }
     }
 

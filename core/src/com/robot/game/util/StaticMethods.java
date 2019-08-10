@@ -7,9 +7,9 @@ import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
-import com.robot.game.entities.bat.BatAI;
+import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
-import com.robot.game.entities.crab.CrabAI;
+import com.robot.game.entities.crab.CrabPathFollowingAI;
 import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -39,9 +39,9 @@ public class StaticMethods {
 
     // get the number of points that should be added depending on the enemy killed
     public static int getPointsForEnemy(Enemy enemy) {
-        if(enemy instanceof BatAI || enemy instanceof BatPatrolling)
+        if(enemy instanceof BatPathFollowingAI || enemy instanceof BatPatrolling)
             return POINTS_FOR_BAT;
-        else if(enemy instanceof CrabAI || enemy instanceof CrabPatrolling)
+        else if(enemy instanceof CrabPathFollowingAI || enemy instanceof CrabPatrolling)
             return POINTS_FOR_CRAB;
         else //if(enemy instanceof Fish)
             return POINTS_FOR_FISH;

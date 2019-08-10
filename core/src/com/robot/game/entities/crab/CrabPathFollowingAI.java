@@ -12,9 +12,9 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class CrabAI extends EnemyPathFollowingAI {
+public class CrabPathFollowingAI extends EnemyPathFollowingAI {
 
-    public CrabAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public CrabPathFollowingAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);

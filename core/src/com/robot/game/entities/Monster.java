@@ -5,15 +5,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing.*;
 
 
 public class Monster extends EnemyArriveAI {
@@ -33,16 +30,8 @@ public class Monster extends EnemyArriveAI {
             super.removeCollisionWithRobot();
         }
 
-        if(flagToKill) {
-            if(body.getLinearVelocity().isZero() || twiceOfDeadAnimationFinished()) {
-                super.destroyBody();
-                destroyed = true;
-                flagToKill = false;
-            }
-            else {
-                deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
-            }
-        }
+        // check if dead
+        super.checkIfDead();
 
         // check if enemy should be activated
         if(!activated) {
@@ -86,9 +75,8 @@ public class Monster extends EnemyArriveAI {
                 && Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= 32 / PPM
                 && robot.getBody().getPosition(). y - body.getPosition().y > 16 / PPM) {
             arrive.setEnabled(false);
-            activated = false;
+            super.setActivated(false);
             justStarted = false;
-            Gdx.app.log("Monster", "Arrive was disabled for monster");
         }
         // walking
         else if(!dead && !falling) {
@@ -122,9 +110,8 @@ public class Monster extends EnemyArriveAI {
         if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2 - 48 / PPM
                 && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
             arrive.setEnabled(true);
-            activated = true;
+            super.setActivated(true);
             justStarted = true;
-            Gdx.app.log("Monster", "Arrive was activated for monster");
         }
     }
 

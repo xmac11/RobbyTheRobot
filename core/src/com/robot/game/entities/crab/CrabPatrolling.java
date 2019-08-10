@@ -26,27 +26,7 @@ public class CrabPatrolling extends EnemyPatrolling {
 
     @Override
     public void update(float delta) {
-        if(flagToChangeMask && body.getFixtureList().size != 0) {
-            StaticMethods.setMaskBit(body.getFixtureList().first(), NOTHING_MASK);
-            flagToChangeMask = false;
-        }
-
-        if(flagToKill) {
-            if(deadElapsed >= DEAD_TIMER && !destroyed) {
-                super.destroyBody();
-                destroyed = true;
-                flagToKill = false;
-            }
-            else {
-                deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
-            }
-        }
-
-        if(outOfRangeX())
-            reverseVelocity(true, false);
-
-        // calculate the elapsed time of the animation
-        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
+        super.updateHorizontalPatrolling(delta);
     }
 
     @Override

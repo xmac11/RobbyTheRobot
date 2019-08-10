@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.bat.BatAI;
+import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
-import com.robot.game.entities.crab.CrabAI;
+import com.robot.game.entities.crab.CrabPathFollowingAI;
 import com.robot.game.entities.crab.CrabPatrolling;
+import com.robot.game.entities.snake.SnakeArriveAI;
+import com.robot.game.entities.snake.SnakePatrolling;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Burger;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -58,21 +60,9 @@ public class ObjectParser {
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
 
-            if(object.getProperties().containsKey(FISH_PROPERTY)) {
-                bodyDef.type = BodyDef.BodyType.DynamicBody;
-                bodyDef.gravityScale = 0;
-            }
-            else if(object.getProperties().containsKey(MONSTER_PROPERTY) || object.getProperties().containsKey("snake")) {
-                bodyDef.type = BodyDef.BodyType.DynamicBody;
-                bodyDef.fixedRotation = true;
-            }
-            else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)
-                    || object.getProperties().containsKey(ENEMY_PROPERTY)) { // all other enemies are Kinematic bodies
-                bodyDef.type = BodyDef.BodyType.KinematicBody;
-            }
-            else {
-                bodyDef.type = BodyDef.BodyType.StaticBody;
-            }
+            // determine BodyType (Static, Kinematic, Dynamic)
+            determineBodyType(object, bodyDef);
+
             FixtureDef fixtureDef = new FixtureDef();
             Body body;
 
@@ -125,6 +115,24 @@ public class ObjectParser {
                 shape.dispose();
             }*/
             else continue;
+        }
+    }
+
+    private void determineBodyType(MapObject object, BodyDef bodyDef) {
+        if(object.getProperties().containsKey(FISH_PROPERTY)) {
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+            bodyDef.gravityScale = 0;
+        }
+        else if(object.getProperties().containsKey("aiArrive")) {
+            bodyDef.type = BodyDef.BodyType.DynamicBody;
+            bodyDef.fixedRotation = true;
+        }
+        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)
+                || object.getProperties().containsKey(ENEMY_PROPERTY)) { // all other enemies are Kinematic bodies
+            bodyDef.type = BodyDef.BodyType.KinematicBody;
+        }
+        else {
+            bodyDef.type = BodyDef.BodyType.StaticBody;
         }
     }
 
@@ -228,25 +236,34 @@ public class ObjectParser {
             // create bats
             if(object.getProperties().containsKey(BAT_PROPERTY)) {
                 if(object.getProperties().containsKey("aiPathFollowing"))
-                    this.enemies.add(new BatAI(playScreen, body, fixtureDef, object));
+                    this.enemies.add(new BatPathFollowingAI(playScreen, body, fixtureDef, object));
                 else
                     this.enemies.add(new BatPatrolling(playScreen, body, fixtureDef, object));
             }
+
             // create crabs
             else if(object.getProperties().containsKey(CRAB_PROPERTY)) {
                 if(object.getProperties().containsKey("aiPathFollowing"))
-                    this.enemies.add(new CrabAI(playScreen, body, fixtureDef, object));
+                    this.enemies.add(new CrabPathFollowingAI(playScreen, body, fixtureDef, object));
                 else
                     this.enemies.add(new CrabPatrolling(playScreen, body, fixtureDef, object));
             }
+
             // create fishes
             else if(object.getProperties().containsKey(FISH_PROPERTY))
                 this.enemies.add(new Fish(playScreen, body, fixtureDef, object));
+
             // create monsters
             else if(object.getProperties().containsKey(MONSTER_PROPERTY))
                 this.enemies.add(new Monster(playScreen, body, fixtureDef, object));
-            else if(object.getProperties().containsKey(SNAKE_PROPERTY))
-                this.enemies.add(new Snake(playScreen, body, fixtureDef, object));
+
+            // create snakes
+            else if(object.getProperties().containsKey(SNAKE_PROPERTY)) {
+                if(object.getProperties().containsKey("aiArrive"))
+                    this.enemies.add(new SnakeArriveAI(playScreen, body, fixtureDef, object));
+                else
+                    this.enemies.add(new SnakePatrolling(playScreen, body, fixtureDef, object));
+            }
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {

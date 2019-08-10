@@ -1,11 +1,17 @@
 package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.StaticMethods;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.Facing;
+import static com.robot.game.util.Enums.Facing.*;
+
 
 public abstract class EnemyPatrolling extends Enemy {
 
@@ -17,6 +23,8 @@ public abstract class EnemyPatrolling extends Enemy {
     protected float vX;
     protected float vY;
     protected boolean horizontal;
+
+    protected Facing facing;
 
     public EnemyPatrolling(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -34,6 +42,30 @@ public abstract class EnemyPatrolling extends Enemy {
         body.setLinearVelocity(vX, vY);
     }
 
+    protected void updateHorizontalPatrolling(float delta) {
+        if(flagToChangeMask && body.getFixtureList().size != 0) {
+            StaticMethods.setMaskBit(body.getFixtureList().first(), NOTHING_MASK);
+            flagToChangeMask = false;
+        }
+
+        if(flagToKill) {
+            if(deadElapsed >= DEAD_TIMER && !destroyed) {
+                super.destroyBody();
+                destroyed = true;
+                flagToKill = false;
+            }
+            else {
+                deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
+            }
+        }
+
+        if(outOfRangeX())
+            reverseVelocity(true, false);
+
+        // calculate the elapsed time of the animation
+        elapsedAnim = (TimeUtils.nanoTime() - startTimeAnim) * MathUtils.nanoToSec;
+    }
+
     // check if enemy is outside its moving range in x-direction
     protected boolean outOfRangeX() {
         return body.getPosition().x <= startX / PPM || body.getPosition().x >= endX / PPM;
@@ -42,5 +74,25 @@ public abstract class EnemyPatrolling extends Enemy {
     // check if enemy is outside its moving range in y-direction
     protected boolean outOfRangeY() {
         return body.getPosition().y <= startY / PPM || body.getPosition().y >= endY / PPM;
+    }
+
+    protected void checkToFlipTexture() {
+        if(facing == RIGHT) {
+            if(isFlipX())
+                flip(true, false);
+        }
+        else if(facing == LEFT) {
+            if(!isFlipX())
+                flip(true, false);
+        }
+    }
+
+    protected void determineFacingDirection() {
+        if(body.getLinearVelocity().x > 0.5f && facing != RIGHT) {
+            facing = RIGHT;
+        }
+        else if(body.getLinearVelocity().x < -0.5f && facing != LEFT) {
+            facing = LEFT;
+        }
     }
 }

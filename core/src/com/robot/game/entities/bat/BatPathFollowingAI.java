@@ -13,9 +13,9 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class BatAI extends EnemyPathFollowingAI {
+public class BatPathFollowingAI extends EnemyPathFollowingAI {
 
-    public BatAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public BatPathFollowingAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
         body.createFixture(fixtureDef).setUserData(this);

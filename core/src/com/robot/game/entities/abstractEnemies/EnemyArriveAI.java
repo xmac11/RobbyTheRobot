@@ -12,10 +12,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.robot.game.entities.Monster;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
+import static com.robot.game.util.Constants.DEAD_TIMER;
 import static com.robot.game.util.Constants.ROBOT_CATEGORY;
 import static com.robot.game.util.Enums.Facing;
 import static com.robot.game.util.Enums.Facing.LEFT;
@@ -72,14 +74,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
 
         if(!steeringOutput.linear.isZero()) {
 
-            if(this instanceof Monster) {
-                // if the enemy finds an obstacle, which is not the robot, and is not just starting moving, jump
-                if(body.getLinearVelocity().isZero() && !justStarted && !inContactWithRobot) {
-                    body.applyLinearImpulse(facing == RIGHT ? 1f : -1f, 6f, body.getWorldCenter().x, body.getWorldCenter().y, true);
-                    Gdx.app.log("EnemyArriveAI", "Enemy jumped");
-                }
-            }
-
             body.setLinearVelocity(MathUtils.clamp(getLinearVelocity().x + steeringOutput.linear.x * delta, -maxLinearSpeed, maxLinearSpeed),
                                    getLinearVelocity().y);
 //            body.applyForceToCenter(steeringOutput.linear.x, 0, true);
@@ -90,7 +84,23 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
             }
             //System.out.println(body.getLinearVelocity());
         }
+    }
 
+    protected void checkIfDead() {
+        if(flagToKill) {
+            if(deadElapsed >= DEAD_TIMER && !destroyed) {
+                super.destroyBody();
+                destroyed = true;
+                flagToKill = false;
+            }
+            else {
+                deadElapsed = (TimeUtils.nanoTime() - deadStartTime) * MathUtils.nanoToSec;
+            }
+        }
+        if(body.getPosition().y < 0 && !destroyed) {
+            super.destroyBody();
+            destroyed = true;
+        }
     }
 
     protected void removeCollisionWithRobot() {
@@ -236,8 +246,14 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         return facing;
     }
 
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+        Gdx.app.log("EnemyArriveAI", "Arrive = " + String.valueOf(activated).toUpperCase() + " for " + this.getClass());
+    }
+
     public void setInContactWithRobot(boolean inContactWithRobot) {
         this.inContactWithRobot = inContactWithRobot;
         Gdx.app.log("EnemyArriveAI", "inContactWithRobot = " + inContactWithRobot);
     }
+
 }

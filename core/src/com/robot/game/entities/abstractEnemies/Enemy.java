@@ -97,6 +97,10 @@ public abstract class Enemy extends Sprite implements Damaging {
         this.dead = dead;
     }
 
+    public Robot getRobot() {
+        return robot;
+    }
+
     public boolean isPunchResolved() {
         return punchResolved;
     }
