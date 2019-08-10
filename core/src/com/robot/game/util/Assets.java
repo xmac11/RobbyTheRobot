@@ -306,7 +306,7 @@ public class Assets {
 
             // dead
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(atlas.findRegion("level2/snake_dead" + i));
+                framesArray.add(atlas.findRegion("snake_dead" + i));
             }
             this.deadAnimation = new Animation<>(0.1f, framesArray);
 
