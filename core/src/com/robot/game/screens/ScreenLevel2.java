@@ -1,6 +1,9 @@
 package com.robot.game.screens;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
@@ -54,6 +57,11 @@ public class ScreenLevel2 extends PlayScreen {
         super.tankBalls = new DelayedRemovalArray<>();
         super.tankBallPool = new TankBallPool(this);
         super.tankBallSpawner = new TankBallSpawner(this);
+
+        super.rayHandler = new RayHandler(world);
+//        rayHandler.setAmbientLight(1);
+        rayHandler.setShadows(false);
+        super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 64 / PPM, 0, 0);
 
         // create parallax water
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
@@ -137,5 +145,12 @@ public class ScreenLevel2 extends PlayScreen {
 
         // finally, check if robot is dead
         super.checkIfDead();
+    }
+
+    @Override
+    public void dispose() {
+        Gdx.app.log("ScreenLevel2", "dispose");
+        rayHandler.dispose();
+        super.dispose();
     }
 }

@@ -62,6 +62,10 @@ public class LaserHandler extends RayCastHandler {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         // draw rectangle line
         if(rayCastActive) {
+
+            float startX = 0;
+            float startY = 0;
+
             shapeRenderer.setProjectionMatrix(playScreen.getCamera().combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             //            shapeRenderer.setColor(Color.CYAN);
@@ -75,11 +79,10 @@ public class LaserHandler extends RayCastHandler {
 
                 // lerp from start point to end point.
                 // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
-                /*shapeRenderer.rectLine(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 2 / PPM, 0),
-                        tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd : tempRayPointEnd, 2 / PPM);*/
+                startX = robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X;
+                startY = robot.getBody().getPosition().y + LASER_OFFSET_Y;
                 // I'm not using rayPointStart, in order to always draw the laser based on the robot's current position
-                shapeRenderer.rectLine(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM + LASER_OFFSET_X,
-                        robot.getBody().getPosition().y + LASER_OFFSET_Y,
+                shapeRenderer.rectLine(startX, startY,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y: tempRayPointEnd.y,
                         2 / PPM,
@@ -109,11 +112,12 @@ public class LaserHandler extends RayCastHandler {
                     rayCastActive = false;
                 }
 
-                /*shapeRenderer.rectLine(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 2 / PPM, 0),
-                        tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd : tempRayPointEnd, 2 / PPM);*/
+                // lerp from start point to end point.
+                // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
+                startX = robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - LASER_OFFSET_X;
+                startY = robot.getBody().getPosition().y + LASER_OFFSET_Y;
                 // I'm not using rayPointStart, in order to always draw the laser based on the robot's current position
-                shapeRenderer.rectLine(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM - LASER_OFFSET_X,
-                        robot.getBody().getPosition().y + LASER_OFFSET_Y,
+                shapeRenderer.rectLine(startX, startY,
                         tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd.y: tempRayPointEnd.y,
                         2 / PPM,
@@ -125,6 +129,12 @@ public class LaserHandler extends RayCastHandler {
                 }
             }
             shapeRenderer.end();
+
+            // render Light
+            playScreen.getPointLight().setPosition(startX,
+                    startY);
+            playScreen.getRayHandler().setCombinedMatrix(playScreen.getCamera());
+            playScreen.getRayHandler().updateAndRender();
         }
 
         // draw animation of hit target

@@ -1,5 +1,7 @@
 package com.robot.game.screens;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
@@ -127,6 +129,10 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // punch handler
     protected PunchHandler punchHandler;
+
+    // box2d light
+    protected RayHandler rayHandler;
+    protected PointLight pointLight;
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -414,6 +420,14 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
+    }
+
+    public RayHandler getRayHandler() {
+        return rayHandler;
+    }
+
+    public PointLight getPointLight() {
+        return pointLight;
     }
 
     protected void processGameStateInput() {
