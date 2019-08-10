@@ -132,7 +132,7 @@ public class Assets {
         this.fishAssets = new FishAssets(atlas);
         this.splashAssets = new SplashAssets(atlas);
         this.monsterAssets = new MonsterAssets(atlas);
-        this.snakeAssets = new SnakeAssets();
+        this.snakeAssets = new SnakeAssets(atlas);
     }
 
     public void dispose() {
@@ -253,6 +253,7 @@ public class Assets {
 
         private MonsterAssets(TextureAtlas atlas) {
 
+            // walk
             Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
                 framesArray.add(atlas.findRegion("monster_walk" + i));
@@ -261,6 +262,7 @@ public class Assets {
 
             framesArray.clear();
 
+            // attack
             for(int i = 1; i <= 7; i++) {
                 framesArray.add(atlas.findRegion("monster_attack" + i));
             }
@@ -268,6 +270,7 @@ public class Assets {
 
             framesArray.clear();
 
+            // dead
             for(int i = 1; i <=5; i++) {
                 framesArray.add(atlas.findRegion("monster_dead" + i));
             }
@@ -278,29 +281,32 @@ public class Assets {
     }
 
     public class SnakeAssets {
-        public final Animation<Texture> slitherAnimation;
-        public final Animation<Texture> biteAnimation;
-        public final Animation<Texture> deadAnimation;
+        public final Animation<TextureRegion> slitherAnimation;
+        public final Animation<TextureRegion> biteAnimation;
+        public final Animation<TextureRegion> deadAnimation;
 
-        private SnakeAssets() {
-            Array<Texture> framesArray = new Array<>();
+        private SnakeAssets(TextureAtlas atlas) {
 
+            // slither
+            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
             for(int i = 1; i <= 5; i++) {
-                framesArray.add(new Texture("level2/slither" + i + ".png"));
+                framesArray.add(atlas.findRegion("snake_slither" + i));
             }
             this.slitherAnimation = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
 
             framesArray.clear();
 
+            // bite
             for(int i = 1; i <= 5; i++) {
-                framesArray.add(new Texture("level2/bite" + i + ".png"));
+                framesArray.add(atlas.findRegion("snake_bite" + i));
             }
             this.biteAnimation = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP);
 
             framesArray.clear();
 
+            // dead
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(new Texture("level2/snake_dead" + i + ".png"));
+                framesArray.add(atlas.findRegion("level2/snake_dead" + i));
             }
             this.deadAnimation = new Animation<>(0.1f, framesArray);
 
@@ -338,7 +344,7 @@ public class Assets {
         public final TextureAtlas.AtlasRegion frame;
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
-        public final Texture lives; // add this to atlas when finalized
+        public final Texture lives; // TODO: add this to atlas when finalized
         public GlyphLayout scoreGlyphLayout;
         public GlyphLayout livesGlyphLayout;
 
@@ -346,7 +352,7 @@ public class Assets {
             this.frame = atlas.findRegion("frame");
             this.greenBar = atlas.findRegion("green");
             this.redBar = atlas.findRegion("red");
-            this.lives = new Texture("lives.png"); // add this to atlas when finalized
+            this.lives = new Texture("lives.png"); // TODO: add this to atlas when finalized
 
             // GlyphLayout for alignment
             this.scoreGlyphLayout = new GlyphLayout();
