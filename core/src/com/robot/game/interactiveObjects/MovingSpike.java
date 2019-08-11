@@ -10,11 +10,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.util.Assets;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 public class MovingSpike extends Spike {
 
     private Sprite sprite;
+    public Sprite baseSpirte;
+    public Sprite stickSpirte;
     private boolean inBalancePosition;
     private boolean attacking;
     private int id;
@@ -24,7 +26,9 @@ public class MovingSpike extends Spike {
 
     public MovingSpike(Body body, FixtureDef fixtureDef, MapObject object, ObjectMap jointMap, Assets assets) {
         super(body, fixtureDef, object);
-        this.sprite = new Sprite(assets.trapAssets.trapTexture);
+        this.sprite = new Sprite(assets.trapAssets.trapSpikes);
+        this.baseSpirte = new Sprite(assets.trapAssets.trapBase);
+        this.stickSpirte = new Sprite(assets.trapAssets.trapStick);
         this.inBalancePosition = true;
 
         this.upperTranslationA = (float) object.getProperties().get("upperTranslationA") / PPM;
@@ -36,12 +40,16 @@ public class MovingSpike extends Spike {
         bodyArray.add(body);
         jointMap.put(object.getProperties().get("prismatic"), bodyArray);
 
-        sprite.setSize(64 / PPM, 32 / PPM);
+        sprite.setSize(MOVING_SPIKE_WIDTH / PPM, MOVING_SPIKE_HEIGHT / PPM);
+        baseSpirte.setSize(32 / PPM, 8 / PPM);
     }
 
     public void draw(Batch batch) {
-        // attach enemy sprite to body
-        sprite.setPosition(body.getPosition().x - 64f / 2 / PPM, body.getPosition().y - 32f / 2 / PPM);
+        // draw base
+        baseSpirte.draw(batch);
+
+        // attach moving spike sprite to body
+        sprite.setPosition(body.getPosition().x - MOVING_SPIKE_WIDTH / 2 / PPM, body.getPosition().y - MOVING_SPIKE_HEIGHT / 2 / PPM);
         sprite.draw(batch);
     }
 
@@ -80,5 +88,13 @@ public class MovingSpike extends Spike {
 
     public void setAttacking(boolean attacking) {
         this.attacking = attacking;
+    }
+
+    public Sprite getBaseSpirte() {
+        return baseSpirte;
+    }
+
+    public Sprite getStickSpirte() {
+        return stickSpirte;
     }
 }

@@ -125,4 +125,10 @@ public class StaticMethods {
         }
     }
 
+    public static Body getStaticBodyOfJoint(PrismaticJoint joint) {
+        if(joint.getBodyA().getType() == BodyDef.BodyType.StaticBody)
+            return joint.getBodyA();
+        else
+            return joint.getBodyB();
+    }
 }

@@ -144,10 +144,12 @@ public class ScreenLevel2 extends PlayScreen {
             tankBall.draw(game.getBatch());
         }
 
-        // render moving spikes
+        // render moving spikes (joint handler renders the stick)
+        jointHandler.draw(game.getBatch());
         for(MovingSpike movingSpike: movingSpikes) {
             movingSpike.draw(game.getBatch());
         }
+
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());

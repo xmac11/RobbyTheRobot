@@ -134,7 +134,7 @@ public class Assets {
         this.splashAssets = new SplashAssets(atlas);
         this.monsterAssets = new MonsterAssets(atlas);
         this.snakeAssets = new SnakeAssets(atlas);
-        this.trapAssets = new TrapAssets();
+        this.trapAssets = new TrapAssets(atlas);
     }
 
     public void dispose() {
@@ -346,7 +346,7 @@ public class Assets {
         public final TextureAtlas.AtlasRegion frame;
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
-        public final Texture lives; // TODO: add this to atlas when finalized
+        public final TextureAtlas.AtlasRegion lives;
         public GlyphLayout scoreGlyphLayout;
         public GlyphLayout livesGlyphLayout;
 
@@ -354,7 +354,7 @@ public class Assets {
             this.frame = atlas.findRegion("frame");
             this.greenBar = atlas.findRegion("green");
             this.redBar = atlas.findRegion("red");
-            this.lives = new Texture("lives.png"); // TODO: add this to atlas when finalized
+            this.lives = atlas.findRegion("lives");
 
             // GlyphLayout for alignment
             this.scoreGlyphLayout = new GlyphLayout();
@@ -456,10 +456,14 @@ public class Assets {
     }
 
     public class TrapAssets {
-        public final Texture trapTexture;
+        public final TextureRegion trapSpikes;
+        public final TextureRegion trapBase;
+        public final TextureRegion trapStick;
 
-        private TrapAssets() {
-            this.trapTexture = new Texture("level2/trap.png");
+        private TrapAssets(TextureAtlas atlas) {
+            this.trapSpikes = atlas.findRegion("trap_vertical");
+            this.trapBase = atlas.findRegion("trap_vertical_base");
+            this.trapStick = atlas.findRegion("trap_vertical_stick");
         }
     }
 

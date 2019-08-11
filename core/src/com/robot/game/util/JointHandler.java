@@ -1,11 +1,16 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.interactiveObjects.MovingSpike;
 import com.robot.game.screens.PlayScreen;
+
+import static com.robot.game.util.Constants.PPM;
 
 public class JointHandler {
 
@@ -32,8 +37,12 @@ public class JointHandler {
 
                 if((int) joint.getUserData() == movingSpike.getId()) {
 
-                    // set upper limit to pointA
+                    // set upper limit of joint to pointA
                     joint.setLimits(0, movingSpike.getUpperTranslationA());
+
+                    // position of the static body to draw the base
+                    Vector2 basePosition = StaticMethods.getStaticBodyOfJoint(joint).getPosition();
+                    movingSpike.getBaseSpirte().setPosition(basePosition.x - 32f / 2 / PPM, basePosition.y - 8f / 2 / PPM);
 
                     // add joint-spike pair to HashMap
                     jointSpikeMap.put(joint, movingSpike);
@@ -74,6 +83,24 @@ public class JointHandler {
                 jointKey.setLimits(0, Math.max(movingSpike.getUpperTranslationA(), jointKey.getUpperLimit() - 0.1f));
             }
 
+        }
+    }
+
+    public void draw(Batch batch) {
+
+        for(PrismaticJoint jointKey: jointSpikeMap.keys()) {
+
+            float y1 = jointKey.getBodyA().getPosition().y;
+            float y2 = jointKey.getBodyB().getPosition().y;
+            float width = 16 / PPM;
+            float height = Math.abs(y1 - y2);
+
+            MovingSpike movingSpike = jointSpikeMap.get(jointKey);
+            movingSpike.getStickSpirte().setSize(width, height);
+
+            movingSpike.getStickSpirte().setPosition(jointKey.getBodyA().getPosition().x - width / 2 , (y1 + y2) / 2 - height / 2);
+
+            movingSpike.getStickSpirte().draw(batch);
         }
     }
 }

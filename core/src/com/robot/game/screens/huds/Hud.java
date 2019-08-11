@@ -25,7 +25,7 @@ public class Hud {
     private TextureRegion greenBar;
     private TextureRegion redBar;
 
-    private Texture lives; // this will become a TextureRegion when finalized
+    private TextureRegion lives;
     private BitmapFont font;
     private BitmapFont hpFont;
     private GlyphLayout scoreGlyphLayout;
