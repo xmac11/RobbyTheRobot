@@ -298,9 +298,6 @@ public class ContactManager implements ContactListener {
             if(enemy instanceof EnemyArriveAI) {
                 enemy.getBody().setGravityScale(0);
                 Gdx.app.log("ContactManager", "Gravity was turned off for the " + enemy.getClass());
-
-                // this is used so that the enemy doesn't jump when reaching the robot
-                ((EnemyArriveAI) enemy).setInContactWithRobot(true);
             }
 
             // decrease robot's health
@@ -667,9 +664,6 @@ public class ContactManager implements ContactListener {
         if(enemy instanceof EnemyArriveAI) {
             enemy.getBody().setGravityScale(1);
             Gdx.app.log("ContactManager", "Gravity was turned back on for the" + enemy.getClass());
-
-            // this is used so that the enemy doesn't jump when reaching the robot
-            ((EnemyArriveAI) enemy).setInContactWithRobot(false);
         }
     }
 

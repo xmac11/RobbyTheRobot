@@ -35,7 +35,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected float boundingRadius;
 
     protected Facing facing;
-    protected boolean inContactWithRobot;
     protected boolean falling;
     protected boolean activated;
     protected boolean locked;
@@ -237,10 +236,4 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         this.locked = locked;
         Gdx.app.log("EnemyArriveAI", "Arrive was locked for " + this.getClass());
     }
-
-    public void setInContactWithRobot(boolean inContactWithRobot) {
-        this.inContactWithRobot = inContactWithRobot;
-        Gdx.app.log("EnemyArriveAI", "inContactWithRobot = " + inContactWithRobot);
-    }
-
 }
