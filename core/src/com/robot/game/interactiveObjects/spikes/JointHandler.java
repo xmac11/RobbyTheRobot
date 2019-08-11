@@ -1,21 +1,26 @@
 package com.robot.game.interactiveObjects.spikes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.Constants.*;
 
 public class JointHandler {
 
+    private Robot robot;
     private ObjectMap<PrismaticJoint, MovingSpike> jointSpikeMap;
+    private boolean handlerActivated;
+    private boolean handlerDisabled;
 
     public JointHandler(PlayScreen playScreen) {
-
+        this.robot = playScreen.getRobot();
         Array<PrismaticJoint> joints = playScreen.getJoints();
         Array<MovingSpike> movingSpikes = playScreen.getMovingSpikes();
         this.jointSpikeMap = new ObjectMap<>();
@@ -41,6 +46,40 @@ public class JointHandler {
 
     public void update(float delta) {
 
+        // first check if joints should be activated / disabled
+        if(!handlerActivated && !handlerDisabled) {
+            checkForJointActivation();
+        }
+        else if(handlerActivated) {
+            checkForJointDisabling();
+        }
+
+        // if it is activated, handle their attacking
+        if(handlerActivated) {
+            handleJoints(delta);
+        }
+    }
+
+    private void checkForJointActivation() {
+        if(Math.abs(robot.getBody().getPosition().x * PPM - TANKBALL_ACTIVATION_AREA.x) <= CHECKPOINT_TOLERANCE &&
+                Math.abs(robot.getBody().getPosition().y * PPM - TANKBALL_ACTIVATION_AREA.y) <= CHECKPOINT_TOLERANCE) {
+
+            handlerActivated = true;
+            Gdx.app.log("JointHandler", "Joints were activated");
+        }
+    }
+
+    private void checkForJointDisabling() {
+        if(Math.abs(robot.getBody().getPosition().x * PPM - TANKBALL_DISABLING_AREA.x) <= CHECKPOINT_TOLERANCE &&
+                Math.abs(robot.getBody().getPosition().y * PPM - TANKBALL_DISABLING_AREA.y) <= CHECKPOINT_TOLERANCE) {
+
+            handlerActivated = false;
+            handlerDisabled = true;
+            Gdx.app.log("JointHandler", "Joints were disabled");
+        }
+    }
+
+    private void handleJoints(float delta) {
         for(PrismaticJoint jointKey: jointSpikeMap.keys()) {
 
             MovingSpike movingSpike = jointSpikeMap.get(jointKey);

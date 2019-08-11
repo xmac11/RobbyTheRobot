@@ -253,7 +253,9 @@ public final class Constants {
     // Tank
     public static final float TANKBALL_WIDTH = 16;
     public static final float TANKBALL_HEIGHT = 24;
-    public static final float TANKBALL_SPWANING_PERIOD = 2f;
+    public static final float TANKBALL_SPWANING_PERIOD = 3f;
     public static final Vector2 TANKBALL_IMPULSE = new Vector2(0, 10);
+    public static final Vector2 TANKBALL_ACTIVATION_AREA = new Vector2(4350, 780);
+    public static final Vector2 TANKBALL_DISABLING_AREA = new Vector2(4960, 80);
 
 }

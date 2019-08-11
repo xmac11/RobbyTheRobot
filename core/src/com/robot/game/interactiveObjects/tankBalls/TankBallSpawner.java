@@ -40,17 +40,18 @@ public class TankBallSpawner {
     }
 
     private void checkForTankActivation() {
-        if(Math.abs(robot.getBody().getPosition().x * PPM - 4350) <= CHECKPOINT_TOLERANCE &&
-                Math.abs(robot.getBody().getPosition().y * PPM - 780) <= CHECKPOINT_TOLERANCE) {
+        if(Math.abs(robot.getBody().getPosition().x * PPM - TANKBALL_ACTIVATION_AREA.x) <= CHECKPOINT_TOLERANCE &&
+                Math.abs(robot.getBody().getPosition().y * PPM - TANKBALL_ACTIVATION_AREA.y) <= CHECKPOINT_TOLERANCE) {
 
             tankActivated = true;
+            tankElapsed = TANKBALL_SPWANING_PERIOD; // so that tankball is spawned upon activation
             Gdx.app.log("TankBallSpawner", "Tank was activated");
         }
     }
 
     private void checkForTankDisabling() {
-        if(Math.abs(robot.getBody().getPosition().x * PPM - 4592) <= CHECKPOINT_TOLERANCE &&
-                Math.abs(robot.getBody().getPosition().y * PPM - 80) <= CHECKPOINT_TOLERANCE) {
+        if(Math.abs(robot.getBody().getPosition().x * PPM - TANKBALL_DISABLING_AREA.x) <= CHECKPOINT_TOLERANCE &&
+                Math.abs(robot.getBody().getPosition().y * PPM - TANKBALL_DISABLING_AREA.y) <= CHECKPOINT_TOLERANCE) {
 
             tankActivated = false;
             tankDisabled = true;
