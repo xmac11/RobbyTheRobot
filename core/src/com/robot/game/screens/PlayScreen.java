@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -21,16 +20,17 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
+import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
-import com.robot.game.entities.Robot;
-import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.CollectableHandler;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
+import com.robot.game.interactiveObjects.spikes.JointHandler;
+import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
@@ -38,7 +38,7 @@ import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
-import com.robot.game.interactiveObjects.spikes.JointHandler;
+import com.robot.game.util.MyOrthogonalTiledMapRenderer;
 import com.robot.game.util.ObjectParser;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
@@ -63,7 +63,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // Tiled map variables
     protected TiledMap tiledMap;
-    protected OrthogonalTiledMapRenderer mapRenderer;
+    protected MyOrthogonalTiledMapRenderer mapRenderer;
     protected float mapWidth;
     protected float mapHeight;
 
@@ -151,7 +151,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         int tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         this.mapWidth = tiledMap.getProperties().get("width", Integer.class) * tileSize;
         this.mapHeight = tiledMap.getProperties().get("height", Integer.class) * tileSize;
-        this.mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
+        this.mapRenderer = new MyOrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
         // if file with game data exists, load it, otherwise create new one
         if(FileSaver.getCheckpointFile().exists()) {
@@ -454,6 +454,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             paused = !paused;
             Gdx.app.log("PlayScreen", "Paused = " + paused);
+            mapRenderer.setMapAnimationActive(!mapRenderer.isMapAnimationActive());
         }
     }
 
