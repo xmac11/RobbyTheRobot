@@ -320,9 +320,12 @@ public class ObjectParser {
             body.createFixture(fixtureDef).setUserData("ground");
 
             if(object.getProperties().containsKey("prismatic")) {
-                int key = (int) object.getProperties().get("prismatic");
-                Array<Body> bodyArray = jointMap.get(key);
-                if(bodyArray == null) bodyArray = new Array<>();
+                int id = (int) object.getProperties().get("prismatic");
+                Array<Body> bodyArray = jointMap.get(id);
+
+                if(bodyArray == null)
+                    bodyArray = new Array<>();
+
                 bodyArray.add(body);
                 jointMap.put((Integer) object.getProperties().get("prismatic"), bodyArray);
             }
@@ -341,12 +344,24 @@ public class ObjectParser {
             jointDef.bodyA = bodyArray.get(0);
             jointDef.bodyB = bodyArray.get(1);
             jointDef.enableLimit = true;
-            jointDef.localAxisA.set(0, 1);
 
-            // control vertical speed that moving spikes attack
-            jointDef.enableMotor = true;
-            jointDef.maxMotorForce = -100;
-            jointDef.motorSpeed = -20;
+            // first two joints are vertical
+            if(id < 3) {
+                jointDef.localAxisA.set(0, 1);
+
+                // control vertical speed that moving spikes attack
+                jointDef.enableMotor = true;
+                jointDef.maxMotorForce = -100;
+                jointDef.motorSpeed = -20;
+            }
+            else {
+                jointDef.localAxisA.set(-1, 0);
+
+                // control vertical speed that moving spikes attack
+                jointDef.enableMotor = true;
+                jointDef.maxMotorForce = -100;
+                jointDef.motorSpeed = -20;
+            }
 
             PrismaticJoint joint = (PrismaticJoint) world.createJoint(jointDef);
             joint.setUserData(id); // add the id of the spike in the userData

@@ -5,33 +5,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.ObjectParser;
 import com.robot.game.util.StaticMethods;
 
-import static com.robot.game.util.Constants.MOVING_SPIKE_PERIOD;
 import static com.robot.game.util.Constants.PPM;
 
 public class JointHandler {
 
-    private PlayScreen playScreen;
-    private ObjectParser objectParser;
-    private Array<PrismaticJoint> joints;
-    private Array<MovingSpike> movingSpikes;
-
     private ObjectMap<PrismaticJoint, MovingSpike> jointSpikeMap;
-    private float jointStartTime;
-    private float jointElapsed;
 
     public JointHandler(PlayScreen playScreen) {
-        this.playScreen = playScreen;
-        this.objectParser = playScreen.getObjectParser();
-        this.joints = playScreen.getJoints();
-        this.movingSpikes = playScreen.getMovingSpikes();
+
+        Array<PrismaticJoint> joints = playScreen.getJoints();
+        Array<MovingSpike> movingSpikes = playScreen.getMovingSpikes();
         this.jointSpikeMap = new ObjectMap<>();
-        this.jointStartTime = TimeUtils.nanoTime();
 
         // pair joints with moving spikes by using the id's
         for(PrismaticJoint joint: joints) {
@@ -43,8 +30,7 @@ public class JointHandler {
                     joint.setLimits(0, movingSpike.getUpperTranslationA());
 
                     // position of the static body to draw the base
-                    Vector2 basePosition = StaticMethods.getStaticBodyOfJoint(joint).getPosition();
-                    movingSpike.getBaseSpirte().setPosition(basePosition.x - 32f / 2 / PPM, basePosition.y - 8f / 2 / PPM);
+                    positionStaticBase(joint, movingSpike);
 
                     // add joint-spike pair to HashMap
                     jointSpikeMap.put(joint, movingSpike);
@@ -58,9 +44,8 @@ public class JointHandler {
         for(PrismaticJoint jointKey: jointSpikeMap.keys()) {
 
             MovingSpike movingSpike = jointSpikeMap.get(jointKey);
+            // update time
             movingSpike.setTimeElapsed(movingSpike.getTimeElapsed() + delta);
-
-            //System.out.println(jointKey.getJointTranslation());
 
             // if spike is at pointA, set spike in balance position
             if(!movingSpike.isInBalancePosition() && Math.abs(jointKey.getJointTranslation() - movingSpike.getUpperTranslationA()) <= 0.1f) {
@@ -72,10 +57,8 @@ public class JointHandler {
                 movingSpike.setAttacking(false);
             }
 
-            //System.out.println(movingSpike.getTimeElapsed());
-
-            // if spike is in balance position for more than 3 seconds and is not attacking, reset timer and start attacking
-            if(movingSpike.isInBalancePosition() && movingSpike.getTimeElapsed() >= MOVING_SPIKE_PERIOD && !movingSpike.isAttacking()) {
+            // if spike is in balance position for more than 'n' seconds and is not attacking, reset timer and start attacking
+            if(movingSpike.isInBalancePosition() && movingSpike.getTimeElapsed() >= movingSpike.getAttackPeriod() && !movingSpike.isAttacking()) {
                 jointKey.setLimits(0, movingSpike.getUpperTranslationB());
                 movingSpike.setTimeElapsed(0);
                 movingSpike.setAttacking(true);
@@ -92,17 +75,42 @@ public class JointHandler {
 
         for(PrismaticJoint jointKey: jointSpikeMap.keys()) {
 
-            float y1 = jointKey.getBodyA().getPosition().y;
-            float y2 = jointKey.getBodyB().getPosition().y;
-            float width = 16 / PPM;
-            float height = Math.abs(y1 - y2);
-
             MovingSpike movingSpike = jointSpikeMap.get(jointKey);
-            movingSpike.getStickSpirte().setSize(width, height);
 
-            movingSpike.getStickSpirte().setPosition(jointKey.getBodyA().getPosition().x - width / 2 , (y1 + y2) / 2 - height / 2);
+            // horizontal
+            if(movingSpike.isHorizontal()) {
+                float x1 = jointKey.getBodyA().getPosition().x;
+                float x2 = jointKey.getBodyB().getPosition().x;
+                float width = 16 / PPM;
+                float height = Math.abs(x2 - x1);
+
+                movingSpike.getStickSpirte().setSize(width, height);
+                movingSpike.getStickSpirte().setOrigin(width / 2, height / 2);
+
+                movingSpike.getStickSpirte().setRotation(90);
+                movingSpike.getStickSpirte().setPosition((x1 + x2) / 2 - width / 2, jointKey.getBodyA().getPosition().y - height / 2);
+            }
+            // vertical
+            else {
+                float y1 = jointKey.getBodyA().getPosition().y;
+                float y2 = jointKey.getBodyB().getPosition().y;
+                float width = 16 / PPM;
+                float height = Math.abs(y1 - y2);
+
+                movingSpike.getStickSpirte().setSize(width, height);
+
+                movingSpike.getStickSpirte().setPosition(jointKey.getBodyA().getPosition().x - width / 2 , (y1 + y2) / 2 - height / 2);
+            }
 
             movingSpike.getStickSpirte().draw(batch);
+        }
+    }
+
+    private void positionStaticBase(PrismaticJoint joint, MovingSpike movingSpike) {
+        Vector2 basePosition = StaticMethods.getStaticBodyOfJoint(joint).getPosition();
+        movingSpike.getBaseSpirte().setPosition(basePosition.x - 32f / 2 / PPM, basePosition.y - 8f / 2 / PPM);
+        if(movingSpike.isHorizontal()) {
+            movingSpike.getBaseSpirte().setRotation(90);
         }
     }
 }

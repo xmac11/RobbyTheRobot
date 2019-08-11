@@ -15,33 +15,56 @@ import static com.robot.game.util.Constants.*;
 public class MovingSpike extends Spike {
 
     private Sprite sprite;
-    public Sprite baseSpirte;
-    public Sprite stickSpirte;
+    private Sprite baseSpirte;
+    private Sprite stickSpirte;
+    private MapObject mapObject;
     private boolean inBalancePosition;
     private boolean attacking;
+    private boolean horizontal;
     private int id;
     private float upperTranslationA;
     private float upperTranslationB;
     private float timeElapsed;
+    private float attackPeriod;
 
-    public MovingSpike(Body body, FixtureDef fixtureDef, MapObject object, ObjectMap jointMap, Assets assets) {
+    public MovingSpike(Body body, FixtureDef fixtureDef, MapObject object, ObjectMap<Integer, Array<Body>> jointMap, Assets assets) {
         super(body, fixtureDef, object);
+        this.mapObject = object;
         this.sprite = new Sprite(assets.trapAssets.trapSpikes);
         this.baseSpirte = new Sprite(assets.trapAssets.trapBase);
         this.stickSpirte = new Sprite(assets.trapAssets.trapStick);
         this.inBalancePosition = true;
+        this.horizontal = (object.getProperties().containsKey("horizontal"));
 
         this.upperTranslationA = (float) object.getProperties().get("upperTranslationA") / PPM;
         this.upperTranslationB = (float) object.getProperties().get("upperTranslationB") / PPM;
 
-        this.id = (int) object.getProperties().get("prismatic");
-        Array<Body> bodyArray = (Array) jointMap.get(id);
-        if(bodyArray == null) bodyArray = new Array<>();
-        bodyArray.add(body);
-        jointMap.put(object.getProperties().get("prismatic"), bodyArray);
+        this.attackPeriod = (float) object.getProperties().get("attackPeriod");
 
-        sprite.setSize(MOVING_SPIKE_WIDTH / PPM, MOVING_SPIKE_HEIGHT / PPM);
+        this.id = (int) object.getProperties().get("prismatic");
+        Array<Body> bodyArray = jointMap.get(id);
+
+        if(bodyArray == null)
+            bodyArray = new Array<>();
+
+        bodyArray.add(body);
+        // put body in the corresponding array of the HashMap
+        jointMap.put((Integer) object.getProperties().get("prismatic"), bodyArray);
+
+        // moving spikes
+        if(horizontal) {
+            // set the size as if it were vertical and rotate it when drawn
+            sprite.setSize(80 / PPM, 32f / PPM);
+            sprite.setOrigin(80f / 2 / PPM, 32f / 2 / PPM);
+        }
+        else {
+            sprite.setSize(64f / PPM, 32f / PPM);
+        }
+
+        // base
         baseSpirte.setSize(32 / PPM, 8 / PPM);
+        baseSpirte.setOrigin(32 / 2f / PPM, 8 / 2f / PPM);
+
     }
 
     public void draw(Batch batch) {
@@ -49,7 +72,14 @@ public class MovingSpike extends Spike {
         baseSpirte.draw(batch);
 
         // attach moving spike sprite to body
-        sprite.setPosition(body.getPosition().x - MOVING_SPIKE_WIDTH / 2 / PPM, body.getPosition().y - MOVING_SPIKE_HEIGHT / 2 / PPM);
+        if(horizontal) {
+            sprite.setPosition(body.getPosition().x - 80f / 2 / PPM, body.getPosition().y - 32f / 2 / PPM);
+            sprite.setRotation(90);
+        }
+        else {
+            sprite.setPosition(body.getPosition().x - 64f / 2 / PPM, body.getPosition().y - 32f / 2 / PPM);
+        }
+
         sprite.draw(batch);
     }
 
@@ -96,5 +126,13 @@ public class MovingSpike extends Spike {
 
     public Sprite getStickSpirte() {
         return stickSpirte;
+    }
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
+
+    public float getAttackPeriod() {
+        return attackPeriod;
     }
 }

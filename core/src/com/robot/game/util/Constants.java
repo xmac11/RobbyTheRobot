@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = false;
+    public static final boolean DEBUG_ON = true;
     public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
@@ -255,10 +255,5 @@ public final class Constants {
     public static final float TANKBALL_HEIGHT = 24;
     public static final float TANKBALL_SPWANING_PERIOD = 1.5f;
     public static final Vector2 TANKBALL_IMPULSE = new Vector2(0, 10);
-
-    // Moving spike
-    public static final float MOVING_SPIKE_WIDTH = 64;
-    public static final float MOVING_SPIKE_HEIGHT = 32;
-    public static final float MOVING_SPIKE_PERIOD = 3;
 
 }
