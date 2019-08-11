@@ -13,19 +13,13 @@ import static com.robot.game.util.Constants.DAMAGE_ON;
 
 public class Spike implements Damaging {
 
-    private Body body;
-    private FixtureDef fixtureDef;
+    protected Body body;
     private boolean mightWalk;
     private Vector2 respawnLocation;
 
-    public Spike(Body body, FixtureDef fixtureDef, MapObject object, ObjectMap jointMap) {
+    public Spike(Body body, FixtureDef fixtureDef, MapObject object) {
         this.body = body;
-        this.fixtureDef = fixtureDef;
         this.mightWalk = (boolean) object.getProperties().get("mightWalk");
-
-        if(object.getProperties().containsKey("dynamicSpike")) {
-            fixtureDef.density = 1;
-        }
 
         /*if(mightWalk) {
             int respawnID = (int) object.getProperties().get("respawnID");
@@ -37,14 +31,6 @@ public class Spike implements Damaging {
         }*/
 
         body.createFixture(fixtureDef).setUserData(this);
-
-        if(object.getProperties().containsKey("prismatic")) {
-            int key = (int) object.getProperties().get("prismatic");
-            Array<Body> bodyArray = (Array) jointMap.get(key);
-            if(bodyArray == null) bodyArray = new Array<>();
-            bodyArray.add(body);
-            jointMap.put((Integer) object.getProperties().get("prismatic"), bodyArray);
-        }
     }
 
     @Override

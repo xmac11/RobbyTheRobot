@@ -43,6 +43,7 @@ public class Assets {
     public SplashAssets splashAssets;
     public MonsterAssets monsterAssets;
     public SnakeAssets snakeAssets;
+    public TrapAssets trapAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -133,6 +134,7 @@ public class Assets {
         this.splashAssets = new SplashAssets(atlas);
         this.monsterAssets = new MonsterAssets(atlas);
         this.snakeAssets = new SnakeAssets(atlas);
+        this.trapAssets = new TrapAssets();
     }
 
     public void dispose() {
@@ -450,6 +452,14 @@ public class Assets {
             this.splashAnimation = new Animation<>(0.05f, framesArray);
 
             framesArray.clear();
+        }
+    }
+
+    public class TrapAssets {
+        public final Texture trapTexture;
+
+        private TrapAssets() {
+            this.trapTexture = new Texture("level2/trap.png");
         }
     }
 

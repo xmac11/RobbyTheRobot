@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="286">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="432" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="39" nextobjectid="288">
  <tileset firstgid="1" source="waterfall.tsx"/>
  <tileset firstgid="41" source="tiles_l2.tsx"/>
  <tileset firstgid="2089" source="Caribbean_2D.tsx"/>
@@ -225,28 +225,32 @@
   <object id="211" x="4416" y="816" width="304" height="16"/>
   <object id="213" x="4512" y="944" width="16" height="32"/>
   <object id="215" x="256" y="592" width="32" height="384"/>
-  <object id="282" x="4368" y="352" width="16" height="16">
+  <object id="282" x="4352" y="336" width="64" height="24">
    <properties>
-    <property name="dynamicSpike" value=""/>
     <property name="mightWalk" type="bool" value="false"/>
+    <property name="movingSpike" value=""/>
     <property name="prismatic" type="int" value="1"/>
     <property name="spike" value=""/>
+    <property name="upperTranslationA" type="float" value="20"/>
+    <property name="upperTranslationB" type="float" value="176"/>
    </properties>
   </object>
-  <object id="283" x="4372" y="324" width="8" height="8">
+  <object id="283" x="4380" y="324" width="8" height="8">
    <properties>
     <property name="prismatic" type="int" value="1"/>
    </properties>
   </object>
-  <object id="284" x="4656" y="576" width="16" height="16">
+  <object id="286" x="4624" y="432" width="64" height="24">
    <properties>
-    <property name="dynamicSpike" value=""/>
     <property name="mightWalk" type="bool" value="false"/>
+    <property name="movingSpike" value=""/>
     <property name="prismatic" type="int" value="2"/>
     <property name="spike" value=""/>
+    <property name="upperTranslationA" type="float" value="20"/>
+    <property name="upperTranslationB" type="float" value="176"/>
    </properties>
   </object>
-  <object id="285" x="4660" y="612" width="8" height="8">
+  <object id="287" x="4652" y="420" width="8" height="8">
    <properties>
     <property name="prismatic" type="int" value="2"/>
    </properties>

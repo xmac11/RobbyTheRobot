@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,6 +24,7 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.Robot;
+import com.robot.game.interactiveObjects.MovingSpike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.CollectableHandler;
@@ -36,6 +38,7 @@ import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
+import com.robot.game.util.JointHandler;
 import com.robot.game.util.ObjectParser;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
@@ -133,6 +136,11 @@ public abstract class PlayScreen extends ScreenAdapter {
     // box2d light
     protected RayHandler rayHandler;
     protected PointLight pointLight;
+
+    // moving spikes - prismatic joints - jointHandler
+    protected Array<MovingSpike> movingSpikes;
+    protected Array<PrismaticJoint> joints;
+    protected JointHandler jointHandler;
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -428,6 +436,18 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public PointLight getPointLight() {
         return pointLight;
+    }
+
+    public ObjectParser getObjectParser() {
+        return objectParser;
+    }
+
+    public Array<PrismaticJoint> getJoints() {
+        return joints;
+    }
+
+    public Array<MovingSpike> getMovingSpikes() {
+        return movingSpikes;
     }
 
     protected void processGameStateInput() {

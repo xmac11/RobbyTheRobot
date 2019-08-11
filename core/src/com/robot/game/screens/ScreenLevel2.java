@@ -16,9 +16,11 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
+import com.robot.game.interactiveObjects.MovingSpike;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
+import com.robot.game.util.JointHandler;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 
@@ -27,7 +29,6 @@ import static com.robot.game.util.Constants.*;
 public class ScreenLevel2 extends PlayScreen {
 
     private Array<Parallax> parallaxWaters = new Array<>();
-    int count = 0;
 
     public ScreenLevel2(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
@@ -79,6 +80,10 @@ public class ScreenLevel2 extends PlayScreen {
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTextureBig,
                 0, 2496, 0 , 1824, 48, false, false));
 
+        // create moving spikes - prismatic joints and jointHandler
+        super.movingSpikes = objectParser.getMovingSpikes();
+        super.joints = objectParser.getJoints();
+        super.jointHandler = new JointHandler(this);
     }
 
     protected void update(float delta) {
@@ -98,27 +103,8 @@ public class ScreenLevel2 extends PlayScreen {
             tankBall.update(delta);
         }
 
-        // joints
-        count = (count + 1) % 540;
-        System.out.println(count);
-        for(PrismaticJoint joint: objectParser.joints) {
-            /*if(count >= 360) {
-                joint.setLimits(-176 / PPM, Math.max(0, joint.getUpperLimit() - 0.1f));
-            }
-            else if(count >= 180) {
-                joint.setLimits(0, 176 / PPM);
-            }*/
-            if(Math.abs(joint.getJointTranslation() - joint.getUpperLimit()) <= 0.1f) {
-                if(joint.getBodyA().getType() == BodyDef.BodyType.DynamicBody) {
-                    joint.getBodyA().applyLinearImpulse(new Vector2(0, 20), joint.getBodyA().getWorldCenter(), true);
-                    System.out.println("!!!!!");
-                }
-                else {
-                    joint.getBodyB().applyLinearImpulse(new Vector2(0, 20), joint.getBodyB().getWorldCenter(), true);
-                    System.out.println("!!!!!");
-                }
-            }
-        }
+        // update prismatic joints of moving spikes
+        jointHandler.update(delta);
     }
 
     @Override
@@ -156,6 +142,11 @@ public class ScreenLevel2 extends PlayScreen {
         // render fireballs
         for(TankBall tankBall: tankBalls) {
             tankBall.draw(game.getBatch());
+        }
+
+        // render moving spikes
+        for(MovingSpike movingSpike: movingSpikes) {
+            movingSpike.draw(game.getBatch());
         }
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)

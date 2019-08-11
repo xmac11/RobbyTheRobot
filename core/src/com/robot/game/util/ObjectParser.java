@@ -45,6 +45,7 @@ public class ObjectParser {
     private DelayedRemovalArray<Enemy> enemies;
     private DelayedRemovalArray<Collectable> collectables;
     private Trampoline trampoline;
+    private Array<MovingSpike> movingSpikes;
     private ObjectMap<Integer, Array<Body>> jointMap;
     public Array<PrismaticJoint> joints;
 
@@ -55,6 +56,7 @@ public class ObjectParser {
         this.interactivePlatforms = new DelayedRemovalArray<>();
         this.enemies = new DelayedRemovalArray<>();
         this.collectables = new DelayedRemovalArray<>();
+        this.movingSpikes = new Array<>();
         this.jointMap = new ObjectMap<>();
         this.joints = new Array<>();
 
@@ -69,12 +71,11 @@ public class ObjectParser {
 
         for(MapObject object: objects) {
             BodyDef bodyDef = new BodyDef();
-
-            // determine BodyType (Static, Kinematic, Dynamic)
-            determineBodyType(object, bodyDef);
-
             FixtureDef fixtureDef = new FixtureDef();
             Body body;
+
+            // determine BodyType (Static, Kinematic, Dynamic)
+            determineBodyType(object, bodyDef, fixtureDef);
 
             if(object instanceof RectangleMapObject) {
                 rectangles++;
@@ -128,14 +129,16 @@ public class ObjectParser {
         }
     }
 
-    private void determineBodyType(MapObject object, BodyDef bodyDef) {
+    private void determineBodyType(MapObject object, BodyDef bodyDef, FixtureDef fixtureDef) {
         if(object.getProperties().containsKey(FISH_PROPERTY)) {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             bodyDef.gravityScale = 0;
+            fixtureDef.density = 1;
         }
-        else if(object.getProperties().containsKey("aiArrive") || object.getProperties().containsKey("dynamicSpike")) {
+        else if(object.getProperties().containsKey("aiArrive") || object.getProperties().containsKey("movingSpike")) {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             bodyDef.fixedRotation = true;
+            fixtureDef.density = 1;
         }
         else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)
                 || object.getProperties().containsKey(ENEMY_PROPERTY)) { // all other enemies are Kinematic bodies
@@ -283,7 +286,10 @@ public class ObjectParser {
         }
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
-            new Spike(body, fixtureDef, object, jointMap);
+            if(object.getProperties().containsKey("movingSpike"))
+                this.movingSpikes.add(new MovingSpike(body, fixtureDef, object, jointMap, playScreen.getAssets()));
+            else
+                new Spike(body, fixtureDef, object);
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {
@@ -322,8 +328,9 @@ public class ObjectParser {
     }
 
     private void createJoints() {
-        for(Integer i: jointMap.keys()) {
-            Array<Body> bodyArray = jointMap.get(i);
+        // jointMap pairs id with Array<Body>
+        for(Integer id: jointMap.keys()) {
+            Array<Body> bodyArray = jointMap.get(id);
 
             if(DEBUG_ON && bodyArray.size > 2)
                 throw new IllegalArgumentException("Joint array contains more than 2 bodies");
@@ -332,15 +339,16 @@ public class ObjectParser {
             jointDef.bodyA = bodyArray.get(0);
             jointDef.bodyB = bodyArray.get(1);
             jointDef.enableLimit = true;
-            jointDef.lowerTranslation = -176 / PPM;
-            jointDef.upperTranslation = 176 / 2f / PPM;
             jointDef.localAxisA.set(0, 1);
 
-//            jointDef.enableMotor = true;
-//            jointDef.maxMotorForce = -100;
-//            jointDef.motorSpeed = 20;
+            // control vertical speed that moving spikes attack
+            jointDef.enableMotor = true;
+            jointDef.maxMotorForce = -100;
+            jointDef.motorSpeed = -20;
 
-            this.joints.add((PrismaticJoint) world.createJoint(jointDef));
+            PrismaticJoint joint = (PrismaticJoint) world.createJoint(jointDef);
+            joint.setUserData(id); // add the id of the spike in the userData
+            this.joints.add(joint);
         }
         Gdx.app.log("ObjectParser", "Joints created");
     }
@@ -360,7 +368,17 @@ public class ObjectParser {
         return collectables;
     }
 
+    // getter for trampoline
     public Trampoline getTrampoline() {
         return trampoline;
+    }
+
+    // getter for moving spikes
+    public Array<MovingSpike> getMovingSpikes() {
+        return movingSpikes;
+    }
+
+    public Array<PrismaticJoint> getJoints() {
+        return joints;
     }
 }

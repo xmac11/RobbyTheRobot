@@ -16,8 +16,6 @@ public class SnakeArriveAI extends EnemyArriveAI {
 
     public SnakeArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
-
-        fixtureDef.density = 1;
         body.createFixture(fixtureDef).setUserData(this);
 
 
