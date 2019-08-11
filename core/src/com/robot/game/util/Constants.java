@@ -148,7 +148,7 @@ public final class Constants {
         // Fish
     public static final float FISH_WIDTH = 16;
     public static final float FISH_HEIGHT = 28;
-    public static final Vector2 FISH_IMPULSE = new Vector2(0, 8f);
+    public static final Vector2 FISH_IMPULSE = new Vector2(0, 3.5f);
 
         // Monster
     public static final float MONSTER_WIDTH = 38;
@@ -253,7 +253,7 @@ public final class Constants {
     // Tank
     public static final float TANKBALL_WIDTH = 16;
     public static final float TANKBALL_HEIGHT = 24;
-    public static final float TANKBALL_SPWANING_PERIOD = 1.5f;
+    public static final float TANKBALL_SPWANING_PERIOD = 2f;
     public static final Vector2 TANKBALL_IMPULSE = new Vector2(0, 10);
 
 }
