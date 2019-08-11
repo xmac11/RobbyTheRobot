@@ -8,7 +8,7 @@ import com.robot.game.entities.Fish;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
-import com.robot.game.interactiveObjects.Spike;
+import com.robot.game.interactiveObjects.spikes.Spike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
@@ -222,7 +222,7 @@ public class ContactManager implements ContactListener {
             //add spike (damaging object) to HashMap in order to render the damage incurred
             robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(spike, 1f);
 
-            // make it invulnerable
+            // make it invulnerable for 1 second
             robot.setInvulnerable(1f);
             Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
         }

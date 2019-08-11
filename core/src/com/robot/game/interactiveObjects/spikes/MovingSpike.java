@@ -1,4 +1,4 @@
-package com.robot.game.interactiveObjects;
+package com.robot.game.interactiveObjects.spikes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -59,7 +59,7 @@ public class MovingSpike extends Spike {
 
     public void setInBalancePosition(boolean inBalancePosition) {
         this.inBalancePosition = inBalancePosition;
-        Gdx.app.log("MovingSpike", "inBalancePosition = " + inBalancePosition);
+        Gdx.app.log("MovingSpike", "inBalancePosition = " + inBalancePosition + " - " +  this);
     }
 
     public int getId() {

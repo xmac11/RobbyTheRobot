@@ -10,8 +10,9 @@ import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.PPM;
 
-public abstract class InteractivePlatform extends Sprite {
+public abstract class InteractivePlatform {
 
+    private Sprite sprite;
     protected PlayScreen playScreen;
     protected Assets assets;
     protected World world;
@@ -20,7 +21,6 @@ public abstract class InteractivePlatform extends Sprite {
     protected float vY;
     protected  float width;
     protected  float height;
-    private Sprite interactivePlatformSprite;
 
     protected InteractivePlatform(PlayScreen playScreen, Body body, MapObject object) {
         this.playScreen = playScreen;
@@ -34,18 +34,18 @@ public abstract class InteractivePlatform extends Sprite {
         this.width = (float) object.getProperties().get("width");
         this.height = (float) object.getProperties().get("height");
 
-        this.interactivePlatformSprite = new Sprite(assets.interactivePlatformAssets.atlasRegion);
+        this.sprite = new Sprite(assets.interactivePlatformAssets.interactivePlatform);
 
-        interactivePlatformSprite.setSize(width / PPM, height / PPM);
-        interactivePlatformSprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
+        sprite.setSize(width / PPM, height / PPM);
+        sprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
     }
 
     public abstract void update(float delta);
 
     public void draw(SpriteBatch batch) {
         // attach platform sprite to body
-        interactivePlatformSprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
-        interactivePlatformSprite.draw(batch);
+        sprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
+        sprite.draw(batch);
     }
 
     public void movePlatform() {

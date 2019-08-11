@@ -318,10 +318,10 @@ public class Assets {
 
     public class InteractivePlatformAssets {
 
-        public final TextureAtlas.AtlasRegion atlasRegion;
+        public final TextureAtlas.AtlasRegion interactivePlatform;
 
         public InteractivePlatformAssets(TextureAtlas atlas) {
-            this.atlasRegion = atlas.findRegion("movingplatform");
+            this.interactivePlatform = atlas.findRegion("movingplatform");
         }
     }
 

@@ -259,5 +259,6 @@ public final class Constants {
     // Moving spike
     public static final float MOVING_SPIKE_WIDTH = 64;
     public static final float MOVING_SPIKE_HEIGHT = 32;
+    public static final float MOVING_SPIKE_PERIOD = 3;
 
 }

@@ -13,8 +13,9 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class FallingPipe extends Sprite implements Damaging {
+public class FallingPipe implements Damaging {
 
+    private Sprite sprite;
     private PlayScreen playScreen;
     private Assets assets;
     private World world;
@@ -33,9 +34,9 @@ public class FallingPipe extends Sprite implements Damaging {
         this.cache = cache;
         createPipeB2d();
 
-        setRegion(assets.pipeAssets.debris);
-        setSize(PIPE_WIDTH / PPM, PIPE_HEIGHT / PPM);
-        setOrigin(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
+        this.sprite = new Sprite(assets.pipeAssets.debris);
+        sprite.setSize(PIPE_WIDTH / PPM, PIPE_HEIGHT / PPM);
+        sprite.setOrigin(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
     }
 
     public void createPipeB2d() {
@@ -112,15 +113,14 @@ public class FallingPipe extends Sprite implements Damaging {
         }
     }
 
-    @Override
     public void draw(Batch batch) {
         // attach sprite to body
-        setPosition(body.getPosition().x - PIPE_WIDTH / 2 / PPM, body.getPosition().y - PIPE_HEIGHT / 2 / PPM);
+        sprite.setPosition(body.getPosition().x - PIPE_WIDTH / 2 / PPM, body.getPosition().y - PIPE_HEIGHT / 2 / PPM);
 
         // rotate sprite with body
-        setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+        sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
     @Override

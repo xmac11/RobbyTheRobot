@@ -11,37 +11,30 @@ import static com.robot.game.util.Constants.*;
 
 public class PowerUp extends Collectable {
 
-    private Sprite powerupSprite;
     private boolean fullHeal;
-    private float width;
-    private float height;
 
     public PowerUp(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
         this.fullHeal = (boolean) object.getProperties().get("fullHeal");
 
+        float width;
+        float height;
         if(fullHeal) {
-            this.width = FULL_HEAL_WIDTH;
-            this.height = FULL_HEAL_HEIGHT;
+            width = FULL_HEAL_WIDTH;
+            height = FULL_HEAL_HEIGHT;
         }
         else {
-            this.width = POWERUP_WIDTH;
-            this.height = POWERUP_HEIGHT;
+            width = POWERUP_WIDTH;
+            height = POWERUP_HEIGHT;
         }
 
-        this.powerupSprite = new Sprite(assets.collectableAssets.powerup);
+        super.sprite = new Sprite(assets.collectableAssets.powerup);
 
         // set the size of the bat sprite
-        powerupSprite.setSize(width / PPM, height / PPM);
+        sprite.setSize(width / PPM, height / PPM);
 
         // attach sprite to body
-        powerupSprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
-
-    }
-
-    @Override
-    public void draw(Batch batch) {
-        powerupSprite.draw(batch);
+        sprite.setPosition(body.getPosition().x - width / 2 / PPM, body.getPosition().y - height / 2 / PPM);
     }
 
     public boolean isFullHeal() {

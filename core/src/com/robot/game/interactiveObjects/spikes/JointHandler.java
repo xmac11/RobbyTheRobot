@@ -1,15 +1,17 @@
-package com.robot.game.util;
+package com.robot.game.interactiveObjects.spikes;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.interactiveObjects.MovingSpike;
+import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.ObjectParser;
+import com.robot.game.util.StaticMethods;
 
+import static com.robot.game.util.Constants.MOVING_SPIKE_PERIOD;
 import static com.robot.game.util.Constants.PPM;
 
 public class JointHandler {
@@ -73,7 +75,7 @@ public class JointHandler {
             //System.out.println(movingSpike.getTimeElapsed());
 
             // if spike is in balance position for more than 3 seconds and is not attacking, reset timer and start attacking
-            if(movingSpike.isInBalancePosition() && movingSpike.getTimeElapsed() >= 3f && !movingSpike.isAttacking()) {
+            if(movingSpike.isInBalancePosition() && movingSpike.getTimeElapsed() >= MOVING_SPIKE_PERIOD && !movingSpike.isAttacking()) {
                 jointKey.setLimits(0, movingSpike.getUpperTranslationB());
                 movingSpike.setTimeElapsed(0);
                 movingSpike.setAttacking(true);

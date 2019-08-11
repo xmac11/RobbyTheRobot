@@ -14,8 +14,9 @@ import com.robot.game.util.Damaging;
 
 import static com.robot.game.util.Constants.*;
 
-public class TankBall extends Sprite implements Damaging, Pool.Poolable {
+public class TankBall implements Damaging, Pool.Poolable {
 
+    private Sprite sprite;
     private PlayScreen playScreen;
     private Robot robot;
     private World world;
@@ -31,8 +32,8 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         this.robot = playScreen.getRobot();
         this.world = playScreen.getWorld();
 
-        setRegion(playScreen.getAssets().tankBallAssets.tankFire);
-        setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
+        this.sprite = new Sprite(playScreen.getAssets().tankBallAssets.tankFire);
+        sprite.setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
     }
 
     public void createTankBallB2d() {
@@ -74,16 +75,15 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         }
     }
 
-    @Override
     public void draw(Batch batch) {
         if(exploded) {
-            setRegion(playScreen.getAssets().tankBallAssets.tankExplosionAnimation.getKeyFrame(explosionElapsed));
+            sprite.setRegion(playScreen.getAssets().tankBallAssets.tankExplosionAnimation.getKeyFrame(explosionElapsed));
         }
         else {
-            setPosition(body.getPosition().x - TANKBALL_WIDTH / 2 / PPM, body.getPosition().y - TANKBALL_HEIGHT / 2 / PPM);
+            sprite.setPosition(body.getPosition().x - TANKBALL_WIDTH / 2 / PPM, body.getPosition().y - TANKBALL_HEIGHT / 2 / PPM);
         }
 
-        super.draw(batch);
+        sprite.draw(batch);
     }
 
     public Body getBody() {
@@ -94,7 +94,7 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
         this.exploded = exploded;
         this.explosionStartTime = TimeUtils.nanoTime();
         this.explosionPosition.set(robot.getBody().getPosition().x - 32f / 2 / PPM, robot.getBody().getPosition().y - 32f / 2 / PPM);
-        setBounds(explosionPosition.x, explosionPosition.y, 32 / PPM, 32 / PPM);
+        sprite.setBounds(explosionPosition.x, explosionPosition.y, 32 / PPM, 32 / PPM);
     }
 
     private boolean animationFinished() {
@@ -109,8 +109,8 @@ public class TankBall extends Sprite implements Damaging, Pool.Poolable {
 
     @Override
     public void reset() {
-        setRegion(playScreen.getAssets().tankBallAssets.tankFire);
-        setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
+        sprite.setRegion(playScreen.getAssets().tankBallAssets.tankFire);
+        sprite.setSize(TANKBALL_WIDTH / PPM, TANKBALL_HEIGHT / PPM);
         exploded = false;
         explosionStartTime = 0;
         explosionElapsed = 0;

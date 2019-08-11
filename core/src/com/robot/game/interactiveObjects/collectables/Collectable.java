@@ -1,6 +1,7 @@
 package com.robot.game.interactiveObjects.collectables;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,9 +11,10 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import org.json.simple.JSONObject;
 
-public abstract class Collectable extends Sprite {
+public abstract class Collectable {
 
-    private PlayScreen playScreen;
+    protected Sprite sprite;
+    protected PlayScreen playScreen;
     protected Assets assets;
     private CollectableHandler collectableHandler;
     private World world;
@@ -34,6 +36,10 @@ public abstract class Collectable extends Sprite {
 
         // put collectables to sleep to reduce CPU cost
         body.setAwake(false);
+    }
+
+    public void draw(Batch batch) {
+        sprite.draw(batch);
     }
 
     public void update(float delta) {
