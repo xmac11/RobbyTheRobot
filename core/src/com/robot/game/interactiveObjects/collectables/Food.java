@@ -14,7 +14,10 @@ public class Food extends Collectable {
     public Food(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
 
-        if(MathUtils.random() > 0.5f) {
+        if(object.getProperties().containsKey("torch")) {
+            super.sprite = new Sprite(assets.collectableAssets.torch);
+        }
+        else if(MathUtils.random() > 0.5f) {
             super.sprite = new Sprite(assets.collectableAssets.burger);
         }
         else if(MathUtils.random() > 0.5f) {
@@ -24,10 +27,19 @@ public class Food extends Collectable {
             super.sprite = new Sprite(assets.collectableAssets.donut_red);
         }
 
-        // set the size of the bat sprite
-        sprite.setSize(FOOD_WIDTH / PPM, FOOD_HEIGHT / PPM);
+        if(object.getProperties().containsKey("torch")) {
+            // set the size of the sprite
+            sprite.setSize(16 / PPM, 8 / PPM);
+            // attach sprite to body
+            sprite.setPosition(body.getPosition().x - 16f / 2 / PPM, body.getPosition().y - 8f / 2 / PPM);
+        }
+        else {
+            // set the size of the sprite
+            sprite.setSize(FOOD_WIDTH / PPM, FOOD_HEIGHT / PPM);
+            // attach sprite to body
+            sprite.setPosition(body.getPosition().x - FOOD_WIDTH / 2 / PPM, body.getPosition().y - FOOD_HEIGHT / 2 / PPM);
+        }
 
-        // attach sprite to body
-        sprite.setPosition(body.getPosition().x - FOOD_WIDTH / 2 / PPM, body.getPosition().y - FOOD_HEIGHT / 2 / PPM);
+
     }
 }

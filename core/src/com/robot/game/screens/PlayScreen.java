@@ -1,5 +1,6 @@
 package com.robot.game.screens;
 
+import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -134,8 +135,14 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected PunchHandler punchHandler;
 
     // box2d light
+        // laser
     protected RayHandler rayHandler;
     protected PointLight pointLight;
+        // torch
+    protected RayHandler rayHandlerTorch;
+    protected ConeLight coneLight;
+    protected PointLight pointLightHand;
+    protected PointLight pointLightHead;
 
     // moving spikes - prismatic joints - jointHandler
     protected Array<MovingSpike> movingSpikes;
@@ -438,6 +445,18 @@ public abstract class PlayScreen extends ScreenAdapter {
         return pointLight;
     }
 
+    public ConeLight getConeLight() {
+        return coneLight;
+    }
+
+    public PointLight getPointLightHand() {
+        return pointLightHand;
+    }
+
+    public PointLight getPointLightHead() {
+        return pointLightHead;
+    }
+
     public ObjectParser getObjectParser() {
         return objectParser;
     }
@@ -500,8 +519,14 @@ public abstract class PlayScreen extends ScreenAdapter {
                 FileSaver.resetSpawningOfCollectables(levelID);
                 FileSaver.getCollectedItemsFile().delete();
             }
-            // finally restart the game
-            game.respawn(checkpointData, levelID);
+
+            // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts level2
+            if(levelID == 3) {
+                game.respawn(checkpointData, 2);
+            }
+            else {
+                game.respawn(checkpointData, levelID);
+            }
         }
     }
 }

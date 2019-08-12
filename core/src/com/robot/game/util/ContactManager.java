@@ -329,6 +329,18 @@ public class ContactManager implements ContactListener {
             collectable = (Collectable) fixA.getUserData();
         }
 
+        if(collectable.getMapObject().getProperties().containsKey("torch")) {
+            // activate cone light
+            robot.getPlayScreen().getConeLight().setActive(true);
+
+            // activate point light for hand (gun)
+            robot.getPlayScreen().getPointLightHand().setActive(true);
+
+            robot.getPlayScreen().getPointLightHead().setDistance(16 / PPM);
+            robot.setHasTorch(true);
+            robot.getCheckpointData().setHasTorch(true);
+        }
+
         // increase score for collectable
         StaticMethods.increaseScore(robot, collectable);
 
@@ -340,13 +352,13 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManger", "Robot collected powerup, Health " + robot.getCheckpointData().getHealth() + "%");
         }
 
-        // flagToCancelVelocity to collect (in order to destroy the body)
+        // flag to collect (in order to destroy the body)
         collectable.setFlagToCollect();
 
-        // add the collectable to the list of collectables to be disabled from beying respawned if robot dies
-        collectable.addToDisableSpawning((int) collectable.getObject().getProperties().get("id"));
+        // add the collectable to the list of collectables to be disabled from being respawned if the robot dies
+        collectable.addToDisableSpawning((int) collectable.getMapObject().getProperties().get("id"));
 
-        // flagToCancelVelocity that a new item was collected
+        // flag that a new item was collected
         robot.getPlayScreen().setNewItemCollected(true);
         Gdx.app.log("ContactManager","Robot collected item");
     }

@@ -10,6 +10,7 @@ public class CheckpointData {
     private int lives;
     private int score;
     private Vector2 spawnLocation;
+    private boolean hasTorch;
 
     // Checkpoints
     private boolean firstCheckpointActivated;
@@ -92,11 +93,20 @@ public class CheckpointData {
         score += points;
     }
 
+    public boolean hasTorch() {
+        return hasTorch;
+    }
+
+    public void setHasTorch(boolean hasTorch) {
+        this.hasTorch = hasTorch;
+    }
+
     public void setDefaultData() {
         health = 100;
         lives = 3;
         score = 0;
         spawnLocation = SPAWN_LOCATION;
+        hasTorch = false;
 
         firstCheckpointActivated = false;
         secondCheckpointActivated = false;

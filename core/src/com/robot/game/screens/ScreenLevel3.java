@@ -1,6 +1,7 @@
 package com.robot.game.screens;
 
 import box2dLight.ConeLight;
+import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -16,12 +17,6 @@ import com.robot.game.util.raycast.PunchHandler;
 import static com.robot.game.util.Constants.*;
 
 public class ScreenLevel3 extends PlayScreen {
-
-    private RayHandler rayHandlerTorch;
-    private ConeLight coneLight;
-
-    private PointLight pointLightHand;
-    private PointLight pointLightHead;
 
     public ScreenLevel3(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel3, 3);
@@ -59,7 +54,7 @@ public class ScreenLevel3 extends PlayScreen {
         rayHandler.setAmbientLight(1f);
         super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 48 / PPM, 0, 0);
 
-        // ray handler for torch
+        // create second ray handler for torch
         this.rayHandlerTorch = new RayHandler(world);
         rayHandlerTorch.setAmbientLight(0f);
 
@@ -73,37 +68,41 @@ public class ScreenLevel3 extends PlayScreen {
         this.pointLightHand = new PointLight(rayHandlerTorch, 10, Color.GREEN, 16 / PPM, 0 , 0);
         pointLightHand.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
-        // point light (head)
+        // point light (head) -- if the robot doesn't have the torch, it is placed on the torch
         this.pointLightHead = new PointLight(rayHandlerTorch, 10, new Color(247f / 255, 242f / 255, 98f / 255, 1),
-                16 / PPM, 0 , 0);
+                robot.hasTorch() ? 16 / PPM : 32 / PPM, 88 / PPM , 40 / PPM);
         pointLightHead.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
+        if(!robot.hasTorch()) {
+            coneLight.setActive(false);
+            //pointLightHand.setActive(false);
+        }
     }
 
     public void update(float delta) {
         // update common elements
         super.commonUpdates(delta);
 
-        // update torch
+        // update ray handler for torch
         rayHandlerTorch.update();
         rayHandlerTorch.setCombinedMatrix(camera);
 
-        // set position of cone light
-        if(robot.getFacing() == Enums.Facing.RIGHT) {
-            coneLight.setPosition(robot.getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM, 0));
-            coneLight.setDirection(0);
-        }
-        else if(robot.getFacing() == Enums.Facing.LEFT) {
-            coneLight.setPosition(robot.getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM, 0));
-            coneLight.setDirection(180);
-        }
+        if(robot.hasTorch()) {
+            // set position of cone light
+            if(robot.getFacing() == Enums.Facing.RIGHT) {
+                coneLight.setPosition(robot.getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM, 0));
+                coneLight.setDirection(0);
+            }
+            else if(robot.getFacing() == Enums.Facing.LEFT) {
+                coneLight.setPosition(robot.getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM, 0));
+                coneLight.setDirection(180);
+            }
 
-        // set position of hand light
+            // set position of head light
+            pointLightHead.setPosition(robot.getBody().getPosition().add(0, ROBOT_BODY_HEIGHT / 3 / PPM));
+        }
+        // set position of hand light (gun)
         pointLightHand.setPosition(robot.getBody().getPosition().sub(0, ROBOT_BODY_HEIGHT / 4 / PPM));
-
-        // set position of head light
-        pointLightHead.setPosition(robot.getBody().getPosition().add(0, ROBOT_BODY_HEIGHT / 3 / PPM));
-
     }
 
     @Override
@@ -164,6 +163,7 @@ public class ScreenLevel3 extends PlayScreen {
     public void dispose() {
         Gdx.app.log("ScreenLevel3", "dispose");
         rayHandler.dispose();
+        rayHandlerTorch.dispose();
         super.dispose();
     }
 }

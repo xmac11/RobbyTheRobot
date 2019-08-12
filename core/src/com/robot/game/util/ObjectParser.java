@@ -303,8 +303,9 @@ public class ObjectParser {
                     this.collectables.add(new PowerUp(playScreen, body, fixtureDef, object));
                 }
                 // create food
-                else
+                else {
                     this.collectables.add(new Food(playScreen, body, fixtureDef, object));
+                }
             }
         }
         // create wall jumping surface

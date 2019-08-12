@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 public final class Constants {
 
     public static final boolean DEBUG_ON = true;
-    public static final boolean DAMAGE_ON = false;
+    public static final boolean DAMAGE_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -16,7 +16,7 @@ public final class Constants {
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
     public static final String LEVEL_2_TMX = "level2/level2.tmx";
-    public static final String LEVEL_CAVE_TMX = "level2/cave.tmx";
+    public static final String LEVEL_3_TMX = "level2/level3.tmx";
     public static final String FOLDER_NAME = "files/";
 
     public static final String GROUND_OBJECT = "Ground obj";

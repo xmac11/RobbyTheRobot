@@ -86,7 +86,7 @@ public class Assets {
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(LEVEL_1_TMX, TiledMap.class);
         assetManager.load(LEVEL_2_TMX, TiledMap.class);
-        assetManager.load(LEVEL_CAVE_TMX, TiledMap.class);
+        assetManager.load(LEVEL_3_TMX, TiledMap.class);
 
         assetManager.load("sprites.pack", TextureAtlas.class);
         assetManager.load("background.png", Texture.class);
@@ -150,7 +150,7 @@ public class Assets {
         public TiledMapAssets() {
             this.tiledMapLevel1 = assetManager.get(LEVEL_1_TMX);
             this.tiledMapLevel2 = assetManager.get(LEVEL_2_TMX);
-            this.tiledMapLevel3 = assetManager.get(LEVEL_CAVE_TMX);
+            this.tiledMapLevel3 = assetManager.get(LEVEL_3_TMX);
         }
     }
 
@@ -387,12 +387,14 @@ public class Assets {
         public final TextureAtlas.AtlasRegion powerup;
         public final TextureAtlas.AtlasRegion donut_pink;
         public final TextureAtlas.AtlasRegion donut_red;
+        public final Texture torch;
 
         private CollectableAssets(TextureAtlas atlas) {
             this.burger = atlas.findRegion("burger");
             this.powerup = atlas.findRegion("powerup");
             this.donut_pink = atlas.findRegion("donut_pink");
             this.donut_red = atlas.findRegion("donut_red");
+            this.torch = new Texture("level2/torch.png");
         }
     }
 

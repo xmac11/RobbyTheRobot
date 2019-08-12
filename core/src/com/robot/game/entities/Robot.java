@@ -82,6 +82,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     // ray cast callback
     private MyRayCastCallback callback;
 
+    // cave torch
+    private boolean hasTorch;
+
     // animation
     private float elapsedAnim;
 
@@ -95,6 +98,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.checkpointData = playScreen.getCheckpointData();
         this.shakeEffect = playScreen.getShakeEffect();
         this.facing = RIGHT;
+        this.hasTorch = checkpointData.hasTorch();
         createRobotB2d();
 
 //        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
@@ -549,6 +553,14 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public Facing getFacing() {
         return facing;
+    }
+
+    public boolean hasTorch() {
+        return hasTorch;
+    }
+
+    public void setHasTorch(boolean hasTorch) {
+        this.hasTorch = hasTorch;
     }
 
     @Override

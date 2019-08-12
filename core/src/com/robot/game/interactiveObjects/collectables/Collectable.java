@@ -19,7 +19,7 @@ public abstract class Collectable {
     private CollectableHandler collectableHandler;
     private World world;
     private Body body;
-    private MapObject object;
+    private MapObject mapObject;
     private JSONObject temp;
     private boolean flagToCollect;
     private boolean destroyed;
@@ -30,7 +30,7 @@ public abstract class Collectable {
         this.collectableHandler = playScreen.getCollectableHandler();
         this.world = playScreen.getWorld();
         this.body = body;
-        this.object = object;
+        this.mapObject = object;
         this.temp = new JSONObject();
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -65,8 +65,8 @@ public abstract class Collectable {
         return body;
     }
 
-    public MapObject getObject() {
-        return object;
+    public MapObject getMapObject() {
+        return mapObject;
     }
 
     public void addToDisableSpawning(int collectableID) {
