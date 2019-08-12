@@ -26,7 +26,6 @@ public class ScreenLevel3 extends PlayScreen {
     public void show() {
         Gdx.app.log("ScreenLevel3", "show");
 
-
         // create tiled objects
         super.layersObjectArray = new Array<>();
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
@@ -75,7 +74,6 @@ public class ScreenLevel3 extends PlayScreen {
 
         if(!robot.hasTorch()) {
             coneLight.setActive(false);
-            //pointLightHand.setActive(false);
         }
     }
 
@@ -143,6 +141,10 @@ public class ScreenLevel3 extends PlayScreen {
         laserHandler.render(game.getBatch(), shapeRenderer);
 
         game.getBatch().begin();
+        // render feedback
+        // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
+        feedbackRenderer.draw(game.getBatch(), delta);
+
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());
         game.getBatch().end();

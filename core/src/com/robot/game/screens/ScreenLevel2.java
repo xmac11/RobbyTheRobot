@@ -144,6 +144,10 @@ public class ScreenLevel2 extends PlayScreen {
             movingSpike.draw(game.getBatch());
         }
 
+        // render feedback
+        // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
+        feedbackRenderer.draw(game.getBatch(), delta);
+
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());
         game.getBatch().end();

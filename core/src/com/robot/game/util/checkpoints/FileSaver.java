@@ -16,8 +16,8 @@ import static com.robot.game.util.Constants.*;
 public class FileSaver {
 
     private static Json json = new Json();
-    private static FileHandle checkPointFile = Gdx.files.local("/files/checkpoints.json");
-    private static FileHandle collectedItemsFile = Gdx.files.local("/files/collectedItems.json");
+    private static FileHandle checkPointFile = Gdx.files.local(FOLDER_NAME + "checkpoints.json");
+    private static FileHandle collectedItemsFile = Gdx.files.local(FOLDER_NAME + "collectedItems.json");
 
     // CHECKPOINTS
 

@@ -319,6 +319,7 @@ public class ContactManager implements ContactListener {
     private void robotCollectableBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
         Collectable collectable;
+        boolean isTorch = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
@@ -330,6 +331,7 @@ public class ContactManager implements ContactListener {
         }
 
         if(collectable.getMapObject().getProperties().containsKey("torch")) {
+            isTorch = true;
             // activate cone light
             robot.getPlayScreen().getConeLight().setActive(true);
 
@@ -341,11 +343,14 @@ public class ContactManager implements ContactListener {
             robot.getCheckpointData().setHasTorch(true);
         }
 
-        // increase score for collectable
-        StaticMethods.increaseScore(robot, collectable);
+        // if collectable is not the torch
+        if(!isTorch) {
+            // increase score for collectable
+            StaticMethods.increaseScore(robot, collectable);
 
-        // add collectable to the HashMap in order to render the points gained or the powerup animation
-        StaticMethods.queueForPointsRenderer(robot, collectable);
+            // add collectable to the HashMap in order to render the points gained or the powerup animation
+            StaticMethods.queueForPointsRenderer(robot, collectable);
+        }
 
         if(collectable instanceof PowerUp) {
             StaticMethods.increaseHealth(robot, (PowerUp) collectable);
