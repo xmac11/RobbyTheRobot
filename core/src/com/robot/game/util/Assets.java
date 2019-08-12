@@ -385,10 +385,14 @@ public class Assets {
 
         public final TextureAtlas.AtlasRegion burger;
         public final TextureAtlas.AtlasRegion powerup;
+        public final TextureAtlas.AtlasRegion donut_pink;
+        public final TextureAtlas.AtlasRegion donut_red;
 
         private CollectableAssets(TextureAtlas atlas) {
             this.burger = atlas.findRegion("burger");
             this.powerup = atlas.findRegion("powerup");
+            this.donut_pink = atlas.findRegion("donut_pink");
+            this.donut_red = atlas.findRegion("donut_red");
         }
     }
 

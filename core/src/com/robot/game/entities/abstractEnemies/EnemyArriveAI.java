@@ -35,7 +35,6 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected float boundingRadius;
 
     protected Facing facing;
-    protected boolean falling;
     protected boolean activated;
     protected boolean locked;
 

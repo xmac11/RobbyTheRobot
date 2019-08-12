@@ -45,6 +45,9 @@ public class ScreenLevel3 extends PlayScreen {
         // creates objectParser, interactivePlatforms, enemies and collectables
         super.createCommonObjectLayers();
 
+        // create trampoline
+        super.trampoline = objectParser.getTrampoline();
+
         // create laser handler
         super.laserHandler = new LaserHandler(this);
 
@@ -126,6 +129,9 @@ public class ScreenLevel3 extends PlayScreen {
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
+
+        // render trampoline
+        trampoline.draw(game.getBatch());
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         //hud.draw(game.getBatch());

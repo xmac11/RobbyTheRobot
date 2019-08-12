@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.Robot;
-import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
@@ -54,7 +54,7 @@ public class FeedbackRenderer {
         for(Collectable collectableKey: itemPointsToDraw.keys()) {
 
             // if collectable is a burger
-            if(collectableKey instanceof Burger) {
+            if(collectableKey instanceof Food) {
                 renderPointsFromBurger(batch, delta, collectableKey);
             }
 
@@ -111,7 +111,7 @@ public class FeedbackRenderer {
 
         if(alpha > 0) {
             feedbackFont.draw(batch,
-                    String.valueOf(POINTS_FOR_BURGER),
+                    String.valueOf(POINTS_FOR_FOOD),
                     collectableKey.getBody().getPosition().x,
                     collectableKey.getBody().getPosition().y + 24 / PPM + (1 - alpha) / 1.5f,
                     0,

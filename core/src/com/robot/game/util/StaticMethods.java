@@ -15,7 +15,7 @@ import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
 import com.robot.game.entities.crab.CrabPathFollowingAI;
 import com.robot.game.entities.crab.CrabPatrolling;
-import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 
@@ -59,12 +59,12 @@ public class StaticMethods {
 
     // get the number of points that should be added depending on the item collected
     public static int getPointsForCollectable(Collectable collectable) {
-        return collectable instanceof Burger ? POINTS_FOR_BURGER : 0;
+        return collectable instanceof Food ? POINTS_FOR_FOOD : 0;
     }
 
     public static void queueForPointsRenderer(Robot robot, Collectable collectable) {
         // if collectable is a burger put the value 1 (alpha), else put the robot's initial health (before increasing it)
-        float value = collectable instanceof Burger ? 1 : (float) robot.getCheckpointData().getHealth();
+        float value = collectable instanceof Food ? 1 : (float) robot.getCheckpointData().getHealth();
         robot.getPlayScreen().getFeedbackRenderer().getItemPointsToDraw().put(collectable, value);
     }
 

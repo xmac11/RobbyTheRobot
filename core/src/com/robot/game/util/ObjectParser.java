@@ -20,7 +20,7 @@ import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.entities.snake.SnakeArriveAI;
 import com.robot.game.entities.snake.SnakePatrolling;
 import com.robot.game.interactiveObjects.*;
-import com.robot.game.interactiveObjects.collectables.Burger;
+import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 import com.robot.game.interactiveObjects.ladder.Ladder;
@@ -222,7 +222,7 @@ public class ObjectParser {
             fixtureDef.filter.maskBits = TRAMPOLINE_MASK;
         }
         // sensors for disabling arrive ai behavior
-        else if(object.getProperties().containsKey("chaseSensor")) {
+        else if(object.getProperties().containsKey(CHASE_SENSOR_PROPERTY)) {
             fixtureDef.filter.categoryBits = CHASE_SENSOR_CATEGORY;
             fixtureDef.filter.maskBits = CHASE_SENSOR_MASK;
             fixtureDef.isSensor = true;
@@ -302,9 +302,9 @@ public class ObjectParser {
                 if(object.getProperties().containsKey(POWERUP_PROPERTY)) {
                     this.collectables.add(new PowerUp(playScreen, body, fixtureDef, object));
                 }
-                // create burgers
+                // create food
                 else
-                    this.collectables.add(new Burger(playScreen, body, fixtureDef, object));
+                    this.collectables.add(new Food(playScreen, body, fixtureDef, object));
             }
         }
         // create wall jumping surface

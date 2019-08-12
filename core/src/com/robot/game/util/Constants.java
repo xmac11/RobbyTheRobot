@@ -96,7 +96,7 @@ public final class Constants {
         // Movement
     public static final float ROBOT_MAX_HOR_SPEED = 5;
     public static final float BREAK_GROUND_FACTOR = 0.96f;
-    public static final float BREAK_AIR_FACTOR = 0.99f;
+    //public static final float BREAK_AIR_FACTOR = 0.99f;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_SPEED = 5;
     public static final float ROBOT_JUMP_TIMER = 0.2f;
@@ -130,6 +130,7 @@ public final class Constants {
     public static final String MOVING_PLATFORM_PROPERTY = "moving";
     public static final String WALL_JUMPING_PROPERTY = "wallJumping";
     public static final String TRAMPOLINE_PROPERTY = "trampoline";
+    public static final String CHASE_SENSOR_PROPERTY = "chaseSensor";
 
     // Enemies
     public static final String ENEMY_PROPERTY = "enemy";
@@ -165,10 +166,10 @@ public final class Constants {
     // Collectables
     public static final String COLLECTABLE_PROPERTY = "collectable";
     public static final String POWERUP_PROPERTY = "powerup";
-    public static final String BURGER_PROPERTY = "burger";
+    //public static final String BURGER_PROPERTY = "burger";
     public static final String COLLECTABLE_SPAWNING_PROPERTY = "shouldSpawn";
-    public static final float BURGER_WIDTH = 20;
-    public static final float BURGER_HEIGHT = 16;
+    public static final float FOOD_WIDTH = 20;
+    public static final float FOOD_HEIGHT = 16;
     public static final float POWERUP_WIDTH = 20;
     public static final float POWERUP_HEIGHT = 22;
     public static final float FULL_HEAL_WIDTH = 26;
@@ -220,7 +221,7 @@ public final class Constants {
     public static final int POINTS_FOR_BAT = 100;
     public static final int POINTS_FOR_CRAB = 50;
     public static final int POINTS_FOR_FISH = 50;
-    public static final int POINTS_FOR_BURGER = 25;
+    public static final int POINTS_FOR_FOOD = 25;
     public static final int HEALTH_FOR_POWERUP = 25;
 
     // Earthquake

@@ -144,7 +144,6 @@ public class ScreenLevel2 extends PlayScreen {
             movingSpike.draw(game.getBatch());
         }
 
-
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(game.getBatch());
         game.getBatch().end();

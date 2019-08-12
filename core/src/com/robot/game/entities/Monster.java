@@ -36,14 +36,6 @@ public class Monster extends EnemyArriveAI {
             this.checkIfShouldBeActivated();
         }
 
-        // update state
-        if(body.getLinearVelocity().y <= -1f && !falling) {
-            falling = true;
-        }
-        else if(body.getLinearVelocity().y > -1f && falling) {
-            falling = false;
-        }
-
         // calculate steering
         if(activated && steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
@@ -76,12 +68,8 @@ public class Monster extends EnemyArriveAI {
             super.setActivated(false);
         }
         // walking
-        else if(!dead && !falling) {
-            sprite.setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
-        }
-        // falling
         else if(!dead) {
-            sprite.setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(0));
+            sprite.setRegion(assets.monsterAssets.monsterWalkAnim.getKeyFrame(elapsedAnim));
         }
         // dead
         else {

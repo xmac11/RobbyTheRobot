@@ -195,8 +195,9 @@ public class ContactManager implements ContactListener {
         robot.setOnInteractivePlatform(movingPlatform, true);
 
         // if platform is waiting and has not been already stopped, move it
-        if(movingPlatform.isWaiting() && !movingPlatform.isStopped())
+        if(movingPlatform.isWaiting() && !movingPlatform.isStopped()) {
             movingPlatform.movePlatform();
+        }
     }
 
     private void robotSpikesBegin(Fixture fixA, Fixture fixB) {

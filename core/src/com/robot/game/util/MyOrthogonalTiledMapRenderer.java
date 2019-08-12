@@ -6,6 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 
+/* This class is used for pausing any animations handled internally by Tiled. Adapted from:
+ * https://gamedev.stackexchange.com/questions/174325/pause-tiled-animation-during-game-in-libgdx */
+
 public class MyOrthogonalTiledMapRenderer extends OrthogonalTiledMapRenderer {
 
     private boolean mapAnimationActive;
