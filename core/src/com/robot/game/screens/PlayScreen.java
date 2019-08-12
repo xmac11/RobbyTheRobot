@@ -183,8 +183,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.world = new World(new Vector2(0, -9.81f), true);
         this.contactManager = new ContactManager();
         world.setContactListener(contactManager);
-        if(DEBUG_ON)
+        if(DEBUG_ON) {
             this.debugRenderer = new Box2DDebugRenderer();
+        }
 
         // create collectable handler
         this.collectableHandler = new CollectableHandler(levelID);
@@ -513,20 +514,25 @@ public abstract class PlayScreen extends ScreenAdapter {
             // reset checkpoint data
             checkpointData.setDefaultData();
 
+            // so that if any item was collected during last life, they won't be saved in a file
+            doNotSaveInHide = true;
+
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
              * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
-                FileSaver.getCollectedItemsFile().delete();
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                System.out.println(deleted + "!!!!!!!!!");
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
             // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts level2
-            if(levelID == 3) {
+            /*if(levelID == 3) {
                 game.respawn(checkpointData, 2);
             }
-            else {
+            else {*/
                 game.respawn(checkpointData, levelID);
-            }
+//            }
         }
     }
 }

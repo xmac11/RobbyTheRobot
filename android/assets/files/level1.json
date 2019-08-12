@@ -1342,8 +1342,8 @@
 					},
 					{
 						"name": "waitForPlayer",
-						"type": "string",
-						"value": ""
+						"type": "float",
+						"value": 128
 					}
 				],
 				"height": 16
