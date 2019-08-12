@@ -146,7 +146,7 @@ public class ScreenLevel1 extends PlayScreen {
         //        System.out.println("render2: " + game.getBatch().renderCalls);
 
         if(DEBUG_ON) {
-            // render ai paths
+            // render box2d shapes and ai paths
             super.renderDebugLines();
         }
 

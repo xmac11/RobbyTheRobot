@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class Constants {
 
-    public static final boolean DEBUG_ON = true;
+    public static final boolean DEBUG_ON = false;
     public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
@@ -16,6 +16,7 @@ public final class Constants {
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
     public static final String LEVEL_2_TMX = "level2/level2.tmx";
+    public static final String LEVEL_3_TMX = "level2/level3.tmx";
     public static final String FOLDER_NAME = "files/";
 
     public static final String GROUND_OBJECT = "Ground obj";
@@ -46,6 +47,7 @@ public final class Constants {
     public static final short TRAMPOLINE_CATEGORY = 2048;
     public static final short ENEMY_PROJECTILE_CATEGORY = 4096;
     public static final short CHASE_SENSOR_CATEGORY = 8192;
+    public static final short TORCH_LIGHT_CATEGORY = 16384;
 
     // Box2D filter mask bits
     public static final short NOTHING_MASK = 0;
@@ -64,6 +66,7 @@ public final class Constants {
     public static final short TRAMPOLINE_MASK = ROBOT_CATEGORY;
     public static final short ENEMY_PROJECTILE_MASK = ROBOT_CATEGORY;
     public static final short CHASE_SENSOR_MASK = ENEMY_CATEGORY;
+    public static final short TORCH_LIGHT_MASK = GROUND_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY /*| ROBOT_CATEGORY*/;
     public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY;
 
     // Robot

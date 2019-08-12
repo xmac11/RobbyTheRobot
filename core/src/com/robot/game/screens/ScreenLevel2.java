@@ -60,6 +60,7 @@ public class ScreenLevel2 extends PlayScreen {
         super.tankBallPool = new TankBallPool(this);
         super.tankBallSpawner = new TankBallSpawner(this);
 
+        // create ray handler (box2d lights)
         super.rayHandler = new RayHandler(world);
 //        rayHandler.setAmbientLight(1);
         rayHandler.setShadows(false);
@@ -155,7 +156,7 @@ public class ScreenLevel2 extends PlayScreen {
         if(DEBUG_ON) {
             // render punch lines
             punchHandler.render(shapeRenderer);
-            // render ai paths
+            // render box2d shapes and ai paths
             super.renderDebugLines();
         }
 
