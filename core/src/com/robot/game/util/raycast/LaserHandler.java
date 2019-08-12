@@ -32,19 +32,19 @@ public class LaserHandler extends RayCastHandler {
 
         this.determineRayPoints();
 
-        // start from rayPointStart (and will lerp until rayPointEnd)
-        tempRayPointEnd.set(rayPointStart);
-
-        /*if(rayPointEnd.isZero()) {
-            if(robot.facing == Robot.Facing.RIGHT) {
+        /*if(callback.getRayPointEnd().isZero()) {
+            if(robot.getFacing() == RIGHT) {
                 rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
                 rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
             }
-            else if(robot.facing == Robot.Facing.LEFT) {
+            else if(robot.getFacing() == LEFT) {
                 rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
                 rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
             }
         }*/
+
+        // start from rayPointStart (and will lerp until rayPointEnd)
+        tempRayPointEnd.set(rayPointStart);
 
         // execute the raycast
         world.rayCast(callback, rayPointStart, rayPointEnd);
@@ -100,10 +100,6 @@ public class LaserHandler extends RayCastHandler {
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
                         tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
                         0.5f / PPM);*/
-
-                if(!rayCastActive) {
-                    callback.getRayPointEnd().set(0, 0);
-                }
             }
             else if(robot.getFacing() == LEFT) {
                 tempRayPointEnd.sub(64f / PPM, 0);
@@ -123,10 +119,6 @@ public class LaserHandler extends RayCastHandler {
                         2 / PPM,
                         Color.GREEN,
                         Color.CYAN);
-
-                if(!rayCastActive) {
-                    callback.getRayPointEnd().set(0, 0);
-                }
             }
             shapeRenderer.end();
 
@@ -138,6 +130,11 @@ public class LaserHandler extends RayCastHandler {
 
         // draw animation of hit target
         handleAnimation(batch);
+
+        // reset end point to zero so that it does not interfere with the punch end point
+        if(!callback.getRayPointEnd().isZero() && !rayCastActive && !rayHitAnimActive) {
+            callback.getRayPointEnd().set(0, 0);
+        }
     }
 
     @Override

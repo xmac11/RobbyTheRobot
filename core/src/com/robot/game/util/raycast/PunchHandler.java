@@ -59,8 +59,9 @@ public class PunchHandler extends RayCastHandler {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.WHITE);
 
+            // facing right
             if(robot.getFacing() == RIGHT) {
-                tempRayPointEnd.add(2f / PPM, 0);
+                tempRayPointEnd.add(4f / PPM, 0);
                 if(tempRayPointEnd.x > rayPointEnd.x) {
                     rayCastActive = false;
                 }
@@ -68,13 +69,10 @@ public class PunchHandler extends RayCastHandler {
                 // lerp from start point to end point
                 // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
                 shapeRenderer.line(rayPointStart, tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd : tempRayPointEnd);
-
-                if(!rayCastActive) {
-                    callback.getRayPointEnd().set(0, 0);
-                }
             }
+            // facing left
             else if(robot.getFacing() == LEFT) {
-                tempRayPointEnd.sub(2f / PPM, 0);
+                tempRayPointEnd.sub(4f / PPM, 0);
                 if(tempRayPointEnd.x < rayPointEnd.x) {
                     rayCastActive = false;
                 }
@@ -82,10 +80,11 @@ public class PunchHandler extends RayCastHandler {
                 // lerp from start point to end point
                 // If tempRayPointEnd exceeds actual end point, draw the actual end point, otherwise draw the temporary end point, which is between the start and end
                 shapeRenderer.line(rayPointStart, tempRayPointEnd.x < rayPointEnd.x ? rayPointEnd : tempRayPointEnd);
+            }
 
-                if(!rayCastActive) {
-                    callback.getRayPointEnd().set(0, 0);
-                }
+            // reset end point to zero so that it does not interfere with the laser end point
+            if(!rayCastActive) {
+                callback.getRayPointEnd().set(0, 0);
             }
             shapeRenderer.end();
         }
