@@ -2,7 +2,7 @@ package com.robot.game.util.checkpoints;
 
 import com.badlogic.gdx.math.Vector2;
 
-import static com.robot.game.util.Constants.SPAWN_LOCATION;
+import static com.robot.game.util.Constants.*;
 
 public class CheckpointData {
 
@@ -105,7 +105,7 @@ public class CheckpointData {
         health = 100;
         lives = 3;
         score = 0;
-        spawnLocation = SPAWN_LOCATION;
+        spawnLocation = SPAWN_LOCATION_L2;
         hasTorch = false;
 
         firstCheckpointActivated = false;

@@ -3,6 +3,7 @@ package com.robot.game.screens;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
@@ -14,6 +15,7 @@ import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
 import com.robot.game.interactiveObjects.spikes.JointHandler;
+import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 
@@ -99,6 +101,13 @@ public class ScreenLevel2 extends PlayScreen {
 
         // update prismatic joints of moving spikes
         jointHandler.update(delta);
+
+        //// Debug keys for checkpoints ////
+        //if(DEBUG_ON)
+        this.toggleDebugCheckpoints();
+
+        // handle checkpoints
+        this.handleCheckpoints();
     }
 
     @Override
@@ -172,5 +181,98 @@ public class ScreenLevel2 extends PlayScreen {
         Gdx.app.log("ScreenLevel2", "dispose");
         rayHandler.dispose();
         super.dispose();
+    }
+
+    private void handleCheckpoints() {
+        // First checkpoint
+        if(!checkpointData.isFirstCheckpointActivated()) {
+            this.checkFirstCheckpoint();
+        }
+        // Second checkpoint
+        else if(!checkpointData.isSecondCheckpointActivated()) {
+            this.checkSecondCheckpoint();
+        }
+        else if(!checkpointData.isThirdCheckpointActivated()) {
+            this.checkThirdCheckpoint();
+        }
+    }
+
+    // Checkpoints
+    private void checkFirstCheckpoint() {
+        if( Math.abs( (robot.getBody().getPosition().x - FIRST_CHECKPOINT_LOCATION_L2.x) * PPM )  <= CHECKPOINT_TOLERANCE
+                && Math.abs( (robot.getBody().getPosition().y - FIRST_CHECKPOINT_LOCATION_L2.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
+
+            Gdx.app.log("ScreenLevel2","First checkpoint activated!");
+            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION_L2);
+            checkpointData.setFirstCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
+    }
+
+    private void checkSecondCheckpoint() {
+        if( Math.abs( (robot.getBody().getPosition().x - SECOND_CHECKPOINT_LOCATION_L2.x) * PPM )  <= CHECKPOINT_TOLERANCE
+                && Math.abs( (robot.getBody().getPosition().y - SECOND_CHECKPOINT_LOCATION_L2.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
+
+            Gdx.app.log("ScreenLevel2","Second checkpoint activated!");
+            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION_L2);
+            checkpointData.setSecondCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
+    }
+
+    private void checkThirdCheckpoint() {
+        if( Math.abs( (robot.getBody().getPosition().x - THIRD_CHECKPOINT_LOCATION_L2.x) * PPM )  <= CHECKPOINT_TOLERANCE
+                && Math.abs( (robot.getBody().getPosition().y - THIRD_CHECKPOINT_LOCATION_L2.y) * PPM )  <= CHECKPOINT_TOLERANCE) {
+
+            Gdx.app.log("ScreenLevel2","Third checkpoint activated!");
+            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION_L2);
+            checkpointData.setThirdCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
+    }
+
+    // Debug keys for checkpoints
+
+    private void toggleDebugCheckpoints() {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
+            boolean fileDeleted = FileSaver.getCheckpointFile().delete();
+            Gdx.app.log("ScreenLevel2", "Checkpoints file deleted = " + fileDeleted);
+            checkpointDataDeleted = true;
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                Gdx.app.log("ScreenLevel2", "collectedItems.json deleted = " + deleted);
+            }
+            else {
+                newItemCollected = false;
+            }
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+            Gdx.app.log("ScreenLevel2", "First checkpoint set");
+            checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION_L2);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(false);
+            checkpointData.setThirdCheckpointActivated(false);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+            Gdx.app.log("ScreenLevel2", "Second checkpoint set");
+            checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION_L2);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(true);
+            checkpointData.setThirdCheckpointActivated(false);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+            Gdx.app.log("ScreenLevel2", "Third checkpoint set");
+            checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION_L2);
+            checkpointData.setFirstCheckpointActivated(true);
+            checkpointData.setSecondCheckpointActivated(true);
+            checkpointData.setThirdCheckpointActivated(true);
+            FileSaver.saveCheckpointData(checkpointData);
+        }
     }
 }

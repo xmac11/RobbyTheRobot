@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 public final class Constants {
 
     public static final boolean DEBUG_ON = false;
-    public static final boolean DAMAGE_ON = true;
+    public static final boolean DAMAGE_ON = false;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -80,11 +80,6 @@ public final class Constants {
     public static final float ROBOT_OFFSET_Y = 5;
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
-    public static final Vector2 SPAWN_LOCATION = new Vector2(32 / PPM, 160 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 160 / PPM);
-    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 416 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 208 / PPM);
-    public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Spike respawn locations
 //    public static final Vector2 SPIKE_RESPAWN_1 = new Vector2(1120 / PPM, 336 / PPM);
@@ -120,6 +115,20 @@ public final class Constants {
     public static final float PUNCH_OFFSET_Y = 6 / PPM;
     public static final float PUNCH_IMPULSE_X = 3f;
     public static final float PUNCH_IMPULSE_Y = 2f;
+
+    // Checkpoints
+        // Level1
+    public static final Vector2 SPAWN_LOCATION_L1 = new Vector2(32 / PPM, 160 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 160 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 416 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 208 / PPM);
+    public static final float CHECKPOINT_TOLERANCE = 48;
+
+        // Level2
+    public static final Vector2 SPAWN_LOCATION_L2 = new Vector2(80 / PPM, 80 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L2 = new Vector2(480 / PPM, 80 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L2 = new Vector2(2410 / PPM, 784 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4350 / PPM, 736 / PPM);
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";

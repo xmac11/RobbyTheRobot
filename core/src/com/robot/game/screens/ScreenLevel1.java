@@ -228,8 +228,8 @@ public class ScreenLevel1 extends PlayScreen {
 
     private void toggleDebugCheckpoints() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
-            Gdx.app.log("ScreenLevel1", "Checkpoints deleted");
-            FileSaver.getCheckpointFile().delete();
+            boolean fileDeleted = FileSaver.getCheckpointFile().delete();
+            Gdx.app.log("ScreenLevel1", "Checkpoints file deleted = " + fileDeleted);
             checkpointDataDeleted = true;
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),

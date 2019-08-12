@@ -617,11 +617,9 @@
   </object>
  </objectgroup>
  <objectgroup id="3" name="draft">
-  <object id="1" x="160" y="656" width="18" height="50"/>
-  <object id="2" x="80" y="928" width="18" height="50"/>
   <object id="3" x="0" y="560">
    <point/>
   </object>
-  <object id="175" x="2336" y="720" width="18" height="50"/>
+  <object id="175" x="480" y="912" width="18" height="50"/>
  </objectgroup>
 </map>
