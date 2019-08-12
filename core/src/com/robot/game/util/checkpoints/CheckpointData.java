@@ -6,6 +6,7 @@ import static com.robot.game.util.Constants.*;
 
 public class CheckpointData {
 
+    private int levelID;
     private int health;
     private int lives;
     private int score;
@@ -101,12 +102,31 @@ public class CheckpointData {
         this.hasTorch = hasTorch;
     }
 
-    public void setDefaultData() {
+    public int getLevelID() {
+        return levelID;
+    }
+
+    public void setLevelID(int levelID) {
+        this.levelID = levelID;
+    }
+
+    public void setDefaultData(int levelID) {
         health = 100;
         lives = 3;
         score = 0;
-        spawnLocation = SPAWN_LOCATION_L2;
         hasTorch = false;
+
+        switch(levelID) {
+            case 1:
+                spawnLocation = SPAWN_LOCATION_L1;
+                break;
+            case 2:
+                spawnLocation = SPAWN_LOCATION_L2;
+                break;
+            case 3:
+                spawnLocation = SPAWN_LOCATION_L3;
+                break;
+        }
 
         firstCheckpointActivated = false;
         secondCheckpointActivated = false;

@@ -167,7 +167,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         else {
             Gdx.app.log("PlayScreen", "New file was created");
             this.checkpointData = new CheckpointData();
-            checkpointData.setDefaultData();
+            checkpointData.setDefaultData(levelID);
             FileSaver.saveCheckpointData(checkpointData);
         }
 
@@ -508,7 +508,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
 
             // reset checkpoint data
-            checkpointData.setDefaultData();
+            checkpointData.setDefaultData(levelID);
 
             // so that if any item was collected during last life, they won't be saved in a file
             doNotSaveInHide = true;
