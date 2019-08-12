@@ -468,6 +468,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.climbTimer = 0;
     }
 
+    public boolean isOnInteractivePlatform() {
+        return isOnInteractivePlatform;
+    }
+
     public void setOnInteractivePlatform(InteractivePlatform interactivePlatform, boolean isOnInteractivePlatform) {
         this.interactivePlatform = interactivePlatform;
         this.isOnInteractivePlatform = isOnInteractivePlatform;

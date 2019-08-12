@@ -78,20 +78,6 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="Wall obj">
-  <object id="38" x="344" y="752" width="48" height="8">
-   <properties>
-    <property name="endX" type="float" value="-1"/>
-    <property name="endY" type="float" value="2000"/>
-    <property name="interactivePlatform" value=""/>
-    <property name="moving" value=""/>
-    <property name="shouldStop" type="bool" value="true"/>
-    <property name="startX" type="float" value="-1"/>
-    <property name="startY" type="float" value="112"/>
-    <property name="vX" type="float" value="0"/>
-    <property name="vY" type="float" value="-3"/>
-    <property name="waiting" type="bool" value="true"/>
-   </properties>
-  </object>
   <object id="49" x="144" y="432" width="16" height="464">
    <properties>
     <property name="wallJumping" value=""/>
@@ -100,20 +86,6 @@
   <object id="50" x="243" y="576" width="13" height="400">
    <properties>
     <property name="wallJumping" value=""/>
-   </properties>
-  </object>
-  <object id="66" x="2560" y="272" width="48" height="8">
-   <properties>
-    <property name="endX" type="float" value="3352"/>
-    <property name="endY" type="float" value="-1"/>
-    <property name="interactivePlatform" value=""/>
-    <property name="moving" value=""/>
-    <property name="shouldStop" type="bool" value="true"/>
-    <property name="startX" type="float" value="-1"/>
-    <property name="startY" type="float" value="-1"/>
-    <property name="vX" type="float" value="3.5"/>
-    <property name="vY" type="float" value="0"/>
-    <property name="waiting" type="bool" value="true"/>
    </properties>
   </object>
   <object id="67" x="1504" y="432" width="32" height="320"/>
@@ -347,6 +319,34 @@
   <object id="293" x="4340" y="708" width="8" height="8">
    <properties>
     <property name="prismatic" type="int" value="3"/>
+   </properties>
+  </object>
+  <object id="38" x="344" y="752" width="48" height="8">
+   <properties>
+    <property name="endX" type="float" value="-1"/>
+    <property name="endY" type="float" value="2000"/>
+    <property name="interactivePlatform" value=""/>
+    <property name="moving" value=""/>
+    <property name="shouldStop" type="bool" value="true"/>
+    <property name="startX" type="float" value="-1"/>
+    <property name="startY" type="float" value="112"/>
+    <property name="vX" type="float" value="0"/>
+    <property name="vY" type="float" value="-3"/>
+    <property name="waiting" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="66" x="2560" y="272" width="48" height="8">
+   <properties>
+    <property name="endX" type="float" value="3352"/>
+    <property name="endY" type="float" value="-1"/>
+    <property name="interactivePlatform" value=""/>
+    <property name="moving" value=""/>
+    <property name="shouldStop" type="bool" value="true"/>
+    <property name="startX" type="float" value="-1"/>
+    <property name="startY" type="float" value="-1"/>
+    <property name="vX" type="float" value="3.5"/>
+    <property name="vY" type="float" value="0"/>
+    <property name="waiting" type="bool" value="true"/>
    </properties>
   </object>
  </objectgroup>

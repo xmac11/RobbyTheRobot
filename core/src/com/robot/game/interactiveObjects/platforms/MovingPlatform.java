@@ -83,6 +83,12 @@ public class MovingPlatform extends InteractivePlatform {
     private void stop() {
         body.setLinearVelocity(0, 0);
         Gdx.app.log("MovingPlatform", "Platform stopped");
+
+        // for the case of the 'elevator' in the cave, in order for the robot to stop with it
+        if(!horizontal && playScreen.getRobot().isOnInteractivePlatform()) {
+            playScreen.getRobot().getBody().setLinearVelocity(playScreen.getRobot().getBody().getLinearVelocity().x, 0);
+            Gdx.app.log("MovingPlatform", "Robot stopped with vertically moving platform");
+        }
     }
 
     public boolean isWaiting() {

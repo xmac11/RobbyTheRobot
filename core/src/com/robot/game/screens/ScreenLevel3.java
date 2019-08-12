@@ -35,7 +35,7 @@ public class ScreenLevel3 extends PlayScreen {
         // create tiled objects
         super.layersObjectArray = new Array<>();
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
-//        layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
+        layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
 //        layersObjectArray.add(tiledMap.getLayers().get(FISH_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(MONSTER_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SNAKE_OBJECT).getObjects());
@@ -61,15 +61,18 @@ public class ScreenLevel3 extends PlayScreen {
         rayHandlerTorch.setAmbientLight(0f);
 
         // create cone light (torch)
-        this.coneLight = new ConeLight(rayHandlerTorch, 200, new Color(247f / 255, 242f / 255, 98f / 255, 1),
-                256 * 1.0f / PPM, 0 , 0, 0, 50f / 2);
+        this.coneLight = new ConeLight(rayHandlerTorch, 20, new Color(247f / 255, 242f / 255, 98f / 255, 1),
+                288 / PPM, 0 , 0, 0, 50f / 2);
         coneLight.setSoftnessLength(0);
-        coneLight.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, TORCH_LIGHT_MASK);
+        coneLight.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
-        this.pointLightHand = new PointLight(rayHandlerTorch, 5, Color.GREEN, 16 / PPM, 0 , 0);
+        // point light (hand)
+        this.pointLightHand = new PointLight(rayHandlerTorch, 10, Color.GREEN, 16 / PPM, 0 , 0);
         pointLightHand.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
-        this.pointLightHead = new PointLight(rayHandlerTorch, 5, Color.WHITE, 16 / PPM, 0 , 0);
+        // point light (head)
+        this.pointLightHead = new PointLight(rayHandlerTorch, 10, new Color(247f / 255, 242f / 255, 98f / 255, 1),
+                16 / PPM, 0 , 0);
         pointLightHead.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
     }
@@ -82,16 +85,20 @@ public class ScreenLevel3 extends PlayScreen {
         rayHandlerTorch.update();
         rayHandlerTorch.setCombinedMatrix(camera);
 
+        // set position of cone light
         if(robot.getFacing() == Enums.Facing.RIGHT) {
-            coneLight.setPosition(robot.getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM , 0));
+            coneLight.setPosition(robot.getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM, 0));
             coneLight.setDirection(0);
         }
         else if(robot.getFacing() == Enums.Facing.LEFT) {
-            coneLight.setPosition(robot.getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM , 0));
+            coneLight.setPosition(robot.getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM, 0));
             coneLight.setDirection(180);
         }
+
+        // set position of hand light
         pointLightHand.setPosition(robot.getBody().getPosition().sub(0, ROBOT_BODY_HEIGHT / 4 / PPM));
 
+        // set position of head light
         pointLightHead.setPosition(robot.getBody().getPosition().add(0, ROBOT_BODY_HEIGHT / 3 / PPM));
 
     }

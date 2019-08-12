@@ -16,7 +16,7 @@ public final class Constants {
     // Tiled map editor
     public static final String LEVEL_1_TMX = "level1.tmx";
     public static final String LEVEL_2_TMX = "level2/level2.tmx";
-    public static final String LEVEL_3_TMX = "level2/level3.tmx";
+    public static final String LEVEL_CAVE_TMX = "level2/cave.tmx";
     public static final String FOLDER_NAME = "files/";
 
     public static final String GROUND_OBJECT = "Ground obj";
@@ -54,11 +54,12 @@ public final class Constants {
     public static final short ROBOT_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | ENEMY_CATEGORY
                                             | SPIKE_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY
                                             | WALLJUMP_CATEGORY | TRAMPOLINE_CATEGORY | ENEMY_PROJECTILE_CATEGORY;
-    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY | COLLECTABLE_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
+    public static final short GROUND_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | ENEMY_CATEGORY | COLLECTABLE_CATEGORY
+                                            | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY | TORCH_LIGHT_CATEGORY;
     public static final short LADDER_MASK = ROBOT_CATEGORY;
-    public static final short INTERACTIVE_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY;
+    public static final short INTERACTIVE_PLATFORM_MASK = ROBOT_CATEGORY | ROBOT_FEET_CATEGORY | TORCH_LIGHT_CATEGORY;
     public static final short ROBOT_FEET_MASK = GROUND_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY | PIPE_CATEGORY | PIPE_ON_GROUND_CATEGORY;
-    public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY /*| ENEMY_CATEGORY*/ | CHASE_SENSOR_CATEGORY; // enemy collides with enemy/ground applies only for dynamic enemies (monster, fish)
+    public static final short ENEMY_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | CHASE_SENSOR_CATEGORY; // enemy collides with ground applies only for dynamic enemies (monster, snake)
     public static final short SPIKE_MASK = ROBOT_CATEGORY;
     public static final short COLLECTABLE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY;
     public static final short PIPE_MASK = ROBOT_CATEGORY | GROUND_CATEGORY | PIPE_CATEGORY | ROBOT_FEET_CATEGORY | PIPE_ON_GROUND_CATEGORY;
