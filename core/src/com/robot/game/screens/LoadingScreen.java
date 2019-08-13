@@ -18,7 +18,6 @@ public class LoadingScreen extends ScreenAdapter {
 
     private RobotGame game;
     private Assets assets;
-    private int levelID;
     private Viewport loadingScreenViewport;
     private TextureRegion frame;
     private TextureRegion greenBar;
@@ -27,7 +26,6 @@ public class LoadingScreen extends ScreenAdapter {
     public LoadingScreen(RobotGame game) {
         this.game = game;
         this.assets = game.getAssets();
-        this.levelID = game.getCheckpointData().getLevelID();
     }
 
     @Override
@@ -88,18 +86,7 @@ public class LoadingScreen extends ScreenAdapter {
             // create all necessary game assets
             assets.createGameAssets();
 
-            /*switch(levelID) {
-                case 1:
-                    game.setScreen(new ScreenLevel1(game));
-                    break;
-                case 2:
-                    game.setScreen(new ScreenLevel2(game));
-                    break;
-                case 3:
-                    game.setScreen(new ScreenLevel3(game));
-                    break;
-            }*/
-
+            // set screen to MenuScreen
             game.setScreen(new MenuScreen(game));
         }
     }

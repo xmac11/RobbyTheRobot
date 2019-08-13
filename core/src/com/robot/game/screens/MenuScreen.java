@@ -34,11 +34,11 @@ public class MenuScreen extends ScreenAdapter {
     private BitmapFont font;
 
     private int selection;
-    private int n;
+    private int numberOfButtons;
 
     private Array<TextButton> buttons;
-//    private TextButton playButton;
-//    private TextButton exitButton;
+    private int playIndex;
+    private int exitIndex;
 
     public MenuScreen(RobotGame game) {
         this.game = game;
@@ -68,19 +68,21 @@ public class MenuScreen extends ScreenAdapter {
             stage.addActor(textButton);
         }
 
-        this.n = buttons.size;
+        this.numberOfButtons = buttons.size;
 
         // set InputProcessor
         Gdx.input.setInputProcessor(stage);
     }
 
     private void update(float delta) {
+
+        // update selection
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            selection = (selection - 1 + n) % n;
+            selection = (selection - 1 + numberOfButtons) % numberOfButtons;
             Gdx.app.log("MenuScreen", "selection = " + selection);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            selection = (selection + 1 + n) % n;
+            selection = (selection + 1 + numberOfButtons) % numberOfButtons;
             Gdx.app.log("MenuScreen", "selection = " + selection);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
@@ -124,62 +126,67 @@ public class MenuScreen extends ScreenAdapter {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = font;
 
+        int index = 0;
+
         // play button
         TextButton playButton = new TextButton("PLAY", style);
         playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         playButton.setSize(playGlyph.width, playGlyph.height);
         buttons.add(playButton);
+        this.playIndex = index++;
+        Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
 
         // exit button
         TextButton exitButton = new TextButton("EXIT", style);
         exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
         exitButton.setSize(exitGlyph.width, exitGlyph.height);
         buttons.add(exitButton);
+        this.exitIndex = index;
+        Gdx.app.log("MenuScreen", "exitIndex = " + exitIndex);
     }
 
     private void addListeners() {
 
-        // start button
-        buttons.get(0).addListener(new ClickListener() {
+        // play button
+        buttons.get(playIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selection = 0;
+                selection = playIndex;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("MenuScreen", "enter start button");
-                selection = 0;
+                Gdx.app.log("MenuScreen", "Entered play button");
+                selection = playIndex;
             }
         });
 
 
         // exit button
-        buttons.get(1).addListener(new ClickListener() {
+        buttons.get(exitIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selection = 1;
+                selection = exitIndex;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("MenuScreen", "enter exit button");
-                selection = 1;
+                Gdx.app.log("MenuScreen", "Entered exit button");
+                selection = exitIndex;
             }
         });
     }
 
     private void handleSelection() {
-        switch(selection) {
-            case 0:
-                Gdx.app.log("MenuScreen", "PLAY was selected");
-                loadLevel();
-                break;
-            case 1:
-                Gdx.app.log("MenuScreen", "QUIT was selected");
-                Gdx.app.exit();
+        if(selection == playIndex) {
+            Gdx.app.log("MenuScreen", "PLAY was selected");
+            loadLevel();
+        }
+        else if(selection == exitIndex) {
+            Gdx.app.log("MenuScreen", "EXIT was selected");
+            Gdx.app.exit();
         }
     }
 
