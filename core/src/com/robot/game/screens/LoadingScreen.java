@@ -35,7 +35,6 @@ public class LoadingScreen extends ScreenAdapter {
         this.loadingScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.frame = assets.loadingScreenAssets.frame;
         this.greenBar = assets.loadingScreenAssets.bar;
-
         this.font = assets.fontAssets.font;
     }
 
@@ -89,7 +88,7 @@ public class LoadingScreen extends ScreenAdapter {
             // create all necessary game assets
             assets.createGameAssets();
 
-            switch(levelID) {
+            /*switch(levelID) {
                 case 1:
                     game.setScreen(new ScreenLevel1(game));
                     break;
@@ -99,7 +98,9 @@ public class LoadingScreen extends ScreenAdapter {
                 case 3:
                     game.setScreen(new ScreenLevel3(game));
                     break;
-            }
+            }*/
+
+            game.setScreen(new MenuScreen(game));
         }
     }
 
@@ -108,7 +109,7 @@ public class LoadingScreen extends ScreenAdapter {
         loadingScreenViewport.update(width, height, true);
     }
 
-    @Override
+    /*@Override
     public void hide() {
         super.hide();
     }
@@ -116,5 +117,5 @@ public class LoadingScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         super.dispose();
-    }
+    }*/
 }
