@@ -265,6 +265,9 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setSecondCheckpointActivated(false);
             checkpointData.setThirdCheckpointActivated(false);
             FileSaver.saveCheckpointData(checkpointData);
+            // transfer body
+            robot.getBody().setTransform(FIRST_CHECKPOINT_LOCATION_L2, 0);
+            robot.getBody().setAwake(true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             Gdx.app.log("ScreenLevel2", "Second checkpoint set");
@@ -273,6 +276,9 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setSecondCheckpointActivated(true);
             checkpointData.setThirdCheckpointActivated(false);
             FileSaver.saveCheckpointData(checkpointData);
+            // transfer body
+            robot.getBody().setTransform(SECOND_CHECKPOINT_LOCATION_L2, 0);
+            robot.getBody().setAwake(true);
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             Gdx.app.log("ScreenLevel2", "Third checkpoint set");
@@ -281,6 +287,9 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setSecondCheckpointActivated(true);
             checkpointData.setThirdCheckpointActivated(true);
             FileSaver.saveCheckpointData(checkpointData);
+            // transfer body
+            robot.getBody().setTransform(THIRD_CHECKPOINT_LOCATION_L2, 0);
+            robot.getBody().setAwake(true);
         }
     }
 

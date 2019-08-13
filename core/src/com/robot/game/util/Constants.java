@@ -119,7 +119,7 @@ public final class Constants {
     // Checkpoints
         // Level1
     public static final Vector2 SPAWN_LOCATION_L1 = new Vector2(32 / PPM, 160 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 160 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 176 / PPM);
     public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 416 / PPM);
     public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 208 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;

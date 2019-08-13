@@ -29,7 +29,7 @@ public class RobotGame extends Game {
 			this.checkpointData = FileSaver.loadCheckpointData();
 		}
 		else {
-			Gdx.app.log("PlayScreen", "New file was created");
+			Gdx.app.log("RobotGame", "New file was created");
 			this.checkpointData = new CheckpointData();
 			checkpointData.setDefaultData(1);
 			FileSaver.saveCheckpointData(checkpointData);

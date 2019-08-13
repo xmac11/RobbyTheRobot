@@ -24,7 +24,7 @@ public class Trampoline extends Sprite {
 
         setRegion(playScreen.getAssets().trampolineAssets.trampolineFull);
         setSize(TRAMPOLINE_WIDTH / PPM, TRAMPOLINE_HEIGHT / PPM);
-        setPosition(body.getPosition().x - TRAMPOLINE_WIDTH / 2 / PPM, body.getPosition().y - (TRAMPOLINE_HEIGHT / 2 - 4) / PPM);
+        setPosition(body.getPosition().x - TRAMPOLINE_WIDTH / 2 / PPM, body.getPosition().y - (TRAMPOLINE_HEIGHT / 2 - 2) / PPM);
     }
 
     @Override
