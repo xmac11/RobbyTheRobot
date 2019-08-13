@@ -1,7 +1,6 @@
 package com.robot.game.screens;
 
 import box2dLight.ConeLight;
-import box2dLight.Light;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
-import com.robot.game.entities.Robot;
 import com.robot.game.util.Enums;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
@@ -158,7 +156,12 @@ public class ScreenLevel3 extends PlayScreen {
         }
 
         // finally, check if robot is dead
-        super.checkIfDead();
+        if(robot.isDead()) {
+            super.handleRobotDeath();
+        }
+        else {
+            this.checkIfLevelComplete();
+        }
     }
 
     @Override
@@ -167,5 +170,10 @@ public class ScreenLevel3 extends PlayScreen {
         rayHandler.dispose();
         rayHandlerTorch.dispose();
         super.dispose();
+    }
+
+    @Override
+    public void checkIfLevelComplete() {
+
     }
 }

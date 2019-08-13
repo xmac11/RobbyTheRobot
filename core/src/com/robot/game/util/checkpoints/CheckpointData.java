@@ -1,5 +1,6 @@
 package com.robot.game.util.checkpoints;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import static com.robot.game.util.Constants.*;
@@ -110,7 +111,15 @@ public class CheckpointData {
         this.levelID = levelID;
     }
 
+    public void setCheckpointsToFalse() {
+        firstCheckpointActivated = false;
+        secondCheckpointActivated = false;
+        thirdCheckpointActivated = false;
+        Gdx.app.log("CheckpointData","All checkpoints set to false");
+    }
+
     public void setDefaultData(int levelID) {
+        this.levelID = levelID;
         health = 100;
         lives = 3;
         score = 0;

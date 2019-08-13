@@ -152,6 +152,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.assets = game.getAssets();
+        this.checkpointData = game.getCheckpointData();
         this.tiledMap = tiledMap;
         this.levelID = levelID;
 
@@ -160,16 +161,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.mapHeight = tiledMap.getProperties().get("height", Integer.class) * tileSize;
         this.mapRenderer = new MyOrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
 
-        // if file with game data exists, load it, otherwise create new one
-        if(FileSaver.getCheckpointFile().exists()) {
-            this.checkpointData = FileSaver.loadCheckpointData();
-        }
-        else {
-            Gdx.app.log("PlayScreen", "New file was created");
-            this.checkpointData = new CheckpointData();
-            checkpointData.setDefaultData(levelID);
-            FileSaver.saveCheckpointData(checkpointData);
-        }
+
 
         Gdx.app.log("PlayScreen", "New game started.");
         Gdx.app.log("PlayScreen", "Lives " + checkpointData.getLives());
@@ -217,6 +209,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     public void show() {
 
     }*/
+
+    public abstract void checkIfLevelComplete();
 
     protected void createCommonObjectLayers() {
         // create object parser
@@ -307,7 +301,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
             FileSaver.saveCollectedItems(collectedItems);
         }
-        this.dispose();
+        //this.dispose();
     }
 
     @Override
@@ -487,9 +481,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         shapeRenderer.end();
     }
 
-    protected void checkIfDead() {
+    protected void handleRobotDeath() {
         // robot died but has remaining lives
-        if(robot.isDead() && checkpointData.getLives() >= 0) {
+        if(checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
             // loop through all items that have been collected and disable their spawning
             for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
@@ -501,10 +495,10 @@ public abstract class PlayScreen extends ScreenAdapter {
                 doNotSaveInHide = true;
             }
             // finally restart the game
-            game.respawn(checkpointData, levelID);
+            game.respawn(this, checkpointData, levelID);
         }
         // robot died and has no remaining lives
-        else if(robot.isDead()) {
+        else {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
 
             // reset checkpoint data
@@ -523,12 +517,12 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
 
             // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts level2
-            /*if(levelID == 3) {
-                game.respawn(checkpointData, 2);
+            if(levelID == 3) {
+                game.respawn(this, checkpointData, 2);
             }
-            else {*/
-                game.respawn(checkpointData, levelID);
-//            }
+            else {
+                game.respawn(this, checkpointData, levelID);
+            }
         }
     }
 }

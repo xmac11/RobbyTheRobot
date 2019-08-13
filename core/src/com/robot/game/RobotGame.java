@@ -3,10 +3,7 @@ package com.robot.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.robot.game.screens.LoadingScreen;
-import com.robot.game.screens.ScreenLevel1;
-import com.robot.game.screens.ScreenLevel2;
-import com.robot.game.screens.ScreenLevel3;
+import com.robot.game.screens.*;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -15,6 +12,7 @@ public class RobotGame extends Game {
 
 	private Assets assets;
 	private SpriteBatch batch;
+	private CheckpointData checkpointData;
 
 	@Override
 	public void create () {
@@ -25,6 +23,18 @@ public class RobotGame extends Game {
 		assets.load();
 
 		this.batch = new SpriteBatch();
+
+		// if file with game data exists, load it, otherwise create new one
+		if(FileSaver.getCheckpointFile().exists()) {
+			this.checkpointData = FileSaver.loadCheckpointData();
+		}
+		else {
+			Gdx.app.log("PlayScreen", "New file was created");
+			this.checkpointData = new CheckpointData();
+			checkpointData.setDefaultData(1);
+			FileSaver.saveCheckpointData(checkpointData);
+		}
+
 		super.setScreen(new LoadingScreen(this));
 	}
 
@@ -55,10 +65,17 @@ public class RobotGame extends Game {
 		return batch;
 	}
 
-	public void respawn(CheckpointData checkpointData, int levelID) {
+	public CheckpointData getCheckpointData() {
+		return checkpointData;
+	}
+
+	public void respawn(PlayScreen playScreen, CheckpointData checkpointData, int levelID) {
 		Gdx.app.log("RobotGame", "Respawning...");
 		// first save game data, then restart game
 		FileSaver.saveCheckpointData(checkpointData);
+
+		// dispose screen
+		playScreen.dispose();
 
 		switch(levelID) {
 			case 1:

@@ -173,7 +173,12 @@ public class ScreenLevel2 extends PlayScreen {
         }
 
         // finally, check if robot is dead
-        super.checkIfDead();
+        if(robot.isDead()) {
+            super.handleRobotDeath();
+        }
+        else {
+            this.checkIfLevelComplete();
+        }
     }
 
     @Override
@@ -274,5 +279,10 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setThirdCheckpointActivated(true);
             FileSaver.saveCheckpointData(checkpointData);
         }
+    }
+
+    @Override
+    public void checkIfLevelComplete() {
+
     }
 }

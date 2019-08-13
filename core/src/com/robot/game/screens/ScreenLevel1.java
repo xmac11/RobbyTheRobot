@@ -155,29 +155,12 @@ public class ScreenLevel1 extends PlayScreen {
         }
 
         // finally, check if robot is dead
-        super.checkIfDead();
-
-        /*// set dead bodies to null
-        for(Enemy enemy: enemies) {
-            if(enemy.getBody().getFixtureList().size == 0 && !feedbackRenderer.getDamageFromHitToDraw().containsKey(enemy)
-            && !feedbackRenderer.getPointsForEnemyToDraw().containsKey(enemy)) {
-                enemy.setBodyToNull();
-                Gdx.app.log("ScreenLevel1", "Enemy body set to null");
-            }
+        if(robot.isDead()) {
+            super.handleRobotDeath();
         }
-
-        for(Collectable collectable: collectables) {
-            if(collectable.getBody().getFixtureList().size == 0 && !feedbackRenderer.getItemPointsToDraw().containsKey(collectable)) {
-                collectable.setBodyToNull();
-                Gdx.app.log("ScreenLevel1", "Collectable body set to null");
-            }
+        else {
+            this.checkIfLevelComplete();
         }
-
-        for(InteractivePlatform interactivePlatform: interactivePlatforms) {
-            if(interactivePlatform.getBody().getFixtureList().size == 0) {
-                interactivePlatform.setBodyToNull();
-            }
-        }*/
     }
 
     private void handleCheckpoints() {
@@ -266,6 +249,45 @@ public class ScreenLevel1 extends PlayScreen {
             checkpointData.setSecondCheckpointActivated(true);
             checkpointData.setThirdCheckpointActivated(true);
             FileSaver.saveCheckpointData(checkpointData);
+        }
+    }
+
+    @Override
+    public void checkIfLevelComplete() {
+        if(Math.abs( robot.getBody().getPosition().x * PPM - 6880)  <= 16
+                && Math.abs( robot.getBody().getPosition().y * PPM - 304 )  <= 16) {
+
+            Gdx.app.log("ScreenLevel1", "Level complete!!!");
+
+            doNotSaveInHide = true;
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                System.out.println(deleted + "!!!!!!!!!");
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+            }
+
+            // set levelID
+            checkpointData.setLevelID(2);
+
+            // set corresponding spawn location of level2
+            checkpointData.setSpawnLocation(SPAWN_LOCATION_L2);
+
+            // set number of lives to 3
+            checkpointData.setLives(3);
+
+            // set all checkpoints of new level to false
+            checkpointData.setCheckpointsToFalse();
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
+            // start level2
+            super.dispose();
+            game.setScreen(new ScreenLevel2(game));
         }
     }
 
