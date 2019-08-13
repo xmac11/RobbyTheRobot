@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -36,6 +38,7 @@ public class MenuScreen extends ScreenAdapter {
     private int selection;
     private int numberOfButtons;
 
+    private Image background;
     private Array<TextButton> buttons;
     private int playIndex;
     private int exitIndex;
@@ -50,12 +53,19 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        Gdx.app.log("MenuScreen", "show");
 
         this.menuScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.font = assets.fontAssets.font;
 
         // create stage
-        this.stage = new Stage(menuScreenViewport, batch);
+        this.stage = new Stage(menuScreenViewport);
+
+        this.background = new Image(assets.mainMenuAssets.mainMenuBG);
+        System.out.println(background.getWidth() / PPM);
+        background.setSize(background.getWidth() / PPM, background.getHeight() / PPM);
+        background.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
+        background.getColor().a = 0.2f;
 
         // create buttons
         createButtons();
@@ -64,6 +74,7 @@ public class MenuScreen extends ScreenAdapter {
         addListeners();
 
         // add actors
+        stage.addActor(background);
         for(TextButton textButton: buttons) {
             stage.addActor(textButton);
         }
@@ -143,6 +154,8 @@ public class MenuScreen extends ScreenAdapter {
         buttons.add(exitButton);
         this.exitIndex = index;
         Gdx.app.log("MenuScreen", "exitIndex = " + exitIndex);
+
+        Gdx.app.log("MenuScreen", "Buttons were created");
     }
 
     private void addListeners() {
@@ -177,6 +190,8 @@ public class MenuScreen extends ScreenAdapter {
                 selection = exitIndex;
             }
         });
+
+        Gdx.app.log("MenuScreen", "Listeners were added to buttons");
     }
 
     private void handleSelection() {
@@ -191,6 +206,10 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void loadLevel() {
+
+        // dispose
+        this.dispose();
+
         switch(levelID) {
                 case 1:
                     game.setScreen(new ScreenLevel1(game));
@@ -206,16 +225,18 @@ public class MenuScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log("MenuScreen", "resize");
         menuScreenViewport.update(width, height, true);
     }
 
     /*@Override
     public void hide() {
         super.hide();
-    }
+    }*/
 
     @Override
     public void dispose() {
-        super.dispose();
-    }*/
+        Gdx.app.log("MenuScreen", "dispose");
+        stage.dispose();
+    }
 }

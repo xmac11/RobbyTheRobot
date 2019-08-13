@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.util.Assets;
-import com.robot.game.util.checkpoints.CheckpointData;
 
 import static com.robot.game.util.Constants.*;
 
@@ -30,6 +29,7 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        Gdx.app.log("LoadingScreen", "show");
         this.loadingScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.frame = assets.loadingScreenAssets.frame;
         this.greenBar = assets.loadingScreenAssets.bar;
@@ -93,8 +93,10 @@ public class LoadingScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        Gdx.app.log("LoadingScreen", "resize");
         loadingScreenViewport.update(width, height, true);
     }
+
 
     /*@Override
     public void hide() {

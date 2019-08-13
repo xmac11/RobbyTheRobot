@@ -20,6 +20,7 @@ public class Assets {
 
     private AssetManager assetManager;
 
+    public MainMenuAssets mainMenuAssets;
     public TiledMapAssets tiledMapAssets;
     public LoadingScreenAssets loadingScreenAssets;
     public RobotAssets robotAssets;
@@ -115,6 +116,7 @@ public class Assets {
         TextureAtlas atlas = assetManager.get("sprites.pack");
 
         // create assets
+        this.mainMenuAssets = new MainMenuAssets();
         this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
@@ -472,6 +474,14 @@ public class Assets {
             this.trapSpikes = atlas.findRegion("trap_vertical");
             this.trapBase = atlas.findRegion("trap_vertical_base");
             this.trapStick = atlas.findRegion("trap_vertical_stick");
+        }
+    }
+
+    public class MainMenuAssets {
+        public final Texture mainMenuBG;
+
+        private MainMenuAssets() {
+            this.mainMenuBG = new Texture("robotHI.png");
         }
     }
 
