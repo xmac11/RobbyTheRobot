@@ -124,7 +124,7 @@ public class ScreenLevel2 extends PlayScreen {
         super.updateViews(delta);
 
         // clear game screen
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         mapRenderer.render();
