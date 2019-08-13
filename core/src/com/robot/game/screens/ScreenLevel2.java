@@ -179,6 +179,9 @@ public class ScreenLevel2 extends PlayScreen {
         else {
             this.checkIfLevelComplete();
         }
+
+        //if(DEBUG_ON)
+        super.toggleDebugLevels();
     }
 
     @Override
@@ -239,10 +242,10 @@ public class ScreenLevel2 extends PlayScreen {
     // Debug keys for checkpoints
 
     private void toggleDebugCheckpoints() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_0)) {
-            boolean fileDeleted = FileSaver.getCheckpointFile().delete();
-            Gdx.app.log("ScreenLevel2", "Checkpoints file deleted = " + fileDeleted);
-            checkpointDataDeleted = true;
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+            Gdx.app.log("ScreenLevel2", "Checkpoints reset");
+            checkpointData.setDefaultData(levelID);
+            FileSaver.saveCheckpointData(checkpointData);
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
              * reset their spawning in the corresponding level and delete the file */
@@ -255,7 +258,7 @@ public class ScreenLevel2 extends PlayScreen {
                 newItemCollected = false;
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             Gdx.app.log("ScreenLevel2", "First checkpoint set");
             checkpointData.setSpawnLocation(FIRST_CHECKPOINT_LOCATION_L2);
             checkpointData.setFirstCheckpointActivated(true);
@@ -263,7 +266,7 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setThirdCheckpointActivated(false);
             FileSaver.saveCheckpointData(checkpointData);
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             Gdx.app.log("ScreenLevel2", "Second checkpoint set");
             checkpointData.setSpawnLocation(SECOND_CHECKPOINT_LOCATION_L2);
             checkpointData.setFirstCheckpointActivated(true);
@@ -271,7 +274,7 @@ public class ScreenLevel2 extends PlayScreen {
             checkpointData.setThirdCheckpointActivated(false);
             FileSaver.saveCheckpointData(checkpointData);
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3) || Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             Gdx.app.log("ScreenLevel2", "Third checkpoint set");
             checkpointData.setSpawnLocation(THIRD_CHECKPOINT_LOCATION_L2);
             checkpointData.setFirstCheckpointActivated(true);

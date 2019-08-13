@@ -23,8 +23,8 @@ public class CollectableHandler {
     // This JSONArray stores all JSONObject of the collected items
     private JSONArray collectedItems;
 
-    /* In this array collectables are cached in order  to be disabled from being respawned if robot dies, because it has already
-     * collected them. Thee will be disabled altogether when the robot dies, so as not to slow down the game when it is in progress. */
+    /* In this array collectables are cached in order to be disabled from being respawned if the robot dies, because it has already
+     * collected them. They will be disabled altogether when the robot dies, so as not to slow down the game when it is in progress. */
     private Array<Integer> itemsToDisableSpawning;
 
     public CollectableHandler(int levelID) {

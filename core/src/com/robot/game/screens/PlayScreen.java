@@ -485,12 +485,13 @@ public abstract class PlayScreen extends ScreenAdapter {
         // robot died but has remaining lives
         if(checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
-            // loop through all items that have been collected and disable their spawning
-            for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
-                collectableHandler.setSpawn(collectableID, false);
-            }
+
             // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
             if(newItemCollected) {
+                // loop through all items that have been collected and disable their spawning
+                for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
+                    collectableHandler.setSpawn(collectableID, false);
+                }
                 FileSaver.saveCollectedItems(collectedItems);
                 doNotSaveInHide = true;
             }
@@ -523,6 +524,97 @@ public abstract class PlayScreen extends ScreenAdapter {
             else {
                 game.respawn(this, checkpointData, levelID);
             }
+        }
+    }
+
+    // deletes checkpoint and collected items files
+    protected void wipeOutData() {
+        Gdx.app.log("PlayScreen", "All game data was wiped out");
+        boolean fileDeleted = FileSaver.getCheckpointFile().delete();
+        Gdx.app.log("PlayScreen", "Checkpoints file deleted = " + fileDeleted);
+        checkpointDataDeleted = true;
+
+        /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+         * reset their spawning in the corresponding level and delete the file */
+        if(FileSaver.getCollectedItemsFile().exists()) {
+            FileSaver.resetSpawningOfCollectables(levelID);
+            boolean deleted = FileSaver.getCollectedItemsFile().delete();
+            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+        }
+    }
+
+    public void toggleDebugLevels() {
+        // deletes checkpoint and collected items files
+        if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            this.wipeOutData();
+        }
+        //level1
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+            doNotSaveInHide = true;
+
+            // set default data
+            checkpointData.setDefaultData(1);
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+            }
+
+            // start level1
+            this.dispose();
+            game.setScreen(new ScreenLevel1(game));
+        }
+        // level 2
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+            doNotSaveInHide = true;
+
+            // set default data
+            checkpointData.setDefaultData(2);
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+            }
+
+            // start level2
+            this.dispose();
+            game.setScreen(new ScreenLevel2(game));
+        }
+
+        // level3
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+            doNotSaveInHide = true;
+
+            // set default data
+            checkpointData.setDefaultData(3);
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+            }
+
+            // start level3
+            this.dispose();
+            game.setScreen(new ScreenLevel3(game));
         }
     }
 }

@@ -162,6 +162,9 @@ public class ScreenLevel3 extends PlayScreen {
         else {
             this.checkIfLevelComplete();
         }
+
+        //if(DEBUG_ON)
+        super.toggleDebugLevels();
     }
 
     @Override
