@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Pool;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
@@ -125,7 +124,7 @@ public class FallingPipe implements Damaging {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_PIPE : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_PIPE : 0;
     }
 
     public Body getBody() {

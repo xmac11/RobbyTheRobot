@@ -116,6 +116,6 @@ public class Fish extends Enemy {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_FISH : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_FISH : 0;
     }
 }

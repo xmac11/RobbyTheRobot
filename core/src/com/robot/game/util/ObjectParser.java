@@ -289,9 +289,9 @@ public class ObjectParser {
         // create spikes
         else if(object.getProperties().containsKey(SPIKE_PROPERTY)) {
             if(object.getProperties().containsKey("movingSpike"))
-                this.movingSpikes.add(new MovingSpike(body, fixtureDef, object, jointMap, playScreen.getAssets()));
+                this.movingSpikes.add(new MovingSpike(playScreen, body, fixtureDef, object, jointMap));
             else
-                new Spike(body, fixtureDef, object);
+                new Spike(playScreen, body, fixtureDef, object);
         }
         // create collectables
         else if(object.getProperties().containsKey(COLLECTABLE_PROPERTY)) {

@@ -68,6 +68,6 @@ public class BatPatrolling extends EnemyPatrolling {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_BAT : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_BAT : 0;
     }
 }

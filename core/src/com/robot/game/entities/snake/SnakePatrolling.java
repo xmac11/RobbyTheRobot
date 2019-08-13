@@ -68,6 +68,6 @@ public class SnakePatrolling extends EnemyPatrolling {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_SNAKE : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_SNAKE : 0;
     }
 }

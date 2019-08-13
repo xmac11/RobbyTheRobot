@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
 
 import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Constants.PPM;
 
 public class SpriteDrawing {
 

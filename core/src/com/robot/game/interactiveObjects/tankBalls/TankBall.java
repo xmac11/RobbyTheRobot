@@ -103,7 +103,7 @@ public class TankBall implements Damaging, Pool.Poolable {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_ENEMY_PROJECTILE : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_ENEMY_PROJECTILE : 0;
     }
 
 

@@ -101,6 +101,6 @@ public class Monster extends EnemyArriveAI {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_MONSTER : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_MONSTER : 0;
     }
 }

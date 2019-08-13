@@ -21,7 +21,6 @@ import com.robot.game.interactiveObjects.tankBalls.TankBall;
 
 import static com.robot.game.util.Constants.*;
 
-
 public class ContactManager implements ContactListener {
 
     private int footContactCounter = 0;

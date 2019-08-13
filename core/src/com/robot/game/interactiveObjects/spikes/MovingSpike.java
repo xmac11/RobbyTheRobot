@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 
 import static com.robot.game.util.Constants.*;
@@ -27,9 +28,10 @@ public class MovingSpike extends Spike {
     private float timeElapsed;
     private float attackPeriod;
 
-    public MovingSpike(Body body, FixtureDef fixtureDef, MapObject object, ObjectMap<Integer, Array<Body>> jointMap, Assets assets) {
-        super(body, fixtureDef, object);
+    public MovingSpike(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object, ObjectMap<Integer, Array<Body>> jointMap) {
+        super(playScreen, body, fixtureDef, object);
         this.mapObject = object;
+        Assets assets = playScreen.getAssets();
         this.sprite = new Sprite(assets.trapAssets.trapSpikes);
         this.baseSpirte = new Sprite(assets.trapAssets.trapBase);
         this.stickSpirte = new Sprite(assets.trapAssets.trapStick);

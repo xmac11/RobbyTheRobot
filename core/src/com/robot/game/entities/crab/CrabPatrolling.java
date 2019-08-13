@@ -2,14 +2,11 @@ package com.robot.game.entities.crab;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.SpriteDrawing;
-import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
@@ -37,6 +34,6 @@ public class CrabPatrolling extends EnemyPatrolling {
 
     @Override
     public int getDamage() {
-        return DAMAGE_ON ? DAMAGE_FROM_CRAB : 0;
+        return playScreen.isDamageON() ? DAMAGE_FROM_CRAB : 0;
     }
 }

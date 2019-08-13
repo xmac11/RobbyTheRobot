@@ -1,6 +1,5 @@
 package com.robot.game.entities.abstractEnemies;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,7 +10,8 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.Facing.LEFT;
+import static com.robot.game.util.Enums.Facing.RIGHT;
 
 
 public abstract class EnemyPatrolling extends Enemy {

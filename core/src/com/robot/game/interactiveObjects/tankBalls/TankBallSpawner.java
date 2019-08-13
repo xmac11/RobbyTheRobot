@@ -1,8 +1,6 @@
 package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 

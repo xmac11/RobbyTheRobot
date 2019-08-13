@@ -48,7 +48,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     // invulnerability
     private boolean invulnerable;
     private float invulnerableStartTime;
-    private float invulnerableElapsed;
     private float invulnerabilityPeriod;
 
     // jump/climb/punch timers
@@ -69,7 +68,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     private float alpha;
     private boolean flicker;
     private float flickerStartTime;
-    private float flickerElapsed;
 
     // Game data
     private CheckpointData checkpointData;
@@ -181,12 +179,11 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         if(invulnerable) {
 
             // check how much time has passed
-            invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
+            float invulnerableElapsed = (TimeUtils.nanoTime() - invulnerableStartTime) * MathUtils.nanoToSec;
 
             // if more than 1 second, disable it
             if(invulnerableElapsed >= invulnerabilityPeriod) {
                 invulnerable = false;
-                invulnerableElapsed = 0;
                 Gdx.app.log("Robot", "Invulnerability ended");
             }
         }
@@ -409,10 +406,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             alpha += delta * 20;
 
             // if elapsed flicker time has exceeded 1 second, stop flickering and reset variables to zero
-            flickerElapsed = (TimeUtils.nanoTime() - flickerStartTime) * MathUtils.nanoToSec;
+            float flickerElapsed = (TimeUtils.nanoTime() - flickerStartTime) * MathUtils.nanoToSec;
             if(flickerElapsed >= FLICKER_TIME) {
                 flicker = false;
-                flickerElapsed = 0;
                 alpha = 0;
             }
         }

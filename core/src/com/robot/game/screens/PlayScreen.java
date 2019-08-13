@@ -57,7 +57,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     // reference to current level
     protected int levelID;
 
+    // paused
     protected boolean paused;
+    protected boolean damageON;
 
     // assets
     protected Assets assets;
@@ -155,13 +157,12 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.checkpointData = game.getCheckpointData();
         this.tiledMap = tiledMap;
         this.levelID = levelID;
+        this.damageON = true;
 
         int tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
         this.mapWidth = tiledMap.getProperties().get("width", Integer.class) * tileSize;
         this.mapHeight = tiledMap.getProperties().get("height", Integer.class) * tileSize;
         this.mapRenderer = new MyOrthogonalTiledMapRenderer(tiledMap, 1 / PPM);
-
-
 
         Gdx.app.log("PlayScreen", "New game started.");
         Gdx.app.log("PlayScreen", "Lives " + checkpointData.getLives());
@@ -460,6 +461,15 @@ public abstract class PlayScreen extends ScreenAdapter {
         return movingSpikes;
     }
 
+    public boolean isDamageON() {
+        return damageON;
+    }
+
+    public void setDamageON(boolean damageON) {
+        this.damageON = damageON;
+        Gdx.app.log("PlayScreen", "damageON = " + damageON);
+    }
+
     protected void processGameStateInput() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             paused = !paused;
@@ -544,6 +554,10 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     public void toggleDebugLevels() {
+        // toggle damage on/off
+        if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            setDamageON(!damageON);
+        }
         // deletes checkpoint and collected items files
         if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             this.wipeOutData();
