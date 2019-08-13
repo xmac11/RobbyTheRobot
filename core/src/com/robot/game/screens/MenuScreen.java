@@ -36,18 +36,16 @@ public class MenuScreen extends ScreenAdapter {
     private int selection;
     private int n;
 
-//    private Array<TextButton> buttons;
-    private TextButton playButton;
-    private TextButton exitButton;
+    private Array<TextButton> buttons;
+//    private TextButton playButton;
+//    private TextButton exitButton;
 
     public MenuScreen(RobotGame game) {
         this.game = game;
         this.batch = game.getBatch();
         this.assets = game.getAssets();
         this.levelID = game.getCheckpointData().getLevelID();
-
-//        this.buttons = new Array<>();
-        this.n = 2; // number of buttons
+        this.buttons = new Array<>();
     }
 
     @Override
@@ -66,35 +64,14 @@ public class MenuScreen extends ScreenAdapter {
         addListeners();
 
         // add actors
-        stage.addActor(playButton);
-        stage.addActor(exitButton);
+        for(TextButton textButton: buttons) {
+            stage.addActor(textButton);
+        }
+
+        this.n = buttons.size;
 
         // set InputProcessor
         Gdx.input.setInputProcessor(stage);
-    }
-
-    private void createButtons() {
-        // play GlyphLayout
-        GlyphLayout playGlyph = new GlyphLayout();
-        playGlyph.setText(font, "PLAY");
-
-        // exit GlyphLayout
-        GlyphLayout exitGlyph = new GlyphLayout();
-        exitGlyph.setText(font, "EXIT");
-
-        // add font to style
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = font;
-
-        // play button
-        this.playButton = new TextButton("PLAY", style);
-        playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
-        playButton.setSize(playGlyph.width, playGlyph.height);
-
-        // exit button
-        this.exitButton = new TextButton("EXIT", style);
-        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
-        exitButton.setSize(exitGlyph.width, exitGlyph.height);
     }
 
     private void update(float delta) {
@@ -110,16 +87,14 @@ public class MenuScreen extends ScreenAdapter {
             handleSelection();
         }
 
-        switch(selection) {
-            case 0:
-                playButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
-                exitButton.getLabel().setColor(Color.WHITE);
-                break;
-
-            case 1:
-                playButton.getLabel().setColor(Color.WHITE);
-                exitButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
-                break;
+        // update color of buttons
+        for(int i = 0; i < buttons.size; i++) {
+            if(i == selection) {
+                buttons.get(i).getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+            }
+            else {
+                buttons.get(i).getLabel().setColor(Color.WHITE);
+            }
         }
     }
 
@@ -136,10 +111,36 @@ public class MenuScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    private void createButtons() {
+        // play GlyphLayout
+        GlyphLayout playGlyph = new GlyphLayout();
+        playGlyph.setText(font, "PLAY");
+
+        // exit GlyphLayout
+        GlyphLayout exitGlyph = new GlyphLayout();
+        exitGlyph.setText(font, "EXIT");
+
+        // add font to style
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = font;
+
+        // play button
+        TextButton playButton = new TextButton("PLAY", style);
+        playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
+        playButton.setSize(playGlyph.width, playGlyph.height);
+        buttons.add(playButton);
+
+        // exit button
+        TextButton exitButton = new TextButton("EXIT", style);
+        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
+        exitButton.setSize(exitGlyph.width, exitGlyph.height);
+        buttons.add(exitButton);
+    }
+
     private void addListeners() {
 
         // start button
-        playButton.addListener(new ClickListener() {
+        buttons.get(0).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = 0;
@@ -155,7 +156,7 @@ public class MenuScreen extends ScreenAdapter {
 
 
         // exit button
-        exitButton.addListener(new ClickListener() {
+        buttons.get(1).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = 1;
