@@ -174,6 +174,6 @@ public class ScreenLevel3 extends PlayScreen {
 
     @Override
     public void checkIfLevelComplete() {
-
+        // TODO: complete
     }
 }

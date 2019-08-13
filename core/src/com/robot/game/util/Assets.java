@@ -387,14 +387,14 @@ public class Assets {
         public final TextureAtlas.AtlasRegion powerup;
         public final TextureAtlas.AtlasRegion donut_pink;
         public final TextureAtlas.AtlasRegion donut_red;
-        public final Texture torch;
+        public final TextureAtlas.AtlasRegion torch;
 
         private CollectableAssets(TextureAtlas atlas) {
             this.burger = atlas.findRegion("burger");
             this.powerup = atlas.findRegion("powerup");
             this.donut_pink = atlas.findRegion("donut_pink");
             this.donut_red = atlas.findRegion("donut_red");
-            this.torch = new Texture("level2/torch.png");
+            this.torch = atlas.findRegion("torch");
         }
     }
 

@@ -516,7 +516,7 @@ public abstract class PlayScreen extends ScreenAdapter {
                 Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
-            // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts level2
+            // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts in level 2
             if(levelID == 3) {
                 game.respawn(this, checkpointData, 2);
             }

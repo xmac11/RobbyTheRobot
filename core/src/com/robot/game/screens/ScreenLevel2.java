@@ -283,6 +283,38 @@ public class ScreenLevel2 extends PlayScreen {
 
     @Override
     public void checkIfLevelComplete() {
+        if(Math.abs( robot.getBody().getPosition().x * PPM - 5168)  <= 16
+                && Math.abs( robot.getBody().getPosition().y * PPM - 80 )  <= 16) {
+
+            Gdx.app.log("ScreenLevel2", "Level complete!!!");
+
+            doNotSaveInHide = true;
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                System.out.println(deleted + "!!!!!!!!!");
+                Gdx.app.log("ScreenLevel2", "collectedItems.json deleted = " + deleted);
+            }
+
+            // set levelID
+            checkpointData.setLevelID(3);
+
+            // set corresponding spawn location of level2
+            checkpointData.setSpawnLocation(SPAWN_LOCATION_L3);
+
+            // set all checkpoints of new level to false
+            checkpointData.setCheckpointsToFalse();
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
+            // start level3
+            super.dispose();
+            game.setScreen(new ScreenLevel3(game));
+        }
 
     }
 }

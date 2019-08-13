@@ -227,6 +227,13 @@ fish_dead
   orig: 37, 64
   offset: 0, 0
   index: -1
+torch
+  rotate: false
+  xy: 938, 463
+  size: 59, 28
+  orig: 59, 28
+  offset: 0, 0
+  index: -1
 debris
   rotate: false
   xy: 352, 505
@@ -248,13 +255,6 @@ tankExplosion1
   orig: 32, 32
   offset: 0, 0
   index: -1
-tankExplosion2
-  rotate: false
-  xy: 938, 459
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 trap_vertical_base
   rotate: false
   xy: 403, 221
@@ -262,44 +262,51 @@ trap_vertical_base
   orig: 40, 11
   offset: 0, 0
   index: -1
-tankExplosion3
+tankExplosion2
   rotate: false
   xy: 663, 424
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-tankExplosion4
+tankExplosion3
   rotate: false
   xy: 663, 390
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-tankExplosion5
-  rotate: false
-  xy: 972, 459
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 trap_vertical_stick
   rotate: false
-  xy: 697, 413
+  xy: 1002, 525
   size: 16, 43
   orig: 16, 43
   offset: 0, 0
   index: -1
-tankExplosion6
+tankExplosion4
   rotate: false
   xy: 989, 200
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
+tankExplosion5
+  rotate: false
+  xy: 989, 166
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+tankExplosion6
+  rotate: false
+  xy: 989, 132
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 tankFire
   rotate: false
-  xy: 989, 170
+  xy: 1002, 495
   size: 20, 28
   orig: 20, 28
   offset: 0, 0
