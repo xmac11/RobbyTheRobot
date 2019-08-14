@@ -148,16 +148,12 @@ public class FileSaver {
                                             }
                                         }
                                     }
-
                                 }
                             }
                         }
-
                     }
-
                 }
             }
-
         }
         catch (IOException | ParseException e) { e.printStackTrace(); }
 

@@ -190,17 +190,17 @@ public final class Constants {
     // Hud
     public static final float PADDING = 8;
         // health frame
-    public static final float FRAME_OFFSET = 32;
-    public static final float FRAME_WIDTH = 137.5f;
-    public static final float FRAME_HEIGHT = 32;
+    public static final float FRAME_OFFSET = 32 / 1.35f;
+    public static final float FRAME_WIDTH = 137.5f / 1.35f;
+    public static final float FRAME_HEIGHT = 32 / 1.35f;
         // health bar
-    public static final float BAR_OFFSET_X = 38;
-    public static final float BAR_OFFSET_Y = 27;
-    public static final float BAR_WIDTH = 95;
-    public static final float BAR_HEIGHT = 20;
+    public static final float BAR_OFFSET_X = 38 / 1.35f;
+    public static final float BAR_OFFSET_Y = 27 / 1.35f;
+    public static final float BAR_WIDTH = 95 / 1.35f;
+    public static final float BAR_HEIGHT = 20 / 1.35f;
         // lives
-    public static final float LIVES_WIDTH = 25.3f;
-    public static final float LIVES_HEIGHT = 32;
+    public static final float LIVES_WIDTH = 25.3f / 1.35f;
+    public static final float LIVES_HEIGHT = 32 / 1.35f;
 
 
     // Loading screen

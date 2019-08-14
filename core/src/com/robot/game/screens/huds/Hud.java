@@ -1,5 +1,6 @@
 package com.robot.game.screens.huds;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -27,36 +29,52 @@ public class Hud {
     private TextureRegion redBar;
 
     private TextureRegion lives;
-    private BitmapFont font;
+    private BitmapFont hudFont;
     private BitmapFont hpFont;
     private GlyphLayout scoreGlyphLayout;
     private GlyphLayout livesGlyphLayout;
 
     // Pause panel
-    protected Stage stage;
-    protected Image pausePanel;
+    private Stage stage;
+    private Image pausePanel;
+    private TextButton toResumeButton;
+    private TextButton toMenuButton;
+    private BitmapFont pauseFont;
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
         Assets assets = playScreen.getAssets();
         this.checkpointData = playScreen.getCheckpointData();
-        this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT * 1.35f / PPM);
+        this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
 
         this.frame = assets.hudAssets.frame;
         this.greenBar = assets.hudAssets.greenBar;
         this.redBar = assets.hudAssets.redBar;
         this.lives = assets.hudAssets.lives;
-        this.font = assets.fontAssets.font;
-        this.hpFont = assets.smallFontAssets.smallFont;
-        this.scoreGlyphLayout = assets.hudAssets.scoreGlyphLayout;
-        this.livesGlyphLayout = assets.hudAssets.livesGlyphLayout;
+        this.hudFont = assets.hudFontAssets.hudFont;
+        this.hpFont = assets.hpFontAssets.hpFont;
 
+        // GlyphLayout for alignment
+        this.scoreGlyphLayout = new GlyphLayout();
+        scoreGlyphLayout.setText(hudFont, "SCORE");
 
+        // GlyphLayout for alignment
+        this.livesGlyphLayout = new GlyphLayout();
+        String text = "x3";
+        livesGlyphLayout.setText(hudFont, text);
+
+        // pause panel
         this.stage = new Stage(hudViewport, playScreen.getGame().getBatch());
+        this.pauseFont = assets.pauseFontAssets.pauseFont;
         this.pausePanel = new Image(assets.pausePanelAssets.pausePanel);
         pausePanel.setSize(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2);
         pausePanel.setPosition(hudViewport.getWorldWidth() / 2 - pausePanel.getWidth() / 2, hudViewport.getWorldHeight() / 2 - pausePanel.getHeight() / 2);
+
+        createButtons();
+
         stage.addActor(pausePanel);
+        stage.addActor(toMenuButton);
+        stage.addActor(toResumeButton);
     }
 
     public void draw(SpriteBatch batch) {
@@ -89,8 +107,8 @@ public class Hud {
                 false);
 
         // draw score label (SCORE)
-        font.setColor(255f / 255, 192f / 255, 43f / 255, 1);
-        font.draw(batch,
+        hudFont.setColor(255f / 255, 192f / 255, 43f / 255, 1);
+        hudFont.draw(batch,
                 "SCORE",
                 1.5f * PADDING / PPM + scoreGlyphLayout.width / 2,
                 hudViewport.getWorldHeight() - (FRAME_OFFSET + 2 * PADDING) / PPM,
@@ -99,8 +117,8 @@ public class Hud {
                 false);
 
         // draw score (value)
-        font.setColor(Color.WHITE);
-        font.draw(batch,
+        hudFont.setColor(Color.WHITE);
+        hudFont.draw(batch,
                 String.valueOf(checkpointData.getScore()),
                 3 * PADDING / PPM + scoreGlyphLayout.width,
                 hudViewport.getWorldHeight() - (FRAME_OFFSET + 2 * PADDING) / PPM,
@@ -116,8 +134,8 @@ public class Hud {
                 LIVES_HEIGHT / PPM);
 
         // draw lives loadingScreenFont (label)
-        font.setColor(Color.WHITE);
-        font.draw(batch,
+        hudFont.setColor(Color.WHITE);
+        hudFont.draw(batch,
                 "x" + checkpointData.getLives(),
                 hudViewport.getWorldWidth() - PADDING / PPM - livesGlyphLayout.width / 2,
                 hudViewport.getWorldHeight() - PADDING / PPM - livesGlyphLayout.height / 2,
@@ -129,6 +147,30 @@ public class Hud {
         if(playScreen.isPaused()) {
             stage.draw();
         }
+    }
+
+    private void createButtons() {
+        // resume GlyphLayout
+        GlyphLayout resumeGlyph = new GlyphLayout();
+        resumeGlyph.setText(pauseFont, "RESUME");
+
+        // menu GlyphLayout
+        GlyphLayout menuGlyph = new GlyphLayout();
+        menuGlyph.setText(pauseFont, "MENU");
+
+        // add font to style
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = pauseFont;
+
+        this.toResumeButton = new TextButton("RESUME", style);
+        toResumeButton.setPosition(resumeGlyph.width, resumeGlyph.height);
+        toResumeButton.setPosition(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2, Align.center);
+
+        this.toMenuButton = new TextButton("MENU", style);
+        toMenuButton.setSize(menuGlyph.width, menuGlyph.height);
+        toMenuButton.setPosition(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2 - 48 / PPM, Align.center);
+
+        Gdx.app.log("Hud", "Pause panel buttons were created");
     }
 
     public Viewport getHudViewport() {

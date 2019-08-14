@@ -34,7 +34,10 @@ public class Assets {
     public PipeAssets pipeAssets;
     // fonts
     public FontAssets fontAssets;
+    public HudFontAssets hudFontAssets;
+    public HpFontAssets hpFontAssets;
     public SmallFontAssets smallFontAssets;
+    public PauseFontAssets pauseFontAssets;
 
     // level 2
     public TrampolineAssets trampolineAssets;
@@ -77,11 +80,26 @@ public class Assets {
 
         //// LOAD ASYNCHRONOUSLY ////
 
+        // hp font
+        FreetypeFontLoader.FreeTypeFontLoaderParameter hpFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        hpFont.fontFileName = "blow.ttf";
+        hpFont.fontParameters.size = 48;
+        hpFont.fontParameters.color = Color.WHITE;
+        assetManager.load("hpFont.ttf", BitmapFont.class, hpFont);
+
         FreetypeFontLoader.FreeTypeFontLoaderParameter smallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         smallFont.fontFileName = "blow.ttf";
         smallFont.fontParameters.size = 64;
         smallFont.fontParameters.color = Color.WHITE;
         assetManager.load("smallFont.ttf", BitmapFont.class, smallFont);
+
+
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter pauseFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        pauseFont.fontFileName = "blow.ttf";
+        pauseFont.fontParameters.size = 86;
+        assetManager.load("pauseFont.ttf", BitmapFont.class, pauseFont);
+
 
         /* Load tiled map following the procedure described in the LibGDX documentation:
          * https://github.com/libgdx/libgdx/wiki/Tile-maps */
@@ -128,7 +146,12 @@ public class Assets {
         this.hudAssets = new HudAssets(atlas);
         this.collectableAssets = new CollectableAssets(atlas);
         this.pipeAssets = new PipeAssets(atlas);
+
+        // fonts
+        this.hudFontAssets = new HudFontAssets();
+        this.hpFontAssets = new HpFontAssets();
         this.smallFontAssets = new SmallFontAssets();
+        this.pauseFontAssets = new PauseFontAssets();
 
         // level2
         this.trampolineAssets = new TrampolineAssets(atlas);
@@ -353,24 +376,12 @@ public class Assets {
         public final TextureAtlas.AtlasRegion greenBar;
         public final TextureAtlas.AtlasRegion redBar;
         public final TextureAtlas.AtlasRegion lives;
-        public GlyphLayout scoreGlyphLayout;
-        public GlyphLayout livesGlyphLayout;
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
             this.greenBar = atlas.findRegion("green");
             this.redBar = atlas.findRegion("red");
             this.lives = atlas.findRegion("lives");
-
-            // GlyphLayout for alignment
-            this.scoreGlyphLayout = new GlyphLayout();
-            String text = "SCORE";
-            scoreGlyphLayout.setText(fontAssets.font, text);
-
-            // GlyphLayout for alignment
-            this.livesGlyphLayout = new GlyphLayout();
-            String text2 = "x3";
-            livesGlyphLayout.setText(fontAssets.font, text2);
         }
     }
 
@@ -507,6 +518,26 @@ public class Assets {
         }
     }
 
+    public class HudFontAssets {
+        public BitmapFont hudFont;
+
+        private HudFontAssets() {
+            this.hudFont = assetManager.get("font.ttf", BitmapFont.class);
+            hudFont.getData().setScale(1 / 86f / 1.35f);
+            hudFont.setUseIntegerPositions(false);
+        }
+    }
+
+    public class HpFontAssets {
+        public BitmapFont hpFont;
+
+        private HpFontAssets() {
+            this.hpFont = assetManager.get("hpFont.ttf", BitmapFont.class);
+            hpFont.getData().setScale(1 / 86f / 1.35f);
+            hpFont.setUseIntegerPositions(false);
+        }
+    }
+
     public class SmallFontAssets {
         public BitmapFont smallFont;
 
@@ -514,6 +545,16 @@ public class Assets {
             this.smallFont = assetManager.get("smallFont.ttf", BitmapFont.class);
             smallFont.getData().setScale(1 / 64f / 2);
             smallFont.setUseIntegerPositions(false);
+        }
+    }
+
+    public class PauseFontAssets {
+        public BitmapFont pauseFont;
+
+        private PauseFontAssets() {
+            this.pauseFont = assetManager.get("pauseFont.ttf", BitmapFont.class);
+            pauseFont.getData().setScale(1 / 86f);
+            pauseFont.setUseIntegerPositions(false);
         }
     }
 }
