@@ -36,7 +36,7 @@ public class Assets {
     public FontAssets fontAssets;
     public HudFontAssets hudFontAssets;
     public HpFontAssets hpFontAssets;
-    public SmallFontAssets smallFontAssets;
+    public FeedbackFontAssets feedbackFontAssets;
     public PauseFontAssets pauseFontAssets;
 
     // level 2
@@ -87,11 +87,11 @@ public class Assets {
         hpFont.fontParameters.color = Color.WHITE;
         assetManager.load("hpFont.ttf", BitmapFont.class, hpFont);
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter smallFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        smallFont.fontFileName = "blow.ttf";
-        smallFont.fontParameters.size = 64;
-        smallFont.fontParameters.color = Color.WHITE;
-        assetManager.load("smallFont.ttf", BitmapFont.class, smallFont);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter feedbackFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        feedbackFont.fontFileName = "blow.ttf";
+        feedbackFont.fontParameters.size = 64;
+        feedbackFont.fontParameters.color = Color.WHITE;
+        assetManager.load("feedbackFont.ttf", BitmapFont.class, feedbackFont);
 
 
 
@@ -150,7 +150,7 @@ public class Assets {
         // fonts
         this.hudFontAssets = new HudFontAssets();
         this.hpFontAssets = new HpFontAssets();
-        this.smallFontAssets = new SmallFontAssets();
+        this.feedbackFontAssets = new FeedbackFontAssets();
         this.pauseFontAssets = new PauseFontAssets();
 
         // level2
@@ -538,13 +538,13 @@ public class Assets {
         }
     }
 
-    public class SmallFontAssets {
-        public BitmapFont smallFont;
+    public class FeedbackFontAssets {
+        public BitmapFont feedbackFont;
 
-        private SmallFontAssets() {
-            this.smallFont = assetManager.get("smallFont.ttf", BitmapFont.class);
-            smallFont.getData().setScale(1 / 64f / 2);
-            smallFont.setUseIntegerPositions(false);
+        private FeedbackFontAssets() {
+            this.feedbackFont = assetManager.get("feedbackFont.ttf", BitmapFont.class);
+            feedbackFont.getData().setScale(1 / 64f / 2);
+            feedbackFont.setUseIntegerPositions(false);
         }
     }
 

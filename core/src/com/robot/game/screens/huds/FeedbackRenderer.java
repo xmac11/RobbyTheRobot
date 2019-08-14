@@ -33,7 +33,7 @@ public class FeedbackRenderer {
         this.itemPointsToDraw = new ObjectMap<>();
 
         Assets assets = robot.getPlayScreen().getAssets();
-        this.feedbackFont = assets.smallFontAssets.smallFont;
+        this.feedbackFont = assets.feedbackFontAssets.feedbackFont;
         this.frame = assets.hudAssets.frame;
         this.greenBar = assets.hudAssets.greenBar;
         this.redBar = assets.hudAssets.redBar;

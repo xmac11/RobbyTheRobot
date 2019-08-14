@@ -257,8 +257,8 @@ public final class Constants {
     public static final float POWERUP_FRAME_WIDTH = FRAME_WIDTH / 2f;
     public static final float POWERUP_FRAME_HEIGHT = FRAME_HEIGHT / 2f;
     // health bar
-    public static final float POWERUP_BAR_OFFSET_X = 16;
-    public static final float POWERUP_BAR_OFFSET_Y = 2.5f;
+    public static final float POWERUP_BAR_OFFSET_X = 12;
+    public static final float POWERUP_BAR_OFFSET_Y = 1.8f;
     public static final float POWERUP_BAR_WIDTH = BAR_WIDTH / 2f;
     public static final float POWERUP_BAR_HEIGHT = BAR_HEIGHT / 2f;
 
