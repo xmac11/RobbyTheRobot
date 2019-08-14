@@ -57,8 +57,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     // reference to current level
     protected int levelID;
 
-    // paused
+    // paused/escaped
     protected boolean paused;
+    protected boolean escapePressed;
     protected boolean damageON;
 
     // assets
@@ -471,10 +472,15 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     protected void processGameStateInput() {
+        // pause game
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             paused = !paused;
             Gdx.app.log("PlayScreen", "Paused = " + paused);
             mapRenderer.setMapAnimationActive(!mapRenderer.isMapAnimationActive());
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            escapePressed = true;
+            Gdx.app.log("PlayScreen", "escapePressed = true");
         }
     }
 
@@ -564,6 +570,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
         //level1
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+            Gdx.app.log("PlayScreen", "Level 1 was set from debug keys");
             doNotSaveInHide = true;
 
             // set default data
@@ -581,11 +588,12 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
 
             // start level1
-            this.dispose();
+            dispose();
             game.setScreen(new ScreenLevel1(game));
         }
         // level 2
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+            Gdx.app.log("PlayScreen", "Level 2 was set from debug keys");
             doNotSaveInHide = true;
 
             // set default data
@@ -603,12 +611,13 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
 
             // start level2
-            this.dispose();
+            dispose();
             game.setScreen(new ScreenLevel2(game));
         }
 
         // level3
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+            Gdx.app.log("PlayScreen", "Level 3 was set from debug keys");
             doNotSaveInHide = true;
 
             // set default data
@@ -627,7 +636,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
 
             // start level3
-            this.dispose();
+            dispose();
             game.setScreen(new ScreenLevel3(game));
         }
     }

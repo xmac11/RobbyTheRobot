@@ -113,7 +113,7 @@ public class ScreenLevel2 extends PlayScreen {
     @Override
     public void render(float delta) {
 
-        // check if game was paused
+        // check if game was paused/resumed
         super.processGameStateInput();
 
         // if game is not paused, perform all necessary updates
@@ -172,8 +172,13 @@ public class ScreenLevel2 extends PlayScreen {
             super.renderDebugLines();
         }
 
-        // finally, check if robot is dead
-        if(robot.isDead()) {
+        // finally, check if robot is dead, level completed or game exited
+        if(escapePressed) {
+            Gdx.app.log("ScreenLevel2","Menu screen was by ESC");
+            this.dispose();
+            game.setScreen(new MenuScreen(game));
+        }
+        else if(robot.isDead()) {
             super.handleRobotDeath();
         }
         else {

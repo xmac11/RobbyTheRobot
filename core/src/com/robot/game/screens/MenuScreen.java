@@ -62,7 +62,6 @@ public class MenuScreen extends ScreenAdapter {
         this.stage = new Stage(menuScreenViewport);
 
         this.background = new Image(assets.mainMenuAssets.mainMenuBG);
-        System.out.println(background.getWidth() / PPM);
         background.setSize(background.getWidth() / PPM, background.getHeight() / PPM);
         background.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         background.getColor().a = 0.2f;
@@ -141,16 +140,16 @@ public class MenuScreen extends ScreenAdapter {
 
         // play button
         TextButton playButton = new TextButton("PLAY", style);
-        playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         playButton.setSize(playGlyph.width, playGlyph.height);
+        playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         buttons.add(playButton);
         this.playIndex = index++;
         Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
 
         // exit button
         TextButton exitButton = new TextButton("EXIT", style);
-        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
         exitButton.setSize(exitGlyph.width, exitGlyph.height);
+        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
         buttons.add(exitButton);
         this.exitIndex = index;
         Gdx.app.log("MenuScreen", "exitIndex = " + exitIndex);
