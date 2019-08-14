@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -18,7 +20,6 @@ import static com.robot.game.util.Constants.*;
 public class Hud {
 
     private PlayScreen playScreen;
-    private Assets assets;
     private CheckpointData checkpointData;
     private Viewport hudViewport;
     private TextureRegion frame;
@@ -31,9 +32,13 @@ public class Hud {
     private GlyphLayout scoreGlyphLayout;
     private GlyphLayout livesGlyphLayout;
 
+    // Pause panel
+    protected Stage stage;
+    protected Image pausePanel;
+
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
-        this.assets = playScreen.getAssets();
+        Assets assets = playScreen.getAssets();
         this.checkpointData = playScreen.getCheckpointData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT * 1.35f / PPM);
 
@@ -46,11 +51,18 @@ public class Hud {
         this.scoreGlyphLayout = assets.hudAssets.scoreGlyphLayout;
         this.livesGlyphLayout = assets.hudAssets.livesGlyphLayout;
 
+
+        this.stage = new Stage(hudViewport, playScreen.getGame().getBatch());
+        this.pausePanel = new Image(assets.pausePanelAssets.pausePanel);
+        pausePanel.setSize(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2);
+        pausePanel.setPosition(hudViewport.getWorldWidth() / 2 - pausePanel.getWidth() / 2, hudViewport.getWorldHeight() / 2 - pausePanel.getHeight() / 2);
+        stage.addActor(pausePanel);
     }
 
     public void draw(SpriteBatch batch) {
 
         batch.setProjectionMatrix(hudViewport.getCamera().combined);
+        batch.begin();
 
         // draw frame
         batch.draw(frame,
@@ -112,8 +124,11 @@ public class Hud {
                 /*LIVES_WIDTH / PPM*/0,
                 Align.center,
                 false);
+        batch.end();
 
-//        System.out.println(livesGlyphLayout.width + " " + livesGlyphLayout.height);
+        if(playScreen.isPaused()) {
+            stage.draw();
+        }
     }
 
     public Viewport getHudViewport() {

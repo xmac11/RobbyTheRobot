@@ -21,6 +21,7 @@ public class Assets {
     private AssetManager assetManager;
 
     public MainMenuAssets mainMenuAssets;
+    public PausePanelAssets pausePanelAssets;
     public TiledMapAssets tiledMapAssets;
     public LoadingScreenAssets loadingScreenAssets;
     public RobotAssets robotAssets;
@@ -117,6 +118,7 @@ public class Assets {
 
         // create assets
         this.mainMenuAssets = new MainMenuAssets();
+        this.pausePanelAssets = new PausePanelAssets();
         this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
@@ -482,6 +484,14 @@ public class Assets {
 
         private MainMenuAssets() {
             this.mainMenuBG = new Texture("robotHI.png");
+        }
+    }
+
+    public class PausePanelAssets {
+        public final Texture pausePanel;
+
+        private PausePanelAssets() {
+            this.pausePanel = new Texture("pause_panel.png");
         }
     }
 

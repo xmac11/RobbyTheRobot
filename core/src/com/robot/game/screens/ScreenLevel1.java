@@ -115,39 +115,39 @@ public class ScreenLevel1 extends PlayScreen {
 
         // FIRST BATCH
         // render background
-        game.getBatch().disableBlending();
-        game.getBatch().begin();
-        parallaxBackground.draw(game.getBatch());
-        game.getBatch().end();
-        //        System.out.println("render1: " + game.getBatch().renderCalls);
+        batch.disableBlending();
+        batch.begin();
+        parallaxBackground.draw(batch);
+        batch.end();
+        //        System.out.println("render1: " + batch.renderCalls);
 
         // render map
         mapRenderer.render(mapLayers);
 
         // SECOND BATCH
-        game.getBatch().enableBlending();
-        game.getBatch().begin();
+        batch.enableBlending();
+        batch.begin();
 
         // render foreground (waves and barrels)
-        parallaxBarrels.draw(game.getBatch());
+        parallaxBarrels.draw(batch);
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
 
         // render falling pipes
         for(FallingPipe fallingPipe: fallingPipes) {
-            fallingPipe.draw(game.getBatch());
+            fallingPipe.draw(batch);
         }
 
         // render feedback
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
-        feedbackRenderer.draw(game.getBatch(), delta);
+        feedbackRenderer.draw(batch, delta);
+        batch.end();
+
+        //        System.out.println("render2: " + batch.renderCalls);
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
-        hud.draw(game.getBatch());
-        game.getBatch().end();
-
-        //        System.out.println("render2: " + game.getBatch().renderCalls);
+        hud.draw(batch);
 
         if(DEBUG_ON) {
             // render box2d shapes and ai paths

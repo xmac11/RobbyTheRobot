@@ -120,33 +120,32 @@ public class ScreenLevel3 extends PlayScreen {
 
         mapRenderer.render();
 
-        game.getBatch().begin();
+        batch.begin();
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
 
         // render trampoline
-        trampoline.draw(game.getBatch());
+        trampoline.draw(batch);
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
-        //hud.draw(game.getBatch());
-        game.getBatch().end();
+        //hud.draw(batch);
+        batch.end();
 
         // render torch
         rayHandlerTorch.render();
 
         // render any laser shot
-        laserHandler.render(game.getBatch(), shapeRenderer);
+        laserHandler.render(batch, shapeRenderer);
 
-        game.getBatch().begin();
+        batch.begin();
         // render feedback
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
-        feedbackRenderer.draw(game.getBatch(), delta);
+        feedbackRenderer.draw(batch, delta);
+        batch.end();
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
-        hud.draw(game.getBatch());
-        game.getBatch().end();
-
+        hud.draw(batch);
 
         if(DEBUG_ON) {
             // render punch lines

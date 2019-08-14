@@ -129,41 +129,40 @@ public class ScreenLevel2 extends PlayScreen {
 
         mapRenderer.render();
 
-        game.getBatch().begin();
+        batch.begin();
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
 
         // render parallax water (render after enemy so that fish are behind)
         for(Parallax parallax: parallaxWaters) {
-            parallax.draw(game.getBatch());
+            parallax.draw(batch);
         }
 
         // render trampoline
-        trampoline.draw(game.getBatch());
+        trampoline.draw(batch);
 
         // render fireballs
         for(TankBall tankBall: tankBalls) {
-            tankBall.draw(game.getBatch());
+            tankBall.draw(batch);
         }
 
         // render moving spikes (joint handler renders the stick)
-        jointHandler.draw(game.getBatch());
+        jointHandler.draw(batch);
         for(MovingSpike movingSpike: movingSpikes) {
-            movingSpike.draw(game.getBatch());
+            movingSpike.draw(batch);
         }
 
         // render feedback
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
-        feedbackRenderer.draw(game.getBatch(), delta);
+        feedbackRenderer.draw(batch, delta);
+        batch.end();
 
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
-        hud.draw(game.getBatch());
-        game.getBatch().end();
-
+        hud.draw(batch);
 
         // render any laser shot
-        laserHandler.render(game.getBatch(), shapeRenderer);
+        laserHandler.render(batch, shapeRenderer);
 
         if(DEBUG_ON) {
             // render punch lines

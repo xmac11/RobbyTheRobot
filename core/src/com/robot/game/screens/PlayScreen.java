@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,6 +15,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -53,6 +57,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // main class reference
     protected RobotGame game;
+    protected SpriteBatch batch;
 
     // reference to current level
     protected int levelID;
@@ -154,6 +159,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
+        this.batch = game.getBatch();
         this.assets = game.getAssets();
         this.checkpointData = game.getCheckpointData();
         this.tiledMap = tiledMap;
@@ -258,26 +264,26 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // only render what the camera can see
         mapRenderer.setView(camera);
-        game.getBatch().setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
     }
 
     protected void commonRendering(float delta) {
         // render interactive platforms
         for(InteractivePlatform platform: interactivePlatforms) {
-                platform.draw(game.getBatch());
+                platform.draw(batch);
         }
 
         // render robot
-        robot.draw(game.getBatch(), delta);
+        robot.draw(batch, delta);
 
         // render enemies
         for(Enemy enemy: enemies) {
-                enemy.draw(game.getBatch());
+                enemy.draw(batch);
         }
 
         // render collectables
         for(Collectable collectable: collectables) {
-                collectable.draw(game.getBatch());
+                collectable.draw(batch);
         }
     }
 
