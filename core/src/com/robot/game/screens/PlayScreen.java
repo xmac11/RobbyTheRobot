@@ -15,9 +15,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -432,6 +429,21 @@ public abstract class PlayScreen extends ScreenAdapter {
         return paused;
     }
 
+    public void setPaused(boolean paused) {
+        this.paused = paused;
+        Gdx.app.log("PlayScreen", "Paused = " + paused);
+    }
+
+    public void updateInputProcOnPauseOrResume() {
+        if(paused) {
+            Gdx.input.setInputProcessor(hud.getStage());
+        }
+        else {
+            Gdx.input.setInputProcessor(robot.isOnLadder() ? ladderClimbHandler : null);
+        }
+        Gdx.app.log("PlayScreen", "InputProcessor = " + Gdx.input.getInputProcessor());
+    }
+
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
@@ -477,13 +489,28 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "damageON = " + damageON);
     }
 
+    public MyOrthogonalTiledMapRenderer getMapRenderer() {
+        return mapRenderer;
+    }
+
     protected void processGameStateInput() {
         // pause game
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-            paused = !paused;
-            Gdx.app.log("PlayScreen", "Paused = " + paused);
+            setPaused(!paused);
+
+            // update boolean for tiled animation
             mapRenderer.setMapAnimationActive(!mapRenderer.isMapAnimationActive());
+
+            // update input processor
+            updateInputProcOnPauseOrResume();
+
+            // when resumed with 'P' key, restore selection to zero for next time game is paused (in case MENU was selected)
+            if(!paused) {
+                hud.setSelection(0);
+            }
         }
+
+        // return to menu screen
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             escapePressed = true;
             Gdx.app.log("PlayScreen", "escapePressed = true");

@@ -38,7 +38,6 @@ public class MenuScreen extends ScreenAdapter {
     private int selection;
     private int numberOfButtons;
 
-    private Image background;
     private Array<TextButton> buttons;
     private int playIndex;
     private int exitIndex;
@@ -56,12 +55,12 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.app.log("MenuScreen", "show");
 
         this.menuScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
-        this.font = assets.fontAssets.font;
+        this.font = assets.pauseFontAssets.panelFont;
 
         // create stage
         this.stage = new Stage(menuScreenViewport);
 
-        this.background = new Image(assets.mainMenuAssets.mainMenuBG);
+        Image background = new Image(assets.mainMenuAssets.mainMenuBG);
         background.setSize(background.getWidth() / PPM, background.getHeight() / PPM);
         background.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         background.getColor().a = 0.2f;
@@ -85,7 +84,21 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void update(float delta) {
+        // process input
+        processInput();
 
+        // update color of buttons
+        for(int i = 0; i < buttons.size; i++) {
+            if(i == selection) {
+                buttons.get(i).getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+            }
+            else {
+                buttons.get(i).getLabel().setColor(Color.WHITE);
+            }
+        }
+    }
+
+    private void processInput() {
         // update selection
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             selection = (selection - 1 + numberOfButtons) % numberOfButtons;
@@ -97,16 +110,6 @@ public class MenuScreen extends ScreenAdapter {
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             handleSelection();
-        }
-
-        // update color of buttons
-        for(int i = 0; i < buttons.size; i++) {
-            if(i == selection) {
-                buttons.get(i).getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
-            }
-            else {
-                buttons.get(i).getLabel().setColor(Color.WHITE);
-            }
         }
     }
 
@@ -163,6 +166,7 @@ public class MenuScreen extends ScreenAdapter {
         buttons.get(playIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MenuScreen", "Clicked play button");
                 selection = playIndex;
                 handleSelection();
             }
@@ -179,6 +183,7 @@ public class MenuScreen extends ScreenAdapter {
         buttons.get(exitIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MenuScreen", "Clicked exit button");
                 selection = exitIndex;
                 handleSelection();
             }

@@ -37,7 +37,7 @@ public class Assets {
     public HudFontAssets hudFontAssets;
     public HpFontAssets hpFontAssets;
     public FeedbackFontAssets feedbackFontAssets;
-    public PauseFontAssets pauseFontAssets;
+    public PanelFontAssets pauseFontAssets;
 
     // level 2
     public TrampolineAssets trampolineAssets;
@@ -95,10 +95,10 @@ public class Assets {
 
 
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter pauseFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        pauseFont.fontFileName = "blow.ttf";
-        pauseFont.fontParameters.size = 86;
-        assetManager.load("pauseFont.ttf", BitmapFont.class, pauseFont);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter panelFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        panelFont.fontFileName = "blow.ttf";
+        panelFont.fontParameters.size = 86;
+        assetManager.load("panelFont.ttf", BitmapFont.class, panelFont);
 
 
         /* Load tiled map following the procedure described in the LibGDX documentation:
@@ -151,7 +151,7 @@ public class Assets {
         this.hudFontAssets = new HudFontAssets();
         this.hpFontAssets = new HpFontAssets();
         this.feedbackFontAssets = new FeedbackFontAssets();
-        this.pauseFontAssets = new PauseFontAssets();
+        this.pauseFontAssets = new PanelFontAssets();
 
         // level2
         this.trampolineAssets = new TrampolineAssets(atlas);
@@ -548,13 +548,13 @@ public class Assets {
         }
     }
 
-    public class PauseFontAssets {
-        public BitmapFont pauseFont;
+    public class PanelFontAssets {
+        public BitmapFont panelFont;
 
-        private PauseFontAssets() {
-            this.pauseFont = assetManager.get("pauseFont.ttf", BitmapFont.class);
-            pauseFont.getData().setScale(1 / 86f);
-            pauseFont.setUseIntegerPositions(false);
+        private PanelFontAssets() {
+            this.panelFont = assetManager.get("panelFont.ttf", BitmapFont.class);
+            panelFont.getData().setScale(1 / 86f);
+            panelFont.setUseIntegerPositions(false);
         }
     }
 }

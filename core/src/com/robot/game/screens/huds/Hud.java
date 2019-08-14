@@ -1,18 +1,23 @@
 package com.robot.game.screens.huds;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.robot.game.screens.MenuScreen;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -40,6 +45,8 @@ public class Hud {
     private TextButton toResumeButton;
     private TextButton toMenuButton;
     private BitmapFont pauseFont;
+    private int selection;
+    private int n;
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -65,16 +72,54 @@ public class Hud {
 
         // pause panel
         this.stage = new Stage(hudViewport, playScreen.getGame().getBatch());
-        this.pauseFont = assets.pauseFontAssets.pauseFont;
+        this.pauseFont = assets.pauseFontAssets.panelFont;
         this.pausePanel = new Image(assets.pausePanelAssets.pausePanel);
         pausePanel.setSize(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2);
         pausePanel.setPosition(hudViewport.getWorldWidth() / 2 - pausePanel.getWidth() / 2, hudViewport.getWorldHeight() / 2 - pausePanel.getHeight() / 2);
 
+        this.n = 2; // number of buttons
+
+        // create buttons
         createButtons();
+
+        // add listeners to buttons
+        addListeners();
 
         stage.addActor(pausePanel);
         stage.addActor(toMenuButton);
         stage.addActor(toResumeButton);
+    }
+
+    private void update() {
+        // process input
+        processInput();
+
+        // update color of buttons
+        switch(selection) {
+            case 0:
+                toResumeButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+                toMenuButton.getLabel().setColor(Color.WHITE);
+                break;
+            case 1:
+                toResumeButton.getLabel().setColor(Color.WHITE);
+                toMenuButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+                break;
+        }
+    }
+
+    private void processInput() {
+        // update selection
+        if(Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            selection = (selection - 1 + n) % n;
+            Gdx.app.log("Hud", "selection = " + selection);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            selection = (selection + 1 + n) % n;
+            Gdx.app.log("Hud", "selection = " + selection);
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            handleSelection();
+        }
     }
 
     public void draw(SpriteBatch batch) {
@@ -145,6 +190,9 @@ public class Hud {
         batch.end();
 
         if(playScreen.isPaused()) {
+            this.update();
+
+            stage.act();
             stage.draw();
         }
     }
@@ -173,8 +221,76 @@ public class Hud {
         Gdx.app.log("Hud", "Pause panel buttons were created");
     }
 
+    private void addListeners() {
+        // toResumeButton
+        toResumeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Hud", "Clicked toResumeButton");
+                selection = 0;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("Hud", "Entered play button");
+                selection = 0;
+            }
+        });
+
+
+        // toMenuButton
+        toMenuButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("Hud", "Clicked toMenuButton");
+                selection = 1;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("Hud", "Entered toMenuButton");
+                selection = 1;
+            }
+        });
+
+        Gdx.app.log("Hud", "Listeners were added to buttons");
+    }
+
+    private void handleSelection() {
+
+        switch(selection) {
+            // resume
+            case 0:
+                Gdx.app.log("Hud", "Game was resumed from pause panel");
+                playScreen.setPaused(false);
+
+                // update boolean for tiled animation
+                playScreen.getMapRenderer().setMapAnimationActive(true);
+
+                // update input processor
+                playScreen.updateInputProcOnPauseOrResume();
+                break;
+
+            // menu
+            case 1:
+                Gdx.app.log("Hud", "MenuScreen was set from pause panel");
+                playScreen.dispose();
+                playScreen.getGame().setScreen(new MenuScreen(playScreen.getGame()));
+                break;
+        }
+    }
+
     public Viewport getHudViewport() {
         return hudViewport;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setSelection(int selection) {
+        this.selection = selection;
+    }
 }
