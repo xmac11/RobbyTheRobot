@@ -7,10 +7,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -78,6 +81,9 @@ public class GameOverScreen extends ScreenAdapter {
         // create buttons
         createButtons();
 
+        // add listeners
+        addListeners();
+
         // add actors
         stage.addActor(gameover);
         stage.addActor(sad);
@@ -85,6 +91,9 @@ public class GameOverScreen extends ScreenAdapter {
         stage.addActor(playAgain);
         stage.addActor(yesButton);
         stage.addActor(noButton);
+
+        // set InputProcessor
+        Gdx.input.setInputProcessor(stage);
     }
 
     private void update() {
@@ -128,6 +137,7 @@ public class GameOverScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0f / 255, 139f / 255, 139f / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act();
         stage.draw();
     }
 
@@ -153,6 +163,44 @@ public class GameOverScreen extends ScreenAdapter {
         this.noButton = new TextButton("NO", style);
         noButton.setSize(noGlyph.width, noGlyph.height);
         noButton.setPosition(viewport.getWorldWidth() / 2 + 48 / PPM, viewport.getWorldHeight() / 2 - 144 / PPM, Align.center);
+
+        Gdx.app.log("GameOverScreen", "Buttons were created");
+    }
+
+    private void addListeners() {
+        // yesButton
+        yesButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("GameOverScreen", "Clicked YES button");
+                selection = 0;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("GameOverScreen", "Entered YES button");
+                selection = 0;
+            }
+        });
+
+        // noButton
+        noButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("GameOverScreen", "Clicked NO button");
+                selection = 1;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("GameOverScreen", "Entered NO button");
+                selection = 1;
+            }
+        });
+
+        Gdx.app.log("GameOverScreen", "Listeners were added to buttons");
     }
 
     private void handleSelection() {

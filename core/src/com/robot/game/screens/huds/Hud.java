@@ -226,14 +226,14 @@ public class Hud {
         toResumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Hud", "Clicked toResumeButton");
+                Gdx.app.log("Hud", "Clicked RESUME button");
                 selection = 0;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("Hud", "Entered play button");
+                Gdx.app.log("Hud", "Entered RESUME button");
                 selection = 0;
             }
         });
@@ -243,14 +243,14 @@ public class Hud {
         toMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("Hud", "Clicked toMenuButton");
+                Gdx.app.log("Hud", "Clicked MENU button");
                 selection = 1;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("Hud", "Entered toMenuButton");
+                Gdx.app.log("Hud", "Entered MENU button");
                 selection = 1;
             }
         });

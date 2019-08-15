@@ -158,19 +158,18 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void addListeners() {
-
         // play button
         buttons.get(playIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("MenuScreen", "Clicked play button");
+                Gdx.app.log("MenuScreen", "Clicked PLAY button");
                 selection = playIndex;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("MenuScreen", "Entered play button");
+                Gdx.app.log("MenuScreen", "Entered PLAY button");
                 selection = playIndex;
             }
         });
@@ -180,14 +179,14 @@ public class MenuScreen extends ScreenAdapter {
         buttons.get(exitIndex).addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("MenuScreen", "Clicked exit button");
+                Gdx.app.log("MenuScreen", "Clicked EXIT button");
                 selection = exitIndex;
                 handleSelection();
             }
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                Gdx.app.log("MenuScreen", "Entered exit button");
+                Gdx.app.log("MenuScreen", "Entered EXIT button");
                 selection = exitIndex;
             }
         });
