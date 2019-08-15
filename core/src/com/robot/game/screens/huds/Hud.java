@@ -97,12 +97,12 @@ public class Hud {
         // update color of buttons
         switch(selection) {
             case 0:
-                toResumeButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
-                toMenuButton.getLabel().setColor(Color.WHITE);
+                toResumeButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1); // orange
+                toMenuButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
                 break;
             case 1:
-                toResumeButton.getLabel().setColor(Color.WHITE);
-                toMenuButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+                toResumeButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
+                toMenuButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1); // orange
                 break;
         }
     }

@@ -87,10 +87,10 @@ public class MenuScreen extends ScreenAdapter {
         // update color of buttons
         for(int i = 0; i < buttons.size; i++) {
             if(i == selection) {
-                buttons.get(i).getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+                buttons.get(i).getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1); // orange
             }
             else {
-                buttons.get(i).getLabel().setColor(Color.WHITE);
+                buttons.get(i).getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
             }
         }
     }

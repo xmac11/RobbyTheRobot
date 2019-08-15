@@ -69,7 +69,7 @@ public class GameOverScreen extends ScreenAdapter {
         score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM, Align.center);
 
         // play again label
-        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, Color.WHITE);
+        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, new Color(238f / 255, 232f / 255, 170f / 255, 1)); // orange
         Label playAgain = new Label("PLAY AGAIN?", stylePlayAgain);
         playAgain.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 112 / PPM, Align.center);
 
@@ -94,12 +94,12 @@ public class GameOverScreen extends ScreenAdapter {
         // update color of buttons
         switch(selection) {
             case 0:
-                yesButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
-                noButton.getLabel().setColor(Color.WHITE);
+                yesButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1); // orange
+                noButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
                 break;
             case 1:
-                yesButton.getLabel().setColor(Color.WHITE);
-                noButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1);
+                yesButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
+                noButton.getLabel().setColor(255f / 255, 192f / 255, 43f / 255, 1); // orange
                 break;
         }
     }

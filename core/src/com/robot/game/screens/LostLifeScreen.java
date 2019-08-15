@@ -48,7 +48,7 @@ public class LostLifeScreen extends ScreenAdapter {
         robot.setPosition(viewport.getWorldWidth() / 2 - 24 / PPM, viewport.getWorldHeight() / 2, Align.center);
 
         // label style
-        Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
+        Label.LabelStyle style = new Label.LabelStyle(font, new Color(238f / 255, 232f / 255, 170f / 255, 1));
 
         // label
         Label lives = new Label("x" + (game.getCheckpointData().getLives() + 1), style);
