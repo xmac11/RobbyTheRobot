@@ -21,8 +21,7 @@ import com.robot.game.util.raycast.MyRayCastCallback;
 
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.LEFT;
-import static com.robot.game.util.Enums.Facing.RIGHT;
+import static com.robot.game.util.Enums.Facing.*;
 
 public class Robot extends Sprite implements Steerable<Vector2> {
 
@@ -221,8 +220,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             if(facing != RIGHT) {
-                facing = RIGHT;
-                Gdx.app.log("Robot", "facing = " + facing);
+                setFacing(RIGHT);
             }
 
             // GRADUAL ACCELERATION
@@ -237,8 +235,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             if(facing != LEFT) {
-                facing = LEFT;
-                Gdx.app.log("Robot", "facing = " + facing);
+                setFacing(LEFT);
             }
 
             // this is for the case of the horizontally moving platform that will stop under the ladder
@@ -539,6 +536,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         isWallClimbing = wallClimbing;
     }
 
+    public int getDirection() {
+        return direction;
+    }
+
     public void setDirection(int direction) {
         this.direction = direction;
     }
@@ -549,6 +550,11 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public Facing getFacing() {
         return facing;
+    }
+
+    public void setFacing(Facing facing) {
+        this.facing = facing;
+        Gdx.app.log("Robot", "Facing = " + facing);
     }
 
     public boolean hasTorch() {

@@ -20,6 +20,8 @@ import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 
 import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.Enums.Facing.*;
+
 
 public class ContactManager implements ContactListener {
 
@@ -692,7 +694,6 @@ public class ContactManager implements ContactListener {
         }
         else {
             fallingPipe = (FallingPipe) fixB.getUserData();
-
         }
 
         // robot got off the pipe; turn off flag to set pipe's velocity to zero
@@ -703,13 +704,22 @@ public class ContactManager implements ContactListener {
     private void robotWallEnd(Fixture fixA, Fixture fixB) {
         Robot robot;
 
-        if(fixA.getUserData() instanceof Robot)
+        if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
-        else
+        }
+        else {
             robot = (Robot) fixB.getUserData();
+        }
 
         robot.setWallClimbing(false);
         Gdx.app.log("ContactManager", "WallClimbing = false");
+
+        if(robot.getDirection() == 1) {
+            robot.setFacing(RIGHT);
+        }
+        else {
+            robot.setFacing(LEFT);
+        }
     }
 
     @Override

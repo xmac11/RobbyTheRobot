@@ -74,9 +74,6 @@ public class RobotGame extends Game {
 		// first save game data, then restart game
 		FileSaver.saveCheckpointData(checkpointData);
 
-		// dispose screen
-//		playScreen.dispose();
-
 		switch(levelID) {
 			case 1:
 				setScreen(new ScreenLevel1(this));
