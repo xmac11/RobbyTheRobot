@@ -22,6 +22,7 @@ public class Assets {
 
     public MainMenuAssets mainMenuAssets;
     public PausePanelAssets pausePanelAssets;
+    public GameOverAssets gameOverAssets;
     public TiledMapAssets tiledMapAssets;
     public LoadingScreenAssets loadingScreenAssets;
     public RobotAssets robotAssets;
@@ -33,11 +34,12 @@ public class Assets {
     public CollectableAssets collectableAssets;
     public PipeAssets pipeAssets;
     // fonts
-    public FontAssets fontAssets;
+    public LoadingScreenFontAssets fontAssets;
     public HudFontAssets hudFontAssets;
     public HpFontAssets hpFontAssets;
     public FeedbackFontAssets feedbackFontAssets;
     public PanelFontAssets panelFontAssets;
+    public PanelBigFontAssets panelBigFontAssets;
 
     // level 2
     public TrampolineAssets trampolineAssets;
@@ -87,18 +89,24 @@ public class Assets {
         hpFont.fontParameters.color = Color.WHITE;
         assetManager.load("hpFont.ttf", BitmapFont.class, hpFont);
 
+        // feedback font
         FreetypeFontLoader.FreeTypeFontLoaderParameter feedbackFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         feedbackFont.fontFileName = "blow.ttf";
         feedbackFont.fontParameters.size = 64;
         feedbackFont.fontParameters.color = Color.WHITE;
         assetManager.load("feedbackFont.ttf", BitmapFont.class, feedbackFont);
 
-
-
+        // panel font (menu screen options - pause panel)
         FreetypeFontLoader.FreeTypeFontLoaderParameter panelFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         panelFont.fontFileName = "blow.ttf";
         panelFont.fontParameters.size = 86;
         assetManager.load("panelFont.ttf", BitmapFont.class, panelFont);
+
+        // lost life - game over
+        FreetypeFontLoader.FreeTypeFontLoaderParameter panelBigFont = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        panelBigFont.fontFileName = "blow.ttf";
+        panelBigFont.fontParameters.size = 86;
+        assetManager.load("panelBigFont.ttf", BitmapFont.class, panelBigFont);
 
 
         /* Load tiled map following the procedure described in the LibGDX documentation:
@@ -125,7 +133,7 @@ public class Assets {
 
         // create assets
         this.loadingScreenAssets = new LoadingScreenAssets(atlas);
-        this.fontAssets = new FontAssets();
+        this.fontAssets = new LoadingScreenFontAssets();
     }
 
     // creates all assets needed
@@ -137,6 +145,7 @@ public class Assets {
         // create assets
         this.mainMenuAssets = new MainMenuAssets();
         this.pausePanelAssets = new PausePanelAssets();
+        this.gameOverAssets = new GameOverAssets();
         this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
@@ -152,6 +161,7 @@ public class Assets {
         this.hpFontAssets = new HpFontAssets();
         this.feedbackFontAssets = new FeedbackFontAssets();
         this.panelFontAssets = new PanelFontAssets();
+        this.panelBigFontAssets = new PanelBigFontAssets();
 
         // level2
         this.trampolineAssets = new TrampolineAssets(atlas);
@@ -494,7 +504,7 @@ public class Assets {
         public final Texture mainMenuBG;
 
         private MainMenuAssets() {
-            this.mainMenuBG = new Texture("robotHI.png");
+            this.mainMenuBG = new Texture("robotHI.png"); // TODO
         }
     }
 
@@ -502,19 +512,27 @@ public class Assets {
         public final Texture pausePanel;
 
         private PausePanelAssets() {
-            this.pausePanel = new Texture("pause_panel.png");
+            this.pausePanel = new Texture("pause_panel.png"); // TODO
+        }
+    }
+
+    public class GameOverAssets {
+        public final Texture sadFace;
+
+        private GameOverAssets() {
+            this.sadFace = new Texture("robot_sad.png"); // TODO
         }
     }
 
     // FONTS
 
-    public class FontAssets {
-        public BitmapFont font;
+    public class LoadingScreenFontAssets {
+        public BitmapFont loadingScreenFont;
 
-        private FontAssets() {
-            this.font = assetManager.get("font.ttf", BitmapFont.class);
-            font.getData().setScale(1 / 86f);
-            font.setUseIntegerPositions(false);
+        private LoadingScreenFontAssets() {
+            this.loadingScreenFont = assetManager.get("font.ttf", BitmapFont.class);
+            loadingScreenFont.getData().setScale(1 / 86f);
+            loadingScreenFont.setUseIntegerPositions(false);
         }
     }
 
@@ -555,6 +573,16 @@ public class Assets {
             this.panelFont = assetManager.get("panelFont.ttf", BitmapFont.class);
             panelFont.getData().setScale(1 / 86f);
             panelFont.setUseIntegerPositions(false);
+        }
+    }
+
+    public class PanelBigFontAssets {
+        public BitmapFont panelBigFont;
+
+        private PanelBigFontAssets() {
+            this.panelBigFont = assetManager.get("panelBigFont.ttf", BitmapFont.class);
+            panelBigFont.getData().setScale(1 / 86f * 1.5f);
+            panelBigFont.setUseIntegerPositions(false);
         }
     }
 }

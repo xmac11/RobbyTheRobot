@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
@@ -34,7 +33,7 @@ public class LostLifeScreen extends ScreenAdapter {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
         this.assets = game.getAssets();
-        this.font = assets.panelFontAssets.panelFont;
+        this.font = assets.panelBigFontAssets.panelBigFont;
     }
 
     @Override
@@ -53,7 +52,6 @@ public class LostLifeScreen extends ScreenAdapter {
 
         // label
         Label initialLives = new Label(String.valueOf(game.getCheckpointData().getLives() + 1), style);
-        initialLives.setFontScale(font.getScaleX() * 1.5f);
         initialLives.setPosition(viewport.getWorldWidth() / 2 + 24 / PPM, viewport.getWorldHeight() / 2 - 4 / PPM, Align.center);
 
         // add actors

@@ -27,7 +27,6 @@ import static com.robot.game.util.Constants.*;
 public class MenuScreen extends ScreenAdapter {
 
     private RobotGame game;
-    private SpriteBatch batch;
     private Assets assets;
     private int levelID;
 
@@ -44,7 +43,6 @@ public class MenuScreen extends ScreenAdapter {
 
     public MenuScreen(RobotGame game) {
         this.game = game;
-        this.batch = game.getBatch();
         this.assets = game.getAssets();
         this.levelID = game.getCheckpointData().getLevelID();
         this.buttons = new Array<>();
@@ -58,12 +56,11 @@ public class MenuScreen extends ScreenAdapter {
         this.font = assets.panelFontAssets.panelFont;
 
         // create stage
-        this.stage = new Stage(menuScreenViewport);
+        this.stage = new Stage(menuScreenViewport, game.getBatch());
 
         Image background = new Image(assets.mainMenuAssets.mainMenuBG);
         background.setSize(background.getWidth() / PPM, background.getHeight() / PPM);
         background.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
-        background.getColor().a = 0.2f;
 
         // create buttons
         createButtons();
@@ -199,6 +196,10 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void handleSelection() {
+        // first dispose
+        this.dispose();
+
+        // then handle selection
         if(selection == playIndex) {
             Gdx.app.log("MenuScreen", "PLAY was selected");
             loadLevel();
@@ -210,10 +211,6 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void loadLevel() {
-
-        // dispose
-        this.dispose();
-
         switch(levelID) {
                 case 1:
                     game.setScreen(new ScreenLevel1(game));

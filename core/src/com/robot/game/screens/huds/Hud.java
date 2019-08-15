@@ -44,6 +44,7 @@ public class Hud {
     private TextButton toResumeButton;
     private TextButton toMenuButton;
     private BitmapFont pauseFont;
+
     private int selection;
     private int n;
 

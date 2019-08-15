@@ -567,15 +567,9 @@ public abstract class PlayScreen extends ScreenAdapter {
                 Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
-            // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts in level 2
-            if(levelID == 3) {
-                dispose();
-                game.respawn(this, checkpointData, 2);
-            }
-            else {
-                dispose();
-                game.respawn(this, checkpointData, levelID);
-            }
+            // finally set screen to GameOverScreen
+            dispose();
+            game.setScreen(new GameOverScreen(this));
         }
     }
 

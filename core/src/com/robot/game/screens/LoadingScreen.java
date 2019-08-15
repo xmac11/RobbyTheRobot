@@ -33,7 +33,7 @@ public class LoadingScreen extends ScreenAdapter {
         this.loadingScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.frame = assets.loadingScreenAssets.frame;
         this.greenBar = assets.loadingScreenAssets.bar;
-        this.font = assets.fontAssets.font;
+        this.font = assets.fontAssets.loadingScreenFont;
     }
 
     @Override
@@ -89,6 +89,7 @@ public class LoadingScreen extends ScreenAdapter {
             // set screen to MenuScreen
             game.setScreen(new MenuScreen(game));
 //            game.setScreen(new LostLifeScreen(game));
+//            game.setScreen(new GameOverScreen(game));
         }
     }
 
