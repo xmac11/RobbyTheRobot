@@ -53,26 +53,24 @@ public class GameOverScreen extends ScreenAdapter {
         this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.stage = new Stage(viewport, game.getBatch());
 
-        // label style
-        Label.LabelStyle style1 = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
         // game over label
-        Label gameover = new Label("GAME OVER", style1);
+        Label.LabelStyle styleGameOver = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
+        Label gameover = new Label("GAME OVER", styleGameOver);
         gameover.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 128 / PPM, Align.center);
-
-        // label style
-        Label.LabelStyle style2 = new Label.LabelStyle(font, Color.WHITE);
-
-        // score label
-        Label score = new Label("SCORE: " + playScreen.getScoreOnGameOver(), style2);
-        score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 80 / PPM, Align.center);
 
         // sad face image
         Image sad = new Image(assets.gameOverAssets.sadFace);
         sad.setSize(sad.getWidth() / PPM, sad.getHeight() / PPM);
-        sad.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 8 / PPM, Align.center);
+        sad.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 32 / PPM, Align.center);
+
+        // score label
+        Label.LabelStyle styleScore = new Label.LabelStyle(font, Color.DARK_GRAY);
+        Label score = new Label("SCORE: " + playScreen.getScoreOnGameOver(), styleScore);
+        score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM, Align.center);
 
         // play again label
-        Label playAgain = new Label("PLAY AGAIN?", style2);
+        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, Color.WHITE);
+        Label playAgain = new Label("PLAY AGAIN?", stylePlayAgain);
         playAgain.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 112 / PPM, Align.center);
 
         this.n = 2; // number of buttons

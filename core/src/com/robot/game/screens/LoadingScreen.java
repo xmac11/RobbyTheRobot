@@ -88,8 +88,6 @@ public class LoadingScreen extends ScreenAdapter {
 
             // set screen to MenuScreen
             game.setScreen(new MenuScreen(game));
-//            game.setScreen(new LostLifeScreen(game));
-//            game.setScreen(new GameOverScreen(game));
         }
     }
 

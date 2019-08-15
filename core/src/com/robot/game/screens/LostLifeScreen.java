@@ -51,19 +51,19 @@ public class LostLifeScreen extends ScreenAdapter {
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
 
         // label
-        Label initialLives = new Label(String.valueOf(game.getCheckpointData().getLives() + 1), style);
-        initialLives.setPosition(viewport.getWorldWidth() / 2 + 24 / PPM, viewport.getWorldHeight() / 2 - 4 / PPM, Align.center);
+        Label lives = new Label("x" + (game.getCheckpointData().getLives() + 1), style);
+        lives.setPosition(viewport.getWorldWidth() / 2 + 32 / PPM, viewport.getWorldHeight() / 2 - 4 / PPM, Align.center);
 
         // add actors
         stage.addActor(robot);
-        stage.addActor(initialLives);
+        stage.addActor(lives);
 
         // add actions
         RunnableAction changeText = new RunnableAction();
         changeText.setRunnable(new Runnable() {
             @Override
             public void run() {
-                initialLives.setText(String.valueOf(game.getCheckpointData().getLives()));
+                lives.setText("x" + game.getCheckpointData().getLives());
             }
         });
         RunnableAction respawn = new RunnableAction();
@@ -84,7 +84,7 @@ public class LostLifeScreen extends ScreenAdapter {
         sequenceAction.addAction(Actions.delay(0.25f));
         sequenceAction.addAction(respawn);
 
-        initialLives.addAction(sequenceAction);
+        lives.addAction(sequenceAction);
     }
 
     @Override
