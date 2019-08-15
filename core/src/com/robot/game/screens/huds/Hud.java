@@ -3,7 +3,6 @@ package com.robot.game.screens.huds;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -72,7 +71,7 @@ public class Hud {
 
         // pause panel
         this.stage = new Stage(hudViewport, playScreen.getGame().getBatch());
-        this.pauseFont = assets.pauseFontAssets.panelFont;
+        this.pauseFont = assets.panelFontAssets.panelFont;
         this.pausePanel = new Image(assets.pausePanelAssets.pausePanel);
         pausePanel.setSize(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2);
         pausePanel.setPosition(hudViewport.getWorldWidth() / 2 - pausePanel.getWidth() / 2, hudViewport.getWorldHeight() / 2 - pausePanel.getHeight() / 2);

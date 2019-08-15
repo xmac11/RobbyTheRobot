@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.util.Assets;
@@ -54,8 +54,8 @@ public class MenuScreen extends ScreenAdapter {
     public void show() {
         Gdx.app.log("MenuScreen", "show");
 
-        this.menuScreenViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
-        this.font = assets.pauseFontAssets.panelFont;
+        this.menuScreenViewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
+        this.font = assets.panelFontAssets.panelFont;
 
         // create stage
         this.stage = new Stage(menuScreenViewport);

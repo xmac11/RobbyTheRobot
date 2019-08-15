@@ -75,7 +75,7 @@ public class RobotGame extends Game {
 		FileSaver.saveCheckpointData(checkpointData);
 
 		// dispose screen
-		playScreen.dispose();
+//		playScreen.dispose();
 
 		switch(levelID) {
 			case 1:

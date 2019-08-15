@@ -37,7 +37,7 @@ public class Assets {
     public HudFontAssets hudFontAssets;
     public HpFontAssets hpFontAssets;
     public FeedbackFontAssets feedbackFontAssets;
-    public PanelFontAssets pauseFontAssets;
+    public PanelFontAssets panelFontAssets;
 
     // level 2
     public TrampolineAssets trampolineAssets;
@@ -151,7 +151,7 @@ public class Assets {
         this.hudFontAssets = new HudFontAssets();
         this.hpFontAssets = new HpFontAssets();
         this.feedbackFontAssets = new FeedbackFontAssets();
-        this.pauseFontAssets = new PanelFontAssets();
+        this.panelFontAssets = new PanelFontAssets();
 
         // level2
         this.trampolineAssets = new TrampolineAssets(atlas);

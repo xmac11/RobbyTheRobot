@@ -544,8 +544,9 @@ public abstract class PlayScreen extends ScreenAdapter {
                 FileSaver.saveCollectedItems(collectedItems);
                 doNotSaveInHide = true;
             }
-            // finally restart the game
-            game.respawn(this, checkpointData, levelID);
+            // finally set screen to LostLifeScreen
+            dispose();
+            game.setScreen(new LostLifeScreen(this));
         }
         // robot died and has no remaining lives
         else {
@@ -568,9 +569,11 @@ public abstract class PlayScreen extends ScreenAdapter {
 
             // finally restart the game (if robot dies with no more lives in level 3 (cave) it restarts in level 2
             if(levelID == 3) {
+                dispose();
                 game.respawn(this, checkpointData, 2);
             }
             else {
+                dispose();
                 game.respawn(this, checkpointData, levelID);
             }
         }
