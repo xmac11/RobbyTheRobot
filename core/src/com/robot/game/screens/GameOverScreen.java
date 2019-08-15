@@ -54,21 +54,26 @@ public class GameOverScreen extends ScreenAdapter {
         this.stage = new Stage(viewport, game.getBatch());
 
         // label style
-        Label.LabelStyle style = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
+        Label.LabelStyle style1 = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
         // game over label
-        Label gameover = new Label("GAME OVER", style);
+        Label gameover = new Label("GAME OVER", style1);
         gameover.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 128 / PPM, Align.center);
+
+        // label style
+        Label.LabelStyle style2 = new Label.LabelStyle(font, Color.WHITE);
+
+        // score label
+        Label score = new Label("SCORE: " + playScreen.getScoreOnGameOver(), style2);
+        score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 80 / PPM, Align.center);
 
         // sad face image
         Image sad = new Image(assets.gameOverAssets.sadFace);
         sad.setSize(sad.getWidth() / PPM, sad.getHeight() / PPM);
-        sad.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 32 / PPM, Align.center);
+        sad.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 8 / PPM, Align.center);
 
-        // label style
-        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, Color.WHITE);
         // play again label
-        Label playAgain = new Label("PLAY AGAIN?", stylePlayAgain);
-        playAgain.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM , Align.center);
+        Label playAgain = new Label("PLAY AGAIN?", style2);
+        playAgain.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 112 / PPM, Align.center);
 
         this.n = 2; // number of buttons
 
@@ -78,6 +83,7 @@ public class GameOverScreen extends ScreenAdapter {
         // add actors
         stage.addActor(gameover);
         stage.addActor(sad);
+        stage.addActor(score);
         stage.addActor(playAgain);
         stage.addActor(yesButton);
         stage.addActor(noButton);
@@ -143,12 +149,12 @@ public class GameOverScreen extends ScreenAdapter {
         // yes button
         this.yesButton = new TextButton("YES", style);
         yesButton.setSize(yesGlyph.width, yesGlyph.height);
-        yesButton.setPosition(viewport.getWorldWidth() / 2 - 48 / PPM, viewport.getWorldHeight() / 2 - 96 / PPM , Align.center);
+        yesButton.setPosition(viewport.getWorldWidth() / 2 - 48 / PPM, viewport.getWorldHeight() / 2 - 144 / PPM, Align.center);
 
         // no button
         this.noButton = new TextButton("NO", style);
         noButton.setSize(noGlyph.width, noGlyph.height);
-        noButton.setPosition(viewport.getWorldWidth() / 2 + 48 / PPM, viewport.getWorldHeight() / 2 - 96 / PPM , Align.center);
+        noButton.setPosition(viewport.getWorldWidth() / 2 + 48 / PPM, viewport.getWorldHeight() / 2 - 144 / PPM, Align.center);
     }
 
     private void handleSelection() {

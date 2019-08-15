@@ -154,6 +154,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected Array<PrismaticJoint> joints;
     protected JointHandler jointHandler;
 
+    private int scoreOnGameOver;
+
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.batch = game.getBatch();
@@ -493,6 +495,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         return mapRenderer;
     }
 
+    public int getScoreOnGameOver() {
+        return scoreOnGameOver;
+    }
+
     protected void processGameStateInput() {
         // pause game
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -551,6 +557,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         // robot died and has no remaining lives
         else {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+
+            this.scoreOnGameOver = checkpointData.getScore();
 
             // reset checkpoint data
             checkpointData.setDefaultData(levelID);
