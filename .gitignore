@@ -35,6 +35,7 @@ core/resources/
 android/assets/files/*
 !android/assets/files/level1.json
 !android/assets/files/level2.json
+!android/assets/files/level3.json
 
 ## Eclipse
 
