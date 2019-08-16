@@ -210,6 +210,8 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // create shape renderer
         this.shapeRenderer = new ShapeRenderer();
+
+        Gdx.input.setInputProcessor(null);
     }
 
     /*@Override
