@@ -319,6 +319,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         mapRenderer.dispose();
         world.dispose();
         shapeRenderer.dispose();
+        hud.dispose();
         if(DEBUG_ON) {
             debugRenderer.dispose();
         }
@@ -575,20 +576,20 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     // deletes checkpoint and collected items files
-    protected void wipeOutData() {
-        Gdx.app.log("PlayScreen", "All game data was wiped out");
-        boolean fileDeleted = FileSaver.getCheckpointFile().delete();
-        Gdx.app.log("PlayScreen", "Checkpoints file deleted = " + fileDeleted);
-        checkpointDataDeleted = true;
-
-        /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-         * reset their spawning in the corresponding level and delete the file */
-        if(FileSaver.getCollectedItemsFile().exists()) {
-            FileSaver.resetSpawningOfCollectables(levelID);
-            boolean deleted = FileSaver.getCollectedItemsFile().delete();
-            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
-        }
-    }
+//    protected void wipeOutData() {
+//        Gdx.app.log("PlayScreen", "All game data was wiped out");
+//        boolean fileDeleted = FileSaver.getCheckpointFile().delete();
+//        Gdx.app.log("PlayScreen", "Checkpoints file deleted = " + fileDeleted);
+//        checkpointDataDeleted = true;
+//
+//        /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+//         * reset their spawning in the corresponding level and delete the file */
+//        if(FileSaver.getCollectedItemsFile().exists()) {
+//            FileSaver.resetSpawningOfCollectables(levelID);
+//            boolean deleted = FileSaver.getCollectedItemsFile().delete();
+//            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+//        }
+//    }
 
     public void toggleDebugLevels() {
         // toggle damage on/off
@@ -596,9 +597,9 @@ public abstract class PlayScreen extends ScreenAdapter {
             setDamageON(!damageON);
         }
         // deletes checkpoint and collected items files
-        if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        /*if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             this.wipeOutData();
-        }
+        }*/
         //level1
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("PlayScreen", "Level 1 was set from debug keys");

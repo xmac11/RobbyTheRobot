@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.screens.MenuScreen;
@@ -23,7 +24,7 @@ import com.robot.game.util.checkpoints.CheckpointData;
 
 import static com.robot.game.util.Constants.*;
 
-public class Hud {
+public class Hud implements Disposable {
 
     private PlayScreen playScreen;
     private CheckpointData checkpointData;
@@ -292,5 +293,11 @@ public class Hud {
 
     public void setSelection(int selection) {
         this.selection = selection;
+    }
+
+    @Override
+    public void dispose() {
+        Gdx.app.log("Hud", "dispose");
+        stage.dispose();
     }
 }
