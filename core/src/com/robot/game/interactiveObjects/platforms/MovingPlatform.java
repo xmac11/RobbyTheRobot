@@ -102,4 +102,8 @@ public class MovingPlatform extends InteractivePlatform {
     public boolean isStopped() {
         return stopped;
     }
+
+    public boolean isHorizontal() {
+        return horizontal;
+    }
 }

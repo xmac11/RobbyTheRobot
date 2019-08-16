@@ -199,24 +199,43 @@ public class Assets {
 
         public final Animation<Texture> shootAnimation;
         public final Animation<Texture> punchAnimation;
+        public final Animation<Texture> walkAnimationWithGun;
+        public final Animation<Texture> climbAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
 //            this.atlasRegion = atlas.findRegion("robot");
             this.robotTexture = new Texture("robot.png");
 
+            // shooting
             Array<Texture> framesArray = new Array<>();
-            /*for(int i = 1; i <= 2; i ++) {
-                framesArray.add(new Texture("level2/shoot" + i + ".png"));
-            }*/
             framesArray.add(new Texture("level2/shoot.png"));
             this.shootAnimation = new Animation<>(0.3f, framesArray);
 
             framesArray.clear();
 
+            // punching
             for(int i = 1; i <= 2; i++) {
                 framesArray.add(new Texture("level2/punch" + i + ".png"));
             }
             this.punchAnimation = new Animation<>(0.05f, framesArray);
+
+            framesArray.clear();
+
+            // walking
+            for(int i = 1; i <= 3; i++) {
+                framesArray.add(new Texture("level2/walk" + i + ".png"));
+            }
+            this.walkAnimationWithGun = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
+
+            // climbing
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(new Texture("climb" + i + ".png"));
+            }
+            this.climbAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
+
+            framesArray.clear();
         }
     }
 

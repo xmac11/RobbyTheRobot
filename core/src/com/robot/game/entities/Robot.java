@@ -22,10 +22,13 @@ import com.robot.game.util.raycast.MyRayCastCallback;
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing;
 import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.State;
+import static com.robot.game.util.Enums.State.*;
 
 public class Robot extends Sprite implements Steerable<Vector2> {
 
     private Facing facing;
+    private State state;
 
     private Assets assets;
     private Sprite robotSprite;
@@ -95,6 +98,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.checkpointData = playScreen.getCheckpointData();
         this.shakeEffect = playScreen.getShakeEffect();
         this.facing = RIGHT;
+        this.state = IDLE;
         this.hasTorch = checkpointData.hasTorch();
         createRobotB2d();
 
@@ -187,6 +191,17 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             }
         }
 
+        // determine state
+        this.determineState();
+
+        // set the appropriate texture region
+        this.setTheRegion();
+
+        // check if the texture has to be flipped based on the robot's facing direction
+        if(state != ON_LADDER_CLIMBING && state != ON_LADDER_IDLE) {
+            this.checkToFlipTexture();
+        }
+
         // keep robot within map
         if(body.getPosition().x < ROBOT_BODY_WIDTH / 2 / PPM)
             body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
@@ -219,7 +234,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
         // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(facing != RIGHT) {
+            if(facing != RIGHT && state != ON_LADDER_CLIMBING && state != ON_LADDER_IDLE) {
                 setFacing(RIGHT);
             }
 
@@ -234,7 +249,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
         // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(facing != LEFT) {
+            if(facing != LEFT && state != ON_LADDER_CLIMBING && state != ON_LADDER_IDLE) {
                 setFacing(LEFT);
             }
 
@@ -371,26 +386,6 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     }
 
     public void draw(SpriteBatch batch, float delta) {
-        // if firing laser
-        if(shootingLaser) {
-            robotSprite.setRegion(assets.robotAssets.shootAnimation.getKeyFrame(elapsedAnim));
-
-            if(elapsedAnim >= assets.robotAssets.shootAnimation.getAnimationDuration())
-                shootingLaser = false;
-        }
-        else if(punching) {
-            robotSprite.setRegion(assets.robotAssets.punchAnimation.getKeyFrame(elapsedAnim));
-
-            if(elapsedAnim >= assets.robotAssets.punchAnimation.getAnimationDuration())
-                punching = false;
-        }
-        else {
-            robotSprite.setRegion(assets.robotAssets.robotTexture);
-        }
-
-        // check if the texture has to be flipped based on the robot's facing direction
-        this.checkToFlipTexture();
-
         // attach sprite to body
         this.attachToBody();
 
@@ -414,6 +409,34 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         }
     }
 
+    private void setTheRegion() {
+        // if firing laser
+        if(state == SHOOTING_LASER) {
+            robotSprite.setRegion(assets.robotAssets.shootAnimation.getKeyFrame(elapsedAnim));
+
+            if(elapsedAnim >= assets.robotAssets.shootAnimation.getAnimationDuration())
+                shootingLaser = false;
+        }
+        else if(state == PUNCHING) {
+            robotSprite.setRegion(assets.robotAssets.punchAnimation.getKeyFrame(elapsedAnim));
+
+            if(elapsedAnim >= assets.robotAssets.punchAnimation.getAnimationDuration())
+                punching = false;
+        }
+        else if(state == ON_LADDER_CLIMBING) {
+            robotSprite.setRegion(assets.robotAssets.climbAnimation.getKeyFrame(elapsedAnim));
+        }
+        else if(state == ON_LADDER_IDLE) {
+            robotSprite.setRegion(assets.robotAssets.climbAnimation.getKeyFrame(0));
+        }
+        else if(state == WALKING) {
+            robotSprite.setRegion(assets.robotAssets.walkAnimationWithGun.getKeyFrame(elapsedAnim));
+        }
+        else {
+            robotSprite.setRegion(assets.robotAssets.robotTexture);
+        }
+    }
+
     private void checkToFlipTexture() {
         if(facing == RIGHT) {
             if(robotSprite.isFlipX())
@@ -426,11 +449,24 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     }
 
     private void attachToBody() {
-        if(facing == RIGHT) {
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 10f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+        if(state == ON_LADDER_CLIMBING || state == ON_LADDER_IDLE) {
+            robotSprite.setPosition(body.getPosition().x - 1.5f * ROBOT_BODY_WIDTH / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+        }
+        else if(facing == RIGHT) {
+            if(state != WALKING) {
+                robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 10f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            }
+            else {
+                robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 13) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            }
         }
         else if(facing == LEFT) {
-            robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 25f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            if(state != WALKING) {
+                robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 25f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            }
+            else {
+                robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 22f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
+            }
         }
     }
 
@@ -460,6 +496,56 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
             // check if UP key was pressed right before getting on the ladder
             playScreen.getLadderClimbHandler().checkForClimbTimer();
+        }
+    }
+
+    private void determineState() {
+//        System.out.println(body.getLinearVelocity().x);
+        if(shootingLaser) {
+            setState(SHOOTING_LASER);
+        }
+        else if(punching) {
+            setState(PUNCHING);
+        }
+        else if(body.getLinearVelocity().y != 0 && !isOnInteractivePlatform && !onLadder) {
+            setState(JUMPING);
+        }
+        else if( (contactManager.getFootContactCounter() > 0 && Math.abs(body.getLinearVelocity().x) >= 1f && !isOnInteractivePlatform)) {
+            setState(WALKING);
+        }
+
+        // handle interactive platforms
+        else if(isOnInteractivePlatform
+                && interactivePlatform instanceof MovingPlatform && !((MovingPlatform) interactivePlatform).isHorizontal()
+                && body.getLinearVelocity().x != 0) {
+
+                setState(WALKING);
+        }
+        else if(isOnInteractivePlatform
+                && interactivePlatform instanceof MovingPlatform && ((MovingPlatform) interactivePlatform).isHorizontal()
+                && Math.abs(body.getLinearVelocity().x - interactivePlatform.getBody().getLinearVelocity().x) > 0.5f) {
+
+                setState(WALKING);
+        }
+
+        // handle ladder
+        else if(fallingOffLadder) {
+            setState(IDLE);
+        }
+        else if(onLadder && body.getLinearVelocity().y != 0) {
+            setState(ON_LADDER_CLIMBING);
+        }
+        else if(onLadder) {
+            setState(ON_LADDER_IDLE);
+        }
+
+        else if(body.getLinearVelocity().y != 0 || Math.abs(body.getLinearVelocity().x) < 1f || isOnInteractivePlatform) {
+            setState(IDLE);
+        }
+
+        // finally dead state
+        if(dead) {
+            setState(DEAD);
         }
     }
 
@@ -561,6 +647,15 @@ public class Robot extends Sprite implements Steerable<Vector2> {
     public void setFacing(Facing facing) {
         this.facing = facing;
         Gdx.app.log("Robot", "Facing = " + facing);
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+//        Gdx.app.log("Robot", "State = " + state);
     }
 
     public boolean hasTorch() {

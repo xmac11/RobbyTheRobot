@@ -118,20 +118,20 @@ public final class Constants {
 
     // Checkpoints
         // Level1
-    public static final Vector2 SPAWN_LOCATION_L1 = new Vector2(32 / PPM, 160 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 176 / PPM);
-    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 416 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 208 / PPM);
+    public static final Vector2 SPAWN_LOCATION_L1 = new Vector2(32 / PPM, 176 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L1 = new Vector2(2100 / PPM, 192 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L1 = new Vector2(2880 / PPM, 432 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L1 = new Vector2(4240 / PPM, 224 / PPM);
     public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Level2
-    public static final Vector2 SPAWN_LOCATION_L2 = new Vector2(80 / PPM, 80 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L2 = new Vector2(480 / PPM, 80 / PPM);
-    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L2 = new Vector2(2410 / PPM, 784 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4350 / PPM, 736 / PPM);
+    public static final Vector2 SPAWN_LOCATION_L2 = new Vector2(80 / PPM, 96 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L2 = new Vector2(480 / PPM, 96 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L2 = new Vector2(2410 / PPM, 800 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4350 / PPM, 752 / PPM);
 
         // Level3
-    public static final Vector2 SPAWN_LOCATION_L3 = new Vector2(32 / PPM, 64 / PPM);
+    public static final Vector2 SPAWN_LOCATION_L3 = new Vector2(32 / PPM, 80 / PPM);
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";
