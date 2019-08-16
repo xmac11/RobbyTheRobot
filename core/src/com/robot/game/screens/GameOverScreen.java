@@ -7,9 +7,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,6 +25,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.CheckpointData;
+import com.robot.game.util.checkpoints.FileSaver;
 
 import static com.robot.game.util.Constants.*;
 
@@ -40,11 +46,13 @@ public class GameOverScreen extends ScreenAdapter {
     private int selection;
     private int n;
 
+    private boolean doNotSaveInHide;
+
     public GameOverScreen(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
         this.checkpointData = playScreen.getCheckpointData();
-        this.levelID = playScreen.getLevelID();
+        this.levelID = playScreen.getLevelID(); // use the levelID of the last PlayScreen
         this.assets = game.getAssets();
         this.bigFont = assets.panelBigFontAssets.panelBigFont;
         this.font = assets.panelFontAssets.panelFont;
@@ -61,6 +69,11 @@ public class GameOverScreen extends ScreenAdapter {
         Label gameover = new Label("GAME OVER", styleGameOver);
         gameover.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 128 / PPM, Align.center);
 
+        SequenceAction sequenceAction = new SequenceAction(); // add action to game over label
+        sequenceAction.addAction(Actions.fadeOut(0.35f, Interpolation.fade));
+        sequenceAction.addAction(Actions.fadeIn(0.35f, Interpolation.fade));
+        gameover.addAction(Actions.repeat(RepeatAction.FOREVER, sequenceAction));
+
         // sad face image
         Image sad = new Image(assets.gameOverAssets.sadFace);
         sad.setSize(sad.getWidth() / PPM, sad.getHeight() / PPM);
@@ -72,7 +85,7 @@ public class GameOverScreen extends ScreenAdapter {
         score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM, Align.center);
 
         // play again label
-        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, new Color(238f / 255, 232f / 255, 170f / 255, 1)); // orange
+        Label.LabelStyle stylePlayAgain = new Label.LabelStyle(font, new Color(238f / 255, 232f / 255, 170f / 255, 1)); // white
         Label playAgain = new Label("PLAY AGAIN?", stylePlayAgain);
         playAgain.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 112 / PPM, Align.center);
 
@@ -204,6 +217,9 @@ public class GameOverScreen extends ScreenAdapter {
     }
 
     private void handleSelection() {
+        doNotSaveInHide = true;
+        this.handleCollectables();
+
         // first dispose
         this.dispose();
 
@@ -232,10 +248,36 @@ public class GameOverScreen extends ScreenAdapter {
         }
     }
 
+    private void handleCollectables() {
+        /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+         * reset their spawning in the corresponding level and delete the file */
+        if(FileSaver.getCollectedItemsFile().exists()) {
+            FileSaver.resetSpawningOfCollectables(levelID);
+            boolean deleted = false;
+            for(int i = 0; i < 30; i++) {
+                deleted = FileSaver.getCollectedItemsFile().delete();
+                System.out.println(i);
+                if(deleted) break;
+                try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
+                System.gc();
+            }
+            System.out.println(deleted + "!!!!!!!!!");
+            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
         Gdx.app.log("GameOverScreen", "resize");
         viewport.update(width, height, true);
+    }
+
+    @Override
+    public void hide() {
+        Gdx.app.log("GameOverScreen", "hide");
+        if(!doNotSaveInHide) {
+            handleCollectables();
+        }
     }
 
     @Override
