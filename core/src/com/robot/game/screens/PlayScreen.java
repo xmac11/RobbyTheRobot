@@ -568,15 +568,6 @@ public abstract class PlayScreen extends ScreenAdapter {
             // so that if any item was collected during last life, they won't be saved in a file
             doNotSaveInHide = true;
 
-            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-             * reset their spawning in the corresponding level and delete the file */
-            if(FileSaver.getCollectedItemsFile().exists()) {
-                FileSaver.resetSpawningOfCollectables(levelID);
-                boolean deleted = FileSaver.getCollectedItemsFile().delete();
-                System.out.println(deleted + "!!!!!!!!!");
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
-            }
-
             // finally set screen to GameOverScreen
             dispose();
             game.setScreen(new GameOverScreen(this));
@@ -662,6 +653,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
             // set default data
             checkpointData.setDefaultData(3);
+            checkpointData.setLevelID(3); // since setting the default data in level 3, sets the level to 2
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);

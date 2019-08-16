@@ -119,7 +119,8 @@ public class CheckpointData {
     }
 
     public void setDefaultData(int levelID) {
-        this.levelID = levelID;
+        // if levelID is 3, set it to 2, else set it to the levelID passed
+        this.levelID = (levelID == 3 ? 2 : levelID);
         health = 100;
         lives = 3;
         score = 0;
