@@ -234,7 +234,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
         // Moving right
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            if(facing != RIGHT && state != ON_LADDER_CLIMBING && state != ON_LADDER_IDLE) {
+            if(facing != RIGHT) {
                 setFacing(RIGHT);
             }
 
@@ -249,7 +249,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
         // Moving left
         else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            if(facing != LEFT && state != ON_LADDER_CLIMBING && state != ON_LADDER_IDLE) {
+            if(facing != LEFT) {
                 setFacing(LEFT);
             }
 
