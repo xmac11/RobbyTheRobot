@@ -174,7 +174,7 @@ public class Hud implements Disposable {
 
         // draw lives image
         batch.draw(lives,
-                hudViewport.getWorldWidth() - (PADDING + 2.5f * LIVES_WIDTH) / PPM,
+                hudViewport.getWorldWidth() - (PADDING + 2.2f * LIVES_WIDTH) / PPM,
                 hudViewport.getWorldHeight() - (PADDING + LIVES_HEIGHT) / PPM,
                 LIVES_WIDTH / PPM,
                 LIVES_HEIGHT / PPM);

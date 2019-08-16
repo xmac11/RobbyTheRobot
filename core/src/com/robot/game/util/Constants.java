@@ -199,8 +199,8 @@ public final class Constants {
     public static final float BAR_WIDTH = 95 / 1.35f;
     public static final float BAR_HEIGHT = 20 / 1.35f;
         // lives
-    public static final float LIVES_WIDTH = 25.3f / 1.35f;
-    public static final float LIVES_HEIGHT = 32 / 1.35f;
+    public static final float LIVES_WIDTH = 34 / 1.35f;
+    public static final float LIVES_HEIGHT = 40 / 1.35f;
 
 
     // Loading screen
