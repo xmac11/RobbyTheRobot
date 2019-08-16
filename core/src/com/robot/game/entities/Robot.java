@@ -424,10 +424,20 @@ public class Robot extends Sprite implements Steerable<Vector2> {
                 punching = false;
         }
         else if(state == ON_LADDER_CLIMBING) {
-            robotSprite.setRegion(assets.robotAssets.climbAnimation.getKeyFrame(elapsedAnim));
+            if(levelID == 2) {
+                robotSprite.setRegion(assets.robotAssets.climbRopeAnimation.getKeyFrame(elapsedAnim));
+            }
+            else {
+                robotSprite.setRegion(assets.robotAssets.climbLadderAnimation.getKeyFrame(elapsedAnim));
+            }
         }
         else if(state == ON_LADDER_IDLE) {
-            robotSprite.setRegion(assets.robotAssets.climbAnimation.getKeyFrame(0));
+            if(levelID == 2) {
+                robotSprite.setRegion(assets.robotAssets.climbRopeAnimation.getKeyFrame(0));
+            }
+            else {
+                robotSprite.setRegion(assets.robotAssets.climbLadderAnimation.getKeyFrame(0));
+            }
         }
         else if(state == WALKING) {
             robotSprite.setRegion(assets.robotAssets.walkAnimationWithGun.getKeyFrame(elapsedAnim));

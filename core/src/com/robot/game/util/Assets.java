@@ -200,7 +200,8 @@ public class Assets {
         public final Animation<Texture> shootAnimation;
         public final Animation<Texture> punchAnimation;
         public final Animation<Texture> walkAnimationWithGun;
-        public final Animation<Texture> climbAnimation;
+        public final Animation<Texture> climbLadderAnimation;
+        public final Animation<Texture> climbRopeAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
 //            this.atlasRegion = atlas.findRegion("robot");
@@ -229,11 +230,19 @@ public class Assets {
 
             framesArray.clear();
 
-            // climbing
+            // climbing ladder
             for(int i = 1; i <= 2; i++) {
                 framesArray.add(new Texture("climb" + i + ".png"));
             }
-            this.climbAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
+            this.climbLadderAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
+
+            framesArray.clear();
+
+            // climbing rope
+            for(int i = 1; i <= 2; i++) {
+                framesArray.add(new Texture("level2/climb_rope" + i + ".png"));
+            }
+            this.climbRopeAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
 
             framesArray.clear();
         }
