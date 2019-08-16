@@ -116,13 +116,19 @@ public class Assets {
         assetManager.load(LEVEL_2_TMX, TiledMap.class);
         assetManager.load(LEVEL_3_TMX, TiledMap.class);
 
+        // load atlas
         assetManager.load("sprites.pack", TextureAtlas.class);
+
+        // load images of level 1
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
 
         // load water (level 2)
         assetManager.load("level2/waterAnimation.png", Texture.class);
         assetManager.load("level2/waterAnimationBig.png", Texture.class);
+
+        // load pause panel
+        assetManager.load("pause_panel.png", Texture.class);
     }
 
     // creates assets for loading screen
@@ -143,9 +149,9 @@ public class Assets {
         TextureAtlas atlas = assetManager.get("sprites.pack");
 
         // create assets
-        this.mainMenuAssets = new MainMenuAssets();
+        this.mainMenuAssets = new MainMenuAssets(atlas);
         this.pausePanelAssets = new PausePanelAssets();
-        this.gameOverAssets = new GameOverAssets();
+        this.gameOverAssets = new GameOverAssets(atlas);
         this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
         this.batAssets = new BatAssets(atlas);
@@ -195,28 +201,28 @@ public class Assets {
     public class RobotAssets {
 
 //        public final TextureAtlas.AtlasRegion atlasRegion;
-        public final Texture robotTexture;
+        public final TextureRegion robotIdle;
 
-        public final Animation<Texture> shootAnimation;
-        public final Animation<Texture> punchAnimation;
-        public final Animation<Texture> walkAnimationWithGun;
-        public final Animation<Texture> climbLadderAnimation;
-        public final Animation<Texture> climbRopeAnimation;
+        public final Animation<TextureRegion> shootAnimation;
+        public final Animation<TextureRegion> punchAnimation;
+        public final Animation<TextureRegion> walkAnimationWithGun;
+        public final Animation<TextureRegion> climbLadderAnimation;
+        public final Animation<TextureRegion> climbRopeAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
 //            this.atlasRegion = atlas.findRegion("robot");
-            this.robotTexture = new Texture("robot.png");
+            this.robotIdle = atlas.findRegion("robot_idle_gun");
 
             // shooting
-            Array<Texture> framesArray = new Array<>();
-            framesArray.add(new Texture("level2/shoot.png"));
+            Array<TextureRegion> framesArray = new Array<>();
+            framesArray.add(atlas.findRegion("shoot"));
             this.shootAnimation = new Animation<>(0.3f, framesArray);
 
             framesArray.clear();
 
             // punching
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(new Texture("level2/punch" + i + ".png"));
+                framesArray.add(atlas.findRegion("punch" + i));
             }
             this.punchAnimation = new Animation<>(0.05f, framesArray);
 
@@ -224,7 +230,7 @@ public class Assets {
 
             // walking
             for(int i = 1; i <= 3; i++) {
-                framesArray.add(new Texture("level2/walk" + i + ".png"));
+                framesArray.add(atlas.findRegion("walk" + i));
             }
             this.walkAnimationWithGun = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
 
@@ -232,7 +238,7 @@ public class Assets {
 
             // climbing ladder
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(new Texture("climb" + i + ".png"));
+                framesArray.add(atlas.findRegion("climb_ladder" + i));
             }
             this.climbLadderAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
 
@@ -240,7 +246,7 @@ public class Assets {
 
             // climbing rope
             for(int i = 1; i <= 2; i++) {
-                framesArray.add(new Texture("level2/climb_rope" + i + ".png"));
+                framesArray.add(atlas.findRegion("climb_rope" + i));
             }
             this.climbRopeAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
 
@@ -529,10 +535,10 @@ public class Assets {
     }
 
     public class MainMenuAssets {
-        public final Texture mainMenuBG;
+        public final TextureRegion mainMenuBG;
 
-        private MainMenuAssets() {
-            this.mainMenuBG = new Texture("robotHI.png"); // TODO
+        private MainMenuAssets(TextureAtlas atlas) {
+            this.mainMenuBG = atlas.findRegion("robot_hello");
         }
     }
 
@@ -540,15 +546,15 @@ public class Assets {
         public final Texture pausePanel;
 
         private PausePanelAssets() {
-            this.pausePanel = new Texture("pause_panel.png"); // TODO
+            this.pausePanel = assetManager.get("pause_panel.png"); // TODO: will this go in atlas?
         }
     }
 
     public class GameOverAssets {
-        public final Texture sadFace;
+        public final TextureRegion sadFace;
 
-        private GameOverAssets() {
-            this.sadFace = new Texture("robot_sad.png"); // TODO
+        private GameOverAssets(TextureAtlas atlas) {
+            this.sadFace = atlas.findRegion("robot_sad");
         }
     }
 

@@ -103,7 +103,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         createRobotB2d();
 
 //        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
-        this.robotSprite = new Sprite(assets.robotAssets.robotTexture);
+        this.robotSprite = new Sprite(assets.robotAssets.robotIdle);
 
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
@@ -443,7 +443,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             robotSprite.setRegion(assets.robotAssets.walkAnimationWithGun.getKeyFrame(elapsedAnim));
         }
         else {
-            robotSprite.setRegion(assets.robotAssets.robotTexture);
+            robotSprite.setRegion(assets.robotAssets.robotIdle);
         }
     }
 
