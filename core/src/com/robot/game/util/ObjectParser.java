@@ -408,6 +408,7 @@ public class ObjectParser {
         movingSpikes = null;
         jointMap = null;
         joints = null;
+        playScreen = null;
         Gdx.app.log("ObjectParser", "Objects were set to null");
     }
 }

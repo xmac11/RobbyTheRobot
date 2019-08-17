@@ -341,6 +341,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         ladderClimbHandler.setToNull();
         feedbackRenderer.setToNull();
         objectParser.setToNull();
+        robot.setToNull();
 
 
         tiledMap = null;
@@ -370,6 +371,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         movingSpikes = null;
         joints = null;
         jointHandler = null;
+        robot = null;
         Gdx.app.log("PlayScreen", "Objects were set to null");
     }
 

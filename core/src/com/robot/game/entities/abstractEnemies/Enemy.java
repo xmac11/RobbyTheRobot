@@ -110,6 +110,7 @@ public abstract class Enemy implements Damaging {
         sprite = null;
         robot = null;
         object = null;
+        playScreen = null;
         Gdx.app.log("Enemy", "Objects were set to null");
     }
 }

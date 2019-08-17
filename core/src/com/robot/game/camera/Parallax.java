@@ -88,6 +88,7 @@ public class Parallax {
         camera = null;
         robot = null;
         texture = null;
+        playScreen = null;
         Gdx.app.log("Parallax", "Objects set to null");
     }
 }

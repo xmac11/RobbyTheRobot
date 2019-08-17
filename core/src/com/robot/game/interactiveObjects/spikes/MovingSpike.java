@@ -136,10 +136,12 @@ public class MovingSpike extends Spike {
         return attackPeriod;
     }
 
+    @Override
     public void setToNull() {
         sprite = null;
         baseSpirte = null;
         stickSpirte = null;
         Gdx.app.log("MovingSpike", "Objects were set to null");
+        super.setToNull();
     }
 }

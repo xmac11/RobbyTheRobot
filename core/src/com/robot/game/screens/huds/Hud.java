@@ -17,7 +17,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.robot.game.screens.MenuScreen;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -315,6 +314,7 @@ public class Hud implements Disposable {
 //        toResumeButton = null;
 //        toMenuButton = null;
         pauseFont = null;
+        playScreen = null;
         Gdx.app.log("Hud", "Objects were set to null");
     }
 }

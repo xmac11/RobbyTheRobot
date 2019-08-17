@@ -676,6 +676,20 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.hasTorch = hasTorch;
     }
 
+    public void setToNull() {
+        facing = null;
+        state = null;
+        robotSprite = null;
+        contactManager = null;
+        shakeEffect = null;
+        temp = null;
+        interactivePlatform = null;
+        tempWallJumpingImpulse = null;
+        callback = null;
+        playScreen = null;
+        Gdx.app.log("Robot", "Objects were set to null");
+    }
+
     @Override
     public Vector2 getLinearVelocity() {
         return body.getLinearVelocity();

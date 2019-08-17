@@ -79,6 +79,7 @@ public abstract class Collectable {
         sprite = null;
         collectableHandler = null;
         mapObject = null;
+        playScreen = null;
         Gdx.app.log("Collectable", "Objects were set to null");
     }
 }

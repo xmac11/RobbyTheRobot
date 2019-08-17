@@ -84,6 +84,7 @@ public class DebugCamera {
         camera = null;
         robot = null;
         shakeEffect = null;
+        playScreen = null;
         Gdx.app.log("DebugCamera", "Objects were set to null");
     }
 }

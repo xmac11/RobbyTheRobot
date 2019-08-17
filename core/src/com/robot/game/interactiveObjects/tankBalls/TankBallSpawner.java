@@ -82,6 +82,7 @@ public class TankBallSpawner {
     public void setToNull() {
         robot = null;
         tankBallPool = null;
+        playScreen = null;
         Gdx.app.log("TankBallSpawner", "Objects were set to null");
     }
 }

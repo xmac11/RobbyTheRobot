@@ -145,6 +145,7 @@ public class FallingPipe implements Damaging {
 
     public void setToNull() {
         sprite = null;
+        playScreen = null;
         Gdx.app.log("FallingPipe","Objects were set to null");
     }
 }

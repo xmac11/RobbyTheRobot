@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects.spikes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -44,5 +45,10 @@ public class Spike implements Damaging {
 
     public Vector2 getRespawnLocation() {
         return respawnLocation;
+    }
+
+    public void setToNull() {
+        playScreen = null;
+        Gdx.app.log("Spike", "Objects were set to null");
     }
 }

@@ -67,6 +67,7 @@ public abstract class InteractivePlatform {
 
     public void setToNull() {
         sprite = null;
+        playScreen = null;
         Gdx.app.log("InteractivePlatform", "Objects were set to null");
     }
 }

@@ -78,6 +78,7 @@ public abstract class RayCastHandler {
         rayPointEnd = null;
         closestFixture = null;
         tempRayPointEnd = null;
+        playScreen = null;
         Gdx.app.log("RayCastHandler", "Objects were set to null");
     }
 }
