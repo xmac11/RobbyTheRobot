@@ -142,4 +142,9 @@ public class FallingPipe implements Damaging {
     public void setFlagToCancelVelocity(boolean flagToCancelVelocity) {
         this.flagToCancelVelocity = flagToCancelVelocity;
     }
+
+    public void setToNull() {
+        sprite = null;
+        Gdx.app.log("FallingPipe","Objects were set to null");
+    }
 }

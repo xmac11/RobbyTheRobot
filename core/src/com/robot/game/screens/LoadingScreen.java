@@ -87,6 +87,7 @@ public class LoadingScreen extends ScreenAdapter {
             assets.createGameAssets();
 
             // set screen to MenuScreen
+            dispose();
             game.setScreen(new MenuScreen(game));
         }
     }
@@ -101,10 +102,15 @@ public class LoadingScreen extends ScreenAdapter {
     /*@Override
     public void hide() {
         super.hide();
-    }
+    }*/
 
     @Override
     public void dispose() {
-        super.dispose();
-    }*/
+        Gdx.app.log("LoadingScreen", "dispose");
+        loadingScreenViewport = null;
+        frame = null;
+        greenBar = null;
+        font = null;
+        Gdx.app.log("LoadingScreen", "Objects were set to null");
+    }
 }

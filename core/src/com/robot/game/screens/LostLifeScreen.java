@@ -72,7 +72,7 @@ public class LostLifeScreen extends ScreenAdapter {
             public void run() {
                 dispose();
 
-                game.respawn(playScreen, playScreen.getCheckpointData(), playScreen.getLevelID());
+                game.respawn(playScreen, game.getCheckpointData(), playScreen.getLevelID());
             }
         });
 
@@ -107,5 +107,12 @@ public class LostLifeScreen extends ScreenAdapter {
     public void dispose() {
         Gdx.app.log("LostLifeScreen", "dispose");
         stage.dispose();
+        setToNull();
+    }
+
+    private void setToNull() {
+        viewport = null;
+        font = null;
+        Gdx.app.log("LostLifeScreen", "Objects were set to null");
     }
 }

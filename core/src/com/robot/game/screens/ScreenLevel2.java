@@ -172,8 +172,8 @@ public class ScreenLevel2 extends PlayScreen {
         }
 
         // finally, check if robot is dead, level completed or game exited
-        if(escapePressed) {
-            Gdx.app.log("ScreenLevel2","Menu screen was by ESC");
+        if(escapePressed || toMenuFromPaused) {
+            Gdx.app.log("ScreenLevel2","Menu screen was set by ESC or PAUSE PANEL");
             this.dispose();
             game.setScreen(new MenuScreen(game));
         }
@@ -192,7 +192,26 @@ public class ScreenLevel2 extends PlayScreen {
     public void dispose() {
         Gdx.app.log("ScreenLevel2", "dispose");
         rayHandler.dispose();
+        setToNull();
         super.dispose();
+    }
+
+    private void setToNull() {
+        for(Parallax parallax: parallaxWaters) {
+            parallax.setToNull();
+        }
+        jointHandler.setToNull();
+        for(MovingSpike movingSpike: movingSpikes) {
+            movingSpike.setToNull();
+        }
+        for(TankBall tankBall: tankBalls) {
+            tankBall.setToNull();
+        }
+        tankBallSpawner.setToNull();
+        laserHandler.setToNull();
+        punchHandler.setToNull();
+        parallaxWaters = null;
+        Gdx.app.log("ScreenLevel2", "Objects were set to null");
     }
 
     private void handleCheckpoints() {

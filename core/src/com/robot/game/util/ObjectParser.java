@@ -399,4 +399,15 @@ public class ObjectParser {
     public Array<PrismaticJoint> getJoints() {
         return joints;
     }
+
+    public void setToNull() {
+        interactivePlatforms = null;
+        enemies = null;
+        collectables = null;
+        trampoline = null;
+        movingSpikes = null;
+        jointMap = null;
+        joints = null;
+        Gdx.app.log("ObjectParser", "Objects were set to null");
+    }
 }

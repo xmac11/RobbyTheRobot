@@ -38,10 +38,7 @@ import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
 import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
-import com.robot.game.util.Assets;
-import com.robot.game.util.ContactManager;
-import com.robot.game.util.MyOrthogonalTiledMapRenderer;
-import com.robot.game.util.ObjectParser;
+import com.robot.game.util.*;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
@@ -155,6 +152,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected JointHandler jointHandler;
 
     private int scoreOnGameOver;
+
+    protected boolean toMenuFromPaused;
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -323,6 +322,55 @@ public abstract class PlayScreen extends ScreenAdapter {
         if(DEBUG_ON) {
             debugRenderer.dispose();
         }
+        setToNull();
+    }
+
+    private void setToNull() {
+        shakeEffect.setToNull();
+        debugCamera.setToNull();
+        for(Enemy enemy: enemies) {
+            enemy.setToNull();
+        }
+        for(InteractivePlatform platform: interactivePlatforms) {
+            platform.setToNull();
+        }
+        for(Collectable collectable: collectables) {
+            collectable.setToNull();
+        }
+        collectableHandler.setToNull();
+        ladderClimbHandler.setToNull();
+        feedbackRenderer.setToNull();
+        objectParser.setToNull();
+
+
+        tiledMap = null;
+        mapRenderer = null;
+        contactManager = null;
+        objectParser = null;
+        layersObjectArray = null;
+        shakeEffect = null;
+        ladderClimbHandler = null;
+        interactivePlatforms = null;
+        enemies = null;
+        fallingPipes = null;
+        feedbackRenderer = null;
+        camera = null;
+        viewport = null;
+        debugCamera = null;
+        collectableHandler = null;
+        collectables = null;
+        collectedItems = null;
+        trampoline = null;
+        tankBalls = null;
+        tankBallPool = null;
+        tankBallSpawner = null;
+        hud = null;
+        laserHandler = null;
+        punchHandler = null;
+        movingSpikes = null;
+        joints = null;
+        jointHandler = null;
+        Gdx.app.log("PlayScreen", "Objects were set to null");
     }
 
 
@@ -502,6 +550,13 @@ public abstract class PlayScreen extends ScreenAdapter {
         return scoreOnGameOver;
     }
 
+    public void setToMenuFromPaused(boolean toMenuFromPaused) {
+        this.toMenuFromPaused = toMenuFromPaused;
+        Gdx.app.log("PlayScreen", "toMenuFromPaused = " + toMenuFromPaused);
+    }
+
+
+
     protected void processGameStateInput() {
         // pause game
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -601,7 +656,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             this.wipeOutData();
         }*/
         //level1
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("PlayScreen", "Level 1 was set from debug keys");
             doNotSaveInHide = true;
 
@@ -624,7 +679,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             game.setScreen(new ScreenLevel1(game));
         }
         // level 2
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
             Gdx.app.log("PlayScreen", "Level 2 was set from debug keys");
             doNotSaveInHide = true;
 
@@ -648,7 +703,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
 
         // level3
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
             Gdx.app.log("PlayScreen", "Level 3 was set from debug keys");
             doNotSaveInHide = true;
 

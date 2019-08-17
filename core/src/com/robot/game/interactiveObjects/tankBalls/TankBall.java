@@ -115,4 +115,11 @@ public class TankBall implements Damaging, Pool.Poolable {
         explosionStartTime = 0;
         explosionElapsed = 0;
     }
+
+    public void setToNull() {
+        sprite = null;
+        robot = null;
+        explosionPosition = null;
+        Gdx.app.log("TankBall", "Objects were set to null");
+    }
 }

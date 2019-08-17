@@ -51,8 +51,8 @@ public class Hud implements Disposable {
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
-        Assets assets = playScreen.getAssets();
-        this.checkpointData = playScreen.getCheckpointData();
+        Assets assets = playScreen.getGame().getAssets();
+        this.checkpointData = playScreen.getGame().getCheckpointData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
 
         this.frame = assets.hudAssets.frame;
@@ -277,8 +277,7 @@ public class Hud implements Disposable {
             // menu
             case 1:
                 Gdx.app.log("Hud", "MenuScreen was set from pause panel");
-                playScreen.dispose();
-                playScreen.getGame().setScreen(new MenuScreen(playScreen.getGame()));
+                playScreen.setToMenuFromPaused(true);
                 break;
         }
     }
@@ -299,5 +298,23 @@ public class Hud implements Disposable {
     public void dispose() {
         Gdx.app.log("Hud", "dispose");
         stage.dispose();
+        setToNull();
+    }
+
+    private void setToNull() {
+        hudViewport = null;
+        frame = null;
+        greenBar = null;
+        redBar = null;
+        lives = null;
+        hudFont = null;
+        hpFont = null;
+        scoreGlyphLayout = null;
+        livesGlyphLayout = null;
+//        pausePanel = null;
+//        toResumeButton = null;
+//        toMenuButton = null;
+        pauseFont = null;
+        Gdx.app.log("Hud", "Objects were set to null");
     }
 }

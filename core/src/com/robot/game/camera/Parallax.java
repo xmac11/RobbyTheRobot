@@ -1,5 +1,6 @@
 package com.robot.game.camera;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -80,5 +81,13 @@ public class Parallax {
 
     public void draw(SpriteBatch batch) {
         batch.draw(texture, x, y, width, height, (int) (srcX * speedScale),0, texture.getWidth(), texture.getHeight(),false,false);
+    }
+
+    public void setToNull() {
+        viewport = null;
+        camera = null;
+        robot = null;
+        texture = null;
+        Gdx.app.log("Parallax", "Objects set to null");
     }
 }

@@ -71,4 +71,9 @@ public class LadderClimbHandler extends InputAdapter {
 
         return true;
     }
+
+    public void setToNull() {
+        robot = null;
+        Gdx.app.log("LadderClimbHandler", "Objects were set to null");
+    }
 }

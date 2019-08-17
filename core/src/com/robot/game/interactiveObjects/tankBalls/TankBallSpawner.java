@@ -78,4 +78,10 @@ public class TankBallSpawner {
             this.tankElapsed += delta;
         }
     }
+
+    public void setToNull() {
+        robot = null;
+        tankBallPool = null;
+        Gdx.app.log("TankBallSpawner", "Objects were set to null");
+    }
 }

@@ -238,5 +238,12 @@ public class MenuScreen extends ScreenAdapter {
     public void dispose() {
         Gdx.app.log("MenuScreen", "dispose");
         stage.dispose();
+        setToNull();
+    }
+
+    private void setToNull() {
+        menuScreenViewport = null;
+        font = null;
+        Gdx.app.log("MenuScreen", "Objects were set to null");
     }
 }

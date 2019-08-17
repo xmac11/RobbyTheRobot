@@ -95,7 +95,7 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         this.levelID = playScreen.getLevelID();
         this.world = playScreen.getWorld();
         this.contactManager = playScreen.getContactManager();
-        this.checkpointData = playScreen.getCheckpointData();
+        this.checkpointData = playScreen.getGame().getCheckpointData();
         this.shakeEffect = playScreen.getShakeEffect();
         this.facing = RIGHT;
         this.state = IDLE;

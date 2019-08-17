@@ -1,5 +1,6 @@
 package com.robot.game.entities.abstractEnemies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -84,5 +85,11 @@ public abstract class EnemyPatrolling extends Enemy {
         else if(body.getLinearVelocity().x < -0.5f && facing != LEFT) {
             facing = LEFT;
         }
+    }
+
+    @Override
+    public void setToNull() {
+        facing = null;
+        Gdx.app.log("EnemyPatrolling", "Objects set to null");
     }
 }

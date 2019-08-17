@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -51,7 +50,7 @@ public class GameOverScreen extends ScreenAdapter {
     public GameOverScreen(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
-        this.checkpointData = playScreen.getCheckpointData();
+        this.checkpointData = game.getCheckpointData(); //
         this.levelID = playScreen.getLevelID(); // use the levelID of the last PlayScreen
         this.assets = game.getAssets();
         this.bigFont = assets.panelBigFontAssets.panelBigFont;
@@ -284,5 +283,13 @@ public class GameOverScreen extends ScreenAdapter {
     public void dispose() {
         Gdx.app.log("GameOverScreen", "dispose");
         stage.dispose();
+        setToNull();
+    }
+
+    private void setToNull() {
+        viewport = null;
+        bigFont = null;
+        font = null;
+        Gdx.app.log("GameOverScreen", "Objects were set to null");
     }
 }

@@ -18,7 +18,6 @@ public class MovingSpike extends Spike {
     private Sprite sprite;
     private Sprite baseSpirte;
     private Sprite stickSpirte;
-    private MapObject mapObject;
     private boolean inBalancePosition;
     private boolean attacking;
     private boolean horizontal;
@@ -30,7 +29,6 @@ public class MovingSpike extends Spike {
 
     public MovingSpike(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object, ObjectMap<Integer, Array<Body>> jointMap) {
         super(playScreen, body, fixtureDef, object);
-        this.mapObject = object;
         Assets assets = playScreen.getAssets();
         this.sprite = new Sprite(assets.trapAssets.trapSpikes);
         this.baseSpirte = new Sprite(assets.trapAssets.trapBase);
@@ -136,5 +134,12 @@ public class MovingSpike extends Spike {
 
     public float getAttackPeriod() {
         return attackPeriod;
+    }
+
+    public void setToNull() {
+        sprite = null;
+        baseSpirte = null;
+        stickSpirte = null;
+        Gdx.app.log("MovingSpike", "Objects were set to null");
     }
 }

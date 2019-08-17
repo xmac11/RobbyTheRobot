@@ -234,4 +234,14 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         this.locked = locked;
         Gdx.app.log("EnemyArriveAI", "Arrive was locked for " + this.getClass());
     }
+
+
+    @Override
+    public void setToNull() {
+        steeringBehavior = null;
+        steeringOutput = null;
+        arrive = null;
+        facing = null;
+        Gdx.app.log("EnemyArriveAI", "Objects were set to null");
+    }
 }

@@ -277,4 +277,15 @@ public abstract class EnemyPathFollowingAI extends Enemy implements Steerable<Ve
     public Array<Vector2> getWayPoints() {
         return wayPoints;
     }
+
+    @Override
+    public void setToNull() {
+        steeringBehavior = null;
+        steeringOutput = null;
+        followPath = null;
+        wayPoints = null;
+        linePath = null;
+        platformID = null;
+        Gdx.app.log("EnemyPathFollowing", "Objects were set to null");
+    }
 }

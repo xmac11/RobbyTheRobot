@@ -117,7 +117,7 @@ public class CollectableHandler {
                                                 temp.put("id", obj2.get("id"));
                                                 temp.put("value", obj3.get("value"));
                                                 this.collectedItems.add(temp);
-                                                Gdx.app.log("Collectable", "Item was put in JsonArray. " +
+                                                Gdx.app.log("CollectableHandler", "Item was put in JsonArray. " +
                                                         "Size: " + collectedItems.size());
                                             }
 
@@ -146,5 +146,11 @@ public class CollectableHandler {
 
     public Array<Integer> getItemsToDisableSpawning() {
         return itemsToDisableSpawning;
+    }
+
+    public void setToNull() {
+        collectedItems = null;
+        itemsToDisableSpawning = null;
+        Gdx.app.log("CollectableHandler", "Objects were set to null");
     }
 }

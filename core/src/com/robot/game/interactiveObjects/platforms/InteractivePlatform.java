@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects.platforms;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -62,5 +63,10 @@ public abstract class InteractivePlatform {
 
     public float getvY() {
         return vY;
+    }
+
+    public void setToNull() {
+        sprite = null;
+        Gdx.app.log("InteractivePlatform", "Objects were set to null");
     }
 }

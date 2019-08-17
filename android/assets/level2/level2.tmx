@@ -404,19 +404,19 @@
     <property name="shouldSpawn" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="196" x="3318" y="208" width="20" height="16">
+  <object id="196" x="3318" y="200" width="20" height="16">
    <properties>
     <property name="collectable" value=""/>
     <property name="shouldSpawn" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="197" x="3350" y="192" width="20" height="16">
+  <object id="197" x="3350" y="184" width="20" height="16">
    <properties>
     <property name="collectable" value=""/>
     <property name="shouldSpawn" type="bool" value="true"/>
    </properties>
   </object>
-  <object id="198" x="3382" y="208" width="20" height="16">
+  <object id="198" x="3382" y="200" width="20" height="16">
    <properties>
     <property name="collectable" value=""/>
     <property name="shouldSpawn" type="bool" value="true"/>

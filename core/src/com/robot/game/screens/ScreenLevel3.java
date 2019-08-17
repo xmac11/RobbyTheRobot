@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
+import com.robot.game.interactiveObjects.spikes.MovingSpike;
+import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.util.Enums;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
@@ -155,8 +157,8 @@ public class ScreenLevel3 extends PlayScreen {
         }
 
         // finally, check if robot is dead, level completed or game exited
-        if(escapePressed) {
-            Gdx.app.log("ScreenLevel3","Menu screen was by ESC");
+        if(escapePressed || toMenuFromPaused) {
+            Gdx.app.log("ScreenLevel3","Menu screen was set by ESC or PAUSE PANEL");
             this.dispose();
             game.setScreen(new MenuScreen(game));
         }
@@ -176,11 +178,17 @@ public class ScreenLevel3 extends PlayScreen {
         Gdx.app.log("ScreenLevel3", "dispose");
         rayHandler.dispose();
         rayHandlerTorch.dispose();
+        setToNull();
         super.dispose();
     }
 
     @Override
     public void checkIfLevelComplete() {
         // TODO: complete
+    }
+
+    private void setToNull() {
+        laserHandler.setToNull();
+        punchHandler.setToNull();
     }
 }

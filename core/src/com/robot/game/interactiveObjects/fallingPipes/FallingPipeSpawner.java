@@ -82,4 +82,11 @@ public class FallingPipeSpawner {
             return false;
         }
     }
+
+    public void setToNull() {
+        robot = null;
+        fallingPipes = null;
+        shakeEffect = null;
+        Gdx.app.log("FallingPipeSpawner", "Objects were set to null");
+    }
 }

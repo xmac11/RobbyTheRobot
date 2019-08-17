@@ -11,6 +11,8 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.StaticMethods;
 
+import static com.robot.game.util.Constants.WALL_JUMPING_PROPERTY;
+
 public abstract class RayCastHandler {
 
     protected PlayScreen playScreen;
@@ -45,6 +47,9 @@ public abstract class RayCastHandler {
         if("ground".equals(closestFixture.getUserData())) {
             Gdx.app.log("RayCastHandler", "Raycast hit ground");
         }
+        else if(WALL_JUMPING_PROPERTY.equals(closestFixture.getUserData())) {
+            Gdx.app.log("RayCastHandler", "Raycast hit wall jumping surface");
+        }
         else if(closestFixture.getUserData() instanceof Enemy) {
             Enemy enemy = (Enemy) closestFixture.getUserData();
 
@@ -64,6 +69,16 @@ public abstract class RayCastHandler {
             StaticMethods.killEnemy(robot, enemy, impulseX, impulseY);
             Gdx.app.log("RayCastHandler", "Raycast hit enemy");
         }
+    }
+
+    public void setToNull() {
+        robot = null;
+        callback = null;
+        rayPointStart = null;
+        rayPointEnd = null;
+        closestFixture = null;
+        tempRayPointEnd = null;
+        Gdx.app.log("RayCastHandler", "Objects were set to null");
     }
 }
 

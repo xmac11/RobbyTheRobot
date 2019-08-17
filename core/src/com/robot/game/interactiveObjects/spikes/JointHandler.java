@@ -152,4 +152,10 @@ public class JointHandler {
             movingSpike.getBaseSpirte().setRotation(90);
         }
     }
+
+    public void setToNull() {
+        robot = null;
+        jointSpikeMap = null;
+        Gdx.app.log("JointHandler", "Objects were set to null");
+    }
 }

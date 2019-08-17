@@ -48,4 +48,9 @@ public class ShakeEffect {
         return shakeON;
     }
 
+    public void setToNull() {
+        cameraDisplacement = null;
+        Gdx.app.log("ShakeEffect", "Objects set to null");
+    }
+
 }

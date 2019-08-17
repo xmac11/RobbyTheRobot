@@ -23,9 +23,11 @@ public class FileSaver {
 
     /** Saves the game data needed for checkpoints to a json file */
     public static void saveCheckpointData(CheckpointData checkpointData) {
-        json.setOutputType(JsonWriter.OutputType.json);
-        checkPointFile.writeString(json.prettyPrint(checkpointData), false);
-        Gdx.app.log("FileSaver", "Checkpoint data saved");
+//        if(checkpointData != null) {
+            json.setOutputType(JsonWriter.OutputType.json);
+            checkPointFile.writeString(json.prettyPrint(checkpointData), false);
+            Gdx.app.log("FileSaver", "Checkpoint data saved");
+//        }
     }
 
     /** Reads the json file containing checkpoints data and returns the data as a class instance */

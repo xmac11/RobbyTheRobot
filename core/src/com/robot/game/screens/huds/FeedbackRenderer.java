@@ -1,5 +1,6 @@
 package com.robot.game.screens.huds;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -175,5 +176,17 @@ public class FeedbackRenderer {
 
     public ObjectMap<Collectable, Float> getItemPointsToDraw() {
         return itemPointsToDraw;
+    }
+
+    public void setToNull() {
+        robot = null;
+        pointsForEnemyToDraw = null;
+        damageFromHitToDraw = null;
+        itemPointsToDraw = null;
+        feedbackFont = null;
+        frame = null;
+        greenBar = null;
+        redBar = null;
+        Gdx.app.log("FeedbackRenderer", "Objects were set to null");
     }
 }

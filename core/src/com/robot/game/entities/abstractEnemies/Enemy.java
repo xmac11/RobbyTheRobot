@@ -105,4 +105,11 @@ public abstract class Enemy implements Damaging {
     public float getElapsedAnim() {
         return elapsedAnim;
     }
+
+    public void setToNull() {
+        sprite = null;
+        robot = null;
+        object = null;
+        Gdx.app.log("Enemy", "Objects were set to null");
+    }
 }

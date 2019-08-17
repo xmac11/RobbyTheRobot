@@ -20,7 +20,6 @@ public abstract class Collectable {
     private World world;
     private Body body;
     private MapObject mapObject;
-    private JSONObject temp;
     private boolean flagToCollect;
     private boolean destroyed;
 
@@ -31,7 +30,6 @@ public abstract class Collectable {
         this.world = playScreen.getWorld();
         this.body = body;
         this.mapObject = object;
-        this.temp = new JSONObject();
         body.createFixture(fixtureDef).setUserData(this);
 
         // put collectables to sleep to reduce CPU cost
@@ -75,5 +73,12 @@ public abstract class Collectable {
 
     public CollectableHandler getCollectableHandler() {
         return collectableHandler;
+    }
+
+    public void setToNull() {
+        sprite = null;
+        collectableHandler = null;
+        mapObject = null;
+        Gdx.app.log("Collectable", "Objects were set to null");
     }
 }
