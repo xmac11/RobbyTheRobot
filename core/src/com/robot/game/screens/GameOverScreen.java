@@ -217,6 +217,7 @@ public class GameOverScreen extends ScreenAdapter {
 
     private void handleSelection() {
         doNotSaveInHide = true;
+        // reset spawning of collectables
         this.handleCollectables();
 
         // first dispose

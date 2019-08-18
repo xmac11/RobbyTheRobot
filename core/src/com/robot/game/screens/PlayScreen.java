@@ -337,7 +337,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         for(Collectable collectable: collectables) {
             collectable.setToNull();
         }
-        collectableHandler.setToNull();
+        //collectableHandler.setToNull();
         ladderClimbHandler.setToNull();
         feedbackRenderer.setToNull();
         objectParser.setToNull();
@@ -358,7 +358,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         camera = null;
         viewport = null;
         debugCamera = null;
-        collectableHandler = null;
+        //collectableHandler = null;
         collectables = null;
         collectedItems = null;
         trampoline = null;
@@ -438,6 +438,10 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public DelayedRemovalArray<Collectable> getCollectables() {
         return collectables;
+    }
+
+    public boolean isNewItemCollected() {
+        return newItemCollected;
     }
 
     public void setNewItemCollected(boolean newItemCollected) {
@@ -604,10 +608,10 @@ public abstract class PlayScreen extends ScreenAdapter {
             // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
             if(newItemCollected) {
                 // loop through all items that have been collected and disable their spawning
-                for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
+                /*for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
                     collectableHandler.setSpawn(collectableID, false);
                 }
-                FileSaver.saveCollectedItems(collectedItems);
+                FileSaver.saveCollectedItems(collectedItems);*/
                 doNotSaveInHide = true;
             }
             // finally set screen to LostLifeScreen

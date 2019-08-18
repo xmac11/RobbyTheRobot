@@ -16,7 +16,10 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
+import com.robot.game.interactiveObjects.collectables.CollectableHandler;
 import com.robot.game.util.Assets;
+import com.robot.game.util.checkpoints.FileSaver;
+import org.json.simple.JSONArray;
 
 import static com.robot.game.util.Constants.*;
 
@@ -25,6 +28,8 @@ public class LostLifeScreen extends ScreenAdapter {
     private RobotGame game;
     private PlayScreen playScreen;
     private Assets assets;
+    private CollectableHandler collectableHandler;
+    private JSONArray collectedItems;
     private Viewport viewport;
     private Stage stage;
     private BitmapFont font;
@@ -33,6 +38,8 @@ public class LostLifeScreen extends ScreenAdapter {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
         this.assets = game.getAssets();
+        this.collectableHandler = playScreen.getCollectableHandler();
+        this.collectedItems = collectableHandler.getCollectedItems();
         this.font = assets.panelBigFontAssets.panelBigFont;
     }
 
@@ -66,12 +73,28 @@ public class LostLifeScreen extends ScreenAdapter {
                 lives.setText("x" + game.getCheckpointData().getLives());
             }
         });
+
+        // disable spawning of collected items
+        RunnableAction handleCollectables = new RunnableAction();
+        handleCollectables.setRunnable(new Runnable() {
+            @Override
+            public void run() {
+                // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
+                if(playScreen.isNewItemCollected()) {
+                    // loop through all items that have been collected and disable their spawning
+                    for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
+                        collectableHandler.setSpawn(collectableID, false);
+                    }
+                    FileSaver.saveCollectedItems(collectedItems);
+                }
+            }
+        });
+
         RunnableAction respawn = new RunnableAction();
         respawn.setRunnable(new Runnable() {
             @Override
             public void run() {
                 dispose();
-
                 game.respawn(playScreen, game.getCheckpointData(), playScreen.getLevelID());
             }
         });
@@ -81,7 +104,7 @@ public class LostLifeScreen extends ScreenAdapter {
         sequenceAction.addAction(Actions.fadeOut(1f, Interpolation.fade));
         sequenceAction.addAction(changeText);
         sequenceAction.addAction(Actions.fadeIn(1f, Interpolation.fade));
-        sequenceAction.addAction(Actions.delay(0.25f));
+        sequenceAction.addAction(handleCollectables);
         sequenceAction.addAction(respawn);
 
         lives.addAction(sequenceAction);
@@ -113,6 +136,8 @@ public class LostLifeScreen extends ScreenAdapter {
     private void setToNull() {
         viewport = null;
         font = null;
+        collectableHandler = null;
+        collectedItems = null;
         Gdx.app.log("LostLifeScreen", "Objects were set to null");
     }
 }
