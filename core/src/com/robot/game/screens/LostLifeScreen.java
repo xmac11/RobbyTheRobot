@@ -33,6 +33,7 @@ public class LostLifeScreen extends ScreenAdapter {
     private Viewport viewport;
     private Stage stage;
     private BitmapFont font;
+    private boolean doNotSaveInHide;
 
     public LostLifeScreen(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -75,18 +76,12 @@ public class LostLifeScreen extends ScreenAdapter {
         });
 
         // disable spawning of collected items
-        RunnableAction handleCollectables = new RunnableAction();
-        handleCollectables.setRunnable(new Runnable() {
+        RunnableAction handleCollectablesRun = new RunnableAction();
+        handleCollectablesRun.setRunnable(new Runnable() {
             @Override
             public void run() {
-                // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
-                if(playScreen.isNewItemCollected()) {
-                    // loop through all items that have been collected and disable their spawning
-                    for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
-                        collectableHandler.setSpawn(collectableID, false);
-                    }
-                    FileSaver.saveCollectedItems(collectedItems);
-                }
+                doNotSaveInHide = true;
+                handleCollectables();
             }
         });
 
@@ -104,10 +99,21 @@ public class LostLifeScreen extends ScreenAdapter {
         sequenceAction.addAction(Actions.fadeOut(1f, Interpolation.fade));
         sequenceAction.addAction(changeText);
         sequenceAction.addAction(Actions.fadeIn(1f, Interpolation.fade));
-        sequenceAction.addAction(handleCollectables);
+        sequenceAction.addAction(handleCollectablesRun);
         sequenceAction.addAction(respawn);
 
         lives.addAction(sequenceAction);
+    }
+
+    public void handleCollectables() {
+        // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
+        if(playScreen.isNewItemCollected()) {
+            // loop through all items that have been collected and disable their spawning
+            for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
+                collectableHandler.setSpawn(collectableID, false);
+            }
+            FileSaver.saveCollectedItems(collectedItems);
+        }
     }
 
     @Override
@@ -124,6 +130,14 @@ public class LostLifeScreen extends ScreenAdapter {
     public void resize(int width, int height) {
         Gdx.app.log("LostLifeScreen", "resize");
         viewport.update(width, height, true);
+    }
+
+    @Override
+    public void hide() {
+        Gdx.app.log("LostLifeScreen", "hide");
+        if(!doNotSaveInHide) {
+            handleCollectables();
+        }
     }
 
     @Override

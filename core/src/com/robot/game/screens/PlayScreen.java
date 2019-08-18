@@ -673,7 +673,14 @@ public abstract class PlayScreen extends ScreenAdapter {
              * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
-                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                boolean deleted = false;
+                for(int i = 0; i < 30; i++) {
+                    deleted = FileSaver.getCollectedItemsFile().delete();
+                    System.out.println(i);
+                    if(deleted) break;
+                    try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
+                    System.gc();
+                }
                 Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
             }
 
@@ -697,7 +704,14 @@ public abstract class PlayScreen extends ScreenAdapter {
              * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
-                boolean deleted = FileSaver.getCollectedItemsFile().delete();
+                boolean deleted = false;
+                for(int i = 0; i < 30; i++) {
+                    deleted = FileSaver.getCollectedItemsFile().delete();
+                    System.out.println(i);
+                    if(deleted) break;
+                    try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
+                    System.gc();
+                }
                 Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
             }
 
