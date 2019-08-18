@@ -305,8 +305,10 @@ public class ContactManager implements ContactListener {
             // decrease robot's health
             StaticMethods.decreaseHealth(robot, enemy);
 
-            //add enemy (damaging object) to HashMap in order to render the damage incurred
-            robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+            //add enemy (damaging object) to HashMap in order to render the damage incurred (if robot is not dead)
+            if(robot.getCheckpointData().getHealth() > 0) {
+                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+            }
 
             // make it flicker
             robot.setFlicker(true);
