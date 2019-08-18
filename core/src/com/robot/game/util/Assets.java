@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -50,6 +51,9 @@ public class Assets {
     public MonsterAssets monsterAssets;
     public SnakeAssets snakeAssets;
     public TrapAssets trapAssets;
+
+    // music
+    public MusicAssets musicAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -126,6 +130,14 @@ public class Assets {
         // load water (level 2)
         assetManager.load("level2/waterAnimation.png", Texture.class);
         assetManager.load("level2/waterAnimationBig.png", Texture.class);
+
+        // load music
+        loadMusic();
+    }
+
+    private void loadMusic() {
+        assetManager.load("sounds/jump.ogg", Sound.class);
+        assetManager.load("sounds/laser.ogg", Sound.class);
     }
 
     // creates assets for loading screen
@@ -175,6 +187,9 @@ public class Assets {
         this.monsterAssets = new MonsterAssets(atlas);
         this.snakeAssets = new SnakeAssets(atlas);
         this.trapAssets = new TrapAssets(atlas);
+
+        // music
+        this.musicAssets = new MusicAssets();
     }
 
     public void dispose() {
@@ -628,6 +643,18 @@ public class Assets {
             this.panelBigFont = assetManager.get("panelBigFont.ttf", BitmapFont.class);
             panelBigFont.getData().setScale(1 / 86f * 1.5f);
             panelBigFont.setUseIntegerPositions(false);
+        }
+    }
+
+    // MUSIC
+
+    public class MusicAssets {
+        public Sound jumpSound;
+        public Sound laserSound;
+
+        private MusicAssets() {
+            this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
+            this.laserSound = assetManager.get("sounds/laser.ogg", Sound.class);
         }
     }
 }

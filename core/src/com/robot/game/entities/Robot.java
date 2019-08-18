@@ -332,6 +332,10 @@ public class Robot extends Sprite implements Steerable<Vector2> {
         // if the timers have been set and robot not on ladder, jump
         if(jumpTimer > 0 && coyoteTimer > 0 && jumpTimeout > ROBOT_JUMP_TIMEOUT && !onLadder) {
             Gdx.app.log("Robot","jumpTimeout: " + jumpTimeout);
+
+            // play jump sound
+            assets.musicAssets.jumpSound.play();
+
             // reset timers
             jumpTimer = 0;
             coyoteTimer = 0;
