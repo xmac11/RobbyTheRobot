@@ -536,9 +536,22 @@ public class Assets {
 
     public class MainMenuAssets {
         public final TextureRegion mainMenuBG;
+        public final Texture robCaptcha;
+        public final Texture clickCaptcha;
+        public final Animation<Texture> checkAnimation;
 
         private MainMenuAssets(TextureAtlas atlas) {
             this.mainMenuBG = atlas.findRegion("robot_hello");
+            this.robCaptcha = new Texture("robCaptcha.png"); // TODO
+            this.clickCaptcha = new Texture("click_captcha.png");
+
+            Array<Texture> framesArr = new Array<>();
+            for(int i = 1; i <= 7; i++) {
+                framesArr.add(new Texture("check" + i + ".png"));
+            }
+            this.checkAnimation = new Animation<>(0.15f, framesArr);
+
+            framesArr.clear();
         }
     }
 

@@ -3,11 +3,9 @@ package com.robot.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -28,7 +25,6 @@ public class MenuScreen extends ScreenAdapter {
 
     private RobotGame game;
     private Assets assets;
-    private int levelID;
 
     private Stage stage;
     private Viewport menuScreenViewport;
@@ -44,7 +40,6 @@ public class MenuScreen extends ScreenAdapter {
     public MenuScreen(RobotGame game) {
         this.game = game;
         this.assets = game.getAssets();
-        this.levelID = game.getCheckpointData().getLevelID();
         this.buttons = new Array<>();
     }
 
@@ -200,27 +195,13 @@ public class MenuScreen extends ScreenAdapter {
 
         // then handle selection
         if(selection == playIndex) {
-            Gdx.app.log("MenuScreen", "PLAY was selected");
-            loadLevel();
+            Gdx.app.log("MenuScreen", "PLAY was selected. Switching to RobCaptcha screen");
+            game.setScreen(new RobCaptcha(game));
         }
         else if(selection == exitIndex) {
             Gdx.app.log("MenuScreen", "EXIT was selected");
             Gdx.app.exit();
         }
-    }
-
-    private void loadLevel() {
-        switch(levelID) {
-                case 1:
-                    game.setScreen(new ScreenLevel1(game));
-                    break;
-                case 2:
-                    game.setScreen(new ScreenLevel2(game));
-                    break;
-                case 3:
-                    game.setScreen(new ScreenLevel3(game));
-                    break;
-            }
     }
 
     @Override
