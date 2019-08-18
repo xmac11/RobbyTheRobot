@@ -337,7 +337,6 @@ public abstract class PlayScreen extends ScreenAdapter {
         for(Collectable collectable: collectables) {
             collectable.setToNull();
         }
-        //collectableHandler.setToNull();
         ladderClimbHandler.setToNull();
         feedbackRenderer.setToNull();
         objectParser.setToNull();
@@ -358,9 +357,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         camera = null;
         viewport = null;
         debugCamera = null;
-        //collectableHandler = null;
         collectables = null;
-        collectedItems = null;
         trampoline = null;
         tankBalls = null;
         tankBallPool = null;
@@ -607,11 +604,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
             // if a new item has been collected in this session, save the file with collected items and disable saving from the hide() method
             if(newItemCollected) {
-                // loop through all items that have been collected and disable their spawning
-                /*for(int collectableID: collectableHandler.getItemsToDisableSpawning()) {
-                    collectableHandler.setSpawn(collectableID, false);
-                }
-                FileSaver.saveCollectedItems(collectedItems);*/
                 doNotSaveInHide = true;
             }
             // finally set screen to LostLifeScreen
@@ -682,7 +674,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
                 boolean deleted = FileSaver.getCollectedItemsFile().delete();
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
             }
 
             // start level1
@@ -706,7 +698,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
                 boolean deleted = FileSaver.getCollectedItemsFile().delete();
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
             }
 
             // start level2
@@ -733,8 +725,15 @@ public abstract class PlayScreen extends ScreenAdapter {
              * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
-                boolean deleted = FileSaver.getCollectedItemsFile().delete();
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+                boolean deleted = false;
+                for(int i = 0; i < 30; i++) {
+                    deleted = FileSaver.getCollectedItemsFile().delete();
+                    System.out.println(i);
+                    if(deleted) break;
+                    try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
+                    System.gc();
+                }
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
             }
 
             // start level3

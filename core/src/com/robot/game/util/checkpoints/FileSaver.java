@@ -57,8 +57,9 @@ public class FileSaver {
             jsonArray = new JSONArray();
         }
 
-        for(Object object: collectedItems)
+        for(Object object: collectedItems) {
             jsonArray.add(object);
+        }
 
         collectedItemsFile.writeString(json.prettyPrint(jsonArray.toString()), false);
         Gdx.app.log("FileSaver", "collectedItems.json was saved");

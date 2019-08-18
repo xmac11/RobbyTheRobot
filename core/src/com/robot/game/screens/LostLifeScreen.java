@@ -134,6 +134,7 @@ public class LostLifeScreen extends ScreenAdapter {
     }
 
     private void setToNull() {
+        //collectableHandler.setToNull();
         viewport = null;
         font = null;
         collectableHandler = null;

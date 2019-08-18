@@ -149,8 +149,8 @@ public class CollectableHandler {
     }
 
     public void setToNull() {
-        //collectedItems = null;
-        //itemsToDisableSpawning = null;
+        collectedItems = null;
+        itemsToDisableSpawning = null;
         Gdx.app.log("CollectableHandler", "Objects were set to null");
     }
 }
