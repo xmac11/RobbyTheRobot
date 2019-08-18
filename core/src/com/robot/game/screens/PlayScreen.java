@@ -621,7 +621,8 @@ public abstract class PlayScreen extends ScreenAdapter {
             this.scoreOnGameOver = checkpointData.getScore();
 
             // reset checkpoint data
-            checkpointData.setDefaultData(levelID);
+            checkpointData.setDefaultRobotData();
+            checkpointData.setDefaultLevelData(levelID);
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);
@@ -666,7 +667,8 @@ public abstract class PlayScreen extends ScreenAdapter {
             doNotSaveInHide = true;
 
             // set default data
-            checkpointData.setDefaultData(1);
+            checkpointData.setDefaultRobotData();
+            checkpointData.setDefaultLevelData(1);
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);
@@ -689,7 +691,8 @@ public abstract class PlayScreen extends ScreenAdapter {
             doNotSaveInHide = true;
 
             // set default data
-            checkpointData.setDefaultData(2);
+            checkpointData.setDefaultRobotData();
+            checkpointData.setDefaultLevelData(2);
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);
@@ -713,8 +716,10 @@ public abstract class PlayScreen extends ScreenAdapter {
             doNotSaveInHide = true;
 
             // set default data
-            checkpointData.setDefaultData(3);
+            checkpointData.setDefaultRobotData();
+            checkpointData.setDefaultLevelData(3);
             checkpointData.setLevelID(3); // since setting the default data in level 3, sets the level to 2
+            checkpointData.setSpawnLocation(SPAWN_LOCATION_L3);
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);

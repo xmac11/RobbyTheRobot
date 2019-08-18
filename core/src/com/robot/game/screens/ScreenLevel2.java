@@ -267,7 +267,9 @@ public class ScreenLevel2 extends PlayScreen {
     private void toggleDebugCheckpoints() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
             Gdx.app.log("ScreenLevel2", "Checkpoints reset");
-            checkpointData.setDefaultData(levelID);
+            // reset level data
+            checkpointData.setDefaultLevelData(levelID);
+            // save data
             FileSaver.saveCheckpointData(checkpointData);
 
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
@@ -337,7 +339,7 @@ public class ScreenLevel2 extends PlayScreen {
             // set levelID
             checkpointData.setLevelID(3);
 
-            // set corresponding spawn location of level2
+            // set corresponding spawn location of level3
             checkpointData.setSpawnLocation(SPAWN_LOCATION_L3);
 
             // set all checkpoints of new level to false

@@ -118,24 +118,27 @@ public class CheckpointData {
         Gdx.app.log("CheckpointData","All checkpoints set to false");
     }
 
-    public void setDefaultData(int levelID) {
-        // if levelID is 3, set it to 2, else set it to the levelID passed
-        this.levelID = (levelID == 3 ? 2 : levelID);
+    public void setDefaultRobotData() {
         health = 100;
         lives = 3;
         score = 0;
         hasTorch = false;
+    }
 
-        switch(levelID) {
+    public void setDefaultLevelData(int levelID) {
+        // if levelID is 3, set it to 2, else set it to the levelID passed
+        this.levelID = (levelID == 3 ? 2 : levelID);
+
+        switch(this.levelID) {
             case 1:
                 spawnLocation = SPAWN_LOCATION_L1;
                 break;
             case 2:
                 spawnLocation = SPAWN_LOCATION_L2;
                 break;
-            case 3:
+            /*case 3:
                 spawnLocation = SPAWN_LOCATION_L3;
-                break;
+                break;*/
         }
 
         firstCheckpointActivated = false;

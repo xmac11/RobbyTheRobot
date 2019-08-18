@@ -31,10 +31,14 @@ public class RobotGame extends Game {
 		else {
 			Gdx.app.log("RobotGame", "New file was created");
 			this.checkpointData = new CheckpointData();
-			checkpointData.setDefaultData(1);
+
+			// set default data
+			checkpointData.setDefaultRobotData();
+			checkpointData.setDefaultLevelData(1);
+
+			// save data
 			FileSaver.saveCheckpointData(checkpointData);
 		}
-
 		super.setScreen(new LoadingScreen(this));
 	}
 
