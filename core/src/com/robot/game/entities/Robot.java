@@ -150,7 +150,9 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public void update(float delta) {
         // first process input
-        processInput(delta);
+        if(!dead && !walkingOnSpikes) {
+            processInput(delta);
+        }
 
         // update robot when on interactive platform
         if(isOnInteractivePlatform && interactivePlatform != null) {
@@ -207,6 +209,11 @@ public class Robot extends Sprite implements Steerable<Vector2> {
             body.setTransform(ROBOT_BODY_WIDTH / 2 / PPM, body.getPosition().y, 0);
         if(body.getPosition().x > (playScreen.getMapWidth() - ROBOT_BODY_WIDTH / 2) / PPM)
             body.setTransform((playScreen.getMapWidth() - ROBOT_BODY_WIDTH / 2) / PPM, body.getPosition().y, 0);
+
+        // if robot is about to die, stop it
+         if(checkpointData.getHealth() <= 0 || walkingOnSpikes) {
+             body.setLinearVelocity(0, 0);
+         }
 
         // conditions for robot to die
         if((body.getPosition().y < 0 || checkpointData.getHealth() <= 0 || walkingOnSpikes) && !flicker ) {

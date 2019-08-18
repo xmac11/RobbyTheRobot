@@ -296,7 +296,7 @@ public class ScreenLevel1 extends PlayScreen {
     @Override
     public void checkIfLevelComplete() {
         if(Math.abs( robot.getBody().getPosition().x * PPM - 6880)  <= 16
-                && Math.abs( robot.getBody().getPosition().y * PPM - 304 )  <= 16) {
+                && Math.abs( robot.getBody().getPosition().y * PPM - 344 )  <= 16) {
 
             Gdx.app.log("ScreenLevel1", "Level complete!!!");
 
