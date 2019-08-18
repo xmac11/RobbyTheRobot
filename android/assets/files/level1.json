@@ -1616,63 +1616,6 @@
         }, 
         {
          "draworder":"topdown",
-         "id":92,
-         "name":"Draft layer",
-         "objects":[
-                {
-                 "height":50,
-                 "id":139,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":18,
-                 "x":2832,
-                 "y":258
-                }, 
-                {
-                 "height":50,
-                 "id":141,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":18,
-                 "x":2832,
-                 "y":178
-                }, 
-                {
-                 "height":0,
-                 "id":116,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2384,
-                 "y":224
-                }, 
-                {
-                 "height":0,
-                 "id":115,
-                 "name":"",
-                 "point":true,
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":2384,
-                 "y":432
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
          "id":93,
          "name":"Crab obj",
          "objects":[

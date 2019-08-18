@@ -68,7 +68,7 @@ public class RobCaptcha extends ScreenAdapter {
         // check sprite
         this.checkSprite = new Sprite();
         checkSprite.setSize(60f / 1.5f / PPM, 80f / 1.5f / PPM);
-        checkSprite.setPosition(clickCaptcha.getX() - 3 / PPM, clickCaptcha.getY() - 12 / PPM);
+        checkSprite.setPosition(clickCaptcha.getX() - 3 / PPM, clickCaptcha.getY() - 13 / PPM);
 
         // add actors
         stage.addActor(captchaPanel);

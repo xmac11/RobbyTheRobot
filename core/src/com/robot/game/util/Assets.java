@@ -126,9 +126,6 @@ public class Assets {
         // load water (level 2)
         assetManager.load("level2/waterAnimation.png", Texture.class);
         assetManager.load("level2/waterAnimationBig.png", Texture.class);
-
-        // load pause panel
-        assetManager.load("pause_panel.png", Texture.class);
     }
 
     // creates assets for loading screen
@@ -150,7 +147,7 @@ public class Assets {
 
         // create assets
         this.mainMenuAssets = new MainMenuAssets(atlas);
-        this.pausePanelAssets = new PausePanelAssets();
+        this.pausePanelAssets = new PausePanelAssets(atlas);
         this.gameOverAssets = new GameOverAssets(atlas);
         this.tiledMapAssets = new TiledMapAssets();
         this.robotAssets = new RobotAssets(atlas);
@@ -262,7 +259,7 @@ public class Assets {
 
         private BatAssets(TextureAtlas atlas) {
 
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 5; i++) {
                 framesArray.add(atlas.findRegion("bat" + i));
             }
@@ -287,7 +284,7 @@ public class Assets {
 
         private CrabAssets(TextureAtlas atlas) {
 
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 4; i++) {
                 framesArray.add(atlas.findRegion("crab" + i));
             }
@@ -309,7 +306,7 @@ public class Assets {
         public final TextureRegion deadFish;
 
         private FishAssets(TextureAtlas atlas) {
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 2; i++) {
                 framesArray.add(atlas.findRegion("fish" + i));
             }
@@ -329,7 +326,7 @@ public class Assets {
         private MonsterAssets(TextureAtlas atlas) {
 
             // walk
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
                 framesArray.add(atlas.findRegion("monster_walk" + i));
             }
@@ -363,7 +360,7 @@ public class Assets {
         private SnakeAssets(TextureAtlas atlas) {
 
             // slither
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 5; i++) {
                 framesArray.add(atlas.findRegion("snake_slither" + i));
             }
@@ -391,7 +388,7 @@ public class Assets {
 
     public class InteractivePlatformAssets {
 
-        public final TextureAtlas.AtlasRegion interactivePlatform;
+        public final TextureRegion interactivePlatform;
 
         public InteractivePlatformAssets(TextureAtlas atlas) {
             this.interactivePlatform = atlas.findRegion("movingplatform");
@@ -413,13 +410,14 @@ public class Assets {
         }
     }
 
+
     // Hud assets
     public class HudAssets {
 
-        public final TextureAtlas.AtlasRegion frame;
-        public final TextureAtlas.AtlasRegion greenBar;
-        public final TextureAtlas.AtlasRegion redBar;
-        public final TextureAtlas.AtlasRegion lives;
+        public final TextureRegion frame;
+        public final TextureRegion greenBar;
+        public final TextureRegion redBar;
+        public final TextureRegion lives;
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
@@ -431,8 +429,8 @@ public class Assets {
 
     // Loading bar assets
     public class LoadingScreenAssets {
-        public final TextureAtlas.AtlasRegion frame;
-        public final TextureAtlas.AtlasRegion bar;
+        public final TextureRegion frame;
+        public final TextureRegion bar;
 
         private LoadingScreenAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("loading");
@@ -442,11 +440,11 @@ public class Assets {
 
     public class CollectableAssets {
 
-        public final TextureAtlas.AtlasRegion burger;
-        public final TextureAtlas.AtlasRegion powerup;
-        public final TextureAtlas.AtlasRegion donut_pink;
-        public final TextureAtlas.AtlasRegion donut_red;
-        public final TextureAtlas.AtlasRegion torch;
+        public final TextureRegion burger;
+        public final TextureRegion powerup;
+        public final TextureRegion donut_pink;
+        public final TextureRegion donut_red;
+        public final TextureRegion torch;
 
         private CollectableAssets(TextureAtlas atlas) {
             this.burger = atlas.findRegion("burger");
@@ -458,7 +456,7 @@ public class Assets {
     }
 
     public class PipeAssets {
-        public final TextureAtlas.AtlasRegion debris;
+        public final TextureRegion debris;
 
         private PipeAssets(TextureAtlas atlas) {
             this.debris = atlas.findRegion("debris");
@@ -466,8 +464,8 @@ public class Assets {
     }
 
     public class TrampolineAssets {
-        public final TextureAtlas.AtlasRegion trampolineFull;
-        public final TextureAtlas.AtlasRegion trampolineHalf;
+        public final TextureRegion trampolineFull;
+        public final TextureRegion trampolineHalf;
 
         private TrampolineAssets(TextureAtlas atlas) {
             this.trampolineFull = atlas.findRegion("trampoline1");
@@ -476,13 +474,13 @@ public class Assets {
     }
 
     public class TankBallAssets {
-        public final TextureAtlas.AtlasRegion tankFire;
+        public final TextureRegion tankFire;
         public final Animation<TextureRegion> tankExplosionAnimation;
 
         private TankBallAssets(TextureAtlas atlas) {
             this.tankFire = atlas.findRegion("tankFire");
 
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 6; i++) {
                 framesArray.add(atlas.findRegion("tankExplosion" + i));
             }
@@ -498,7 +496,7 @@ public class Assets {
 
         private LaserAssets(TextureAtlas atlas) {
 
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 4; i++) {
                 framesArray.add(atlas.findRegion("laserExplosion" + i));
             }
@@ -512,7 +510,7 @@ public class Assets {
         public final Animation<TextureRegion> splashAnimation;
 
         private SplashAssets(TextureAtlas atlas) {
-            Array<TextureAtlas.AtlasRegion> framesArray = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
                 framesArray.add(atlas.findRegion("splash" + i));
             }
@@ -536,30 +534,30 @@ public class Assets {
 
     public class MainMenuAssets {
         public final TextureRegion mainMenuBG;
-        public final Texture robCaptcha;
-        public final Texture clickCaptcha;
-        public final Animation<Texture> checkAnimation;
+        public final TextureRegion robCaptcha;
+        public final TextureRegion clickCaptcha;
+        public final Animation<TextureRegion> checkAnimation;
 
         private MainMenuAssets(TextureAtlas atlas) {
             this.mainMenuBG = atlas.findRegion("robot_hello");
-            this.robCaptcha = new Texture("robCaptcha.png"); // TODO
-            this.clickCaptcha = new Texture("click_captcha.png");
+            this.robCaptcha = atlas.findRegion("robCaptcha");
+            this.clickCaptcha = atlas.findRegion("click_captcha");
 
-            Array<Texture> framesArr = new Array<>();
+            Array<TextureRegion> framesArray = new Array<>();
             for(int i = 1; i <= 7; i++) {
-                framesArr.add(new Texture("check" + i + ".png"));
+                framesArray.add(atlas.findRegion("check" + i));
             }
-            this.checkAnimation = new Animation<>(0.15f, framesArr);
+            this.checkAnimation = new Animation<>(0.15f, framesArray);
 
-            framesArr.clear();
+            framesArray.clear();
         }
     }
 
     public class PausePanelAssets {
-        public final Texture pausePanel;
+        public final TextureRegion pausePanel;
 
-        private PausePanelAssets() {
-            this.pausePanel = assetManager.get("pause_panel.png"); // TODO: will this go in atlas?
+        private PausePanelAssets(TextureAtlas atlas) {
+            this.pausePanel = atlas.findRegion("pause_panel");
         }
     }
 

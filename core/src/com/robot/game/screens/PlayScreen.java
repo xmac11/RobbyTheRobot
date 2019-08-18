@@ -623,6 +623,9 @@ public abstract class PlayScreen extends ScreenAdapter {
             // reset checkpoint data
             checkpointData.setDefaultData(levelID);
 
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
+
             // so that if any item was collected during last life, they won't be saved in a file
             doNotSaveInHide = true;
 

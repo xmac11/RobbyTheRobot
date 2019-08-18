@@ -43,7 +43,7 @@ public class ScreenLevel1 extends PlayScreen {
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
         this.backgroundWallLayer = new int[] {0};
-        this.mapLayers = new int[] {1, 2, 3, 4, 5, 6, 8, 9, 10};
+        this.mapLayers = new int[] {1, 2, 3, 4, 5, 6, 8, 9};
 
         // creates objectParser, interactivePlatforms, enemies and collectables
         super.createCommonObjectLayers();
