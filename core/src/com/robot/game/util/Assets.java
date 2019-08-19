@@ -140,6 +140,8 @@ public class Assets {
         assetManager.load("sounds/jump.ogg", Sound.class);
         assetManager.load("sounds/step_on_enemy.ogg", Sound.class);
         assetManager.load("sounds/robot_hurt.ogg", Sound.class);
+        assetManager.load("sounds/robot_eat.ogg", Sound.class);
+        assetManager.load("sounds/powerup.ogg", Sound.class);
 
         // level 1
         assetManager.load("sounds/falling_many_pipes.ogg", Sound.class);
@@ -666,8 +668,12 @@ public class Assets {
         public final Sound jumpSound;
         public final Sound stepOnEnemySound;
         public final Sound robotHurtSound;
+        public final Sound robotEatSound;
+        public final Sound powerupSound;
+
         public final Sound fallingManyPipesSound;
         public final Sound fallingPipeSound;
+
         public final Sound laserSound;
         public final Sound punchAirSound;
         public final Sound punchEnemySound;
@@ -676,11 +682,18 @@ public class Assets {
         public final Sound tankballHitRobotSound;
 
         private MusicAssets() {
+            // common
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
             this.stepOnEnemySound = assetManager.get("sounds/step_on_enemy.ogg", Sound.class);
             this.robotHurtSound = assetManager.get("sounds/robot_hurt.ogg", Sound.class);
+            this.robotEatSound = assetManager.get("sounds/robot_eat.ogg", Sound.class);
+            this.powerupSound = assetManager.get("sounds/powerup.ogg", Sound.class);
+
+            // level 1
             this.fallingManyPipesSound = assetManager.get("sounds/falling_many_pipes.ogg", Sound.class);
             this.fallingPipeSound = assetManager.get("sounds/falling_pipe.ogg", Sound.class);
+
+            // level 2
             this.laserSound = assetManager.get("sounds/laser.ogg", Sound.class);
             this.punchAirSound = assetManager.get("sounds/punch_air.ogg", Sound.class);
             this.punchEnemySound = assetManager.get("sounds/punch_enemy.ogg", Sound.class);

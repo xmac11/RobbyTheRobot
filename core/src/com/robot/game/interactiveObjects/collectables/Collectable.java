@@ -22,6 +22,7 @@ public abstract class Collectable {
     private MapObject mapObject;
     private boolean flagToCollect;
     private boolean destroyed;
+    protected boolean isTorch;
 
     public Collectable(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
@@ -30,11 +31,14 @@ public abstract class Collectable {
         this.world = playScreen.getWorld();
         this.body = body;
         this.mapObject = object;
+        this.isTorch = (object.getProperties().containsKey("torch"));
         body.createFixture(fixtureDef).setUserData(this);
 
         // put collectables to sleep to reduce CPU cost
         body.setAwake(false);
     }
+
+    public abstract void playSoundEffect();
 
     public void draw(Batch batch) {
         sprite.draw(batch);
@@ -73,6 +77,10 @@ public abstract class Collectable {
 
     public CollectableHandler getCollectableHandler() {
         return collectableHandler;
+    }
+
+    public boolean isTorch() {
+        return isTorch;
     }
 
     public void setToNull() {

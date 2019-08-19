@@ -39,7 +39,13 @@ public class Food extends Collectable {
             // attach sprite to body
             sprite.setPosition(body.getPosition().x - FOOD_WIDTH / 2 / PPM, body.getPosition().y - FOOD_HEIGHT / 2 / PPM);
         }
-
-
     }
+
+    @Override
+    public void playSoundEffect() {
+        if(!playScreen.isMuted() && !isTorch) {
+            assets.musicAssets.robotEatSound.play(0.4f);
+        }
+    }
+
 }

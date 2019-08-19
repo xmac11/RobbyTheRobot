@@ -39,4 +39,11 @@ public class PowerUp extends Collectable {
     public boolean isFullHeal() {
         return fullHeal;
     }
+
+    @Override
+    public void playSoundEffect() {
+        if(!playScreen.isMuted()) {
+            assets.musicAssets.powerupSound.play(0.4f);
+        }
+    }
 }

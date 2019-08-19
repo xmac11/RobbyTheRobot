@@ -335,7 +335,6 @@ public class ContactManager implements ContactListener {
     private void robotCollectableBegin(Fixture fixA, Fixture fixB) {
         Robot robot;
         Collectable collectable;
-        boolean isTorch = false;
 
         if(fixA.getUserData() instanceof Robot) {
             robot = (Robot) fixA.getUserData();
@@ -346,8 +345,11 @@ public class ContactManager implements ContactListener {
             collectable = (Collectable) fixA.getUserData();
         }
 
-        if(collectable.getMapObject().getProperties().containsKey("torch")) {
-            isTorch = true;
+        // play appropriate sound effect if applicable
+        collectable.playSoundEffect();
+
+        // if torch was collected
+        if(collectable.isTorch()) {
             // activate cone light
             robot.getPlayScreen().getConeLight().setActive(true);
 
@@ -359,8 +361,8 @@ public class ContactManager implements ContactListener {
             robot.getCheckpointData().setHasTorch(true);
         }
 
-        // if collectable is not the torch
-        if(!isTorch) {
+        // if collectable is not the torch, increase score (method adds zero points for powerup) and queue for feedbackRenderer
+        if(!collectable.isTorch()) {
             // increase score for collectable
             StaticMethods.increaseScore(robot, collectable);
 
