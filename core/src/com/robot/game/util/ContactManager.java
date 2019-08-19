@@ -218,6 +218,9 @@ public class ContactManager implements ContactListener {
 
         // if robot is not invulnerable and is not walking on spikes
         if(!robot.isInvulnerable() && !spike.mightBeWalked()) {
+            // play hurt sound
+            robot.playSoundEffect();
+
             // decrease health
             StaticMethods.decreaseHealth(robot, spike);
 
@@ -231,6 +234,9 @@ public class ContactManager implements ContactListener {
 
         // if robot is walking on spikes, it dies (but does not lose health)
         else if(spike.mightBeWalked()) {
+            // play hurt sound
+            robot.playSoundEffect();
+
             robot.setFlicker(true);
             robot.setWalkingOnSpikes(true);
 //            robot.getCheckpointData().setSpawnLocation(spike.getRespawnLocation());
@@ -393,6 +399,9 @@ public class ContactManager implements ContactListener {
 
         // if robot is not invulnerable
         if(!robot.isInvulnerable()) {
+            // play hurt sound
+            robot.playSoundEffect();
+
             // decrease health
             StaticMethods.decreaseHealth(robot, pipe);
 
@@ -538,6 +547,9 @@ public class ContactManager implements ContactListener {
         // stop tank ball and set its gravity to zero
         tankBall.getBody().setLinearVelocity(0, 0 );
         tankBall.getBody().setGravityScale(0);
+
+        // play hurt sound
+        robot.playSoundEffect();
 
         // decrease robot's health
         StaticMethods.decreaseHealth(robot, tankBall);
