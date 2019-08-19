@@ -30,8 +30,9 @@ public class FallingPipeSpawner {
     }
 
     public void update(float delta) {
-        if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled)
+        if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled) {
             checkForEarthquake();
+        }
 
         if(earthquakeHappened) {
             // activate cached pipes
@@ -49,8 +50,13 @@ public class FallingPipeSpawner {
                 this.pipesDisabled = true;
 
             if(!pipesDisabled && shouldSpawnPipe(delta)) {
-                // follow up earthquakes with probability 45%
-                if(MathUtils.random() > 0.55f) {
+                // play falling pipe sound
+                if(!playScreen.isMuted()) {
+                    playScreen.getAssets().musicAssets.fallingPipeSound.play(0.3f);
+                }
+
+                // follow up earthquakes with probability 50%
+                if(MathUtils.random() > 0.5f) {
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
                 }
 
@@ -63,6 +69,12 @@ public class FallingPipeSpawner {
         // if robot is in the shake area and the shake is not already active, start it
         if(Math.abs(robot.getBody().getPosition().x * PPM - PIPES_START_X) <= 48) {
             Gdx.app.log("FallingPipeSpawner", "Earthquake activated");
+
+            // play falling many pipes sound
+            if(!playScreen.isMuted()) {
+                playScreen.getAssets().musicAssets.fallingManyPipesSound.play(0.6f);
+            }
+
             shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);
             earthquakeHappened = true;
         }
@@ -72,7 +84,7 @@ public class FallingPipeSpawner {
         return robot.getBody().getPosition().x > PIPES_END_X / PPM;
     }
 
-    public boolean shouldSpawnPipe(float delta) {
+    private boolean shouldSpawnPipe(float delta) {
         if(pipeElapsed >= PIPES_SPAWNING_PERIOD) {
             this.pipeElapsed = 0;
             return true;

@@ -139,6 +139,8 @@ public class Assets {
         assetManager.load("sounds/jump.ogg", Sound.class);
         assetManager.load("sounds/step_on_enemy.ogg", Sound.class);
         assetManager.load("sounds/robot_hurt.ogg", Sound.class);
+        assetManager.load("sounds/falling_many_pipes.ogg", Sound.class);
+        assetManager.load("sounds/falling_pipe.ogg", Sound.class);
         assetManager.load("sounds/laser.ogg", Sound.class);
         assetManager.load("sounds/punch_air.ogg", Sound.class);
         assetManager.load("sounds/punch_enemy.ogg", Sound.class);
@@ -656,20 +658,24 @@ public class Assets {
     // MUSIC
 
     public class MusicAssets {
-        public Sound jumpSound;
-        public Sound stepOnEnemySound;
-        public Sound robotHurtSound;
-        public Sound laserSound;
-        public Sound punchAirSound;
-        public Sound punchEnemySound;
-        public Sound trampolineSound;
-        public Sound tankballFireSound;
-        public Sound tankballHitRobotSound;
+        public final Sound jumpSound;
+        public final Sound stepOnEnemySound;
+        public final Sound robotHurtSound;
+        public final Sound fallingManyPipesSound;
+        public final Sound fallingPipeSound;
+        public final Sound laserSound;
+        public final Sound punchAirSound;
+        public final Sound punchEnemySound;
+        public final Sound trampolineSound;
+        public final Sound tankballFireSound;
+        public final Sound tankballHitRobotSound;
 
         private MusicAssets() {
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
             this.stepOnEnemySound = assetManager.get("sounds/step_on_enemy.ogg", Sound.class);
             this.robotHurtSound = assetManager.get("sounds/robot_hurt.ogg", Sound.class);
+            this.fallingManyPipesSound = assetManager.get("sounds/falling_many_pipes.ogg", Sound.class);
+            this.fallingPipeSound = assetManager.get("sounds/falling_pipe.ogg", Sound.class);
             this.laserSound = assetManager.get("sounds/laser.ogg", Sound.class);
             this.punchAirSound = assetManager.get("sounds/punch_air.ogg", Sound.class);
             this.punchEnemySound = assetManager.get("sounds/punch_enemy.ogg", Sound.class);
