@@ -35,6 +35,8 @@ public class MenuScreen extends ScreenAdapter {
 
     private Array<TextButton> buttons;
     private int playIndex;
+    private int storyIndex;
+    private int tutorialIndex;
     private int exitIndex;
 
     public MenuScreen(RobotGame game) {
@@ -96,10 +98,12 @@ public class MenuScreen extends ScreenAdapter {
             selection = (selection - 1 + numberOfButtons) % numberOfButtons;
             Gdx.app.log("MenuScreen", "selection = " + selection);
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             selection = (selection + 1 + numberOfButtons) % numberOfButtons;
             Gdx.app.log("MenuScreen", "selection = " + selection);
         }
+
+        // handle selection
         if(Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             handleSelection();
         }
@@ -123,6 +127,14 @@ public class MenuScreen extends ScreenAdapter {
         GlyphLayout playGlyph = new GlyphLayout();
         playGlyph.setText(font, "PLAY");
 
+        // story GlyphLayout
+        GlyphLayout storyGlyph = new GlyphLayout();
+        storyGlyph.setText(font, "STORY");
+
+        // tutorial GlyphLayout
+        GlyphLayout tutorialGlyph = new GlyphLayout();
+        tutorialGlyph.setText(font, "TUTORIAL");
+
         // exit GlyphLayout
         GlyphLayout exitGlyph = new GlyphLayout();
         exitGlyph.setText(font, "EXIT");
@@ -141,10 +153,26 @@ public class MenuScreen extends ScreenAdapter {
         this.playIndex = index++;
         Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
 
+        // story button
+        TextButton storyButton = new TextButton("STORY", style);
+        storyButton.setSize(storyGlyph.width, storyGlyph.height);
+        storyButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 12 / PPM, buttons.get(index-1).getY() -  32 / PPM, Align.center);
+        buttons.add(storyButton);
+        this.storyIndex = index++;
+        Gdx.app.log("MenuScreen", "storyIndex = " + storyIndex);
+
+        // tutorial button
+        TextButton tutorialButton = new TextButton("TUTORIAL", style);
+        tutorialButton.setSize(tutorialGlyph.width, tutorialGlyph.height);
+        tutorialButton.setPosition(menuScreenViewport.getWorldWidth() / 2 /*- 12 / PPM*/, buttons.get(index-1).getY() -  32 / PPM, Align.center);
+        buttons.add(tutorialButton);
+        this.tutorialIndex = index++;
+        Gdx.app.log("MenuScreen", "tutorialIndex = " + tutorialIndex);
+
         // exit button
         TextButton exitButton = new TextButton("EXIT", style);
         exitButton.setSize(exitGlyph.width, exitGlyph.height);
-        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, playButton.getY() - 32 / PPM, Align.center);
+        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, buttons.get(index-1).getY() - 32 / PPM, Align.center);
         buttons.add(exitButton);
         this.exitIndex = index;
         Gdx.app.log("MenuScreen", "exitIndex = " + exitIndex);
@@ -169,6 +197,37 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        // story button
+        buttons.get(storyIndex).addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MenuScreen", "Clicked STORY button");
+                selection = storyIndex;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("MenuScreen", "Entered STORY button");
+                selection = storyIndex;
+            }
+        });
+
+        // tutorial button
+        buttons.get(tutorialIndex).addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MenuScreen", "Clicked TUTORIAL button");
+                selection = tutorialIndex;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("MenuScreen", "Entered TUTORIAL button");
+                selection = tutorialIndex;
+            }
+        });
 
         // exit button
         buttons.get(exitIndex).addListener(new ClickListener() {
@@ -190,16 +249,25 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void handleSelection() {
-        // first dispose
-        this.dispose();
-
         // then handle selection
         if(selection == playIndex) {
             Gdx.app.log("MenuScreen", "PLAY was selected. Switching to RobCaptcha screen");
+            // first dispose
+            this.dispose();
             game.setScreen(new RobCaptcha(game));
+        }
+        else if(selection == storyIndex) {
+            Gdx.app.log("MenuScreen", "STORY was selected.");
+            // TODO: set screen
+        }
+        else if(selection == tutorialIndex) {
+            Gdx.app.log("MenuScreen", "TUTORIAL was selected.");
+            // TODO: set screen
         }
         else if(selection == exitIndex) {
             Gdx.app.log("MenuScreen", "EXIT was selected");
+            // first dispose
+            this.dispose();
             Gdx.app.exit();
         }
     }

@@ -136,11 +136,16 @@ public class Assets {
     }
 
     private void loadMusic() {
+        // common
         assetManager.load("sounds/jump.ogg", Sound.class);
         assetManager.load("sounds/step_on_enemy.ogg", Sound.class);
         assetManager.load("sounds/robot_hurt.ogg", Sound.class);
+
+        // level 1
         assetManager.load("sounds/falling_many_pipes.ogg", Sound.class);
         assetManager.load("sounds/falling_pipe.ogg", Sound.class);
+
+        // level 2
         assetManager.load("sounds/laser.ogg", Sound.class);
         assetManager.load("sounds/punch_air.ogg", Sound.class);
         assetManager.load("sounds/punch_enemy.ogg", Sound.class);
