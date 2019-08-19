@@ -143,6 +143,8 @@ public class Assets {
         assetManager.load("sounds/punch_air.ogg", Sound.class);
         assetManager.load("sounds/punch_enemy.ogg", Sound.class);
         assetManager.load("sounds/trampoline.ogg", Sound.class);
+        assetManager.load("sounds/tankball_fire.ogg", Sound.class);
+        assetManager.load("sounds/tankball_hit_robot.ogg", Sound.class);
     }
 
     // creates assets for loading screen
@@ -661,6 +663,8 @@ public class Assets {
         public Sound punchAirSound;
         public Sound punchEnemySound;
         public Sound trampolineSound;
+        public Sound tankballFireSound;
+        public Sound tankballHitRobotSound;
 
         private MusicAssets() {
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
@@ -670,6 +674,8 @@ public class Assets {
             this.punchAirSound = assetManager.get("sounds/punch_air.ogg", Sound.class);
             this.punchEnemySound = assetManager.get("sounds/punch_enemy.ogg", Sound.class);
             this.trampolineSound = assetManager.get("sounds/trampoline.ogg", Sound.class);
+            this.tankballFireSound = assetManager.get("sounds/tankball_fire.ogg", Sound.class);
+            this.tankballHitRobotSound = assetManager.get("sounds/tankball_hit_robot.ogg", Sound.class);
         }
     }
 }

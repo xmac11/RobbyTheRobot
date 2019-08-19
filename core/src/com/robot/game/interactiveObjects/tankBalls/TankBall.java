@@ -116,6 +116,12 @@ public class TankBall implements Damaging, Pool.Poolable {
         explosionElapsed = 0;
     }
 
+    public void playSoundEffect() {
+        if(!playScreen.isMuted()) {
+            playScreen.getAssets().musicAssets.tankballHitRobotSound.play();
+        }
+    }
+
     public void setToNull() {
         sprite = null;
         robot = null;

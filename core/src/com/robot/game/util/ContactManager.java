@@ -548,6 +548,9 @@ public class ContactManager implements ContactListener {
         tankBall.getBody().setLinearVelocity(0, 0 );
         tankBall.getBody().setGravityScale(0);
 
+        // play tankball hit robot sound
+        tankBall.playSoundEffect();
+
         // play hurt sound
         robot.playSoundEffect();
 

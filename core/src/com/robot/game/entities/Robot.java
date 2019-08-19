@@ -691,7 +691,7 @@ public class Robot implements Steerable<Vector2> {
 
     public void playSoundEffect() {
         if(!playScreen.isMuted()) {
-            assets.musicAssets.robotHurtSound.play(0.3f);
+            assets.musicAssets.robotHurtSound.play(0.2f);
         }
     }
 

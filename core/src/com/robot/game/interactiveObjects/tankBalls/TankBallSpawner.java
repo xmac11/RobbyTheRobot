@@ -65,6 +65,11 @@ public class TankBallSpawner {
             // create its box2d body
             tankBall.createTankBallB2d();
 
+            // play tankball fire sound
+            if(!playScreen.isMuted()) {
+                playScreen.getAssets().musicAssets.tankballFireSound.play(0.5f);
+            }
+
             // apply impulse
             tankBall.getBody().applyLinearImpulse(TANKBALL_IMPULSE, tankBall.getBody().getWorldCenter(), true);
 
