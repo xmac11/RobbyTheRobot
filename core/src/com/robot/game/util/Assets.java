@@ -564,13 +564,22 @@ public class Assets {
     }
 
     public class MainMenuAssets {
+        // main menu
         public final TextureRegion mainMenuBG;
+
+        // captcha
         public final TextureRegion robCaptcha;
         public final TextureRegion clickCaptcha;
         public final Animation<TextureRegion> checkAnimation;
 
+        // tutorial
+        public final Texture tutorial;
+
         private MainMenuAssets(TextureAtlas atlas) {
+            // main menu
             this.mainMenuBG = atlas.findRegion("robot_hello");
+
+            // captcha
             this.robCaptcha = atlas.findRegion("robCaptcha");
             this.clickCaptcha = atlas.findRegion("click_captcha");
 
@@ -581,6 +590,9 @@ public class Assets {
             this.checkAnimation = new Animation<>(0.15f, framesArray);
 
             framesArray.clear();
+
+            // tutorial
+            this.tutorial = new Texture("tutorial.png");
         }
     }
 

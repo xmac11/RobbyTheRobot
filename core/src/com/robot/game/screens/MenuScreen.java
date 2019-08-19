@@ -262,7 +262,9 @@ public class MenuScreen extends ScreenAdapter {
         }
         else if(selection == tutorialIndex) {
             Gdx.app.log("MenuScreen", "TUTORIAL was selected.");
-            // TODO: set screen
+            // first dispose
+            this.dispose();
+            game.setScreen(new TutorialScreen(game));
         }
         else if(selection == exitIndex) {
             Gdx.app.log("MenuScreen", "EXIT was selected");

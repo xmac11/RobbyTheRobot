@@ -192,7 +192,7 @@ public class RobCaptcha extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         Gdx.app.log("RobCaptcha", "resize");
-        viewport.update(width, height);
+        viewport.update(width, height, true);
     }
 
     @Override
@@ -205,6 +205,7 @@ public class RobCaptcha extends ScreenAdapter {
     private void setToNull() {
         viewport = null;
         checkSprite = null;
+        font = null;
         Gdx.app.log("RobCaptcha", "Objects were set to null");
     }
 }
