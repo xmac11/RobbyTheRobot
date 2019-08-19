@@ -249,27 +249,24 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void handleSelection() {
+        // first dispose
+        this.dispose();
+
         // then handle selection
         if(selection == playIndex) {
             Gdx.app.log("MenuScreen", "PLAY was selected. Switching to RobCaptcha screen");
-            // first dispose
-            this.dispose();
             game.setScreen(new RobCaptcha(game));
         }
         else if(selection == storyIndex) {
             Gdx.app.log("MenuScreen", "STORY was selected.");
-            // TODO: set screen
+            game.setScreen(new StoryScreen(game));
         }
         else if(selection == tutorialIndex) {
             Gdx.app.log("MenuScreen", "TUTORIAL was selected.");
-            // first dispose
-            this.dispose();
             game.setScreen(new TutorialScreen(game));
         }
         else if(selection == exitIndex) {
             Gdx.app.log("MenuScreen", "EXIT was selected");
-            // first dispose
-            this.dispose();
             Gdx.app.exit();
         }
     }

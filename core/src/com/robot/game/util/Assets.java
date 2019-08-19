@@ -123,6 +123,10 @@ public class Assets {
         // load atlas
         assetManager.load("sprites.pack", TextureAtlas.class);
 
+        // load story and tutorial images
+        assetManager.load("tutorial.png", Texture.class);
+        assetManager.load("story.png", Texture.class);
+
         // load images of level 1
         assetManager.load("background.png", Texture.class);
         assetManager.load("barrels.png", Texture.class);
@@ -572,6 +576,9 @@ public class Assets {
         public final TextureRegion clickCaptcha;
         public final Animation<TextureRegion> checkAnimation;
 
+        // story
+        public final Texture story;
+
         // tutorial
         public final Texture tutorial;
 
@@ -591,8 +598,11 @@ public class Assets {
 
             framesArray.clear();
 
+            // story
+            this.story = assetManager.get("story.png", Texture.class);
+
             // tutorial
-            this.tutorial = new Texture("tutorial.png");
+            this.tutorial = assetManager.get("tutorial.png", Texture.class);
         }
     }
 
