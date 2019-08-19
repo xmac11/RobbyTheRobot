@@ -51,4 +51,10 @@ public class Trampoline extends Sprite {
     public void setActivated(boolean activated) {
         this.activated = activated;
     }
+
+    public void playSoundEffect() {
+        if(!playScreen.isMuted()) {
+            playScreen.getAssets().musicAssets.trampolineSound.play(0.3f);
+        }
+    }
 }

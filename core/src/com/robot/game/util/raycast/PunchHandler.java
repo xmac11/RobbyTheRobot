@@ -35,10 +35,10 @@ public class PunchHandler extends RayCastHandler {
         // play appropriate punch sound
         if(!playScreen.isMuted()) {
             if(closestFixture != null && closestFixture.getUserData() != null && closestFixture.getUserData() instanceof Enemy) {
-                assets.musicAssets.punchEnemy.play(0.4f);
+                assets.musicAssets.punchEnemySound.play(0.4f);
             }
             else {
-                assets.musicAssets.punchAir.play(0.3f);
+                assets.musicAssets.punchAirSound.play(0.3f);
             }
         }
 

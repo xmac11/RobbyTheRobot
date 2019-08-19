@@ -503,6 +503,9 @@ public class ContactManager implements ContactListener {
 
         // if robot is on trampoline
         if(onTrampoline) {
+            // play trampoline sound
+            trampoline.playSoundEffect();
+
             trampoline.setStartTimeAnim(TimeUtils.nanoTime());
             trampoline.setActivated(true);
             robot.getBody().setLinearVelocity(0, 0);
