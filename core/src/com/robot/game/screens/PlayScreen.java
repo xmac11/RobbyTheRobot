@@ -569,9 +569,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
 
-
-    protected void processGameStateInput() {
-        // pause game
+    protected void checkPauseOrResume() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
             setPaused(!paused);
 
@@ -586,9 +584,12 @@ public abstract class PlayScreen extends ScreenAdapter {
                 hud.setSelection(0);
             }
         }
+    }
 
+
+    protected void processGameStateInput() {
         // return to menu screen with ESC
-        else if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             escapePressed = true;
             Gdx.app.log("PlayScreen", "escapePressed = true");
         }

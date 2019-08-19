@@ -80,23 +80,23 @@ public class ScreenLevel1 extends PlayScreen {
         // handle earthquake
         fallingPipeSpawner.update(delta);
 
+        // check for mute or ESC
+        super.processGameStateInput();
+
         //// Debug keys for checkpoints ////
+
         //if(DEBUG_ON)
         this.toggleDebugCheckpoints();
 
         // handle checkpoints
         this.handleCheckpoints();
-
-        //        System.out.println("Interactive platforms: " + interactivePlatforms.size);
-        //        System.out.println("Number of enemies: " + enemies.size);
-
     }
 
     @Override
     public void render(float delta) {
 
         // check if game was paused/resumed
-        super.processGameStateInput();
+        super.checkPauseOrResume();
 
         // if game is not paused, perform all necessary updates
         if(!paused) {

@@ -101,13 +101,16 @@ public class ScreenLevel3 extends PlayScreen {
         }
         // set position of hand light (gun)
         pointLightHand.setPosition(robot.getBody().getPosition().sub(0, ROBOT_BODY_HEIGHT / 4 / PPM));
+
+        // check for mute or ESC
+        super.processGameStateInput();
     }
 
     @Override
     public void render(float delta) {
 
         // check if game was paused/resumed
-        super.processGameStateInput();
+        super.checkPauseOrResume();
 
         // if game is not paused, perform all necessary updates
         if(!paused) {

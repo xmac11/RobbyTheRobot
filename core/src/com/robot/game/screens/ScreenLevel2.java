@@ -102,7 +102,11 @@ public class ScreenLevel2 extends PlayScreen {
         // update prismatic joints of moving spikes
         jointHandler.update(delta);
 
+        // check for mute or ESC
+        super.processGameStateInput();
+
         //// Debug keys for checkpoints ////
+
         //if(DEBUG_ON)
         this.toggleDebugCheckpoints();
 
@@ -114,7 +118,7 @@ public class ScreenLevel2 extends PlayScreen {
     public void render(float delta) {
 
         // check if game was paused/resumed
-        super.processGameStateInput();
+        super.checkPauseOrResume();
 
         // if game is not paused, perform all necessary updates
         if(!paused) {
