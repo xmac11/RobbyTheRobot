@@ -2,6 +2,7 @@ package com.robot.game.util.raycast;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
@@ -30,6 +31,14 @@ public class PunchHandler extends RayCastHandler {
             this.rayPointEnd = callback.getRayPointEnd();
         }
         callback.setClosestFixture(null);
+
+        // play appropriate punch sound
+        if(closestFixture != null && closestFixture.getUserData() != null && closestFixture.getUserData() instanceof Enemy) {
+            assets.musicAssets.punchEnemy.play(0.4f);
+        }
+        else {
+            assets.musicAssets.punchAir.play(0.3f);
+        }
 
         // determine action depending on the result of the raycast
         super.resolveRayCast(PUNCH_IMPULSE_X + Math.abs(robot.getBody().getLinearVelocity().x) / 2, PUNCH_IMPULSE_Y);

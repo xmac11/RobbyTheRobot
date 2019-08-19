@@ -138,6 +138,8 @@ public class Assets {
     private void loadMusic() {
         assetManager.load("sounds/jump.ogg", Sound.class);
         assetManager.load("sounds/laser.ogg", Sound.class);
+        assetManager.load("sounds/punch_air.ogg", Sound.class);
+        assetManager.load("sounds/punch_enemy.ogg", Sound.class);
     }
 
     // creates assets for loading screen
@@ -651,10 +653,14 @@ public class Assets {
     public class MusicAssets {
         public Sound jumpSound;
         public Sound laserSound;
+        public Sound punchAir;
+        public Sound punchEnemy;
 
         private MusicAssets() {
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
             this.laserSound = assetManager.get("sounds/laser.ogg", Sound.class);
+            this.punchAir = assetManager.get("sounds/punch_air.ogg", Sound.class);
+            this.punchEnemy = assetManager.get("sounds/punch_enemy.ogg", Sound.class);
         }
     }
 }
