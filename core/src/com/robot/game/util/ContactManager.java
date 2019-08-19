@@ -286,10 +286,17 @@ public class ContactManager implements ContactListener {
 
         // if steppedOnEnemy flag was set
         if(steppedOnEnemy) {
+            // play step on enemy sound
+            enemy.playSoundEffect();
+
+            // kill enemy
             StaticMethods.killEnemy(robot, enemy, 0, 0);
         }
         // otherwise it means that the robot was hit by an enemy
         else {
+            // play hurt sound
+            robot.playSoundEffect();
+
             // set enemy to be a sensor
             if(enemy.getBody().getFixtureList().size != 0) {
                 enemy.getBody().getFixtureList().first().setSensor(true);

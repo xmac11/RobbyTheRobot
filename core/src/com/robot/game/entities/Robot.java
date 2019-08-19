@@ -25,7 +25,7 @@ import static com.robot.game.util.Enums.Facing.*;
 import static com.robot.game.util.Enums.State;
 import static com.robot.game.util.Enums.State.*;
 
-public class Robot extends Sprite implements Steerable<Vector2> {
+public class Robot implements Steerable<Vector2> {
 
     private Facing facing;
     private State state;
@@ -687,6 +687,12 @@ public class Robot extends Sprite implements Steerable<Vector2> {
 
     public void setHasTorch(boolean hasTorch) {
         this.hasTorch = hasTorch;
+    }
+
+    public void playSoundEffect() {
+        if(!playScreen.isMuted()) {
+            assets.musicAssets.robotHurtSound.play(0.3f);
+        }
     }
 
     public void setToNull() {

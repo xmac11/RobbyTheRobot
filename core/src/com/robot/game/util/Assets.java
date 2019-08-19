@@ -137,6 +137,8 @@ public class Assets {
 
     private void loadMusic() {
         assetManager.load("sounds/jump.ogg", Sound.class);
+        assetManager.load("sounds/step_on_enemy.ogg", Sound.class);
+        assetManager.load("sounds/robot_hurt.ogg", Sound.class);
         assetManager.load("sounds/laser.ogg", Sound.class);
         assetManager.load("sounds/punch_air.ogg", Sound.class);
         assetManager.load("sounds/punch_enemy.ogg", Sound.class);
@@ -653,6 +655,8 @@ public class Assets {
 
     public class MusicAssets {
         public Sound jumpSound;
+        public Sound stepOnEnemySound;
+        public Sound robotHurtSound;
         public Sound laserSound;
         public Sound punchAirSound;
         public Sound punchEnemySound;
@@ -660,6 +664,8 @@ public class Assets {
 
         private MusicAssets() {
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
+            this.stepOnEnemySound = assetManager.get("sounds/step_on_enemy.ogg", Sound.class);
+            this.robotHurtSound = assetManager.get("sounds/robot_hurt.ogg", Sound.class);
             this.laserSound = assetManager.get("sounds/laser.ogg", Sound.class);
             this.punchAirSound = assetManager.get("sounds/punch_air.ogg", Sound.class);
             this.punchEnemySound = assetManager.get("sounds/punch_enemy.ogg", Sound.class);

@@ -42,7 +42,7 @@ public class RobotGame extends Game {
 			FileSaver.saveCheckpointData(checkpointData);
 		}
 
-		// get preferences (if it does not exists, it gets created)
+		// get preferences file of the game (if it does not exists, it gets created)
 		this.preferences = Gdx.app.getPreferences("robot_game");
 		// if there is no 'muted' key, add one
 		if(!preferences.contains("muted")) {

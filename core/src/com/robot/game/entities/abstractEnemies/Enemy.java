@@ -106,6 +106,12 @@ public abstract class Enemy implements Damaging {
         return elapsedAnim;
     }
 
+    public void playSoundEffect() {
+        if(!playScreen.isMuted()) {
+            assets.musicAssets.stepOnEnemySound.play(0.4f);
+        }
+    }
+
     public void setToNull() {
         sprite = null;
         robot = null;
