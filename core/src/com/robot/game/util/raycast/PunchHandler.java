@@ -33,12 +33,15 @@ public class PunchHandler extends RayCastHandler {
         callback.setClosestFixture(null);
 
         // play appropriate punch sound
-        if(closestFixture != null && closestFixture.getUserData() != null && closestFixture.getUserData() instanceof Enemy) {
-            assets.musicAssets.punchEnemy.play(0.4f);
+        if(!playScreen.isMuted()) {
+            if(closestFixture != null && closestFixture.getUserData() != null && closestFixture.getUserData() instanceof Enemy) {
+                assets.musicAssets.punchEnemy.play(0.4f);
+            }
+            else {
+                assets.musicAssets.punchAir.play(0.3f);
+            }
         }
-        else {
-            assets.musicAssets.punchAir.play(0.3f);
-        }
+
 
         // determine action depending on the result of the raycast
         super.resolveRayCast(PUNCH_IMPULSE_X + Math.abs(robot.getBody().getLinearVelocity().x) / 2, PUNCH_IMPULSE_Y);

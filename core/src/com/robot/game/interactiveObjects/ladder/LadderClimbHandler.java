@@ -56,7 +56,9 @@ public class LadderClimbHandler extends InputAdapter {
             Gdx.app.log("LadderClimbHandler", "jumped off ladder");
 
             // play jump sound
-            robot.getPlayScreen().getAssets().musicAssets.jumpSound.play();
+            if(!robot.getPlayScreen().isMuted()) {
+                robot.getPlayScreen().getAssets().musicAssets.jumpSound.play();
+            }
 
             robot.setFallingOffLadder(true);
             body.setGravityScale(1); // turn on gravity, then jump

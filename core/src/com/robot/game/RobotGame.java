@@ -2,6 +2,7 @@ package com.robot.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.*;
 import com.robot.game.util.Assets;
@@ -13,6 +14,7 @@ public class RobotGame extends Game {
 	private Assets assets;
 	private SpriteBatch batch;
 	private CheckpointData checkpointData;
+	private Preferences preferences;
 
 	@Override
 	public void create () {
@@ -39,6 +41,15 @@ public class RobotGame extends Game {
 			// save data
 			FileSaver.saveCheckpointData(checkpointData);
 		}
+
+		// get preferences (if it does not exists, it gets created)
+		this.preferences = Gdx.app.getPreferences("robot_game");
+		// if there is no 'muted' key, add one
+		if(!preferences.contains("muted")) {
+			preferences.putBoolean("muted", false);
+			preferences.flush();
+		}
+
 		super.setScreen(new LoadingScreen(this));
 	}
 
@@ -71,6 +82,10 @@ public class RobotGame extends Game {
 
 	public CheckpointData getCheckpointData() {
 		return checkpointData;
+	}
+
+	public Preferences getPreferences() {
+		return preferences;
 	}
 
 	public void respawn(PlayScreen playScreen, CheckpointData checkpointData, int levelID) {

@@ -60,6 +60,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected boolean paused;
     protected boolean escapePressed;
     protected boolean damageON;
+    protected boolean toMenuFromPaused;
+    protected boolean muted;
 
     // assets
     protected Assets assets;
@@ -153,8 +155,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     private int scoreOnGameOver;
 
-    protected boolean toMenuFromPaused;
-
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
         this.batch = game.getBatch();
@@ -162,6 +162,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         this.checkpointData = game.getCheckpointData();
         this.tiledMap = tiledMap;
         this.levelID = levelID;
+        this.muted = game.getPreferences().getBoolean("muted");
         this.damageON = true;
 
         int tileSize = tiledMap.getProperties().get("tilewidth", Integer.class);
@@ -490,6 +491,15 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "Paused = " + paused);
     }
 
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(boolean muted) {
+        this.muted = muted;
+        Gdx.app.log("PlayScreen", "Muted = " + muted);
+    }
+
     public void updateInputProcOnPauseOrResume() {
         if(paused) {
             Gdx.input.setInputProcessor(hud.getStage());
@@ -577,10 +587,17 @@ public abstract class PlayScreen extends ScreenAdapter {
             }
         }
 
-        // return to menu screen
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        // return to menu screen with ESC
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             escapePressed = true;
             Gdx.app.log("PlayScreen", "escapePressed = true");
+        }
+        // mute
+        else if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+            boolean reversedMuted = !isMuted();
+            setMuted(reversedMuted);
+            game.getPreferences().putBoolean("muted", reversedMuted);
+            game.getPreferences().flush();
         }
     }
 
@@ -650,7 +667,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public void toggleDebugLevels() {
         // toggle damage on/off
-        if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
             setDamageON(!damageON);
         }
         // deletes checkpoint and collected items files

@@ -26,7 +26,9 @@ public class LaserHandler extends RayCastHandler {
     @Override
     public void startRayCast() {
         // play laser sound
-        assets.musicAssets.laserSound.play(0.3f);
+        if(!playScreen.isMuted()) {
+            assets.musicAssets.laserSound.play(0.3f);
+        }
 
         rayCastStartTime = TimeUtils.nanoTime();
         rayCastActive = true;
