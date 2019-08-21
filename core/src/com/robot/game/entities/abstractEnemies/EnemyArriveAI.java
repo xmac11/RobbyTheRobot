@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.MySeek;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.DEAD_TIMER;
@@ -36,6 +37,8 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
     protected Facing facing;
     protected boolean activated;
     protected boolean locked;
+
+    protected MySeek mySeek;
 
     public EnemyArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -64,6 +67,8 @@ public abstract class EnemyArriveAI extends Enemy implements Steerable<Vector2> 
         if(facing == LEFT) {
             sprite.flip(true, false);
         }
+
+        this.mySeek = new MySeek(robot, body);
     }
 
     protected void applySteering(float delta) {

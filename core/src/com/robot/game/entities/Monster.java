@@ -37,9 +37,10 @@ public class Monster extends EnemyArriveAI {
         }
 
         // calculate steering
-        if(activated && steeringBehavior != null) {
-            steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(delta);
+        if(activated && !dead /*&& steeringBehavior != null*/) {
+            /*steeringBehavior.calculateSteering(steeringOutput);
+            super.applySteering(delta);*/
+            mySeek.seek(robot);
         }
 
         // update facing direction
