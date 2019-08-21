@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Fish;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
+import com.robot.game.entities.abstractEnemies.EnemySeekAI;
 import com.robot.game.interactiveObjects.spikes.Spike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -310,7 +310,7 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "Enemy sensor = TRUE");
 
             // if enemy is an EnemyArriveAI (dynamic body) turn off gravity, since it is now a sensor
-            if(enemy instanceof EnemyArriveAI) {
+            if(enemy instanceof EnemySeekAI) {
                 enemy.getBody().setGravityScale(0);
                 Gdx.app.log("ContactManager", "Gravity was turned off for the " + enemy.getClass());
             }
@@ -571,18 +571,17 @@ public class ContactManager implements ContactListener {
     }
 
     private void enemyChaseSensor(Fixture fixA, Fixture fixB) {
-        EnemyArriveAI arriveAI;
+        EnemySeekAI arriveAI;
 
-        if(fixA.getUserData() instanceof EnemyArriveAI) {
-            arriveAI = (EnemyArriveAI) fixA.getUserData();
+        if(fixA.getUserData() instanceof EnemySeekAI) {
+            arriveAI = (EnemySeekAI) fixA.getUserData();
         }
-        else if(fixB.getUserData() instanceof EnemyArriveAI) {
-            arriveAI = (EnemyArriveAI) fixB.getUserData();
+        else if(fixB.getUserData() instanceof EnemySeekAI) {
+            arriveAI = (EnemySeekAI) fixB.getUserData();
         }
         else return;
 
         Gdx.app.log("ContactManager", "Sensor disabled chasing");
-        arriveAI.getArrive().setEnabled(false);
         arriveAI.setActivated(false);
         arriveAI.setLocked(true);
     }
@@ -709,7 +708,7 @@ public class ContactManager implements ContactListener {
         Gdx.app.log("ContactManager", "Enemy sensor = FALSE");
 
         // if enemy is an EnemyArriveAI (dynamic body) turn gravity back on
-        if(enemy instanceof EnemyArriveAI) {
+        if(enemy instanceof EnemySeekAI) {
             enemy.getBody().setGravityScale(1);
             Gdx.app.log("ContactManager", "Gravity was turned back on for the" + enemy.getClass());
         }

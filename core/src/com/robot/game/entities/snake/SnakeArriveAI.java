@@ -6,13 +6,13 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
+import com.robot.game.entities.abstractEnemies.EnemySeekAI;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class SnakeArriveAI extends EnemyArriveAI {
+public class SnakeArriveAI extends EnemySeekAI {
 
     public SnakeArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -37,9 +37,10 @@ public class SnakeArriveAI extends EnemyArriveAI {
         }
 
         // calculate steering
-        if(activated && steeringBehavior != null) {
-            steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(delta);
+        if(activated && !dead /*&& steeringBehavior != null*/) {
+            /*steeringBehavior.calculateSteering(steeringOutput);
+            super.applySteering(delta);*/
+            seek.seek(robot);
         }
 
         // update facing direction
@@ -82,7 +83,7 @@ public class SnakeArriveAI extends EnemyArriveAI {
         // snakes are activated when the get into the screen
         if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= playScreen.getViewport().getWorldWidth() / 2
                 && Math.abs(robot.getBody().getPosition(). y - body.getPosition().y) <= 48 / PPM) {
-            arrive.setEnabled(true);
+
             super.setActivated(true);
         }
     }

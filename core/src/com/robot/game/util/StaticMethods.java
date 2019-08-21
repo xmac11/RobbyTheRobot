@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.entities.abstractEnemies.EnemyArriveAI;
+import com.robot.game.entities.abstractEnemies.EnemySeekAI;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
@@ -93,15 +93,12 @@ public class StaticMethods {
         if(enemy instanceof EnemyPathFollowingAI) {
             ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
         }
-        else if(enemy instanceof EnemyArriveAI) {
-            ((EnemyArriveAI) enemy).getArrive().setEnabled(false);
-        }
 
         // stop enemy
         enemy.getBody().setLinearVelocity(0, 0);
 
         // for chasing monsters apply impulse when killed based on robot's facing direction
-        if(enemy instanceof EnemyArriveAI) {
+        if(enemy instanceof EnemySeekAI) {
             enemy.getBody().applyLinearImpulse(robot.getFacing() == RIGHT ? impulseX : -impulseX, impulseY,
                     enemy.getBody().getWorldCenter().x, enemy.getBody().getWorldCenter().y, true);
         }
