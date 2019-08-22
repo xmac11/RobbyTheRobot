@@ -3,30 +3,36 @@ package com.robot.game.steeringBehaviours;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.robot.game.entities.Robot;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 public class SeekBehaviour {
 
-    private Robot robot;
     private Body body;
+    private boolean isDynamicBody;
+    private float maxLinearVelocity;
 
-    public SeekBehaviour(Robot robot, Body body) {
-        this.robot = robot;
+    public SeekBehaviour(Body body, float maxLinearVelocity) {
         this.body = body;
+        this.isDynamicBody = (body.getType() == BodyDef.BodyType.DynamicBody);
+        this.maxLinearVelocity = maxLinearVelocity;
     }
 
-    public void seek(Robot target) {
+    public void seek(Vector2 target) {
         // vector from position to target
-        Vector2 desired = target.getPosition().sub(body.getPosition());
+        Vector2 desired = target.sub(body.getPosition());
 
         // scale to maximum linear velocity
-        desired.setLength(2);
+        desired.setLength(maxLinearVelocity);
 
-        // steering = desired - velocity
+        // steering = desired velocity - current velocity
         Vector2 steering = desired.sub(body.getLinearVelocity());
 
-        System.out.println(steering.x);
-        float newVelocity = MathUtils.clamp(body.getLinearVelocity().x + steering.x, -2, 2);
-        body.setLinearVelocity(newVelocity, body.getLinearVelocity().y);
+        if(isDynamicBody) {
+            float newVelocityX = MathUtils.clamp(body.getLinearVelocity().x + steering.x, -2, 2);
+            body.setLinearVelocity(newVelocityX, body.getLinearVelocity().y);
+        }
+        else {
+            body.setLinearVelocity(body.getLinearVelocity().add(steering));
+        }
     }
 }

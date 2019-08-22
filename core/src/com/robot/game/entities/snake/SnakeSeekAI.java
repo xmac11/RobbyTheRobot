@@ -12,9 +12,9 @@ import com.robot.game.util.StaticMethods;
 
 import static com.robot.game.util.Constants.*;
 
-public class SnakeArriveAI extends EnemySeekAI {
+public class SnakeSeekAI extends EnemySeekAI {
 
-    public SnakeArriveAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public SnakeSeekAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
         body.createFixture(fixtureDef).setUserData(this);
 
@@ -37,10 +37,8 @@ public class SnakeArriveAI extends EnemySeekAI {
         }
 
         // calculate steering
-        if(activated && !dead /*&& steeringBehavior != null*/) {
-            /*steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(delta);*/
-            seek.seek(robot);
+        if(activated && !dead) {
+            seekBehaviour.seek(robot.getBody().getPosition());
         }
 
         // update facing direction

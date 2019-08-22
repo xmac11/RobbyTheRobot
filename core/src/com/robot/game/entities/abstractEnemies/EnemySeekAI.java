@@ -28,7 +28,7 @@ public abstract class EnemySeekAI extends Enemy {
     protected boolean activated;
     protected boolean locked;
 
-    protected SeekBehaviour seek;
+    protected SeekBehaviour seekBehaviour;
 
     public EnemySeekAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
@@ -51,7 +51,7 @@ public abstract class EnemySeekAI extends Enemy {
             sprite.flip(true, false);
         }
 
-        this.seek = new SeekBehaviour(robot, body);
+        this.seekBehaviour = new SeekBehaviour(body, maxLinearSpeed);
     }
 
     protected void checkIfDead() {
@@ -104,7 +104,7 @@ public abstract class EnemySeekAI extends Enemy {
     @Override
     public void setToNull() {
         facing = null;
-        seek = null;
+        seekBehaviour = null;
         Gdx.app.log("EnemyArriveAI", "Objects were set to null");
     }
 }

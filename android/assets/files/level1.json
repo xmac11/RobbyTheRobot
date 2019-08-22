@@ -1317,14 +1317,14 @@
                          "value":24
                         }, 
                         {
-                         "name":"pathOffset",
-                         "type":"float",
-                         "value":-0.1
-                        }, 
-                        {
                          "name":"platformID",
                          "type":"string",
                          "value":"250"
+                        }, 
+                        {
+                         "name":"startIndex",
+                         "type":"int",
+                         "value":0
                         }, 
                         {
                          "name":"waitForPlayer",
@@ -1707,14 +1707,14 @@
                          "value":8
                         }, 
                         {
-                         "name":"pathOffset",
-                         "type":"float",
-                         "value":-0.1
-                        }, 
-                        {
                          "name":"platformID",
                          "type":"string",
                          "value":"249"
+                        }, 
+                        {
+                         "name":"startIndex",
+                         "type":"int",
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"",
@@ -1759,14 +1759,14 @@
                          "value":8
                         }, 
                         {
-                         "name":"pathOffset",
-                         "type":"float",
-                         "value":-0.1
-                        }, 
-                        {
                          "name":"platformID",
                          "type":"string",
                          "value":"249"
+                        }, 
+                        {
+                         "name":"startIndex",
+                         "type":"int",
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"",

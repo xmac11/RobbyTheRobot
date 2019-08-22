@@ -88,11 +88,11 @@ public class ScreenLevel3 extends PlayScreen {
         if(robot.hasTorch()) {
             // set position of cone light
             if(robot.getFacing() == Enums.Facing.RIGHT) {
-                coneLight.setPosition(robot.getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM, 0));
+                coneLight.setPosition(robot.getBody().getPosition().sub(ROBOT_BODY_WIDTH / 4 / PPM, 0));
                 coneLight.setDirection(0);
             }
             else if(robot.getFacing() == Enums.Facing.LEFT) {
-                coneLight.setPosition(robot.getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM, 0));
+                coneLight.setPosition(robot.getBody().getPosition().add(ROBOT_BODY_WIDTH / 4 / PPM, 0));
                 coneLight.setDirection(180);
             }
 

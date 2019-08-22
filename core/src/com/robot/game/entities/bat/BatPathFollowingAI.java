@@ -52,11 +52,8 @@ public class BatPathFollowingAI extends EnemyPathFollowingAI {
             super.destroyBody();
             destroyed = true;
         }
-        else if(!dead){
-            if(steeringBehavior != null) {
-                steeringBehavior.calculateSteering(steeringOutput);
-                super.applySteering(delta);
-            }
+        else if(activated && !dead){
+            followPathBehaviour.follow(wayPoints);
         }
 
         // calculate the elapsed time of the animation
@@ -70,7 +67,6 @@ public class BatPathFollowingAI extends EnemyPathFollowingAI {
 
     private void checkIfShouldBeActivated() {
         if(Math.abs(robot.getBody().getPosition().x - body.getPosition().x) <= activationRange / PPM) {
-            followPath.setEnabled(true);
             activated = true;
             Gdx.app.log("BatAI", "FollowPath was activated for bat");
         }

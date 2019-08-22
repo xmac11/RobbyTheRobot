@@ -44,9 +44,8 @@ public class CrabPathFollowingAI extends EnemyPathFollowingAI {
             }
         }
 
-        if(steeringBehavior != null) {
-            steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(delta);
+        if(!dead) {
+            followPathBehaviour.follow(wayPoints);
 
             // rotate path-following crabs based on their velocity
             float vX = body.getLinearVelocity().x;

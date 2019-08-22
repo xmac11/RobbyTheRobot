@@ -37,10 +37,8 @@ public class Monster extends EnemySeekAI {
         }
 
         // calculate steering
-        if(activated && !dead /*&& steeringBehavior != null*/) {
-            /*steeringBehavior.calculateSteering(steeringOutput);
-            super.applySteering(delta);*/
-            seek.seek(robot);
+        if(activated && !dead) {
+            seekBehaviour.seek(robot.getBody().getPosition());
         }
 
         // update facing direction

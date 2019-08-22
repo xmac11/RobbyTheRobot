@@ -17,7 +17,7 @@ import com.robot.game.entities.bat.BatPathFollowingAI;
 import com.robot.game.entities.bat.BatPatrolling;
 import com.robot.game.entities.crab.CrabPathFollowingAI;
 import com.robot.game.entities.crab.CrabPatrolling;
-import com.robot.game.entities.snake.SnakeArriveAI;
+import com.robot.game.entities.snake.SnakeSeekAI;
 import com.robot.game.entities.snake.SnakePatrolling;
 import com.robot.game.interactiveObjects.*;
 import com.robot.game.interactiveObjects.collectables.Food;
@@ -281,7 +281,7 @@ public class ObjectParser {
             // create snakes
             else if(object.getProperties().containsKey(SNAKE_PROPERTY)) {
                 if(object.getProperties().containsKey("aiArrive"))
-                    this.enemies.add(new SnakeArriveAI(playScreen, body, fixtureDef, object));
+                    this.enemies.add(new SnakeSeekAI(playScreen, body, fixtureDef, object));
                 else
                     this.enemies.add(new SnakePatrolling(playScreen, body, fixtureDef, object));
             }

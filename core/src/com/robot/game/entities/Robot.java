@@ -2,8 +2,6 @@ package com.robot.game.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -21,11 +19,12 @@ import com.robot.game.util.raycast.MyRayCastCallback;
 
 import static com.robot.game.util.Constants.*;
 import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.Enums.Facing.LEFT;
+import static com.robot.game.util.Enums.Facing.RIGHT;
 import static com.robot.game.util.Enums.State;
 import static com.robot.game.util.Enums.State.*;
 
-public class Robot implements Steerable<Vector2> {
+public class Robot {
 
     private Facing facing;
     private State state;
@@ -118,7 +117,7 @@ public class Robot implements Steerable<Vector2> {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(/*checkpointData.getSpawnLocation()*/ /*80 / PPM, 80 / PPM*/ 272 / PPM, 512 / PPM  /*1152 / PPM, 512 / PPM */ /*1136 / PPM, 300 / PPM*/  /*500 / PPM, 110 / PPM*/ /*1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 784 / PPM*/ /*3416 / PPM, 780 / PPM*/
+        bodyDef.position.set(checkpointData.getSpawnLocation() /*80 / PPM, 80 / PPM*/ /*272 / PPM, 512 / PPM */ /*1152 / PPM, 512 / PPM */ /*1136 / PPM, 300 / PPM*/  /*500 / PPM, 110 / PPM*/ /*1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 784 / PPM*/ /*3416 / PPM, 780 / PPM*/
                 /*4350 / PPM, 736 / PPM*/ /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
@@ -708,138 +707,5 @@ public class Robot implements Steerable<Vector2> {
         playScreen = null;
         Gdx.app.log("Robot", "Objects were set to null");
     }
-
-    @Override
-    public Vector2 getLinearVelocity() {
-        return body.getLinearVelocity();
-    }
-
-    @Override
-    public float getAngularVelocity() {
-        return body.getAngularVelocity();
-    }
-
-    @Override
-    public float getBoundingRadius() {
-        return 64 / PPM;
-    }
-
-    @Override
-    public boolean isTagged() {
-        return false;
-    }
-
-    @Override
-    public void setTagged(boolean tagged) {
-
-    }
-
-    @Override
-    public float getZeroLinearSpeedThreshold() {
-        return 0;
-    }
-
-    @Override
-    public void setZeroLinearSpeedThreshold(float value) {
-
-    }
-
-    @Override
-    public float getMaxLinearSpeed() {
-        return 0;
-    }
-
-    @Override
-    public void setMaxLinearSpeed(float maxLinearSpeed) {
-
-    }
-
-    @Override
-    public float getMaxLinearAcceleration() {
-        return 0;
-    }
-
-    @Override
-    public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-
-    }
-
-    @Override
-    public float getMaxAngularSpeed() {
-        return 0;
-    }
-
-    @Override
-    public void setMaxAngularSpeed(float maxAngularSpeed) {
-
-    }
-
-    @Override
-    public float getMaxAngularAcceleration() {
-        return 0;
-    }
-
-    @Override
-    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-
-    }
-
-    @Override
-    public Vector2 getPosition() {
-        /*if(facing == RIGHT) {
-            return body.getPosition().sub(32f / PPM, 0);
-        }
-        else {
-            return body.getPosition().add(32f / PPM, 0);
-        }*/
-        return body.getPosition();
-    }
-
-    @Override
-    public float getOrientation() {
-        return 0;
-    }
-
-    @Override
-    public void setOrientation(float orientation) {
-
-    }
-
-    @Override
-    public float vectorToAngle(Vector2 vector) {
-        return 0;
-    }
-
-    @Override
-    public Vector2 angleToVector(Vector2 outVector, float angle) {
-        return null;
-    }
-
-    @Override
-    public Location<Vector2> newLocation() {
-        return null;
-    }
-
-
-/*@Override
-    public boolean keyDown(int keycode) {
-
-        if(keycode == Input.Keys.SPACE) {
-            jumpTimer = ROBOT_JUMP_TIMER; // start timer
-            System.out.println("space pressed -> " + ContactManager.footContactCounter + " contacts");
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-
-        if(keycode == Input.Keys.SPACE) {
-            if(body.getLinearVelocity().y > 0)
-                body.setLinearVelocity(body.getLinearVelocity().x, body.getLinearVelocity().y * 0.5f);
-
-        }
-        return true;
-    }*/
 
 }

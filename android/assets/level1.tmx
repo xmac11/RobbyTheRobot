@@ -264,8 +264,8 @@
     <property name="enemy" value=""/>
     <property name="offsetX" type="float" value="24"/>
     <property name="offsetY" type="float" value="24"/>
-    <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="250"/>
+    <property name="startIndex" type="int" value="0"/>
     <property name="waitForPlayer" type="float" value="128"/>
    </properties>
   </object>
@@ -353,8 +353,8 @@
     <property name="enemy" value=""/>
     <property name="offsetX" type="float" value="8"/>
     <property name="offsetY" type="float" value="8"/>
-    <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="249"/>
+    <property name="startIndex" type="int" value="0"/>
    </properties>
   </object>
   <object id="162" x="1692" y="384" width="24" height="16">
@@ -365,8 +365,8 @@
     <property name="enemy" value=""/>
     <property name="offsetX" type="float" value="8"/>
     <property name="offsetY" type="float" value="8"/>
-    <property name="pathOffset" type="float" value="-0.1"/>
     <property name="platformID" value="249"/>
+    <property name="startIndex" type="int" value="2"/>
    </properties>
   </object>
   <object id="230" x="528" y="352" width="24" height="16">

@@ -91,7 +91,7 @@ public class StaticMethods {
 
         // if following a path, disable it
         if(enemy instanceof EnemyPathFollowingAI) {
-            ((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
+            //((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
         }
 
         // stop enemy
