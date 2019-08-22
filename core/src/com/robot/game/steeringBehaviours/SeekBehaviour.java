@@ -19,7 +19,7 @@ public class SeekBehaviour {
 
     public void seek(Vector2 target) {
         // vector from position to target
-        Vector2 desired = target.sub(body.getPosition());
+        Vector2 desired = target.cpy().sub(body.getPosition());
 
         // scale to maximum linear velocity
         desired.setLength(maxLinearVelocity);

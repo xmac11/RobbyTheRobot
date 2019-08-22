@@ -609,8 +609,16 @@ public abstract class PlayScreen extends ScreenAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for(Enemy enemy: enemies) {
-            if(enemy instanceof EnemyPathFollowingAI)
+            if(enemy instanceof EnemyPathFollowingAI) {
                 ((EnemyPathFollowingAI) enemy).drawAiPath();
+            }
+        }
+        shapeRenderer.end();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for(Enemy enemy: enemies) {
+            if(enemy instanceof EnemyPathFollowingAI && ((EnemyPathFollowingAI) enemy).activated) {
+                ((EnemyPathFollowingAI) enemy).drawTarget();
+            }
         }
         shapeRenderer.end();
     }

@@ -1,6 +1,7 @@
 package com.robot.game.entities.abstractEnemies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
@@ -31,7 +32,7 @@ public abstract class EnemyPathFollowingAI extends Enemy {
     protected float offsetX;
     protected float offsetY;
 
-    protected boolean activated;
+    public boolean activated;
     protected float activationRange;
 
     protected ShapeRenderer shapeRenderer;
@@ -57,6 +58,19 @@ public abstract class EnemyPathFollowingAI extends Enemy {
                     new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
                     new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
                     new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM)});
+
+            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
+                    new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
+                    new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
+                    new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
+                    new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM)});*/
+
+            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
+                    new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
+                    new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
+                    new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
+                    new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM)});*/
+
 
             // TODO: for testing, then delte
             /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
@@ -131,8 +145,17 @@ public abstract class EnemyPathFollowingAI extends Enemy {
 
             for (int j = 0; j < k - 1; j++) {
                 points[j] = wayPoints.get(j);
+                shapeRenderer.setColor(Color.WHITE);
                 shapeRenderer.line(points[j], points[j + 1]);
             }
+        }
+    }
+
+    public void drawTarget() {
+        if(platformID != null) {
+            shapeRenderer.setColor(Color.RED);
+            //System.out.println(followPathBehaviour.target.x + " " + followPathBehaviour.target.y);
+            shapeRenderer.circle(followPathBehaviour.getTarget().x, followPathBehaviour.getTarget().y, 6 / PPM, 10);
         }
     }
 

@@ -27,6 +27,7 @@ public class BatPathFollowingAI extends EnemyPathFollowingAI {
 
     @Override
     public void update(float delta) {
+        //System.out.println(followPathBehaviour.onPath);
         if(flagToChangeMask && body.getFixtureList().size != 0) {
             StaticMethods.setMaskBit(body.getFixtureList().first(), NOTHING_MASK);
             flagToChangeMask = false;

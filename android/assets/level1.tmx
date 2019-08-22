@@ -345,7 +345,7 @@
     <property name="vY" type="float" value="0"/>
    </properties>
   </object>
-  <object id="95" x="1692" y="336" width="24" height="16">
+  <object id="95" x="1680" y="336" width="24" height="16">
    <properties>
     <property name="aiPathFollowing" value=""/>
     <property name="aiSpeed" type="float" value="2"/>
@@ -357,7 +357,7 @@
     <property name="startIndex" type="int" value="0"/>
    </properties>
   </object>
-  <object id="162" x="1692" y="384" width="24" height="16">
+  <object id="162" x="1680" y="384" width="24" height="16">
    <properties>
     <property name="aiPathFollowing" value=""/>
     <property name="aiSpeed" type="float" value="2"/>
