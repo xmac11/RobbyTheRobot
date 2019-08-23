@@ -57,6 +57,9 @@ public class Assets {
     public SoundAssets soundAssets;
     public MusicAssets musicAssets;
 
+    // game completed
+    public GameCompletedAssets gameCompletedAssets;
+
     public Assets() {
         this.assetManager = new AssetManager();
     }
@@ -749,6 +752,35 @@ public class Assets {
             this.level1Music = assetManager.get("music/level1_music.ogg", Music.class);
             this.level2Music = assetManager.get("music/level2_music.ogg", Music.class);
             this.level3Music = assetManager.get("music/level3_music.ogg", Music.class);
+        }
+    }
+
+
+    // Game completed
+    public void loadGameCompletedAssets() {
+        // load music
+        assetManager.load("music/game_completed_music.ogg", Music.class);
+
+        assetManager.finishLoading(); // blocking statement
+        createGameCompletedAssets();
+
+        Gdx.app.log("Assets", "Loaded 'game completed' assets");
+    }
+
+    private void createGameCompletedAssets() {
+        // create texture atlas
+        TextureAtlas atlas = assetManager.get("sprites.pack");
+
+        this.gameCompletedAssets = new GameCompletedAssets(atlas);
+    }
+
+    public class GameCompletedAssets {
+        public final Music gameCompletedMusic;
+        public final TextureRegion gameCompletedPanel;
+
+        private GameCompletedAssets(TextureAtlas atlas) {
+            this.gameCompletedMusic = assetManager.get("music/game_completed_music.ogg", Music.class);
+            this.gameCompletedPanel = atlas.findRegion("game_completed");
         }
     }
 }

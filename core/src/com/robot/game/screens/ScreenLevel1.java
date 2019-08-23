@@ -60,7 +60,6 @@ public class ScreenLevel1 extends PlayScreen {
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 0, 192, mapWidth, 260, false, true);
         this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 0, mapWidth, 75, true, true);
 
-        // TODO update music
         // music
         super.music = assets.musicAssets.level1Music;
         music.setLooping(true);
@@ -311,6 +310,9 @@ public class ScreenLevel1 extends PlayScreen {
 
             doNotSaveInHide = true;
 
+            // stop music
+            music.stop();
+
             /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
              * reset their spawning in the corresponding level and delete the file */
             if(FileSaver.getCollectedItemsFile().exists()) {
@@ -335,11 +337,8 @@ public class ScreenLevel1 extends PlayScreen {
             // save game data
             FileSaver.saveCheckpointData(checkpointData);
 
-            // stop music
-            music.stop();
-
             // start level2
-            dispose();
+            this.dispose();
             game.setScreen(new ScreenLevel2(game));
         }
     }

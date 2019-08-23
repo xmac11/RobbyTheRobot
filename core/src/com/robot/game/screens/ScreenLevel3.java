@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
 import com.robot.game.util.Enums;
+import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 
@@ -189,7 +190,46 @@ public class ScreenLevel3 extends PlayScreen {
 
     @Override
     public void checkIfLevelComplete() {
-        // TODO: complete
+        if(Math.abs( robot.getBody().getPosition().x * PPM - 2112)  <= 16
+                && Math.abs( robot.getBody().getPosition().y * PPM - 64 )  <= 16) {
+
+            Gdx.app.log("ScreenLevel3", "Level complete!!!");
+
+            doNotSaveInHide = true;
+
+            // stop music
+            music.stop();
+
+            /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
+             * reset their spawning in the corresponding level and delete the file */
+            if(FileSaver.getCollectedItemsFile().exists()) {
+                FileSaver.resetSpawningOfCollectables(levelID);
+                boolean deleted = false;
+                for(int i = 0; i < 30; i++) {
+                    deleted = FileSaver.getCollectedItemsFile().delete();
+                    System.out.println(i);
+                    if(deleted) break;
+                    try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
+                    System.gc();
+                }
+                System.out.println(deleted + "!!!!!!!!!");
+                Gdx.app.log("ScreenLevel3", "collectedItems.json deleted = " + deleted);
+            }
+
+            // keep track of score because it will be reset to zero
+            super.scoreOnGameEnd = checkpointData.getScore();
+
+            // reset data
+            checkpointData.setDefaultRobotData();
+            checkpointData.setDefaultLevelData(3);
+
+            // load game completed assets
+            game.getAssets().loadGameCompletedAssets();
+
+            // set GameCompletedScreen
+            this.dispose();
+            game.setScreen(new GameCompletedScreen(this));
+        }
     }
 
     private void setToNull() {

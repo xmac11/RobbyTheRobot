@@ -154,8 +154,8 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected Array<PrismaticJoint> joints;
     protected JointHandler jointHandler;
 
-    // keep track of score on game over
-    private int scoreOnGameOver;
+    // keep track of score on game over or game complete
+    protected int scoreOnGameEnd;
 
     // music
     protected Music music;
@@ -569,8 +569,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         return mapRenderer;
     }
 
-    public int getScoreOnGameOver() {
-        return scoreOnGameOver;
+    public int getScoreOnGameEnd() {
+        return scoreOnGameEnd;
     }
 
     public void setToMenuFromPaused(boolean toMenuFromPaused) {
@@ -670,7 +670,8 @@ public abstract class PlayScreen extends ScreenAdapter {
         else {
             Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
 
-            this.scoreOnGameOver = checkpointData.getScore();
+            // keep track of score because it will be reset to zero
+            this.scoreOnGameEnd = checkpointData.getScore();
 
             // reset checkpoint data
             checkpointData.setDefaultRobotData();

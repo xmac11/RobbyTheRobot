@@ -80,7 +80,7 @@ public class GameOverScreen extends ScreenAdapter {
 
         // score label
         Label.LabelStyle styleScore = new Label.LabelStyle(font, Color.DARK_GRAY);
-        Label score = new Label("SCORE: " + playScreen.getScoreOnGameOver(), styleScore);
+        Label score = new Label("SCORE: " + playScreen.getScoreOnGameEnd(), styleScore);
         score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM, Align.center);
 
         // play again label
@@ -262,7 +262,7 @@ public class GameOverScreen extends ScreenAdapter {
                 System.gc();
             }
             System.out.println(deleted + "!!!!!!!!!");
-            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
+            Gdx.app.log("GameOverScreen", "collectedItems.json deleted = " + deleted);
         }
     }
 
