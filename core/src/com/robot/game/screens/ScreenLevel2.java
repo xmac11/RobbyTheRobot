@@ -80,6 +80,14 @@ public class ScreenLevel2 extends PlayScreen {
         super.movingSpikes = objectParser.getMovingSpikes();
         super.joints = objectParser.getJoints();
         super.jointHandler = new JointHandler(this);
+
+        // TODO update music
+        // music
+        super.music = assets.musicAssets.level3Music;
+        music.setLooping(true);
+        if(!muted) {
+            music.play();
+        }
     }
 
     protected void update(float delta) {
@@ -178,8 +186,7 @@ public class ScreenLevel2 extends PlayScreen {
         // finally, check if robot is dead, level completed or game exited
         if(escapePressed || toMenuFromPaused) {
             Gdx.app.log("ScreenLevel2","Menu screen was set by ESC or PAUSE PANEL");
-            this.dispose();
-            game.setScreen(new MenuScreen(game));
+            super.returnToMenu();
         }
         else if(robot.isDead()) {
             super.handleRobotDeath();

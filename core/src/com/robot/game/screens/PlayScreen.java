@@ -6,6 +6,7 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -153,7 +154,11 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected Array<PrismaticJoint> joints;
     protected JointHandler jointHandler;
 
+    // keep track of score on game over
     private int scoreOnGameOver;
+
+    // music
+    protected Music music;
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -370,6 +375,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         joints = null;
         jointHandler = null;
         robot = null;
+        music = null;
         Gdx.app.log("PlayScreen", "Objects were set to null");
     }
 
@@ -500,6 +506,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "Muted = " + muted);
     }
 
+    public Music getMusic() {
+        return music;
+    }
+
     public void updateInputProcOnPauseOrResume() {
         if(paused) {
             Gdx.input.setInputProcessor(hud.getStage());
@@ -579,9 +589,16 @@ public abstract class PlayScreen extends ScreenAdapter {
             // update input processor
             updateInputProcOnPauseOrResume();
 
-            // when resumed with 'P' key, restore selection to zero for next time game is paused (in case MENU was selected)
-            if(!paused) {
+            if(paused) {
+                // pause music
+                music.pause();
+            }
+            else {
+                // when resumed with 'P' key, restore selection to zero for next time game is paused (in case MENU was selected)
                 hud.setSelection(0);
+
+                // resume music
+                music.play();
             }
         }
     }
@@ -595,10 +612,18 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
         // mute
         else if(Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-            boolean reversedMuted = !isMuted();
+            boolean reversedMuted = !muted;
             setMuted(reversedMuted);
+            // update preferences
             game.getPreferences().putBoolean("muted", reversedMuted);
             game.getPreferences().flush();
+
+            if(muted) {
+                music.pause();
+            }
+            else {
+                music.play();
+            }
         }
     }
 
@@ -624,6 +649,9 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     protected void handleRobotDeath() {
+        // first stop music
+        music.stop();
+
         // robot died but has remaining lives
         if(checkpointData.getLives() >= 0) {
             Gdx.app.log("PlayScreen", "Player died");
@@ -658,23 +686,16 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
     }
 
-    // deletes checkpoint and collected items files
-//    protected void wipeOutData() {
-//        Gdx.app.log("PlayScreen", "All game data was wiped out");
-//        boolean fileDeleted = FileSaver.getCheckpointFile().delete();
-//        Gdx.app.log("PlayScreen", "Checkpoints file deleted = " + fileDeleted);
-//        checkpointDataDeleted = true;
-//
-//        /* if the file with collected items exists (meaning that items have been collected, and therefore their spawning has been disabled),
-//         * reset their spawning in the corresponding level and delete the file */
-//        if(FileSaver.getCollectedItemsFile().exists()) {
-//            FileSaver.resetSpawningOfCollectables(levelID);
-//            boolean deleted = FileSaver.getCollectedItemsFile().delete();
-//            Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
-//        }
-//    }
+    protected void returnToMenu() {
+        // stop music
+        music.stop();
 
-    public void toggleDebugLevels() {
+        // set MenuScreen
+        this.dispose();
+        game.setScreen(new MenuScreen(game));
+    }
+
+    protected void toggleDebugLevels() {
         // toggle damage on/off
         if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
             setDamageON(!damageON);
@@ -686,6 +707,10 @@ public abstract class PlayScreen extends ScreenAdapter {
         //level1
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("PlayScreen", "Level 1 was set from debug keys");
+
+            // stop muisc
+            music.stop();
+
             doNotSaveInHide = true;
 
             // set default data
@@ -717,6 +742,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         // level 2
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
             Gdx.app.log("PlayScreen", "Level 2 was set from debug keys");
+            // stop muisc
+            music.stop();
+
             doNotSaveInHide = true;
 
             // set default data
@@ -749,6 +777,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         // level3
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
             Gdx.app.log("PlayScreen", "Level 3 was set from debug keys");
+            // stop muisc
+            music.stop();
+
             doNotSaveInHide = true;
 
             // set default data

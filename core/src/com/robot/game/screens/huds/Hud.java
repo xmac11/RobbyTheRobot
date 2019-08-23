@@ -271,6 +271,9 @@ public class Hud implements Disposable {
 
                 // update input processor
                 playScreen.updateInputProcOnPauseOrResume();
+
+                // resume music
+                playScreen.getMusic().play();
                 break;
 
             // menu

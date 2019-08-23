@@ -44,7 +44,7 @@ public class Food extends Collectable {
     @Override
     public void playSoundEffect() {
         if(!playScreen.isMuted() && !isTorch) {
-            assets.musicAssets.robotEatSound.play(0.4f);
+            assets.soundAssets.robotEatSound.play(0.4f);
         }
     }
 

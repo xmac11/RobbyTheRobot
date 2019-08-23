@@ -60,6 +60,14 @@ public class ScreenLevel1 extends PlayScreen {
         this.parallaxBackground = new Parallax(this, assets.parallaxAssets.backgroundTexture, 0.5f, 0, 192, mapWidth, 260, false, true);
         this.parallaxBarrels = new Parallax(this, assets.parallaxAssets.barrelsTexture, 1.0f, 0, 0, mapWidth, 75, true, true);
 
+        // TODO update music
+        // music
+        super.music = assets.musicAssets.level3Music;
+        music.setLooping(true);
+        if(!muted) {
+            music.play();
+        }
+
         //System.out.println(tiledMapLevel1.getLayers().get(GROUND_OBJECT).getObjects().get(250)); // error
         System.out.println("Game started, newly collected items: " + collectableHandler.getCollectedItems().size()); // this should be zero when the game starts
     }
@@ -157,8 +165,7 @@ public class ScreenLevel1 extends PlayScreen {
         // finally, check if robot is dead, level completed or game exited
         if(escapePressed || toMenuFromPaused) {
             Gdx.app.log("ScreenLevel1","Menu screen was set by ESC or PAUSE PANEL");
-            this.dispose();
-            game.setScreen(new MenuScreen(game));
+            super.returnToMenu();
         }
         else if(robot.isDead()) {
             super.handleRobotDeath();

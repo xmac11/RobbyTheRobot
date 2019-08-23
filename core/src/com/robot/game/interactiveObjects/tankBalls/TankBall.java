@@ -118,7 +118,7 @@ public class TankBall implements Damaging, Pool.Poolable {
 
     public void playSoundEffect() {
         if(!playScreen.isMuted()) {
-            playScreen.getAssets().musicAssets.tankballHitRobotSound.play();
+            playScreen.getAssets().soundAssets.tankballHitRobotSound.play();
         }
     }
 

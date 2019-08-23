@@ -52,7 +52,7 @@ public class FallingPipeSpawner {
             if(!pipesDisabled && shouldSpawnPipe(delta)) {
                 // play falling pipe sound
                 if(!playScreen.isMuted()) {
-                    playScreen.getAssets().musicAssets.fallingPipeSound.play();
+                    playScreen.getAssets().soundAssets.fallingPipeSound.play();
                 }
 
                 // follow up earthquakes with probability 50%
@@ -72,7 +72,7 @@ public class FallingPipeSpawner {
 
             // play falling many pipes sound
             if(!playScreen.isMuted()) {
-                playScreen.getAssets().musicAssets.fallingManyPipesSound.play(0.6f);
+                playScreen.getAssets().soundAssets.fallingManyPipesSound.play(0.6f);
             }
 
             shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME);

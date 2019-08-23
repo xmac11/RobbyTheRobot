@@ -57,7 +57,7 @@ public class LadderClimbHandler extends InputAdapter {
 
             // play jump sound
             if(!robot.getPlayScreen().isMuted()) {
-                robot.getPlayScreen().getAssets().musicAssets.jumpSound.play();
+                robot.getPlayScreen().getAssets().soundAssets.jumpSound.play();
             }
 
             robot.setFallingOffLadder(true);

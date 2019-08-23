@@ -67,7 +67,7 @@ public class TankBallSpawner {
 
             // play tankball fire sound
             if(!playScreen.isMuted()) {
-                playScreen.getAssets().musicAssets.tankballFireSound.play(0.5f);
+                playScreen.getAssets().soundAssets.tankballFireSound.play(0.5f);
             }
 
             // apply impulse

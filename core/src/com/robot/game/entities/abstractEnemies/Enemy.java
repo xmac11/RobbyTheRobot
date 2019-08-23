@@ -108,7 +108,7 @@ public abstract class Enemy implements Damaging {
 
     public void playSoundEffect() {
         if(!playScreen.isMuted()) {
-            assets.musicAssets.stepOnEnemySound.play(0.3f);
+            assets.soundAssets.stepOnEnemySound.play(0.3f);
         }
     }
 

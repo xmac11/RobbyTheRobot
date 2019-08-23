@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,6 +54,7 @@ public class Assets {
     public TrapAssets trapAssets;
 
     // music
+    public SoundAssets soundAssets;
     public MusicAssets musicAssets;
 
     public Assets() {
@@ -135,11 +137,14 @@ public class Assets {
         assetManager.load("level2/waterAnimation.png", Texture.class);
         assetManager.load("level2/waterAnimationBig.png", Texture.class);
 
+        // load sounds
+        loadSounds();
+
         // load music
         loadMusic();
     }
 
-    private void loadMusic() {
+    private void loadSounds() {
         // common
         assetManager.load("sounds/jump.ogg", Sound.class);
         assetManager.load("sounds/step_on_enemy.ogg", Sound.class);
@@ -158,6 +163,10 @@ public class Assets {
         assetManager.load("sounds/trampoline.ogg", Sound.class);
         assetManager.load("sounds/tankball_fire.ogg", Sound.class);
         assetManager.load("sounds/tankball_hit_robot.ogg", Sound.class);
+    }
+
+    private void loadMusic() {
+        assetManager.load("music/level3_music.ogg", Music.class);
     }
 
     // creates assets for loading screen
@@ -209,6 +218,7 @@ public class Assets {
         this.trapAssets = new TrapAssets(atlas);
 
         // music
+        this.soundAssets = new SoundAssets();
         this.musicAssets = new MusicAssets();
     }
 
@@ -686,7 +696,7 @@ public class Assets {
 
     // MUSIC
 
-    public class MusicAssets {
+    public class SoundAssets {
         // common
         public final Sound jumpSound;
         public final Sound stepOnEnemySound;
@@ -706,7 +716,7 @@ public class Assets {
         public final Sound tankballFireSound;
         public final Sound tankballHitRobotSound;
 
-        private MusicAssets() {
+        private SoundAssets() {
             // common
             this.jumpSound = assetManager.get("sounds/jump.ogg", Sound.class);
             this.stepOnEnemySound = assetManager.get("sounds/step_on_enemy.ogg", Sound.class);
@@ -725,6 +735,14 @@ public class Assets {
             this.trampolineSound = assetManager.get("sounds/trampoline.ogg", Sound.class);
             this.tankballFireSound = assetManager.get("sounds/tankball_fire.ogg", Sound.class);
             this.tankballHitRobotSound = assetManager.get("sounds/tankball_hit_robot.ogg", Sound.class);
+        }
+    }
+
+    public class MusicAssets {
+        public final Music level3Music;
+
+        private MusicAssets() {
+            this.level3Music = assetManager.get("music/level3_music.ogg", Music.class);
         }
     }
 }

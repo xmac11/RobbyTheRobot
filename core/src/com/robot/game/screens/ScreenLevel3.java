@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
-import com.robot.game.interactiveObjects.spikes.MovingSpike;
-import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.util.Enums;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
@@ -30,10 +28,8 @@ public class ScreenLevel3 extends PlayScreen {
         super.layersObjectArray = new Array<>();
         layersObjectArray.add(tiledMap.getLayers().get(GROUND_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(LADDER_OBJECT).getObjects());
-//        layersObjectArray.add(tiledMap.getLayers().get(FISH_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(MONSTER_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(SNAKE_OBJECT).getObjects());
-//        layersObjectArray.add(tiledMap.getLayers().get(SPIKE_OBJECT).getObjects());
         layersObjectArray.add(tiledMap.getLayers().get(COLLECTABLE_OBJECT).getObjects());
 
         // creates objectParser, interactivePlatforms, enemies and collectables
@@ -54,26 +50,33 @@ public class ScreenLevel3 extends PlayScreen {
         super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 48 / PPM, 0, 0);
 
         // create second ray handler for torch
-        this.rayHandlerTorch = new RayHandler(world);
+        super.rayHandlerTorch = new RayHandler(world);
         rayHandlerTorch.setAmbientLight(0f);
 
         // create cone light (torch)
-        this.coneLight = new ConeLight(rayHandlerTorch, 20, new Color(247f / 255, 242f / 255, 98f / 255, 1),
+        super.coneLight = new ConeLight(rayHandlerTorch, 20, new Color(247f / 255, 242f / 255, 98f / 255, 1),
                 288 / PPM, 0 , 0, 0, 50f / 2);
         coneLight.setSoftnessLength(0);
         coneLight.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
         // point light (hand)
-        this.pointLightHand = new PointLight(rayHandlerTorch, 10, Color.GREEN, 16 / PPM, 0 , 0);
+        super.pointLightHand = new PointLight(rayHandlerTorch, 10, Color.GREEN, 16 / PPM, 0 , 0);
         pointLightHand.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
         // point light (head) -- if the robot doesn't have the torch, it is placed on the torch
-        this.pointLightHead = new PointLight(rayHandlerTorch, 10, new Color(247f / 255, 242f / 255, 98f / 255, 1),
+        super.pointLightHead = new PointLight(rayHandlerTorch, 10, new Color(247f / 255, 242f / 255, 98f / 255, 1),
                 robot.hasTorch() ? 16 / PPM : 32 / PPM, 88 / PPM , 40 / PPM);
         pointLightHead.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
         if(!robot.hasTorch()) {
             coneLight.setActive(false);
+        }
+
+        // music
+        super.music = assets.musicAssets.level3Music;
+        music.setLooping(true);
+        if(!muted) {
+            music.play();
         }
     }
 
@@ -162,8 +165,7 @@ public class ScreenLevel3 extends PlayScreen {
         // finally, check if robot is dead, level completed or game exited
         if(escapePressed || toMenuFromPaused) {
             Gdx.app.log("ScreenLevel3","Menu screen was set by ESC or PAUSE PANEL");
-            this.dispose();
-            game.setScreen(new MenuScreen(game));
+            super.returnToMenu();
         }
         else if(robot.isDead()) {
             super.handleRobotDeath();

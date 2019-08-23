@@ -43,7 +43,7 @@ public class PowerUp extends Collectable {
     @Override
     public void playSoundEffect() {
         if(!playScreen.isMuted()) {
-            assets.musicAssets.powerupSound.play(0.4f);
+            assets.soundAssets.powerupSound.play(0.4f);
         }
     }
 }
