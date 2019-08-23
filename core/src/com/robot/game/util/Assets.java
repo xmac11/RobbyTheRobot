@@ -166,6 +166,8 @@ public class Assets {
     }
 
     private void loadMusic() {
+        assetManager.load("music/level1_music.ogg", Music.class);
+        assetManager.load("music/level2_music.ogg", Music.class);
         assetManager.load("music/level3_music.ogg", Music.class);
     }
 
@@ -739,9 +741,13 @@ public class Assets {
     }
 
     public class MusicAssets {
+        public final Music level1Music;
+        public final Music level2Music;
         public final Music level3Music;
 
         private MusicAssets() {
+            this.level1Music = assetManager.get("music/level1_music.ogg", Music.class);
+            this.level2Music = assetManager.get("music/level2_music.ogg", Music.class);
             this.level3Music = assetManager.get("music/level3_music.ogg", Music.class);
         }
     }

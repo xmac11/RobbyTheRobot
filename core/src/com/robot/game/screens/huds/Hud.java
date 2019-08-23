@@ -273,7 +273,9 @@ public class Hud implements Disposable {
                 playScreen.updateInputProcOnPauseOrResume();
 
                 // resume music
-                playScreen.getMusic().play();
+                if(!playScreen.isMuted()) {
+                    playScreen.getMusic().play();
+                }
                 break;
 
             // menu

@@ -62,7 +62,7 @@ public class ScreenLevel1 extends PlayScreen {
 
         // TODO update music
         // music
-        super.music = assets.musicAssets.level3Music;
+        super.music = assets.musicAssets.level1Music;
         music.setLooping(true);
         if(!muted) {
             music.play();
@@ -334,6 +334,9 @@ public class ScreenLevel1 extends PlayScreen {
 
             // save game data
             FileSaver.saveCheckpointData(checkpointData);
+
+            // stop music
+            music.stop();
 
             // start level2
             dispose();

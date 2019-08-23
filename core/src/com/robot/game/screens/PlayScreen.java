@@ -598,7 +598,9 @@ public abstract class PlayScreen extends ScreenAdapter {
                 hud.setSelection(0);
 
                 // resume music
-                music.play();
+                if(!muted) {
+                    music.play();
+                }
             }
         }
     }

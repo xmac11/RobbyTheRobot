@@ -334,7 +334,7 @@ public class Robot {
 
             // play jump sound
             if(!playScreen.isMuted()) {
-                assets.soundAssets.jumpSound.play();
+                assets.soundAssets.jumpSound.play(0.7f);
             }
 
             // reset timers
