@@ -52,7 +52,7 @@ public class FallingPipeSpawner {
             if(!pipesDisabled && shouldSpawnPipe(delta)) {
                 // play falling pipe sound
                 if(!playScreen.isMuted()) {
-                    playScreen.getAssets().musicAssets.fallingPipeSound.play(0.3f);
+                    playScreen.getAssets().musicAssets.fallingPipeSound.play();
                 }
 
                 // follow up earthquakes with probability 50%

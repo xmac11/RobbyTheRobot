@@ -687,15 +687,18 @@ public class Assets {
     // MUSIC
 
     public class MusicAssets {
+        // common
         public final Sound jumpSound;
         public final Sound stepOnEnemySound;
         public final Sound robotHurtSound;
         public final Sound robotEatSound;
         public final Sound powerupSound;
 
+        // level 1
         public final Sound fallingManyPipesSound;
         public final Sound fallingPipeSound;
 
+        // level 2
         public final Sound laserSound;
         public final Sound punchAirSound;
         public final Sound punchEnemySound;
