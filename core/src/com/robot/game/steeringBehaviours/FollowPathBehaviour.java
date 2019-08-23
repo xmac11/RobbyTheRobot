@@ -130,8 +130,8 @@ public class FollowPathBehaviour {
 
     private boolean isPointOnPath(Vector2 point) {
         for(int i = 0; i < wayPoints.size - 1; i++) {
-            Vector2 start = wayPoints.get(i).cpy();
-            Vector2 end = wayPoints.get(i+1).cpy();
+            start.set(wayPoints.get(i));
+            end.set(wayPoints.get(i+1));
 
             // check if swapping is needed
             if(start.x > end.x || start.y > end.y) {
@@ -162,10 +162,6 @@ public class FollowPathBehaviour {
 
         v1.set(start);
         return v1.add(v2.scl(scalar)); // a.cpy().add(v2.scl(scale));
-    }
-
-    public Vector2 getTarget() {
-        return target;
     }
 
     // finds in which 'quadrant' we are and returns 0 or 1
@@ -208,6 +204,10 @@ public class FollowPathBehaviour {
                 return 0;
             }
         }
+    }
+
+    public Vector2 getTarget() {
+        return target;
     }
 
     public void setToNull() {
