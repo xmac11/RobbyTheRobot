@@ -1720,7 +1720,7 @@
                  "type":"",
                  "visible":true,
                  "width":24,
-                 "x":1692,
+                 "x":1728,
                  "y":336
                 }, 
                 {
@@ -1772,7 +1772,7 @@
                  "type":"",
                  "visible":true,
                  "width":24,
-                 "x":1692,
+                 "x":1632,
                  "y":384
                 }, 
                 {
@@ -2172,7 +2172,7 @@
          "y":0
         }],
  "nextlayerid":109,
- "nextobjectid":291,
+ "nextobjectid":297,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

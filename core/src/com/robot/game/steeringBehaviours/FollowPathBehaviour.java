@@ -11,10 +11,11 @@ import static com.robot.game.util.Constants.PPM;
 
 public class FollowPathBehaviour {
 
+    private EnemyPathFollowingAI enemy;
     private Body body;
     private SeekBehaviour seekBehaviour;
     private Array<Vector2> wayPoints;
-    private int startIndex;
+    private int targetIndex;
     private Vector2 target = new Vector2();
     private boolean onPath;
     private boolean pathReached;
@@ -28,11 +29,11 @@ public class FollowPathBehaviour {
     private Vector2 v1 = new Vector2();
     private Vector2 v2 = new Vector2();
 
-    public FollowPathBehaviour(EnemyPathFollowingAI enemy, int startIndex) {
+    public FollowPathBehaviour(EnemyPathFollowingAI enemy) {
+        this.enemy = enemy;
         this.body = enemy.getBody();
         this.wayPoints = enemy.getWayPoints();
         this.seekBehaviour = new SeekBehaviour(body, enemy.getMaxLinearSpeed());
-        this.startIndex = startIndex;
     }
 
     public void follow() {
@@ -43,8 +44,17 @@ public class FollowPathBehaviour {
 
         float distance;
         float minDistance = Float.POSITIVE_INFINITY;
+
+        // check if we are on the path
+        if(!onPath && isPointOnPath(body.getPosition())) {
+            onPath = true;
+            pathReached = true;
+        }
+
         if(!onPath && !initialTargetSet) {
+
             for(int i = 0; i < wayPoints.size - 1; i++) {
+
                 start.set(wayPoints.get(i));
                 end.set( wayPoints.get(i+1));
 
@@ -55,18 +65,12 @@ public class FollowPathBehaviour {
                     end.set(temp);
                 }
 
-                // if body is already on the path, break
-                if(isPointOnLine(body.getPosition(), start, end)) {
-                    onPath = true;
-                    break;
-                }
-
                 // calculate projection
                 Vector2 projection = calculateProjection(predictedPosition, start, end);
+
                 // if projection is not on the path, set the vertex closest to the body as the projection
                 if(!isPointOnLine(projection, start, end)) {
                     projection.set(body.getPosition().dst(start) < body.getPosition().dst(end) ? start : end);
-                    System.out.println("not in line!!!!!!!!!!!!!!!!!!!!");
                 }
 
                 // calculate distance between predicted position and projection
@@ -77,46 +81,47 @@ public class FollowPathBehaviour {
                     chosenStart.set(start);
                     chosenEnd.set(end);
 
+                    // set target
                     target.set(projection);
                 }
             }
             initialTargetSet = true;
         }
 
-        if(!onPath && isPointOnLine(body.getPosition(), chosenStart, chosenEnd)) {
-            onPath = true;
-            pathReached = true;
-            System.out.println("!!!!!!!!!!!!");
-        }
-
-        // determine next closest vertex
+        // if the path is reached for the first time, determine next closest vertex
         if(pathReached) {
-            int minIndex = 0;
+            int closestIndex = 0;
             float minDistanceToVertex = Float.POSITIVE_INFINITY;
+
             for(int i = 0; i < 4; i++) {
                 if(body.getPosition().dst(wayPoints.get(i)) < minDistanceToVertex) {
                     minDistanceToVertex = body.getPosition().dst(wayPoints.get(i));
-                    minIndex = i;
+                    closestIndex = i;
                 }
             }
-            startIndex = (minIndex + 1) % 4;
+            targetIndex = (closestIndex + determineNextPoint()) % 4; // finds in which 'quadrant' we are and returns 0 or 1
             pathReached = false;
         }
-        else if(!onPath) {
+
+        // if we are not on the path, seek the target
+        if(!onPath) {
             seekBehaviour.seek(target);
         }
-        else { // if(onPath)
-            if(!waypointReached(wayPoints.get(startIndex))) {
-                target.set(wayPoints.get(startIndex));
+        // else if wer are on the path
+        else {
+            // if we reach have not reached the target, seek it
+            if(!waypointReached(wayPoints.get(targetIndex))) {
+                target.set(wayPoints.get(targetIndex));
                 seekBehaviour.seek(target);
             }
+            // else if we reach the target, move to the next one
             else {
-                startIndex = (startIndex + 1) % 4;
-                target.set(wayPoints.get(startIndex));
+                targetIndex = (targetIndex + 1) % 4;
+                target.set(wayPoints.get(targetIndex));
                 seekBehaviour.seek(target);
             }
         }
-        //System.out.println(onPath);
+        //System.out.println(onPath + " " + pathReached);
     }
 
     private boolean waypointReached(Vector2 waypoint) {
@@ -125,8 +130,8 @@ public class FollowPathBehaviour {
 
     private boolean isPointOnPath(Vector2 point) {
         for(int i = 0; i < wayPoints.size - 1; i++) {
-            Vector2 start = wayPoints.get(i);
-            Vector2 end = wayPoints.get(i+1);
+            Vector2 start = wayPoints.get(i).cpy();
+            Vector2 end = wayPoints.get(i+1).cpy();
 
             // check if swapping is needed
             if(start.x > end.x || start.y > end.y) {
@@ -161,6 +166,48 @@ public class FollowPathBehaviour {
 
     public Vector2 getTarget() {
         return target;
+    }
+
+    // finds in which 'quadrant' we are and returns 0 or 1
+    private int determineNextPoint() {
+        // we are on a vertical line
+        if(chosenStart.x == chosenEnd.x) {
+            // upper left
+            if(body.getPosition().x < enemy.getPlatformX() + enemy.getPlatformWidth() / 2 && body.getPosition().y > enemy.getPlatformY() + enemy.getPlatformHeight() / 2) {
+                return 1;
+            }
+            // bottom left
+            else if(body.getPosition().x < enemy.getPlatformX() + enemy.getPlatformWidth() / 2) {
+                return 0;
+            }
+            // upper right
+            else if(body.getPosition().x > enemy.getPlatformX() + enemy.getPlatformWidth() / 2 && body.getPosition().y > enemy.getPlatformY() + enemy.getPlatformHeight() / 2) {
+                return 0;
+            }
+            // bottom right
+            else {
+                return 1;
+            }
+        }
+        // we are on a horizontal line
+        else {
+            // upper left
+            if(body.getPosition().y > enemy.getPlatformY() + enemy.getPlatformHeight() / 2 && body.getPosition().x < enemy.getPlatformX() + enemy.getPlatformWidth() / 2) {
+                return 0;
+            }
+            // upper right
+            else if(body.getPosition().y > enemy.getPlatformY() + enemy.getPlatformHeight() / 2) {
+                return 1;
+            }
+            // bottom left
+            else if(body.getPosition().y < enemy.getPlatformY() + enemy.getPlatformHeight() / 2 && body.getPosition().x < enemy.getPlatformX() + enemy.getPlatformWidth() / 2) {
+                return 1;
+            }
+            // bottom right
+            else {
+                return 0;
+            }
+        }
     }
 
     public void setToNull() {

@@ -18,17 +18,15 @@ import static com.robot.game.util.Constants.*;
 public abstract class EnemyPathFollowingAI extends Enemy {
 
     // EnemyAI
-    protected Array<Vector2> wayPoints;
-    protected float maxLinearSpeed, maxLinearAcceleration;
-    protected float maxAngularSpeed, maxAngularAcceleration;
-    protected float boundingRadius;
+    private Array<Vector2> wayPoints;
+    private float maxLinearSpeed;
 
     // patrolling platform (ai)
     protected String platformID;
-    protected float x;
-    protected float y;
-    protected float width;
-    protected float height;
+    private float platformX;
+    private float platformY;
+    private float platformWidth;
+    private float platformHeight;
     protected float offsetX;
     protected float offsetY;
 
@@ -43,8 +41,8 @@ public abstract class EnemyPathFollowingAI extends Enemy {
         super(playScreen, body, fixtureDef, object);
         this.shapeRenderer = playScreen.getShapeRenderer();
 
-        this.offsetX = (float) object.getProperties().get("offsetX");
-        this.offsetY = (float) object.getProperties().get("offsetY");
+        this.offsetX = (float) object.getProperties().get("offsetX") / PPM;
+        this.offsetY = (float) object.getProperties().get("offsetY") / PPM;
         this.platformID = (String) object.getProperties().get("platformID");
         this.object = object;
 
@@ -53,36 +51,13 @@ public abstract class EnemyPathFollowingAI extends Enemy {
             parseJson();
 
             // start from upper left corner, move counter clockwise
-            this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM)});
-
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM)});*/
-
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y + height + offsetY) / PPM),
-                    new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM)});*/
-
-
-            // TODO: for testing, then delte
-            /*this.wayPoints = new Array<>(new Vector2[]{new Vector2((x - offsetX) / PPM, (y - offsetY) / PPM),
-                    new Vector2((x + width + offsetX) / PPM, (y - 2*offsetY) / PPM),
-                    new Vector2((x + 2*width + offsetX) / PPM, (y + height + offsetY) / PPM)
-            });*/
+            this.wayPoints = new Array<>(new Vector2[]{new Vector2((platformX - offsetX), (platformY + platformHeight + offsetY)),
+                    new Vector2((platformX - offsetX), (platformY - offsetY)),
+                    new Vector2((platformX + platformWidth + offsetX), (platformY - offsetY)),
+                    new Vector2((platformX + platformWidth + offsetX), (platformY + platformHeight + offsetY)),
+                    new Vector2((platformX - offsetX), (platformY + platformHeight + offsetY))});
 
             this.maxLinearSpeed = (float) object.getProperties().get("aiSpeed");
-            this.maxLinearAcceleration = 500f;
-            this.maxAngularSpeed = 3;
-            this.maxAngularAcceleration = 3;
-            this.boundingRadius = 1f;
 
             // enemy waits for player to be activated
             if(object.getProperties().containsKey("waitForPlayer")) {
@@ -93,7 +68,7 @@ public abstract class EnemyPathFollowingAI extends Enemy {
                 this.activated = true;
             }
 
-            this.followPathBehaviour = new FollowPathBehaviour(this, (int) object.getProperties().get("startIndex"));
+            this.followPathBehaviour = new FollowPathBehaviour(this);
         }
     }
 
@@ -124,10 +99,10 @@ public abstract class EnemyPathFollowingAI extends Enemy {
                     if(child2.get(j).has("id") && child2.get(j).getString("id").equals(platformID)) {
                         shouldBreakJ = true;
 
-                        this.width = child2.get(j).getFloat("width");
-                        this.height = child2.get(j).getFloat("height");
-                        this.x = child2.get(j).getFloat("x");
-                        this.y = playScreen.getMapHeight() - child2.get(j).getFloat("y") - height; // to get the bottom left corner
+                        this.platformWidth = child2.get(j).getFloat("width") / PPM;
+                        this.platformHeight = child2.get(j).getFloat("height") / PPM;
+                        this.platformX = child2.get(j).getFloat("x") / PPM;
+                        this.platformY = (playScreen.getMapHeight() - child2.get(j).getFloat("y")) / PPM - platformHeight; // to get the bottom left corner
                     }
                 }
             }
@@ -169,6 +144,22 @@ public abstract class EnemyPathFollowingAI extends Enemy {
 
     public float getMaxLinearSpeed() {
         return maxLinearSpeed;
+    }
+
+    public float getPlatformX() {
+        return platformX;
+    }
+
+    public float getPlatformY() {
+        return platformY;
+    }
+
+    public float getPlatformWidth() {
+        return platformWidth;
+    }
+
+    public float getPlatformHeight() {
+        return platformHeight;
     }
 
     @Override

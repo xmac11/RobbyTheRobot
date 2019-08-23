@@ -20,9 +20,7 @@ import static com.robot.game.util.Enums.Facing.RIGHT;
 public abstract class EnemySeekAI extends Enemy {
 
     // EnemyAI
-    protected float maxLinearSpeed, maxLinearAcceleration;
-    protected float maxAngularSpeed, maxAngularAcceleration;
-    protected float boundingRadius;
+    protected float maxLinearSpeed;
 
     protected Facing facing;
     protected boolean activated;
@@ -34,11 +32,7 @@ public abstract class EnemySeekAI extends Enemy {
         super(playScreen, body, fixtureDef, object);
         this.robot = playScreen.getRobot();
 
-        this.maxLinearSpeed = /*(float) object.getProperties().get("aiSpeed")*/ 2f;
-        this.maxLinearAcceleration = 500f;
-        this.maxAngularSpeed = 3;
-        this.maxAngularAcceleration = 3;
-        this.boundingRadius = 2f;
+        this.maxLinearSpeed = 2f;
 
         if(object.getProperties().get("facing").equals("right")) {
             this.facing = RIGHT;
