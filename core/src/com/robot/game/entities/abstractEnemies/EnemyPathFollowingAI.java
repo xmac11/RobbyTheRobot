@@ -93,7 +93,7 @@ public abstract class EnemyPathFollowingAI extends Enemy {
                 this.activated = true;
             }
 
-            this.followPathBehaviour = new FollowPathBehaviour(body, maxLinearSpeed, (int) object.getProperties().get("startIndex"));
+            this.followPathBehaviour = new FollowPathBehaviour(this, (int) object.getProperties().get("startIndex"));
         }
     }
 
@@ -167,8 +167,13 @@ public abstract class EnemyPathFollowingAI extends Enemy {
         return wayPoints;
     }
 
+    public float getMaxLinearSpeed() {
+        return maxLinearSpeed;
+    }
+
     @Override
     public void setToNull() {
+        followPathBehaviour.setToNull();
         wayPoints = null;
         platformID = null;
         followPathBehaviour = null;

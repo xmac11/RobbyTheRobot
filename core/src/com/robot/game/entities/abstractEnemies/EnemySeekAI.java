@@ -103,6 +103,7 @@ public abstract class EnemySeekAI extends Enemy {
 
     @Override
     public void setToNull() {
+        seekBehaviour.setToNull();
         facing = null;
         seekBehaviour = null;
         Gdx.app.log("EnemyArriveAI", "Objects were set to null");

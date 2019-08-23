@@ -45,7 +45,7 @@ public class CrabPathFollowingAI extends EnemyPathFollowingAI {
         }
 
         if(!dead) {
-            followPathBehaviour.follow(wayPoints);
+            followPathBehaviour.follow();
 
             // rotate path-following crabs based on their velocity
             float vX = body.getLinearVelocity().x;

@@ -54,7 +54,7 @@ public class BatPathFollowingAI extends EnemyPathFollowingAI {
             destroyed = true;
         }
         else if(activated && !dead){
-            followPathBehaviour.follow(wayPoints);
+            followPathBehaviour.follow();
         }
 
         // calculate the elapsed time of the animation

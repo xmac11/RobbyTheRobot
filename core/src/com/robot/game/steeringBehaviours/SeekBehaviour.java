@@ -1,5 +1,6 @@
 package com.robot.game.steeringBehaviours;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,6 +11,7 @@ public class SeekBehaviour {
     private Body body;
     private boolean isDynamicBody;
     private float maxLinearVelocity;
+    private Vector2 desired = new Vector2();
 
     public SeekBehaviour(Body body, float maxLinearVelocity) {
         this.body = body;
@@ -19,7 +21,8 @@ public class SeekBehaviour {
 
     public void seek(Vector2 target) {
         // vector from position to target
-        Vector2 desired = target.cpy().sub(body.getPosition());
+        desired.set(target);                    // Vector2 desired = target.cpy().sub(body.getPosition());
+        desired.sub(body.getPosition());
 
         // scale to maximum linear velocity
         desired.setLength(maxLinearVelocity);
@@ -34,5 +37,10 @@ public class SeekBehaviour {
         else {
             body.setLinearVelocity(body.getLinearVelocity().add(steering));
         }
+    }
+
+    public void setToNull() {
+        desired = null;
+        Gdx.app.log("SeekBehaviour", "Objects were set to null");
     }
 }
