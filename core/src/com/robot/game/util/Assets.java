@@ -187,9 +187,6 @@ public class Assets {
         // create assets
         this.loadingScreenAssets = new LoadingScreenAssets(atlas);
         this.fontAssets = new LoadingScreenFontAssets();
-
-        // android
-        this.androidAssets = new AndroidAssets();
     }
 
     // creates all assets needed
@@ -232,6 +229,9 @@ public class Assets {
         // music
         this.soundAssets = new SoundAssets();
         this.musicAssets = new MusicAssets();
+
+        // android
+        this.androidAssets = new AndroidAssets(atlas);
     }
 
     public void dispose() {
@@ -794,25 +794,24 @@ public class Assets {
     // Android
 
     public class AndroidAssets {
-        public final Texture right;
-        public final Texture left;
-        public final Texture up;
-        public final Texture down;
-        public final Texture jump;
+        public final TextureRegion right;
+        public final TextureRegion left;
+        public final TextureRegion up;
+        public final TextureRegion down;
+        public final TextureRegion jump;
 
-        public final Texture shoot;
-        public final Texture punch;
+        public final TextureRegion shoot;
+        public final TextureRegion punch;
 
-        // TODO
-        private AndroidAssets() {
-            this.right = new Texture("rightButton.png");
-            this.left = new Texture("leftButton.png");
-            this.up = new Texture("upButton.png");
-            this.down = new Texture("downButton.png");
-            this.jump = new Texture("jumpButton.png");
+        private AndroidAssets(TextureAtlas atlas) {
+            this.right = atlas.findRegion("rightButton");
+            this.left = atlas.findRegion("leftButton");
+            this.up = atlas.findRegion("upButton");
+            this.down = atlas.findRegion("downButton");
+            this.jump = atlas.findRegion("jumpButton");
 
-            this.shoot = new Texture("shootButton.png");
-            this.punch = new Texture("punchButton.png");
+            this.shoot = atlas.findRegion("shootButton");
+            this.punch = atlas.findRegion("punchButton");
         }
     }
 }

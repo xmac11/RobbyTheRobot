@@ -47,38 +47,38 @@ public class AndroidController {
         // right button
         this.rightButton = new Image(game.getAssets().androidAssets.right);
         rightButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
-        rightButton.setPosition(2 * BUTTON_SIZE, BUTTON_SIZE);
+        rightButton.setPosition(8 / PPM + 2 * BUTTON_SIZE, 8 / PPM + BUTTON_SIZE);
 
         // left button
         this.leftButton = new Image(game.getAssets().androidAssets.left);
         leftButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
-        leftButton.setPosition(0, BUTTON_SIZE);
+        leftButton.setPosition(8 / PPM, 8 / PPM + BUTTON_SIZE);
 
         // up button
         this.upButton = new Image(game.getAssets().androidAssets.up);
         upButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
-        upButton.setPosition(BUTTON_SIZE, 2 * BUTTON_SIZE);
+        upButton.setPosition(8 / PPM + BUTTON_SIZE, 8 / PPM + 2 * BUTTON_SIZE);
 
         // down button
         this.downButton = new Image(game.getAssets().androidAssets.down);
         downButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
-        downButton.setPosition(BUTTON_SIZE, 0);
+        downButton.setPosition(8 / PPM + BUTTON_SIZE, 8 / PPM);
 
         // jump button
         this.jumpButton = new Image(game.getAssets().androidAssets.jump);
         jumpButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-        jumpButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE, BUTTON_SIZE);
+        jumpButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE - 8 / PPM, 8 / PPM + BUTTON_SIZE);
 
         if(game.getCheckpointData().getLevelID() > 1) {
             // punch button
             this.punchButton = new Image(game.getAssets().androidAssets.punch);
             punchButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-            punchButton.setPosition(viewport.getWorldWidth() - 2 * BUTTON_SIZE - 16 / PPM, 0);
+            punchButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE - 8 / PPM, 16/ PPM + 2 * BUTTON_SIZE);
 
             // shoot button
             this.shootButton = new Image(game.getAssets().androidAssets.shoot);
             shootButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
-            shootButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE - 8 / PPM, 0);
+            shootButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE - 8 / PPM, 24 / PPM + 3 * BUTTON_SIZE);
         }
 
         // add listeners
