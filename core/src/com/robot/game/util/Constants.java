@@ -131,7 +131,7 @@ public final class Constants {
     public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4350 / PPM, 752 / PPM);
 
         // Level3
-    public static final Vector2 SPAWN_LOCATION_L3 = new Vector2(32 / PPM, 80 / PPM);
+    public static final Vector2 SPAWN_LOCATION_L3 = new Vector2(208 / PPM, 80 / PPM);
 
     // Interactive platforms
     public static final String LADDER_PROPERTY = "ladder";

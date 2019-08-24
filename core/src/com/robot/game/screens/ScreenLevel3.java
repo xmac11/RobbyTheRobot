@@ -48,6 +48,8 @@ public class ScreenLevel3 extends PlayScreen {
         // create ray handler (box2d lights)
         super.rayHandler = new RayHandler(world);
         rayHandler.setAmbientLight(1f);
+
+        // create point light (laser)
         super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 48 / PPM, 0, 0);
 
         // create second ray handler for torch
@@ -66,7 +68,7 @@ public class ScreenLevel3 extends PlayScreen {
 
         // point light (head) -- if the robot doesn't have the torch, it is placed on the torch
         super.pointLightHead = new PointLight(rayHandlerTorch, 10, new Color(247f / 255, 242f / 255, 98f / 255, 1),
-                robot.hasTorch() ? 16 / PPM : 32 / PPM, 88 / PPM , 40 / PPM);
+                robot.hasTorch() ? 16 / PPM : 32 / PPM, 264 / PPM , 40 / PPM);
         pointLightHead.setContactFilter(TORCH_LIGHT_CATEGORY, (short) 0, NOTHING_MASK);
 
         if(!robot.hasTorch()) {
