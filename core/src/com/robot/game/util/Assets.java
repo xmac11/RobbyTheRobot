@@ -800,6 +800,9 @@ public class Assets {
         public final Texture down;
         public final Texture jump;
 
+        public final Texture shoot;
+        public final Texture punch;
+
         // TODO
         private AndroidAssets() {
             this.right = new Texture("rightButton.png");
@@ -807,6 +810,9 @@ public class Assets {
             this.up = new Texture("upButton.png");
             this.down = new Texture("downButton.png");
             this.jump = new Texture("jumpButton.png");
+
+            this.shoot = new Texture("shootButton.png");
+            this.punch = new Texture("punchButton.png");
         }
     }
 }

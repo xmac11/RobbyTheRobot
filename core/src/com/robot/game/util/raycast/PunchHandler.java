@@ -18,6 +18,7 @@ public class PunchHandler extends RayCastHandler {
     public void startRayCast() {
         rayCastActive = true;
 
+        // determine start and end points of the ray
         this.determineRayPoints();
 
         // start from rayPointStart (and will lerp until rayPointEnd)

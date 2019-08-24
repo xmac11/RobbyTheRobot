@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
@@ -27,17 +28,20 @@ public class AndroidController {
     private Image upButton;
     private Image downButton;
     private Image jumpButton;
+    private Image shootButton;
+    private Image punchButton;
 
     private boolean rightPressed;
     private boolean leftPressed;
-    private boolean jumpPressed;
+    private boolean punchClicked;
+    private boolean shootClicked;
 
     public AndroidController(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
         this.robot = playScreen.getRobot();
         this.ladderClimbHandler = playScreen.getLadderClimbHandler();
-        this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
+        this.viewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.stage = new Stage(viewport, game.getBatch());
 
         // right button
@@ -65,6 +69,18 @@ public class AndroidController {
         jumpButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
         jumpButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE, BUTTON_SIZE);
 
+        if(game.getCheckpointData().getLevelID() > 1) {
+            // punch button
+            this.punchButton = new Image(game.getAssets().androidAssets.punch);
+            punchButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+            punchButton.setPosition(viewport.getWorldWidth() - 2 * BUTTON_SIZE - 16 / PPM, 0);
+
+            // shoot button
+            this.shootButton = new Image(game.getAssets().androidAssets.shoot);
+            shootButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+            shootButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE - 8 / PPM, 0);
+        }
+
         // add listeners
         addListeners();
 
@@ -74,6 +90,11 @@ public class AndroidController {
         stage.addActor(upButton);
         stage.addActor(downButton);
         stage.addActor(jumpButton);
+
+        if(game.getCheckpointData().getLevelID() > 1) {
+            stage.addActor(punchButton);
+            stage.addActor(shootButton);
+        }
     }
 
     public void draw() {
@@ -96,6 +117,11 @@ public class AndroidController {
 
         // jump button
         addListenersJumpButton();
+
+        if(game.getCheckpointData().getLevelID() > 1) {
+            addListenersPunchButton();
+            addListenersShootButton();
+        }
     }
 
     // add listeners to right button
@@ -194,6 +220,26 @@ public class AndroidController {
         });
     }
 
+    // add listeners to punch button
+    private void addListenersPunchButton() {
+        punchButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                punchClicked = true;
+            }
+        });
+    }
+
+    // add listeners to shoot button
+    private void addListenersShootButton() {
+        shootButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                shootClicked = true;
+            }
+        });
+    }
+
     public void resize(int width, int height) {
         viewport.update(width, height, true);
     }
@@ -210,7 +256,19 @@ public class AndroidController {
         return leftPressed;
     }
 
-    public boolean isJumpPressed() {
-        return jumpPressed;
+    public boolean isPunchClicked() {
+        return punchClicked;
+    }
+
+    public void setPunchClicked(boolean punchClicked) {
+        this.punchClicked = punchClicked;
+    }
+
+    public boolean isShootClicked() {
+        return shootClicked;
+    }
+
+    public void setShootClicked(boolean shootClicked) {
+        this.shootClicked = shootClicked;
     }
 }

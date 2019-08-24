@@ -34,18 +34,8 @@ public class LaserHandler extends RayCastHandler {
         rayCastActive = true;
         rayHitAnimActive = true;
 
+        // determine start and end points of the ray
         this.determineRayPoints();
-
-        /*if(callback.getRayPointEnd().isZero()) {
-            if(robot.getFacing() == RIGHT) {
-                rayPointStart.set(robot.getBody().getPosition().x + ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-                rayPointEnd.set(rayPointStart.x + SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
-            }
-            else if(robot.getFacing() == LEFT) {
-                rayPointStart.set(robot.getBody().getPosition().x - ROBOT_BODY_WIDTH / 2 / PPM, robot.getBody().getPosition().y);
-                rayPointEnd.set(rayPointStart.x - SCREEN_WIDTH / PPM, robot.getBody().getPosition().y);
-            }
-        }*/
 
         // start from rayPointStart (and will lerp until rayPointEnd)
         tempRayPointEnd.set(rayPointStart);
@@ -72,7 +62,6 @@ public class LaserHandler extends RayCastHandler {
 
             shapeRenderer.setProjectionMatrix(playScreen.getCamera().combined);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            //            shapeRenderer.setColor(Color.CYAN);
 
             if(robot.getFacing() == RIGHT) {
                 tempRayPointEnd.add(64f / PPM, 0);
@@ -92,18 +81,6 @@ public class LaserHandler extends RayCastHandler {
                         2 / PPM,
                         Color.GREEN,
                         Color.CYAN);
-
-                /*shapeRenderer.setColor(Color.WHITE);
-                shapeRenderer.rectLine(startX,
-                        startY + 1f / PPM,
-                        tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
-                        tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y + 1f / PPM : tempRayPointEnd.y + 1f / PPM,
-                        0.5f / PPM);
-                shapeRenderer.rectLine(startX,
-                        startY - 1f / PPM,
-                        tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.x: tempRayPointEnd.x,
-                        tempRayPointEnd.x > rayPointEnd.x ? rayPointEnd.y - 1f / PPM : tempRayPointEnd.y - 1f / PPM,
-                        0.5f / PPM);*/
             }
             else if(robot.getFacing() == LEFT) {
                 tempRayPointEnd.sub(64f / PPM, 0);
@@ -169,7 +146,7 @@ public class LaserHandler extends RayCastHandler {
             }
             else {
                 batch.begin();
-                batch.setProjectionMatrix(playScreen.getCamera().combined);
+                batch.setProjectionMatrix(playScreen.getCamera().combined); // can be omitted
                 batch.draw(assets.laserAssets.laserExplosionAnimation.getKeyFrame(rayCastElapsed),
                         rayPointEnd.x - 64f / 2 / PPM,
                         rayPointEnd.y - 64f / 2 / PPM,

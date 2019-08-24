@@ -382,18 +382,27 @@ public class Robot {
 
     private void processInputLaserAndPunching() {
         // shoot laser
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.F) || playScreen.getAndroidController().isShootClicked()) {
             playScreen.getLaserHandler().startRayCast();
             this.shootingLaser = true;
-
             this.elapsedAnim = 0;
+
+            // if on android, un-shooting
+            if(playScreen.isOnAndroid()) {
+                playScreen.getAndroidController().setShootClicked(false);
+            }
         }
 
         // punch
-        if(Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.G) || playScreen.getAndroidController().isPunchClicked()) {
             punching = true;
             this.elapsedAnim = 0;
             playScreen.getPunchHandler().startRayCast();
+
+            // if on android, un-flag punching
+            if(playScreen.isOnAndroid()) {
+                playScreen.getAndroidController().setPunchClicked(false);
+            }
         }
     }
 
