@@ -33,7 +33,7 @@ public class RobCaptcha extends ScreenAdapter {
 
     private Stage stage;
     private Image captchaPanel;
-    private ImageButton clickCaptcha;
+    private Image clickCaptcha;
     private TextButton returnButton;
     private Sprite checkSprite;
     private boolean checkClicked;
@@ -67,8 +67,8 @@ public class RobCaptcha extends ScreenAdapter {
 
         // check sprite
         this.checkSprite = new Sprite();
-        checkSprite.setSize(60f / 1.5f / PPM, 80f / 1.5f / PPM);
-        checkSprite.setPosition(clickCaptcha.getX() - 3 / PPM, clickCaptcha.getY() - 13 / PPM);
+        checkSprite.setSize(60f / 2 / PPM, 80f / 2 / PPM);
+        checkSprite.setPosition(clickCaptcha.getX() - 1.5f / PPM, clickCaptcha.getY() - 5 / PPM);
 
         // add actors
         stage.addActor(captchaPanel);
@@ -117,7 +117,7 @@ public class RobCaptcha extends ScreenAdapter {
 
     private void createButtons() {
         // click button
-        this.clickCaptcha = new ImageButton(new SpriteDrawable(new Sprite(game.getAssets().mainMenuAssets.clickCaptcha)));
+        this.clickCaptcha = new Image(game.getAssets().mainMenuAssets.clickCaptcha);
         clickCaptcha.setSize(clickCaptcha.getWidth() / 2 / PPM, clickCaptcha.getHeight() / 2 / PPM);
         clickCaptcha.setPosition(captchaPanel.getX() + 42 / PPM, captchaPanel.getY() + 44 / PPM, Align.center);
 
