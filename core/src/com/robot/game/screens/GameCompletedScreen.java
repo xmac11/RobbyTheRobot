@@ -60,7 +60,13 @@ public class GameCompletedScreen extends ScreenAdapter {
 
         // press any key label
         Label.LabelStyle styleAnyKey = new Label.LabelStyle(smallFont, new Color(238f / 255, 232f / 255, 170f / 255, 1)); // white
-        Label anyKey = new Label("Press any key to return to menu...", styleAnyKey);
+        Label anyKey;
+        if(playScreen.isOnAndroid()) {
+            anyKey = new Label("Tap screen to return to menu...", styleAnyKey);
+        }
+        else {
+            anyKey = new Label("Press any key to return to menu...", styleAnyKey);
+        }
         anyKey.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 192 / PPM, Align.center);
 
         // add actors
@@ -92,7 +98,7 @@ public class GameCompletedScreen extends ScreenAdapter {
     }
 
     private void processInput() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        if(Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             // stop music
             music.stop();
 
