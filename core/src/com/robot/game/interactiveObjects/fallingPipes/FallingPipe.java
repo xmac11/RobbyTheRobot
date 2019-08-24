@@ -44,7 +44,7 @@ public class FallingPipe implements Damaging {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         if(cache) {
-            bodyDef.position.set(5112 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
+            bodyDef.position.set(5288 / PPM + MathUtils.random(-128 / PPM, 128 / PPM),
                                  (playScreen.getMapHeight() - 24) / PPM);
             bodyDef.gravityScale = 0;
             bodyDef.awake = false;
