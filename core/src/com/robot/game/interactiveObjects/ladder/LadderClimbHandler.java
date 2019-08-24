@@ -32,7 +32,7 @@ public class LadderClimbHandler extends InputAdapter {
     @Override
     public boolean keyDown(int keycode) {
 
-        // climb up up while on ladder
+        // climb up while on ladder
         if(keycode == Input.Keys.UP && !robot.isFallingOffLadder()) {
             Gdx.app.log("LadderClimbHandler", "climbing up");
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
@@ -40,9 +40,7 @@ public class LadderClimbHandler extends InputAdapter {
         // climb up up while falling off ladder (grabs ladder)
         else if(keycode == Input.Keys.UP) {
             Gdx.app.log("LadderClimbHandler", "grabbed on ladder while falling");
-            robot.setFallingOffLadder(false);
-            body.setGravityScale(0);
-            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+            grabOnLadder();
         }
 
         // climb down
@@ -54,15 +52,7 @@ public class LadderClimbHandler extends InputAdapter {
         // jump off ladder
         if(keycode == Input.Keys.SPACE && !robot.isFallingOffLadder()) {
             Gdx.app.log("LadderClimbHandler", "jumped off ladder");
-
-            // play jump sound
-            if(!robot.getPlayScreen().isMuted()) {
-                robot.getPlayScreen().getAssets().soundAssets.jumpSound.play();
-            }
-
-            robot.setFallingOffLadder(true);
-            body.setGravityScale(1); // turn on gravity, then jump
-            body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED);
+            jumpOffLadder();
         }
 
         return true;
@@ -81,5 +71,22 @@ public class LadderClimbHandler extends InputAdapter {
     public void setToNull() {
         robot = null;
         Gdx.app.log("LadderClimbHandler", "Objects were set to null");
+    }
+
+    public void grabOnLadder() {
+        robot.setFallingOffLadder(false);
+        body.setGravityScale(0);
+        body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+    }
+
+    public void jumpOffLadder() {
+        // play jump sound
+        if(!robot.getPlayScreen().isMuted()) {
+            robot.getPlayScreen().getAssets().soundAssets.jumpSound.play();
+        }
+
+        robot.setFallingOffLadder(true);
+        body.setGravityScale(1); // turn on gravity, then jump
+        body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED);
     }
 }

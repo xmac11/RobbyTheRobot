@@ -322,7 +322,7 @@ public class Robot {
         }
 
         // when space is pressed, start jump timer
-        if((Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || playScreen.getAndroidController().isJumpPressed()) && !onLadder) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
 
             jumpTimer = ROBOT_JUMP_TIMER; // start jumping timer
             Gdx.app.log("Robot","space pressed, jump timer was set -> " + contactManager.getFootContactCounter() + " contacts");
@@ -496,12 +496,12 @@ public class Robot {
         if(direction == 1) {
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
         }
-        else {
+        else if(direction == -1) {
             body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
         }
     }
 
-    public void stopClimbing() {
+    public void stop() {
         body.setLinearVelocity(0, 0);
     }
 
@@ -659,6 +659,10 @@ public class Robot {
 
     public void setCoyoteTimer(float coyoteTimer) {
         this.coyoteTimer = coyoteTimer;
+    }
+
+    public void setJumpTimer(float jumpTimer) {
+        this.jumpTimer = jumpTimer;
     }
 
     public void setWallClimbing(boolean wallClimbing) {

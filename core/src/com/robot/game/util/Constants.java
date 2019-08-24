@@ -275,4 +275,7 @@ public final class Constants {
     public static final Vector2 TANKBALL_ACTIVATION_AREA = new Vector2(4350, 780);
     public static final Vector2 TANKBALL_DISABLING_AREA = new Vector2(4960, 80);
 
+    // Android buttons
+    public static final float BUTTON_SIZE = 56 / PPM;
+
 }

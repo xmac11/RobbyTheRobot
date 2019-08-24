@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.entities.Robot;
+import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
 import com.robot.game.screens.PlayScreen;
 
 import static com.robot.game.util.Constants.*;
@@ -17,6 +18,7 @@ public class AndroidController {
     private RobotGame game;
     private PlayScreen playScreen;
     private Robot robot;
+    private LadderClimbHandler ladderClimbHandler;
     private Viewport viewport;
     private Stage stage;
 
@@ -28,41 +30,40 @@ public class AndroidController {
 
     private boolean rightPressed;
     private boolean leftPressed;
-    private boolean upPressed;
-    private boolean downPressed;
     private boolean jumpPressed;
 
     public AndroidController(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.game = playScreen.getGame();
         this.robot = playScreen.getRobot();
+        this.ladderClimbHandler = playScreen.getLadderClimbHandler();
         this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
         this.stage = new Stage(viewport, game.getBatch());
 
         // right button
         this.rightButton = new Image(game.getAssets().androidAssets.right);
-        rightButton.setSize( 48 / PPM, 48 / PPM);
-        rightButton.setPosition(96 / PPM, 48 / PPM);
+        rightButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
+        rightButton.setPosition(2 * BUTTON_SIZE, BUTTON_SIZE);
 
         // left button
         this.leftButton = new Image(game.getAssets().androidAssets.left);
-        leftButton.setSize( 48 / PPM, 48 / PPM);
-        leftButton.setPosition(0 / PPM, 48 / PPM);
+        leftButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
+        leftButton.setPosition(0, BUTTON_SIZE);
 
         // up button
         this.upButton = new Image(game.getAssets().androidAssets.up);
-        upButton.setSize( 48 / PPM, 48 / PPM);
-        upButton.setPosition(48 / PPM, 96 / PPM);
+        upButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
+        upButton.setPosition(BUTTON_SIZE, 2 * BUTTON_SIZE);
 
         // down button
         this.downButton = new Image(game.getAssets().androidAssets.down);
-        downButton.setSize( 48 / PPM, 48 / PPM);
-        downButton.setPosition(48 / PPM, 0 / PPM);
+        downButton.setSize( BUTTON_SIZE, BUTTON_SIZE);
+        downButton.setPosition(BUTTON_SIZE, 0);
 
         // jump button
         this.jumpButton = new Image(game.getAssets().androidAssets.jump);
-        jumpButton.setSize(48 / PPM, 48 / PPM);
-        jumpButton.setPosition(viewport.getWorldWidth() - jumpButton.getWidth(), 48 / PPM);
+        jumpButton.setSize(BUTTON_SIZE, BUTTON_SIZE);
+        jumpButton.setPosition(viewport.getWorldWidth() - BUTTON_SIZE, BUTTON_SIZE);
 
         // add listeners
         addListeners();
@@ -134,24 +135,22 @@ public class AndroidController {
         upButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                // handle ladder case
-                if(robot.isOnLadder()) {
+                // climb up while on ladder
+                if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
                     robot.climb(1);
                 }
-                else {
-                    upPressed = true;
+                // climb up up while falling off ladder (grabs ladder)
+                else if(robot.isOnLadder()) {
+                    ladderClimbHandler.grabOnLadder();
                 }
                 return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // handle ladder case
-                if(robot.isOnLadder()) {
-                    robot.stopClimbing();
-                }
-                else {
-                    upPressed = false;
+                // stop climbing
+                if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
+                    robot.stop();
                 }
             }
         });
@@ -163,11 +162,8 @@ public class AndroidController {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // handle ladder case
-                if(robot.isOnLadder()) {
+                if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
                     robot.climb(-1);
-                }
-                else {
-                    downPressed = true;
                 }
                 return true;
             }
@@ -175,38 +171,24 @@ public class AndroidController {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 // handle ladder case
-                if(robot.isOnLadder()) {
-                    robot.stopClimbing();
-                }
-                else {
-                    downPressed = false;
+                if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
+                    robot.stop();
                 }
             }
         });
     }
 
+    // add listeners to jump button
     private void addListenersJumpButton() {
         jumpButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void clicked(InputEvent event, float x, float y) {
                 // handle ladder case
-                if(robot.isOnLadder()) {
-                    // TODO
+                if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
+                    ladderClimbHandler.jumpOffLadder();
                 }
                 else {
-                    jumpPressed = true;
-                }
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                // handle ladder case
-                if(robot.isOnLadder()) {
-                    // TODO
-                }
-                else {
-                    jumpPressed = false;
+                    robot.setJumpTimer(ROBOT_JUMP_TIMER);
                 }
             }
         });
