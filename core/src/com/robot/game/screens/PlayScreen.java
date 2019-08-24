@@ -3,10 +3,12 @@ package com.robot.game.screens;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -45,6 +47,11 @@ import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 import static com.robot.game.util.Constants.*;
 
@@ -140,10 +147,10 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected PunchHandler punchHandler;
 
     // box2d light
-        // laser
+    // laser
     protected RayHandler rayHandler;
     protected PointLight pointLight;
-        // torch
+    // torch
     protected RayHandler rayHandlerTorch;
     protected ConeLight coneLight;
     protected PointLight pointLightHand;
@@ -159,6 +166,10 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // music
     protected Music music;
+
+    // android
+    protected boolean onAndroid;
+    protected AndroidController androidController;
 
     public PlayScreen(RobotGame game, TiledMap tiledMap, int levelID) {
         this.game = game;
@@ -216,7 +227,39 @@ public abstract class PlayScreen extends ScreenAdapter {
         // create shape renderer
         this.shapeRenderer = new ShapeRenderer();
 
-        Gdx.input.setInputProcessor(null);
+        // create android controller
+        this.onAndroid = (Gdx.app.getType() == Application.ApplicationType.Android);
+        this.androidController = new AndroidController(this);
+
+        // if we are on android, and the android file does not exist, parse the file stored in assets folder and save it in an android file (different location)
+        if(onAndroid) {
+            FileHandle file = Gdx.files.internal(FOLDER_NAME + "level" + levelID + ".json");
+            FileHandle androidFile = Gdx.files.local(Gdx.files.getLocalStoragePath() + "level" + levelID + ".json");
+
+            // if the android file does not exist
+            if(!androidFile.exists()) {
+                JSONObject root = null;
+                try {
+                    // parse the file stored in assets folder
+                    root = (JSONObject) new JSONParser().parse(file.reader());
+                }
+                catch (IOException | ParseException e) {
+                    e.printStackTrace();
+                }
+                // and save it in an android file (different location)
+                if(root != null) {
+                    FileSaver.saveJsonMap(androidFile, root);
+                }
+            }
+        }
+
+        // set input processor
+        if(onAndroid) {
+            Gdx.input.setInputProcessor(androidController.getStage());
+        }
+        else {
+            Gdx.input.setInputProcessor(null);
+        }
     }
 
     /*@Override
@@ -276,7 +319,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     protected void commonRendering(float delta) {
         // render interactive platforms
         for(InteractivePlatform platform: interactivePlatforms) {
-                platform.draw(batch);
+            platform.draw(batch);
         }
 
         // render robot
@@ -284,12 +327,18 @@ public abstract class PlayScreen extends ScreenAdapter {
 
         // render enemies
         for(Enemy enemy: enemies) {
-                enemy.draw(batch);
+            enemy.draw(batch);
         }
 
         // render collectables
         for(Collectable collectable: collectables) {
-                collectable.draw(batch);
+            collectable.draw(batch);
+        }
+    }
+
+    protected void renderAndroid() {
+        if(onAndroid) {
+            androidController.draw();
         }
     }
 
@@ -298,6 +347,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "resize");
         viewport.update(width, height, true);
         hud.getHudViewport().update(width, height, true);
+        if(onAndroid) {
+            androidController.resize(width, height);
+        }
         camera.update();
     }
 
@@ -578,6 +630,13 @@ public abstract class PlayScreen extends ScreenAdapter {
         Gdx.app.log("PlayScreen", "toMenuFromPaused = " + toMenuFromPaused);
     }
 
+    public AndroidController getAndroidController() {
+        return androidController;
+    }
+
+    public boolean isOnAndroid() {
+        return onAndroid;
+    }
 
     protected void checkPauseOrResume() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {

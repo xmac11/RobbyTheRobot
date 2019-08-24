@@ -156,6 +156,9 @@ public class ScreenLevel3 extends PlayScreen {
         // finally render Hud (hud should be drawn last since it uses a different projection matrix)
         hud.draw(batch);
 
+        // render android controllers
+        renderAndroid();
+
         if(DEBUG_ON) {
             // render punch lines
             punchHandler.render(shapeRenderer);

@@ -79,28 +79,6 @@ public class RobCaptcha extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
     }
 
-    private void createButtons() {
-        // click button
-        this.clickCaptcha = new ImageButton(new SpriteDrawable(new Sprite(game.getAssets().mainMenuAssets.clickCaptcha)));
-        clickCaptcha.setSize(clickCaptcha.getWidth() / 2 / PPM, clickCaptcha.getHeight() / 2 / PPM);
-        clickCaptcha.setPosition(captchaPanel.getX() + 42 / PPM, captchaPanel.getY() + 44 / PPM, Align.center);
-
-        // return button
-
-        // return GlyphLayout
-        GlyphLayout returnGlyph = new GlyphLayout();
-        returnGlyph.setText(font, "RETURN");
-        // add font to style
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = font;
-        this.returnButton = new TextButton("RETURN", style);
-        returnButton.setSize(returnGlyph.width, returnGlyph.height);
-        returnButton.setPosition(viewport.getWorldWidth() / 2 + captchaPanel.getWidth() / 2.5f, viewport.getWorldHeight() / 2 - captchaPanel.getHeight() / 1.3f, Align.center);
-        returnButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
-
-        Gdx.app.log("RobCaptcha", "Buttons were created");
-    }
-
     @Override
     public void render(float delta) {
         // clear game screen
@@ -135,6 +113,28 @@ public class RobCaptcha extends ScreenAdapter {
             this.dispose();
             game.setScreen(new MenuScreen(game));
         }
+    }
+
+    private void createButtons() {
+        // click button
+        this.clickCaptcha = new ImageButton(new SpriteDrawable(new Sprite(game.getAssets().mainMenuAssets.clickCaptcha)));
+        clickCaptcha.setSize(clickCaptcha.getWidth() / 2 / PPM, clickCaptcha.getHeight() / 2 / PPM);
+        clickCaptcha.setPosition(captchaPanel.getX() + 42 / PPM, captchaPanel.getY() + 44 / PPM, Align.center);
+
+        // return button
+
+        // return GlyphLayout
+        GlyphLayout returnGlyph = new GlyphLayout();
+        returnGlyph.setText(font, "RETURN");
+        // add font to style
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+        style.font = font;
+        this.returnButton = new TextButton("RETURN", style);
+        returnButton.setSize(returnGlyph.width, returnGlyph.height);
+        returnButton.setPosition(viewport.getWorldWidth() / 2 + captchaPanel.getWidth() / 2.5f, viewport.getWorldHeight() / 2 - captchaPanel.getHeight() / 1.3f, Align.center);
+        returnButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
+
+        Gdx.app.log("RobCaptcha", "Buttons were created");
     }
 
     private void addListeners() {

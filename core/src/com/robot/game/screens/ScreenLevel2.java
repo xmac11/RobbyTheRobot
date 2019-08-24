@@ -175,6 +175,9 @@ public class ScreenLevel2 extends PlayScreen {
         // render any laser shot
         laserHandler.render(batch, shapeRenderer);
 
+        // render android controllers
+        renderAndroid();
+
         if(DEBUG_ON) {
             // render punch lines
             punchHandler.render(shapeRenderer);

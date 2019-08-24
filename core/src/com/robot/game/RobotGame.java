@@ -6,8 +6,8 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robot.game.screens.*;
 import com.robot.game.util.Assets;
-import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.checkpoints.CheckpointData;
+import com.robot.game.util.checkpoints.FileSaver;
 
 public class RobotGame extends Game {
 
@@ -50,6 +50,7 @@ public class RobotGame extends Game {
 			preferences.flush();
 		}
 
+		// set loading screen
 		super.setScreen(new LoadingScreen(this));
 	}
 

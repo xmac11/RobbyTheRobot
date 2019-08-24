@@ -1,5 +1,6 @@
 package com.robot.game.util.checkpoints;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
@@ -108,7 +109,14 @@ public class FileSaver {
      *  collectable should be respawned to TRUE.
      *  Finally saves the tiled map json file */
     public static void resetSpawningOfCollectable(long collectableID, int levelID) {
-        FileHandle file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
+        FileHandle file;
+        // if on android
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            file = Gdx.files.local(Gdx.files.getLocalStoragePath() + "level" + levelID + ".json");
+        }
+        else {
+            file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
+        }
         JSONObject root = null;
 
         try {

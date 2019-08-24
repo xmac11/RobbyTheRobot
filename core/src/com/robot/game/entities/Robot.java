@@ -12,6 +12,7 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
+import com.robot.game.util.AndroidController;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -86,7 +87,6 @@ public class Robot {
 
     // animation
     private float elapsedAnim;
-
 
     public Robot(PlayScreen playScreen) {
         this.playScreen = playScreen;
@@ -239,7 +239,7 @@ public class Robot {
         float currentVelocity = body.getLinearVelocity().x;
 
         // Moving right
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || playScreen.getAndroidController().isRightPressed()) {
             if(facing != RIGHT) {
                 setFacing(RIGHT);
             }
@@ -254,7 +254,7 @@ public class Robot {
         }
 
         // Moving left
-        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        else if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || playScreen.getAndroidController().isLeftPressed()) {
             if(facing != LEFT) {
                 setFacing(LEFT);
             }
@@ -322,7 +322,7 @@ public class Robot {
         }
 
         // when space is pressed, start jump timer
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && !onLadder) {
+        if((Gdx.input.isKeyJustPressed(Input.Keys.SPACE) || playScreen.getAndroidController().isJumpPressed()) && !onLadder) {
 
             jumpTimer = ROBOT_JUMP_TIMER; // start jumping timer
             Gdx.app.log("Robot","space pressed, jump timer was set -> " + contactManager.getFootContactCounter() + " contacts");
@@ -492,6 +492,19 @@ public class Robot {
         }
     }
 
+    public void climb(int direction) {
+        if(direction == 1) {
+            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+        }
+        else {
+            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
+        }
+    }
+
+    public void stopClimbing() {
+        body.setLinearVelocity(0, 0);
+    }
+
     // getter for the ScreenLevel1
     public PlayScreen getPlayScreen() {
         return playScreen;
@@ -504,7 +517,9 @@ public class Robot {
 
     public void setOnLadder(boolean onLadder) {
         this.onLadder = onLadder;
-        Gdx.input.setInputProcessor(onLadder ? playScreen.getLadderClimbHandler() : null);
+        if(!playScreen.isOnAndroid()) {
+            Gdx.input.setInputProcessor(onLadder ? playScreen.getLadderClimbHandler() : null);
+        }
 
         // if on ladder, turn off gravity
         body.setGravityScale(onLadder ? 0 : 1);

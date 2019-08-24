@@ -1,5 +1,6 @@
 package com.robot.game.interactiveObjects.collectables;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
@@ -36,7 +37,14 @@ public class CollectableHandler {
     // parse json map file to determine if a collectable object should be spawned
     public boolean shouldSpawn(int collectableID) {
         JsonReader reader = new JsonReader();
-        JsonValue root = reader.parse(Gdx.files.internal(FOLDER_NAME + "level" + levelID + ".json"));
+        JsonValue root;
+        // if on android
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            root = reader.parse(Gdx.files.local(Gdx.files.getLocalStoragePath() + "level" + levelID + ".json"));
+        }
+        else {
+            root = reader.parse(Gdx.files.internal(FOLDER_NAME + "level" + levelID + ".json"));
+        }
         JsonValue child1 = root.get("layers");
 
         boolean shouldBreakI = false;
@@ -72,8 +80,15 @@ public class CollectableHandler {
 
     // parse json map file and override the boolean value of whether a particular collectable should be respawned
     public void setSpawn(int collectableID, boolean bool) {
-
-        FileHandle file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
+        FileHandle file;
+        // if on android
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            file = Gdx.files.local(Gdx.files.getLocalStoragePath() + "level" + levelID + ".json");
+            //System.out.println(file.exists());
+        }
+        else {
+            file = Gdx.files.local(FOLDER_NAME + "level" + levelID + ".json");
+        }
         JSONObject root = null;
 
         try {

@@ -63,6 +63,7 @@ public class GameCompletedScreen extends ScreenAdapter {
         Label anyKey = new Label("Press any key to return to menu...", styleAnyKey);
         anyKey.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 192 / PPM, Align.center);
 
+        // add actors
         stage.addActor(gameCompleted);
         stage.addActor(image);
         stage.addActor(score);

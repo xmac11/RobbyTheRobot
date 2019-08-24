@@ -1,5 +1,6 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -59,6 +60,9 @@ public class Assets {
 
     // game completed
     public GameCompletedAssets gameCompletedAssets;
+
+    // Android
+    public AndroidAssets androidAssets;
 
     public Assets() {
         this.assetManager = new AssetManager();
@@ -183,6 +187,9 @@ public class Assets {
         // create assets
         this.loadingScreenAssets = new LoadingScreenAssets(atlas);
         this.fontAssets = new LoadingScreenFontAssets();
+
+        // android
+        this.androidAssets = new AndroidAssets();
     }
 
     // creates all assets needed
@@ -781,6 +788,25 @@ public class Assets {
         private GameCompletedAssets(TextureAtlas atlas) {
             this.gameCompletedMusic = assetManager.get("music/game_completed_music.ogg", Music.class);
             this.gameCompletedPanel = atlas.findRegion("game_completed");
+        }
+    }
+
+    // Android
+
+    public class AndroidAssets {
+        public final Texture right;
+        public final Texture left;
+        public final Texture up;
+        public final Texture down;
+        public final Texture jump;
+
+        // TODO
+        private AndroidAssets() {
+            this.right = new Texture("rightButton.png");
+            this.left = new Texture("leftButton.png");
+            this.up = new Texture("upButton.png");
+            this.down = new Texture("downButton.png");
+            this.jump = new Texture("jumpButton.png");
         }
     }
 }
