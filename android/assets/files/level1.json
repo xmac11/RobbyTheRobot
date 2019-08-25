@@ -689,12 +689,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":512,
+                 "width":416,
                  "x":496,
                  "y":368
                 }, 
                 {
-                 "height":176,
+                 "height":272,
                  "id":247,
                  "name":"",
                  "rotation":0,

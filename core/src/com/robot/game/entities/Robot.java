@@ -367,7 +367,7 @@ public class Robot {
          *  If yes, the player climbs even though it was not on the ladder when UP was pressed. At this point the timer is reset to zero.*/
         climbTimer -= delta;
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP) && !onLadder) {
+        if((Gdx.input.isKeyJustPressed(Input.Keys.UP) || playScreen.getAndroidController().isUpPressed()) && !onLadder) {
             climbTimer = ROBOT_CLIMB_TIMER;
             Gdx.app.log("Robot","UP key pressed in robot class -> climbTimer was set");
         }
@@ -502,19 +502,6 @@ public class Robot {
                 robotSprite.setPosition(body.getPosition().x - (ROBOT_BODY_WIDTH / 2 + 22f) / PPM, body.getPosition().y - ROBOT_BODY_HEIGHT / 2 / PPM);
             }
         }
-    }
-
-    public void climb(int direction) {
-        if(direction == 1) {
-            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
-        }
-        else if(direction == -1) {
-            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
-        }
-    }
-
-    public void stop() {
-        body.setLinearVelocity(0, 0);
     }
 
     // getter for the ScreenLevel1

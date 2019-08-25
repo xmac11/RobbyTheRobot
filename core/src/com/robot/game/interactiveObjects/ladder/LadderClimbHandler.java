@@ -22,7 +22,7 @@ public class LadderClimbHandler extends InputAdapter {
      * This has to be checked because the keydown() method will not be executed if the key was pressed before
      * the input processor was set to LadderClimbHandler, i.e. before the robot got on the ladder*/
     public void checkForClimbTimer() {
-        if(robot.getClimbTimer() > 0 && Gdx.input.isKeyPressed(Input.Keys.UP)) {
+        if(robot.getClimbTimer() > 0 && (Gdx.input.isKeyPressed(Input.Keys.UP) || robot.getPlayScreen().getAndroidController().isUpPressed() )) {
             Gdx.app.log("LadderClimbHandler", "climbTimer > 0");
             body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
             robot.resetClimbTimer();
@@ -34,24 +34,20 @@ public class LadderClimbHandler extends InputAdapter {
 
         // climb up while on ladder
         if(keycode == Input.Keys.UP && !robot.isFallingOffLadder()) {
-            Gdx.app.log("LadderClimbHandler", "climbing up");
-            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+            climb(1);
         }
         // climb up up while falling off ladder (grabs ladder)
         else if(keycode == Input.Keys.UP) {
-            Gdx.app.log("LadderClimbHandler", "grabbed on ladder while falling");
             grabOnLadder();
         }
 
         // climb down
         if(keycode == Input.Keys.DOWN && !robot.isFallingOffLadder()) {
-            Gdx.app.log("LadderClimbHandler", "climbing down");
-            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
+            climb(-1);
         }
 
         // jump off ladder
         if(keycode == Input.Keys.SPACE && !robot.isFallingOffLadder()) {
-            Gdx.app.log("LadderClimbHandler", "jumped off ladder");
             jumpOffLadder();
         }
 
@@ -61,25 +57,37 @@ public class LadderClimbHandler extends InputAdapter {
     @Override
     public boolean keyUp(int keycode) {
         if((keycode == Input.Keys.UP || keycode == Input.Keys.DOWN) && !robot.isFallingOffLadder()) {
-            body.setLinearVelocity(0, 0);
-            Gdx.app.log("LadderClimbHandler", "stopped climbing");
+            stopClimbing();
         }
 
         return true;
     }
 
-    public void setToNull() {
-        robot = null;
-        Gdx.app.log("LadderClimbHandler", "Objects were set to null");
+    public void climb(int direction) {
+        if(direction == 1) {
+            Gdx.app.log("LadderClimbHandler", "climbing up");
+            body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
+        }
+        else if(direction == -1) {
+            Gdx.app.log("LadderClimbHandler", "climbing down");
+            body.setLinearVelocity(0, -ROBOT_CLIMB_SPEED);
+        }
+    }
+
+    public void stopClimbing() {
+        Gdx.app.log("LadderClimbHandler", "stopped climbing");
+        body.setLinearVelocity(0, 0);
     }
 
     public void grabOnLadder() {
+        Gdx.app.log("LadderClimbHandler", "grabbed on ladder while falling");
         robot.setFallingOffLadder(false);
         body.setGravityScale(0);
         body.setLinearVelocity(0, ROBOT_CLIMB_SPEED);
     }
 
     public void jumpOffLadder() {
+        Gdx.app.log("LadderClimbHandler", "jumped off ladder");
         // play jump sound
         if(!robot.getPlayScreen().isMuted()) {
             robot.getPlayScreen().getAssets().soundAssets.jumpSound.play();
@@ -88,5 +96,10 @@ public class LadderClimbHandler extends InputAdapter {
         robot.setFallingOffLadder(true);
         body.setGravityScale(1); // turn on gravity, then jump
         body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED);
+    }
+
+    public void setToNull() {
+        robot = null;
+        Gdx.app.log("LadderClimbHandler", "Objects were set to null");
     }
 }

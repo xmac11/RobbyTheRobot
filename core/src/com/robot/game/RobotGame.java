@@ -36,7 +36,7 @@ public class RobotGame extends Game {
 
 			// set default data
 			checkpointData.setDefaultRobotData();
-			checkpointData.setDefaultLevelData(2);
+			checkpointData.setDefaultLevelData(1);
 
 			// save data
 			FileSaver.saveCheckpointData(checkpointData);

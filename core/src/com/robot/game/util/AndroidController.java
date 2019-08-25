@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.entities.Robot;
@@ -33,6 +32,7 @@ public class AndroidController {
 
     private boolean rightPressed;
     private boolean leftPressed;
+    private boolean upPressed;
     private boolean punchClicked;
     private boolean shootClicked;
 
@@ -161,9 +161,11 @@ public class AndroidController {
         upButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                upPressed = true;
+
                 // climb up while on ladder
                 if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
-                    robot.climb(1);
+                    ladderClimbHandler.climb(1);
                 }
                 // climb up up while falling off ladder (grabs ladder)
                 else if(robot.isOnLadder()) {
@@ -174,9 +176,11 @@ public class AndroidController {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                upPressed = false;
+
                 // stop climbing
                 if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
-                    robot.stop();
+                    ladderClimbHandler.stopClimbing();
                 }
             }
         });
@@ -189,7 +193,7 @@ public class AndroidController {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // handle ladder case
                 if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
-                    robot.climb(-1);
+                    ladderClimbHandler.climb(-1);
                 }
                 return true;
             }
@@ -198,7 +202,7 @@ public class AndroidController {
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 // handle ladder case
                 if(robot.isOnLadder() && !robot.isFallingOffLadder()) {
-                    robot.stop();
+                    ladderClimbHandler.stopClimbing();
                 }
             }
         });
@@ -254,6 +258,10 @@ public class AndroidController {
 
     public boolean isLeftPressed() {
         return leftPressed;
+    }
+
+    public boolean isUpPressed() {
+        return upPressed;
     }
 
     public boolean isPunchClicked() {
