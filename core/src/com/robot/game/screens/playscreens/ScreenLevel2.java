@@ -25,7 +25,7 @@ import static com.robot.game.util.constants.Constants.*;
 public class ScreenLevel2 extends PlayScreen {
 
     private Array<Parallax> parallaxWaters = new Array<>();
-    private Sprite instrctions;
+    private Sprite instructions;
 
     public ScreenLevel2(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
@@ -37,9 +37,9 @@ public class ScreenLevel2 extends PlayScreen {
 
         // instructions
         if(!onAndroid) {
-            this.instrctions = new Sprite(assets.mainMenuAssets.instructions);
-            instrctions.setSize(instrctions.getWidth() / 2 / PPM, instrctions.getHeight() / 2 / PPM);
-            instrctions.setPosition(32 / PPM, 64 / PPM);
+            this.instructions = new Sprite(assets.mainMenuAssets.instructions);
+            instructions.setSize(instructions.getWidth() / 2 / PPM, instructions.getHeight() / 2 / PPM);
+            instructions.setPosition(32 / PPM, 64 / PPM);
         }
 
         // create tiled objects
@@ -153,7 +153,7 @@ public class ScreenLevel2 extends PlayScreen {
 
         // render instructions
         if(!onAndroid) {
-            instrctions.draw(batch);
+            instructions.draw(batch);
         }
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
@@ -238,7 +238,7 @@ public class ScreenLevel2 extends PlayScreen {
         laserHandler.setToNull();
         punchHandler.setToNull();
         parallaxWaters = null;
-        instrctions = null;
+        instructions = null;
         Gdx.app.log("ScreenLevel2", "Objects were set to null");
     }
 
