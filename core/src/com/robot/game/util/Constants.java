@@ -125,10 +125,10 @@ public final class Constants {
     public static final float CHECKPOINT_TOLERANCE = 48;
 
         // Level2
-    public static final Vector2 SPAWN_LOCATION_L2 = new Vector2(80 / PPM, 96 / PPM);
-    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L2 = new Vector2(480 / PPM, 96 / PPM);
-    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L2 = new Vector2(2410 / PPM, 800 / PPM);
-    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4350 / PPM, 752 / PPM);
+    public static final Vector2 SPAWN_LOCATION_L2 = new Vector2(256 / PPM, 96 / PPM);
+    public static final Vector2 FIRST_CHECKPOINT_LOCATION_L2 = new Vector2(656 / PPM, 96 / PPM);
+    public static final Vector2 SECOND_CHECKPOINT_LOCATION_L2 = new Vector2(2586 / PPM, 800 / PPM);
+    public static final Vector2 THIRD_CHECKPOINT_LOCATION_L2 = new Vector2(4526 / PPM, 752 / PPM);
 
         // Level3
     public static final Vector2 SPAWN_LOCATION_L3 = new Vector2(208 / PPM, 80 / PPM);
@@ -249,8 +249,8 @@ public final class Constants {
                                                                 new Vector2(4 / PPM, -14 / PPM),
                                                                 new Vector2(0 / PPM, -16 / PPM),
                                                                 new Vector2(-4 / PPM, -14 / PPM)};
-    public static final float PIPES_START_X = 4992;
-    public static final float PIPES_END_X = 6528;
+    public static final float PIPES_START_X = 5168;
+    public static final float PIPES_END_X = 6704;
     public static final float PIPES_SPAWNING_PERIOD = 1.5f;
 
     // FeedbackRenderer (health bar for powerup)
@@ -272,8 +272,8 @@ public final class Constants {
     public static final float TANKBALL_HEIGHT = 24;
     public static final float TANKBALL_SPWANING_PERIOD = 3f;
     public static final Vector2 TANKBALL_IMPULSE = new Vector2(0, 10);
-    public static final Vector2 TANKBALL_ACTIVATION_AREA = new Vector2(4350, 780);
-    public static final Vector2 TANKBALL_DISABLING_AREA = new Vector2(4960, 80);
+    public static final Vector2 TANKBALL_ACTIVATION_AREA = new Vector2(4529, 780);
+    public static final Vector2 TANKBALL_DISABLING_AREA = new Vector2(5136, 80);
 
     // Android buttons
     public static final float BUTTON_SIZE = 56 / PPM;

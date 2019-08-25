@@ -1,6 +1,5 @@
 package com.robot.game.util;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -254,18 +253,22 @@ public class Assets {
     // Robot assets
     public class RobotAssets {
 
-//        public final TextureAtlas.AtlasRegion atlasRegion;
-        public final TextureRegion robotIdle;
+        public final TextureRegion robotIdleWithGun;
+        public final TextureRegion robotIdleNoGun;
 
         public final Animation<TextureRegion> shootAnimation;
         public final Animation<TextureRegion> punchAnimation;
         public final Animation<TextureRegion> walkAnimationWithGun;
+        public final Animation<TextureRegion> walkAnimationNoGun;
         public final Animation<TextureRegion> climbLadderAnimation;
         public final Animation<TextureRegion> climbRopeAnimation;
 
         private RobotAssets(TextureAtlas atlas) {
-//            this.atlasRegion = atlas.findRegion("robot");
-            this.robotIdle = atlas.findRegion("robot_idle_gun");
+            // idle (with gun)
+            this.robotIdleWithGun = atlas.findRegion("robot_idle_gun");
+
+            // idle (no gun)
+            this.robotIdleNoGun = atlas.findRegion("robot_idle_no_gun");
 
             // shooting
             Array<TextureRegion> framesArray = new Array<>();
@@ -282,11 +285,19 @@ public class Assets {
 
             framesArray.clear();
 
-            // walking
+            // walking (with gun)
             for(int i = 1; i <= 3; i++) {
                 framesArray.add(atlas.findRegion("walk" + i));
             }
             this.walkAnimationWithGun = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
+
+            framesArray.clear();
+
+            // walking (no gun)
+            for(int i = 1; i <= 3; i++) {
+                framesArray.add(atlas.findRegion("walk_no_gun" + i));
+            }
+            this.walkAnimationNoGun = new Animation<>(0.1f, framesArray, Animation.PlayMode.LOOP_PINGPONG);
 
             framesArray.clear();
 

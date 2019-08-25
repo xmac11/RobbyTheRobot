@@ -12,7 +12,6 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.AndroidController;
 import com.robot.game.util.Assets;
 import com.robot.game.util.ContactManager;
 import com.robot.game.util.checkpoints.CheckpointData;
@@ -102,7 +101,7 @@ public class Robot {
         createRobotB2d();
 
 //        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
-        this.robotSprite = new Sprite(assets.robotAssets.robotIdle);
+        this.robotSprite = new Sprite(assets.robotAssets.robotIdleWithGun);
 
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
 
@@ -461,10 +460,14 @@ public class Robot {
             }
         }
         else if(state == WALKING) {
-            robotSprite.setRegion(assets.robotAssets.walkAnimationWithGun.getKeyFrame(elapsedAnim));
+            robotSprite.setRegion(levelID == 1 ?
+                    assets.robotAssets.walkAnimationNoGun.getKeyFrame(elapsedAnim) :
+                    assets.robotAssets.walkAnimationWithGun.getKeyFrame(elapsedAnim));
         }
         else {
-            robotSprite.setRegion(assets.robotAssets.robotIdle);
+            robotSprite.setRegion(levelID == 1 ?
+                    assets.robotAssets.robotIdleNoGun :
+                    assets.robotAssets.robotIdleWithGun);
         }
     }
 

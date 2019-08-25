@@ -70,11 +70,11 @@ public class ScreenLevel2 extends PlayScreen {
 
         // create parallax water
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
-                1f, 624, 0, 80, 48, true, false));
+                1f, 800, 0, 80, 48, true, false));
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTexture,
-                1f, 912, 0, 80, 48, true, false));
+                1f, 1088, 0, 80, 48, true, false));
         this.parallaxWaters.add(new Parallax(this, assets.parallaxAssets.waterTextureBig,
-                0, 2496, 0 , 1824, 48, false, false));
+                0, 2672, 0 , 1824, 48, false, false));
 
         // create moving spikes - prismatic joints and jointHandler
         super.movingSpikes = objectParser.getMovingSpikes();
@@ -333,7 +333,7 @@ public class ScreenLevel2 extends PlayScreen {
 
     @Override
     public void checkIfLevelComplete() {
-        if(Math.abs( robot.getBody().getPosition().x * PPM - 5168)  <= 16
+        if(Math.abs( robot.getBody().getPosition().x * PPM - 5344)  <= 16
                 && Math.abs( robot.getBody().getPosition().y * PPM - 80 )  <= 16) {
 
             Gdx.app.log("ScreenLevel2", "Level complete!!!");

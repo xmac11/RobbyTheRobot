@@ -39,7 +39,7 @@ public class TankBall implements Damaging, Pool.Poolable {
     public void createTankBallB2d() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(4520 / PPM, 96 / PPM);
+        bodyDef.position.set(4696 / PPM, 96 / PPM);
         this.body = world.createBody(bodyDef);
 
         // create fixture
