@@ -44,7 +44,7 @@ public class GameCompletedScreen extends ScreenAdapter {
         this.stage = new Stage(viewport, game.getBatch());
 
         // game completed label
-        Label.LabelStyle styleGameCompleted = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
+        Label.LabelStyle styleGameCompleted = new Label.LabelStyle(bigFont, new Color(0f / 255, 94f / 255, 94f / 255, 1)); // title color
         Label gameCompleted = new Label("GAME COMPLETED!", styleGameCompleted);
         gameCompleted.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 176 / PPM, Align.center);
 
@@ -54,7 +54,7 @@ public class GameCompletedScreen extends ScreenAdapter {
         image.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, Align.center);
 
         // score label
-        Label.LabelStyle styleScore = new Label.LabelStyle(font, Color.DARK_GRAY);
+        Label.LabelStyle styleScore = new Label.LabelStyle(font, new Color(0f / 255, 94f / 255, 94f / 255, 1)); // title color
         Label score = new Label("SCORE: " + playScreen.getScoreOnGameEnd(), styleScore);
         score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 164 / PPM, Align.center);
 

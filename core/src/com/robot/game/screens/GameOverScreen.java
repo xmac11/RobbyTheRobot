@@ -64,7 +64,7 @@ public class GameOverScreen extends ScreenAdapter {
         this.stage = new Stage(viewport, game.getBatch());
 
         // game over label
-        Label.LabelStyle styleGameOver = new Label.LabelStyle(bigFont, Color.DARK_GRAY);
+        Label.LabelStyle styleGameOver = new Label.LabelStyle(bigFont, new Color(0f / 255, 94f / 255, 94f / 255, 1)); // title color
         Label gameover = new Label("GAME OVER", styleGameOver);
         gameover.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 128 / PPM, Align.center);
 
@@ -79,7 +79,7 @@ public class GameOverScreen extends ScreenAdapter {
         sad.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 32 / PPM, Align.center);
 
         // score label
-        Label.LabelStyle styleScore = new Label.LabelStyle(font, Color.DARK_GRAY);
+        Label.LabelStyle styleScore = new Label.LabelStyle(font, new Color(0f / 255, 94f / 255, 94f / 255, 1)); // title color
         Label score = new Label("SCORE: " + playScreen.getScoreOnGameEnd(), styleScore);
         score.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 - 64 / PPM, Align.center);
 

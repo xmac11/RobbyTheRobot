@@ -3,6 +3,7 @@ package com.robot.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -28,7 +30,8 @@ public class MenuScreen extends ScreenAdapter {
     private boolean gameCompleted;
 
     private Stage stage;
-    private Viewport menuScreenViewport;
+    private Viewport viewport;
+    private BitmapFont titleFont;
     private BitmapFont font;
 
     private int selection;
@@ -52,23 +55,32 @@ public class MenuScreen extends ScreenAdapter {
     public void show() {
         Gdx.app.log("MenuScreen", "show");
 
-        this.menuScreenViewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
+        this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
+        this.titleFont = assets.panelBigFontAssets.panelBigFont;
+
         this.font = assets.panelFontAssets.panelFont;
 
         // create stage
-        this.stage = new Stage(menuScreenViewport, game.getBatch());
+        this.stage = new Stage(viewport, game.getBatch());
 
+        // title label
+        Label.LabelStyle styleTitle = new Label.LabelStyle(titleFont, new Color(0f / 255, 94f / 255, 94f / 255, 1)); // title color
+        Label title = new Label("Robby the Robot", styleTitle);
+        title.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2 + 160 / PPM, Align.center);
+
+        // background image
         Image background = new Image(assets.mainMenuAssets.mainMenuBG);
         background.setSize(background.getWidth() / PPM, background.getHeight() / PPM);
-        background.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
+        background.setPosition(viewport.getWorldWidth() / 4, viewport.getWorldHeight() / 2, Align.left);
 
         // create buttons
-        createButtons();
+        createButtons(background);
 
         // add listeners to buttons
         addListeners();
 
         // add actors
+        stage.addActor(title);
         stage.addActor(background);
         for(TextButton textButton: buttons) {
             stage.addActor(textButton);
@@ -125,7 +137,7 @@ public class MenuScreen extends ScreenAdapter {
         stage.draw();
     }
 
-    private void createButtons() {
+    private void createButtons(Image background) {
         // play GlyphLayout
         GlyphLayout playGlyph = new GlyphLayout();
         playGlyph.setText(font, gameCompleted ? "RESUME GAME" : "PLAY");
@@ -155,7 +167,7 @@ public class MenuScreen extends ScreenAdapter {
         // play button
         TextButton playButton = new TextButton(gameCompleted ? "RESUME GAME" : "PLAY", style);
         playButton.setSize(playGlyph.width, playGlyph.height);
-        playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
+        playButton.setPosition(background.getX() + 1.2f * background.getWidth(), background.getY() + 0.8f * background.getHeight(), Align.left);
         buttons.add(playButton);
         this.playIndex = index++;
         Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
@@ -164,7 +176,7 @@ public class MenuScreen extends ScreenAdapter {
         if(gameCompleted) {
             TextButton selectLevelButton = new TextButton("NEW GAME", style);
             selectLevelButton.setSize(selectLevelGlyph.width, selectLevelGlyph.height);
-            selectLevelButton.setPosition(menuScreenViewport.getWorldWidth() / 2, buttons.get(index-1).getY() - 32 / PPM, Align.center);
+            selectLevelButton.setPosition(buttons.get(index-1).getX() + 16 / PPM, buttons.get(index-1).getY() - 32 / PPM, Align.left);
             buttons.add(selectLevelButton);
             this.selectLevelIndex = index++;
             Gdx.app.log("MenuScreen", "selectLevelIndex = " + selectLevelIndex);
@@ -173,7 +185,7 @@ public class MenuScreen extends ScreenAdapter {
         // story button
         TextButton storyButton = new TextButton("STORY", style);
         storyButton.setSize(storyGlyph.width, storyGlyph.height);
-        storyButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 12 / PPM, buttons.get(index-1).getY() -  32 / PPM, Align.center);
+        storyButton.setPosition(buttons.get(index-1).getX() + 16 / PPM, buttons.get(index-1).getY() -  32 / PPM, Align.left);
         buttons.add(storyButton);
         this.storyIndex = index++;
         Gdx.app.log("MenuScreen", "storyIndex = " + storyIndex);
@@ -181,7 +193,7 @@ public class MenuScreen extends ScreenAdapter {
         // tutorial button
         TextButton tutorialButton = new TextButton("TUTORIAL", style);
         tutorialButton.setSize(tutorialGlyph.width, tutorialGlyph.height);
-        tutorialButton.setPosition(menuScreenViewport.getWorldWidth() / 2 /*- 12 / PPM*/, buttons.get(index-1).getY() -  32 / PPM, Align.center);
+        tutorialButton.setPosition(buttons.get(index-1).getX() + 16 / PPM, buttons.get(index-1).getY() -  32 / PPM, Align.left);
         buttons.add(tutorialButton);
         this.tutorialIndex = index++;
         Gdx.app.log("MenuScreen", "tutorialIndex = " + tutorialIndex);
@@ -189,7 +201,7 @@ public class MenuScreen extends ScreenAdapter {
         // exit button
         TextButton exitButton = new TextButton("EXIT", style);
         exitButton.setSize(exitGlyph.width, exitGlyph.height);
-        exitButton.setPosition(menuScreenViewport.getWorldWidth() / 2 - 5 / PPM, buttons.get(index-1).getY() - 32 / PPM, Align.center);
+        exitButton.setPosition(buttons.get(index-1).getX() + 16 / PPM, buttons.get(index-1).getY() - 32 / PPM, Align.left);
         buttons.add(exitButton);
         this.exitIndex = index;
         Gdx.app.log("MenuScreen", "exitIndex = " + exitIndex);
@@ -313,7 +325,7 @@ public class MenuScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         Gdx.app.log("MenuScreen", "resize");
-        menuScreenViewport.update(width, height, true);
+        viewport.update(width, height, true);
     }
 
     /*@Override
@@ -329,7 +341,7 @@ public class MenuScreen extends ScreenAdapter {
     }
 
     private void setToNull() {
-        menuScreenViewport = null;
+        viewport = null;
         font = null;
         Gdx.app.log("MenuScreen", "Objects were set to null");
     }
