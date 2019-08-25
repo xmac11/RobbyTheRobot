@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.StaticMethods;
+import com.robot.game.util.staticMethods.StaticMethods;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class Fish extends Enemy {
 

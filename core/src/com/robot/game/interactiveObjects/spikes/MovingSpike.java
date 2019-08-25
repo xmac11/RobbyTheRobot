@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class MovingSpike extends Spike {
 

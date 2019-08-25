@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class TankBallSpawner {
     private PlayScreen playScreen;

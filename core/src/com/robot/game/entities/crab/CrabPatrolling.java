@@ -6,9 +6,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.robot.game.entities.abstractEnemies.EnemyPatrolling;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.SpriteDrawing;
+import com.robot.game.util.staticMethods.SpriteDrawing;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class CrabPatrolling extends EnemyPatrolling {
 

@@ -1,11 +1,12 @@
-package com.robot.game.util;
+package com.robot.game.util.staticMethods;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
+import com.robot.game.util.Assets;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class SpriteDrawing {
 

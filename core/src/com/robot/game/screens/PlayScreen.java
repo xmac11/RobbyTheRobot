@@ -21,7 +21,6 @@ import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
@@ -54,7 +53,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public abstract class PlayScreen extends ScreenAdapter {
 
@@ -255,12 +254,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
 
         // set input processor
-        if(onAndroid) {
-            Gdx.input.setInputProcessor(androidController.getStage());
-        }
-        else {
-            Gdx.input.setInputProcessor(null);
-        }
+        Gdx.input.setInputProcessor(onAndroid ? androidController.getStage() : null);
     }
 
     /*@Override
@@ -338,7 +332,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     protected void renderAndroid() {
-        if(onAndroid) {
+        if(onAndroid && !paused) {
             androidController.draw();
         }
     }
@@ -568,7 +562,8 @@ public abstract class PlayScreen extends ScreenAdapter {
             Gdx.input.setInputProcessor(hud.getStage());
         }
         else {
-            Gdx.input.setInputProcessor(robot.isOnLadder() ? ladderClimbHandler : null);
+            Gdx.input.setInputProcessor(onAndroid ? androidController.getStage() :
+                    (robot.isOnLadder() ? ladderClimbHandler : null));
         }
         Gdx.app.log("PlayScreen", "InputProcessor = " + Gdx.input.getInputProcessor());
     }
@@ -640,7 +635,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     protected void checkPauseOrResume() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P) || androidController.isPauseClicked()) {
             setPaused(!paused);
 
             // update boolean for tiled animation
@@ -661,6 +656,11 @@ public abstract class PlayScreen extends ScreenAdapter {
                 if(!muted) {
                     music.play();
                 }
+            }
+
+            // if on android, un-flag pause clicked
+            if(onAndroid) {
+                androidController.setPauseClicked(false);
             }
         }
     }

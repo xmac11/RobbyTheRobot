@@ -6,7 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.robot.game.entities.Robot;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class LadderClimbHandler extends InputAdapter {
 

@@ -18,9 +18,10 @@ import com.robot.game.interactiveObjects.platforms.FallingPlatform;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
+import com.robot.game.util.staticMethods.StaticMethods;
 
-import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.constants.Constants.*;
+import static com.robot.game.util.constants.Enums.Facing.*;
 
 
 public class ContactManager implements ContactListener {

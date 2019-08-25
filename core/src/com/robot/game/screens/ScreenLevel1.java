@@ -11,7 +11,7 @@ import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
 import com.robot.game.util.checkpoints.FileSaver;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class ScreenLevel1 extends PlayScreen {
 

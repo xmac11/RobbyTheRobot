@@ -157,11 +157,11 @@ donut_red
   orig: 97, 81
   offset: 0, 0
   index: -1
-click_captcha
+pauseButton
   rotate: false
-  xy: 945, 110
-  size: 54, 54
-  orig: 54, 54
+  xy: 945, 108
+  size: 56, 56
+  orig: 56, 56
   offset: 0, 0
   index: -1
 torch
@@ -176,6 +176,13 @@ debris
   xy: 995, 435
   size: 24, 60
   orig: 24, 60
+  offset: 0, 0
+  index: -1
+tankFire
+  rotate: false
+  xy: 1003, 136
+  size: 20, 28
+  orig: 20, 28
   offset: 0, 0
   index: -1
 trap_vertical_stick
@@ -234,13 +241,6 @@ trap_vertical_base
   orig: 40, 11
   offset: 0, 0
   index: -1
-tankFire
-  rotate: false
-  xy: 439, 6
-  size: 20, 28
-  orig: 20, 28
-  offset: 0, 0
-  index: -1
 movingplatform
   rotate: false
   xy: 803, 9
@@ -267,23 +267,30 @@ climb_ladder1
   orig: 314, 376
   offset: 0, 0
   index: -1
+click_captcha
+  rotate: false
+  xy: 969, 966
+  size: 54, 54
+  orig: 54, 54
+  offset: 0, 0
+  index: -1
 fish1
   rotate: false
-  xy: 969, 956
+  xy: 969, 900
   size: 37, 64
   orig: 37, 64
   offset: 0, 0
   index: -1
 fish2
   rotate: false
-  xy: 969, 890
+  xy: 969, 834
   size: 37, 64
   orig: 37, 64
   offset: 0, 0
   index: -1
 fish_dead
   rotate: false
-  xy: 969, 824
+  xy: 969, 768
   size: 37, 64
   orig: 37, 64
   offset: 0, 0

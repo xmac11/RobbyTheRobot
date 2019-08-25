@@ -17,12 +17,12 @@ import com.robot.game.util.ContactManager;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.raycast.MyRayCastCallback;
 
-import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing;
-import static com.robot.game.util.Enums.Facing.LEFT;
-import static com.robot.game.util.Enums.Facing.RIGHT;
-import static com.robot.game.util.Enums.State;
-import static com.robot.game.util.Enums.State.*;
+import static com.robot.game.util.constants.Constants.*;
+import static com.robot.game.util.constants.Enums.Facing;
+import static com.robot.game.util.constants.Enums.Facing.LEFT;
+import static com.robot.game.util.constants.Enums.Facing.RIGHT;
+import static com.robot.game.util.constants.Enums.State;
+import static com.robot.game.util.constants.Enums.State.*;
 
 public class Robot {
 
@@ -386,7 +386,7 @@ public class Robot {
             this.shootingLaser = true;
             this.elapsedAnim = 0;
 
-            // if on android, un-shooting
+            // if on android, un-flag shooting
             if(playScreen.isOnAndroid()) {
                 playScreen.getAndroidController().setShootClicked(false);
             }

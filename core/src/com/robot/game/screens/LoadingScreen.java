@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.util.Assets;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class LoadingScreen extends ScreenAdapter {
 
@@ -89,7 +89,7 @@ public class LoadingScreen extends ScreenAdapter {
             // set screen to MenuScreen
             dispose();
             game.setScreen(new MenuScreen(game));
-//            game.setScreen(new ScreenLevel2(game));
+//            game.setScreen(new ScreenLevel1(game));
         }
     }
 

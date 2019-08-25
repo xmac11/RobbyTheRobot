@@ -12,9 +12,9 @@ import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.util.Assets;
 import com.robot.game.util.Damaging;
-import com.robot.game.util.StaticMethods;
+import com.robot.game.util.staticMethods.StaticMethods;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class FeedbackRenderer {
 

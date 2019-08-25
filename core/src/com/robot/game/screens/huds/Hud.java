@@ -21,7 +21,7 @@ import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.CheckpointData;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class Hud implements Disposable {
 

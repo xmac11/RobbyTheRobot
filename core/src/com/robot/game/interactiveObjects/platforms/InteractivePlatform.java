@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.constants.Constants.PPM;
 
 public abstract class InteractivePlatform {
 

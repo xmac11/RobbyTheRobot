@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.steeringBehaviours.FollowPathBehaviour;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public abstract class EnemyPathFollowingAI extends Enemy {
 

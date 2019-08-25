@@ -2,7 +2,7 @@ package com.robot.game.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.robot.game.util.Constants;
+import com.robot.game.util.constants.Constants;
 import com.robot.game.RobotGame;
 
 public class DesktopLauncher {

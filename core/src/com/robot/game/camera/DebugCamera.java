@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.entities.Robot;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class DebugCamera {
 

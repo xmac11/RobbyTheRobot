@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.entities.Robot;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.constants.Constants.PPM;
 
 public class Parallax {
 

@@ -1,6 +1,6 @@
-package com.robot.game.util;
+package com.robot.game.util.constants;
 
-public class Enums {
+public final class Enums {
 
     public enum Facing {RIGHT, LEFT}
 

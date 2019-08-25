@@ -19,7 +19,7 @@ import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class ScreenLevel2 extends PlayScreen {
 

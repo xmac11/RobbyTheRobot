@@ -1,5 +1,6 @@
 package com.robot.game.util;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
@@ -16,7 +17,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class Assets {
 
@@ -230,7 +231,9 @@ public class Assets {
         this.musicAssets = new MusicAssets();
 
         // android
-        this.androidAssets = new AndroidAssets(atlas);
+        if(Gdx.app.getType() == Application.ApplicationType.Android) {
+            this.androidAssets = new AndroidAssets(atlas);
+        }
     }
 
     public void dispose() {
@@ -814,6 +817,8 @@ public class Assets {
         public final TextureRegion shoot;
         public final TextureRegion punch;
 
+        public final TextureRegion pause;
+
         private AndroidAssets(TextureAtlas atlas) {
             this.right = atlas.findRegion("rightButton");
             this.left = atlas.findRegion("leftButton");
@@ -823,6 +828,8 @@ public class Assets {
 
             this.shoot = atlas.findRegion("shootButton");
             this.punch = atlas.findRegion("punchButton");
+
+            this.pause = atlas.findRegion("pauseButton");
         }
     }
 }

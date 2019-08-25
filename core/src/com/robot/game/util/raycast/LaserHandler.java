@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.screens.PlayScreen;
 
-import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing.LEFT;
-import static com.robot.game.util.Enums.Facing.RIGHT;
+import static com.robot.game.util.constants.Constants.*;
+import static com.robot.game.util.constants.Enums.Facing.LEFT;
+import static com.robot.game.util.constants.Enums.Facing.RIGHT;
 
 
 public class LaserHandler extends RayCastHandler {

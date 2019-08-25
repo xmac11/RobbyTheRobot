@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
 
-import static com.robot.game.util.Constants.PPM;
+import static com.robot.game.util.constants.Constants.PPM;
 
 
 public class FollowPathBehaviour {

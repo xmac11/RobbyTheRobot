@@ -8,9 +8,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.PlayScreen;
-import com.robot.game.util.StaticMethods;
+import com.robot.game.util.staticMethods.StaticMethods;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class JointHandler {
 

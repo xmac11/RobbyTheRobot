@@ -12,7 +12,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class FileSaver {
 

@@ -3,7 +3,7 @@ package com.robot.game.util.checkpoints;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class CheckpointData {
 

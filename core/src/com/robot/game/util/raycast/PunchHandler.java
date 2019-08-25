@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
 
-import static com.robot.game.util.Constants.*;
-import static com.robot.game.util.Enums.Facing.*;
+import static com.robot.game.util.constants.Constants.*;
+import static com.robot.game.util.constants.Enums.Facing.*;
 
 public class PunchHandler extends RayCastHandler {
 

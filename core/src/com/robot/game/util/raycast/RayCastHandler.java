@@ -9,9 +9,9 @@ import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.PlayScreen;
 import com.robot.game.util.Assets;
-import com.robot.game.util.StaticMethods;
+import com.robot.game.util.staticMethods.StaticMethods;
 
-import static com.robot.game.util.Constants.WALL_JUMPING_PROPERTY;
+import static com.robot.game.util.constants.Constants.WALL_JUMPING_PROPERTY;
 
 public abstract class RayCastHandler {
 

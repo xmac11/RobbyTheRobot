@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
-import com.robot.game.util.Enums;
+import com.robot.game.util.constants.Enums;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;
 import com.robot.game.util.raycast.PunchHandler;
 
-import static com.robot.game.util.Constants.*;
+import static com.robot.game.util.constants.Constants.*;
 
 public class ScreenLevel3 extends PlayScreen {
 
