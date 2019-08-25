@@ -266,6 +266,8 @@ public class Assets {
         public final Animation<TextureRegion> climbLadderAnimation;
         public final Animation<TextureRegion> climbRopeAnimation;
 
+        public final TextureRegion wallJump;
+
         private RobotAssets(TextureAtlas atlas) {
             // idle (with gun)
             this.robotIdleWithGun = atlas.findRegion("robot_idle_gun");
@@ -319,6 +321,9 @@ public class Assets {
             this.climbRopeAnimation = new Animation<>(0.2f, framesArray, Animation.PlayMode.LOOP);
 
             framesArray.clear();
+
+            // wall climbing
+            this.wallJump = atlas.findRegion("wall_climb");
         }
     }
 

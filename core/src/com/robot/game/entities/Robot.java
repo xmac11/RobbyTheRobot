@@ -73,8 +73,8 @@ public class Robot {
     // Game data
     private CheckpointData checkpointData;
 
-    // wall climbing
-    private boolean isWallClimbing;
+    // wall jumping
+    private boolean isWallJumping;
     private int direction;
     private Vector2 tempWallJumpingImpulse = new Vector2();
 
@@ -189,6 +189,11 @@ public class Robot {
                 invulnerable = false;
                 Gdx.app.log("Robot", "Invulnerability ended");
             }
+        }
+
+        // handle wall jumping
+        if(isWallJumping && contactManager.getFootContactCounter() > 0) {
+            setWallJumping(false);
         }
 
         // determine state
@@ -347,7 +352,7 @@ public class Robot {
                 // when platform is moving upwards, the velocity is not sufficient to make the player jump, so the velocity of the platform is also added
                 body.setLinearVelocity(body.getLinearVelocity().x, ROBOT_JUMP_SPEED + interactivePlatform.getBody().getLinearVelocity().y);
             }
-            else if(isWallClimbing) {
+            else if(isWallJumping) {
                 tempWallJumpingImpulse.set(WALL_JUMPING_IMPULSE.x * direction, WALL_JUMPING_IMPULSE.y);
                 body.applyLinearImpulse(tempWallJumpingImpulse, body.getWorldCenter(), true);
             }
@@ -443,6 +448,9 @@ public class Robot {
             if(elapsedAnim >= assets.robotAssets.punchAnimation.getAnimationDuration())
                 punching = false;
         }
+        else if(state == WALL_JUMPING) {
+            robotSprite.setRegion(assets.robotAssets.wallJump);
+        }
         else if(state == ON_LADDER_CLIMBING) {
             if(levelID == 2) {
                 robotSprite.setRegion(assets.robotAssets.climbRopeAnimation.getKeyFrame(elapsedAnim));
@@ -536,12 +544,14 @@ public class Robot {
     }
 
     private void determineState() {
-//        System.out.println(body.getLinearVelocity().x);
         if(shootingLaser) {
             setState(SHOOTING_LASER);
         }
         else if(punching) {
             setState(PUNCHING);
+        }
+        else if(isWallJumping) {
+            setState(WALL_JUMPING);
         }
         else if(body.getLinearVelocity().y != 0 && !isOnInteractivePlatform && !onLadder) {
             setState(JUMPING);
@@ -664,8 +674,9 @@ public class Robot {
         this.jumpTimer = jumpTimer;
     }
 
-    public void setWallClimbing(boolean wallClimbing) {
-        isWallClimbing = wallClimbing;
+    public void setWallJumping(boolean wallJumping) {
+        isWallJumping = wallJumping;
+        Gdx.app.log("Robot", "wallJumping = " + wallJumping);
     }
 
     public int getDirection() {

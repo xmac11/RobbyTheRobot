@@ -491,7 +491,7 @@ public class ContactManager implements ContactListener {
 
         // if wall jump was activated and the robot is in the air
         if(wallJumpActivated && footContactCounter == 0) {
-            robot.setWallClimbing(true);
+            robot.setWallJumping(true);
             robot.setCoyoteTimer(ROBOT_COYOTE_TIMER);
             Gdx.app.log("ContactManager", "WallClimbing = true");
             Gdx.app.log("ContactManager", "coyote timer set");
@@ -743,9 +743,7 @@ public class ContactManager implements ContactListener {
             robot = (Robot) fixB.getUserData();
         }
 
-        robot.setWallClimbing(false);
-        Gdx.app.log("ContactManager", "WallClimbing = false");
-
+        // update facing direction
         if(robot.getDirection() == 1) {
             robot.setFacing(RIGHT);
         }
