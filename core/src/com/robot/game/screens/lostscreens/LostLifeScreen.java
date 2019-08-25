@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.lostscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.interactiveObjects.collectables.CollectableHandler;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.FileSaver;
 import org.json.simple.JSONArray;

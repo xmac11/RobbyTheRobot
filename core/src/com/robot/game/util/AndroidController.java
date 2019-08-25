@@ -9,14 +9,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.ladder.LadderClimbHandler;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 
 import static com.robot.game.util.constants.Constants.*;
 
 public class AndroidController {
 
     private RobotGame game;
-    private PlayScreen playScreen;
     private Robot robot;
     private LadderClimbHandler ladderClimbHandler;
     private Viewport viewport;
@@ -40,7 +39,6 @@ public class AndroidController {
 
     public AndroidController(PlayScreen playScreen) {
         if(playScreen.isOnAndroid()) {
-            this.playScreen = playScreen;
             this.game = playScreen.getGame();
             this.robot = playScreen.getRobot();
             this.ladderClimbHandler = playScreen.getLadderClimbHandler();

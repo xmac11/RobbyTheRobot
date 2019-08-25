@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.entities.Robot;
 
 import static com.robot.game.util.constants.Constants.PPM;

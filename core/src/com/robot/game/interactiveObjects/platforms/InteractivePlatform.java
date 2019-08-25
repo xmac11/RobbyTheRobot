@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.util.Assets;
 
 import static com.robot.game.util.constants.Constants.PPM;

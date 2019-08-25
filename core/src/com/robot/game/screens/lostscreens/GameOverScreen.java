@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.lostscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -22,6 +22,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
+import com.robot.game.screens.menuscreens.MenuScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;

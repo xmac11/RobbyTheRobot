@@ -29,7 +29,7 @@ import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.spikes.Spike;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.entities.*;
 
 import static com.robot.game.util.constants.Constants.*;

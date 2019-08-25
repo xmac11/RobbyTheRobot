@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.menuscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -18,6 +18,9 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
+import com.robot.game.screens.playscreens.ScreenLevel1;
+import com.robot.game.screens.playscreens.ScreenLevel2;
+import com.robot.game.screens.playscreens.ScreenLevel3;
 
 import static com.robot.game.util.constants.Constants.*;
 import static com.robot.game.util.constants.Constants.PPM;

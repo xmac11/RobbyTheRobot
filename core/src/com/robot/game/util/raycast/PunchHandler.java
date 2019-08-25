@@ -3,7 +3,7 @@ package com.robot.game.util.raycast;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 
 import static com.robot.game.util.constants.Constants.*;
 import static com.robot.game.util.constants.Enums.Facing.*;

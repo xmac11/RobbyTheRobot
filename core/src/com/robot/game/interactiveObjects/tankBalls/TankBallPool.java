@@ -1,7 +1,7 @@
 package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.utils.Pool;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 
 public class TankBallPool extends Pool<TankBall> {
 

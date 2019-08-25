@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.robot.game.entities.Monster;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.util.Assets;
 import com.robot.game.util.staticMethods.StaticMethods;
 

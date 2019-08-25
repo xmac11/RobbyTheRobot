@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.menuscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

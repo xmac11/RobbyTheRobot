@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.menuscreens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -144,13 +144,13 @@ public class SelectLevelScreen extends ScreenAdapter {
         style.font = font;
 
         // level 1 button
-        this.level1Button = new TextButton("LEVEL1", style);
+        this.level1Button = new TextButton("LEVEL 1", style);
         level1Button.setSize(level1Glyph.width, level1Glyph.height);
         level1Button.setPosition(300 / PPM, viewport.getWorldHeight() / 2 - 16 / PPM, Align.center);
         level1Button.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
 
         // level 2 button
-        this.level2Button = new TextButton("LEVEL2", style);
+        this.level2Button = new TextButton("LEVEL 2", style);
         level2Button.setSize(level2Glyph.width, level2Glyph.height);
         level2Button.setPosition(viewport.getWorldWidth() - 300 / PPM, viewport.getWorldHeight() / 2 - 16 / PPM, Align.center);
         level2Button.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white

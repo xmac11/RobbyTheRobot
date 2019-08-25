@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.playscreens;
 
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
@@ -39,6 +39,9 @@ import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
+import com.robot.game.screens.lostscreens.GameOverScreen;
+import com.robot.game.screens.lostscreens.LostLifeScreen;
+import com.robot.game.screens.menuscreens.MenuScreen;
 import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
 import com.robot.game.util.*;

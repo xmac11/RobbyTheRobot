@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.playscreens;
 
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
+import com.robot.game.screens.GameCompletedScreen;
 import com.robot.game.util.constants.Enums;
 import com.robot.game.util.checkpoints.FileSaver;
 import com.robot.game.util.raycast.LaserHandler;

@@ -1,4 +1,4 @@
-package com.robot.game.screens;
+package com.robot.game.screens.playscreens;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;

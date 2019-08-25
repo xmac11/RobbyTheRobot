@@ -2,7 +2,7 @@ package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.Gdx;
 import com.robot.game.entities.Robot;
-import com.robot.game.screens.PlayScreen;
+import com.robot.game.screens.playscreens.PlayScreen;
 
 import static com.robot.game.util.constants.Constants.*;
 
