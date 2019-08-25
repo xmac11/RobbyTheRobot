@@ -621,6 +621,9 @@ public class Assets {
         // select level
         public final TextureRegion selectLevel;
 
+        // l2 instructions
+        public final TextureRegion instructions;
+
         private MainMenuAssets(TextureAtlas atlas) {
             // main menu
             this.mainMenuBG = atlas.findRegion("robot_hello");
@@ -645,6 +648,9 @@ public class Assets {
 
             // select level
             this.selectLevel = atlas.findRegion("select_level");
+
+            // level 2 instructions
+            this.instructions = atlas.findRegion("l2_instructions");
         }
     }
 

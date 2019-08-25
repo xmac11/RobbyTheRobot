@@ -90,7 +90,6 @@ public class LoadingScreen extends ScreenAdapter {
             // set screen to MenuScreen
             dispose();
             game.setScreen(new MenuScreen(game));
-//            game.setScreen(new ScreenLevel1(game));
         }
     }
 

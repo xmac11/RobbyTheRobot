@@ -5,247 +5,233 @@ filter: Nearest,Nearest
 repeat: none
 select_level
   rotate: false
-  xy: 1, 477
+  xy: 1, 482
   size: 960, 541
   orig: 960, 541
   offset: 0, 0
   index: -1
-robCaptcha
-  rotate: false
-  xy: 1, 299
-  size: 768, 176
-  orig: 768, 176
-  offset: 0, 0
-  index: -1
-monster_dead1
-  rotate: false
-  xy: 1, 70
-  size: 222, 227
-  orig: 222, 227
-  offset: 0, 0
-  index: -1
-monster_dead2
-  rotate: false
-  xy: 225, 70
-  size: 222, 227
-  orig: 222, 227
-  offset: 0, 0
-  index: -1
-monster_dead3
-  rotate: false
-  xy: 449, 70
-  size: 222, 227
-  orig: 222, 227
-  offset: 0, 0
-  index: -1
-monster_dead4
-  rotate: false
-  xy: 771, 248
-  size: 222, 227
-  orig: 222, 227
-  offset: 0, 0
-  index: -1
-snake_bite1
-  rotate: false
-  xy: 673, 102
-  size: 270, 144
-  orig: 270, 144
-  offset: 0, 0
-  index: -1
-frame
-  rotate: false
-  xy: 1, 14
-  size: 232, 54
-  orig: 232, 54
-  offset: 0, 0
-  index: -1
 check1
   rotate: false
-  xy: 963, 938
+  xy: 963, 943
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
 check2
   rotate: false
-  xy: 963, 856
+  xy: 963, 861
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
 check3
   rotate: false
-  xy: 963, 774
+  xy: 963, 779
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
 check4
   rotate: false
-  xy: 963, 692
+  xy: 963, 697
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
 check5
   rotate: false
-  xy: 963, 610
+  xy: 963, 615
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
 check6
   rotate: false
-  xy: 963, 528
+  xy: 963, 533
   size: 60, 80
   orig: 60, 80
-  offset: 0, 0
-  index: -1
-bat_dead1
-  rotate: false
-  xy: 673, 249
-  size: 96, 48
-  orig: 96, 48
-  offset: 0, 0
-  index: -1
-green
-  rotate: false
-  xy: 235, 36
-  size: 157, 32
-  orig: 157, 32
-  offset: 0, 0
-  index: -1
-red
-  rotate: false
-  xy: 394, 36
-  size: 157, 32
-  orig: 157, 32
-  offset: 0, 0
-  index: -1
-trampoline1
-  rotate: false
-  xy: 673, 8
-  size: 128, 92
-  orig: 128, 92
-  offset: 0, 0
-  index: -1
-donut_pink
-  rotate: false
-  xy: 803, 19
-  size: 97, 81
-  orig: 97, 81
-  offset: 0, 0
-  index: -1
-trap_vertical
-  rotate: false
-  xy: 553, 13
-  size: 115, 55
-  orig: 115, 55
   offset: 0, 0
   index: -1
 check7
   rotate: false
-  xy: 945, 166
+  xy: 963, 451
   size: 60, 80
   orig: 60, 80
   offset: 0, 0
   index: -1
-donut_red
+climb_ladder1
   rotate: false
-  xy: 902, 19
-  size: 97, 81
-  orig: 97, 81
+  xy: 1, 104
+  size: 314, 376
+  orig: 314, 376
   offset: 0, 0
   index: -1
-pauseButton
+climb_ladder2
   rotate: false
-  xy: 945, 108
-  size: 56, 56
-  orig: 56, 56
+  xy: 317, 104
+  size: 314, 376
+  orig: 314, 376
+  offset: 0, 0
+  index: -1
+l2_instructions
+  rotate: false
+  xy: 633, 236
+  size: 320, 213
+  orig: 320, 213
   offset: 0, 0
   index: -1
 torch
   rotate: false
-  xy: 963, 498
+  xy: 633, 452
   size: 59, 28
   orig: 59, 28
   offset: 0, 0
   index: -1
-debris
-  rotate: false
-  xy: 995, 436
-  size: 24, 60
-  orig: 24, 60
-  offset: 0, 0
-  index: -1
 tankFire
   rotate: false
-  xy: 1003, 136
+  xy: 694, 452
   size: 20, 28
   orig: 20, 28
   offset: 0, 0
   index: -1
-trap_vertical_stick
+monster_walk5
   rotate: false
-  xy: 995, 391
-  size: 16, 43
-  orig: 16, 43
+  xy: 633, 6
+  size: 170, 228
+  orig: 170, 228
   offset: 0, 0
   index: -1
-tankExplosion1
+monster_walk4
   rotate: false
-  xy: 235, 2
-  size: 32, 32
-  orig: 32, 32
+  xy: 805, 6
+  size: 167, 228
+  orig: 167, 228
   offset: 0, 0
   index: -1
-tankExplosion2
+laserExplosion1
   rotate: false
-  xy: 269, 2
-  size: 32, 32
-  orig: 32, 32
+  xy: 955, 385
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
-tankExplosion3
+laserExplosion2
   rotate: false
-  xy: 303, 2
-  size: 32, 32
-  orig: 32, 32
+  xy: 955, 319
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
-tankExplosion4
+laserExplosion3
   rotate: false
-  xy: 337, 2
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-tankExplosion5
-  rotate: false
-  xy: 371, 2
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-tankExplosion6
-  rotate: false
-  xy: 405, 2
-  size: 32, 32
-  orig: 32, 32
+  xy: 955, 253
+  size: 64, 64
+  orig: 64, 64
   offset: 0, 0
   index: -1
 trap_vertical_base
   rotate: false
-  xy: 1, 1
+  xy: 955, 240
   size: 40, 11
   orig: 40, 11
   offset: 0, 0
   index: -1
+trampoline1
+  rotate: false
+  xy: 1, 10
+  size: 128, 92
+  orig: 128, 92
+  offset: 0, 0
+  index: -1
+fish1
+  rotate: false
+  xy: 974, 174
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
+fish2
+  rotate: false
+  xy: 974, 108
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
+fish_dead
+  rotate: false
+  xy: 974, 42
+  size: 37, 64
+  orig: 37, 64
+  offset: 0, 0
+  index: -1
+tankExplosion1
+  rotate: false
+  xy: 974, 8
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+donut_pink
+  rotate: false
+  xy: 131, 21
+  size: 97, 81
+  orig: 97, 81
+  offset: 0, 0
+  index: -1
+donut_red
+  rotate: false
+  xy: 230, 21
+  size: 97, 81
+  orig: 97, 81
+  offset: 0, 0
+  index: -1
 movingplatform
   rotate: false
-  xy: 803, 9
+  xy: 716, 472
   size: 32, 8
   orig: 32, 8
+  offset: 0, 0
+  index: -1
+downButton
+  rotate: false
+  xy: 329, 22
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+jumpButton
+  rotate: false
+  xy: 411, 22
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+leftButton
+  rotate: false
+  xy: 493, 22
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+pauseButton
+  rotate: false
+  xy: 575, 46
+  size: 56, 56
+  orig: 56, 56
+  offset: 0, 0
+  index: -1
+trap_vertical_stick
+  rotate: false
+  xy: 575, 1
+  size: 16, 43
+  orig: 16, 43
+  offset: 0, 0
+  index: -1
+tankExplosion2
+  rotate: false
+  xy: 593, 12
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
 
@@ -255,191 +241,184 @@ filter: Nearest,Nearest
 repeat: none
 pause_panel
   rotate: false
-  xy: 1, 465
+  xy: 1, 481
   size: 960, 540
   orig: 960, 540
   offset: 0, 0
   index: -1
 click_captcha
   rotate: false
-  xy: 963, 951
+  xy: 963, 967
   size: 54, 54
   orig: 54, 54
   offset: 0, 0
   index: -1
-fish1
+tankExplosion3
   rotate: false
-  xy: 963, 885
-  size: 37, 64
-  orig: 37, 64
+  xy: 963, 933
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-fish2
+tankExplosion4
   rotate: false
-  xy: 963, 819
-  size: 37, 64
-  orig: 37, 64
+  xy: 963, 899
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-fish_dead
+tankExplosion5
   rotate: false
-  xy: 963, 753
-  size: 37, 64
-  orig: 37, 64
+  xy: 963, 865
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-climb_ladder1
+tankExplosion6
   rotate: false
-  xy: 1, 87
-  size: 314, 376
-  orig: 314, 376
+  xy: 963, 831
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-climb_ladder2
+debris
   rotate: false
-  xy: 317, 87
-  size: 314, 376
-  orig: 314, 376
+  xy: 963, 769
+  size: 24, 60
+  orig: 24, 60
   offset: 0, 0
   index: -1
 climb_rope1
   rotate: false
-  xy: 633, 87
+  xy: 1, 103
   size: 314, 376
   orig: 314, 376
   offset: 0, 0
   index: -1
-laserExplosion1
+climb_rope2
   rotate: false
-  xy: 949, 399
-  size: 64, 64
-  orig: 64, 64
+  xy: 317, 103
+  size: 314, 376
+  orig: 314, 376
   offset: 0, 0
   index: -1
-laserExplosion2
+punch1
   rotate: false
-  xy: 949, 333
-  size: 64, 64
-  orig: 64, 64
+  xy: 633, 149
+  size: 314, 330
+  orig: 314, 330
   offset: 0, 0
   index: -1
-laserExplosion3
+snake_bite1
   rotate: false
-  xy: 949, 267
-  size: 64, 64
-  orig: 64, 64
+  xy: 633, 3
+  size: 270, 144
+  orig: 270, 144
+  offset: 0, 0
+  index: -1
+robot_sad
+  rotate: false
+  xy: 905, 30
+  size: 117, 117
+  orig: 117, 117
   offset: 0, 0
   index: -1
 laserExplosion4
   rotate: false
-  xy: 949, 201
+  xy: 949, 415
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 splash1
   rotate: false
-  xy: 949, 151
+  xy: 949, 365
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
 splash2
   rotate: false
-  xy: 949, 101
+  xy: 949, 315
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
 splash3
   rotate: false
-  xy: 949, 51
+  xy: 949, 265
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-downButton
+splash4
   rotate: false
-  xy: 1, 5
-  size: 80, 80
-  orig: 80, 80
+  xy: 949, 215
+  size: 64, 48
+  orig: 64, 48
   offset: 0, 0
   index: -1
-jumpButton
+splash5
   rotate: false
-  xy: 83, 5
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
-leftButton
-  rotate: false
-  xy: 165, 5
-  size: 80, 80
-  orig: 80, 80
+  xy: 949, 165
+  size: 64, 48
+  orig: 64, 48
   offset: 0, 0
   index: -1
 punchButton
   rotate: false
-  xy: 247, 5
+  xy: 1, 21
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 rightButton
   rotate: false
-  xy: 329, 5
+  xy: 83, 21
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 shootButton
   rotate: false
-  xy: 411, 5
+  xy: 165, 21
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 upButton
   rotate: false
-  xy: 493, 5
+  xy: 247, 21
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 burger
   rotate: false
-  xy: 575, 9
+  xy: 329, 25
   size: 97, 76
   orig: 97, 76
   offset: 0, 0
   index: -1
 powerup
   rotate: false
-  xy: 674, 10
+  xy: 428, 26
   size: 62, 75
   orig: 62, 75
   offset: 0, 0
   index: -1
-crab1
+trap_vertical
   rotate: false
-  xy: 738, 21
-  size: 96, 64
-  orig: 96, 64
+  xy: 492, 46
+  size: 115, 55
+  orig: 115, 55
   offset: 0, 0
   index: -1
-crab2
+bat1
   rotate: false
-  xy: 836, 21
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-splash4
-  rotate: false
-  xy: 934, 1
-  size: 64, 48
-  orig: 64, 48
+  xy: 492, 1
+  size: 96, 43
+  orig: 96, 43
   offset: 0, 0
   index: -1
 
@@ -449,114 +428,163 @@ filter: Nearest,Nearest
 repeat: none
 game_completed
   rotate: false
-  xy: 1, 463
+  xy: 1, 464
   size: 650, 559
   orig: 650, 559
   offset: 0, 0
   index: -1
-climb_rope2
+robCaptcha
   rotate: false
-  xy: 653, 646
-  size: 314, 376
-  orig: 314, 376
-  offset: 0, 0
-  index: -1
-punch1
-  rotate: false
-  xy: 653, 314
-  size: 314, 330
-  orig: 314, 330
+  xy: 1, 286
+  size: 768, 176
+  orig: 768, 176
   offset: 0, 0
   index: -1
 punch2
   rotate: false
-  xy: 1, 131
+  xy: 653, 693
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
-robot_idle_gun
+monster_dead1
   rotate: false
-  xy: 317, 131
-  size: 314, 330
-  orig: 314, 330
-  offset: 0, 0
-  index: -1
-robot_hello
-  rotate: false
-  xy: 633, 67
-  size: 165, 245
-  orig: 165, 245
-  offset: 0, 0
-  index: -1
-monster_dead5
-  rotate: false
-  xy: 800, 85
+  xy: 653, 464
   size: 222, 227
   orig: 222, 227
   offset: 0, 0
   index: -1
-trampoline2
+monster_dead2
+  rotate: false
+  xy: 1, 57
+  size: 222, 227
+  orig: 222, 227
+  offset: 0, 0
+  index: -1
+frame
   rotate: false
   xy: 1, 1
+  size: 232, 54
+  orig: 232, 54
+  offset: 0, 0
+  index: -1
+monster_dead3
+  rotate: false
+  xy: 225, 57
+  size: 222, 227
+  orig: 222, 227
+  offset: 0, 0
+  index: -1
+monster_dead4
+  rotate: false
+  xy: 449, 57
+  size: 222, 227
+  orig: 222, 227
+  offset: 0, 0
+  index: -1
+monster_dead5
+  rotate: false
+  xy: 673, 57
+  size: 222, 227
+  orig: 222, 227
+  offset: 0, 0
+  index: -1
+monster_attack3
+  rotate: false
+  xy: 877, 471
+  size: 140, 220
+  orig: 140, 220
+  offset: 0, 0
+  index: -1
+trampoline2
+  rotate: false
+  xy: 771, 334
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
-robot_sad
+green
   rotate: false
-  xy: 131, 12
-  size: 117, 117
-  orig: 117, 117
+  xy: 235, 23
+  size: 157, 32
+  orig: 157, 32
+  offset: 0, 0
+  index: -1
+lives
+  rotate: false
+  xy: 901, 363
+  size: 90, 106
+  orig: 90, 106
+  offset: 0, 0
+  index: -1
+red
+  rotate: false
+  xy: 394, 23
+  size: 157, 32
+  orig: 157, 32
+  offset: 0, 0
+  index: -1
+bat2
+  rotate: false
+  xy: 771, 289
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat3
+  rotate: false
+  xy: 553, 12
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat4
+  rotate: false
+  xy: 651, 12
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat5
+  rotate: false
+  xy: 749, 12
+  size: 96, 43
+  orig: 96, 43
+  offset: 0, 0
+  index: -1
+bat_dead1
+  rotate: false
+  xy: 901, 313
+  size: 96, 48
+  orig: 96, 48
+  offset: 0, 0
+  index: -1
+crab1
+  rotate: false
+  xy: 897, 247
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab2
+  rotate: false
+  xy: 897, 181
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
 crab3
   rotate: false
-  xy: 800, 19
+  xy: 897, 115
   size: 96, 64
   orig: 96, 64
   offset: 0, 0
   index: -1
 crab4
   rotate: false
-  xy: 898, 19
+  xy: 897, 49
   size: 96, 64
   orig: 96, 64
-  offset: 0, 0
-  index: -1
-snake_dead1
-  rotate: false
-  xy: 250, 22
-  size: 270, 107
-  orig: 270, 107
-  offset: 0, 0
-  index: -1
-crab_dead1
-  rotate: false
-  xy: 522, 65
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab_dead2
-  rotate: false
-  xy: 620, 1
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-bat_dead2
-  rotate: false
-  xy: 522, 15
-  size: 96, 48
-  orig: 96, 48
-  offset: 0, 0
-  index: -1
-splash5
-  rotate: false
-  xy: 718, 17
-  size: 64, 48
-  orig: 64, 48
   offset: 0, 0
   index: -1
 
@@ -564,102 +592,81 @@ sprites4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+robot_idle_gun
+  rotate: false
+  xy: 1, 665
+  size: 314, 330
+  orig: 314, 330
+  offset: 0, 0
+  index: -1
 robot_idle_no_gun
   rotate: false
-  xy: 1, 669
+  xy: 1, 333
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 shoot
   rotate: false
-  xy: 1, 337
+  xy: 317, 665
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 walk1
   rotate: false
-  xy: 1, 5
+  xy: 1, 1
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 walk2
   rotate: false
-  xy: 317, 669
+  xy: 317, 333
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 walk3
   rotate: false
-  xy: 633, 669
+  xy: 633, 665
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
-splash6
-  rotate: false
-  xy: 949, 951
-  size: 64, 48
-  orig: 64, 48
-  offset: 0, 0
-  index: -1
-splash7
-  rotate: false
-  xy: 949, 901
-  size: 64, 48
-  orig: 64, 48
-  offset: 0, 0
-  index: -1
 walk_no_gun1
   rotate: false
-  xy: 317, 337
+  xy: 317, 1
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 walk_no_gun2
   rotate: false
-  xy: 317, 5
+  xy: 633, 333
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
 walk_no_gun3
   rotate: false
-  xy: 633, 337
+  xy: 633, 1
   size: 314, 330
   orig: 314, 330
   offset: 0, 0
   index: -1
-monster_walk2
+splash6
   rotate: false
-  xy: 633, 110
-  size: 178, 225
-  orig: 178, 225
+  xy: 949, 947
+  size: 64, 48
+  orig: 64, 48
   offset: 0, 0
   index: -1
-snake_dead2
+splash7
   rotate: false
-  xy: 633, 1
-  size: 270, 107
-  orig: 270, 107
-  offset: 0, 0
-  index: -1
-monster_walk7
-  rotate: false
-  xy: 813, 113
-  size: 177, 222
-  orig: 177, 222
-  offset: 0, 0
-  index: -1
-lives
-  rotate: false
-  xy: 905, 5
-  size: 90, 106
-  orig: 90, 106
+  xy: 949, 897
+  size: 64, 48
+  orig: 64, 48
   offset: 0, 0
   index: -1
 
@@ -669,183 +676,183 @@ filter: Nearest,Nearest
 repeat: none
 snake_bite2
   rotate: false
-  xy: 1, 861
+  xy: 1, 857
   size: 270, 144
   orig: 270, 144
   offset: 0, 0
   index: -1
 snake_bite3
   rotate: false
-  xy: 1, 715
+  xy: 1, 711
   size: 270, 144
   orig: 270, 144
   offset: 0, 0
   index: -1
 snake_bite4
   rotate: false
-  xy: 273, 861
+  xy: 273, 857
   size: 270, 144
   orig: 270, 144
   offset: 0, 0
   index: -1
 snake_bite5
   rotate: false
-  xy: 1, 569
+  xy: 1, 565
   size: 270, 144
   orig: 270, 144
   offset: 0, 0
   index: -1
+robot_hello
+  rotate: false
+  xy: 273, 610
+  size: 165, 245
+  orig: 165, 245
+  offset: 0, 0
+  index: -1
+monster_walk2
+  rotate: false
+  xy: 1, 338
+  size: 178, 225
+  orig: 178, 225
+  offset: 0, 0
+  index: -1
 monster_walk6
   rotate: false
-  xy: 273, 633
+  xy: 1, 110
   size: 177, 226
   orig: 177, 226
   offset: 0, 0
   index: -1
-monster_walk3
+snake_dead1
   rotate: false
-  xy: 1, 340
-  size: 175, 227
-  orig: 175, 227
-  offset: 0, 0
-  index: -1
-monster_walk5
-  rotate: false
-  xy: 1, 110
-  size: 170, 228
-  orig: 170, 228
-  offset: 0, 0
-  index: -1
-snake_slither1
-  rotate: false
-  xy: 545, 898
+  xy: 545, 894
   size: 270, 107
   orig: 270, 107
   offset: 0, 0
   index: -1
-monster_walk4
+monster_walk3
   rotate: false
-  xy: 178, 339
-  size: 167, 228
-  orig: 167, 228
+  xy: 440, 628
+  size: 175, 227
+  orig: 175, 227
+  offset: 0, 0
+  index: -1
+monster_walk7
+  rotate: false
+  xy: 617, 670
+  size: 177, 222
+  orig: 177, 222
   offset: 0, 0
   index: -1
 monster_attack1
   rotate: false
-  xy: 173, 112
+  xy: 181, 338
   size: 171, 225
   orig: 171, 225
   offset: 0, 0
   index: -1
-monster_attack6
-  rotate: false
-  xy: 452, 633
-  size: 159, 226
-  orig: 159, 226
-  offset: 0, 0
-  index: -1
-monster_walk1
-  rotate: false
-  xy: 613, 675
-  size: 176, 221
-  orig: 176, 221
-  offset: 0, 0
-  index: -1
 monster_attack7
   rotate: false
-  xy: 347, 405
+  xy: 180, 110
   size: 167, 226
   orig: 167, 226
   offset: 0, 0
   index: -1
-monster_attack4
-  rotate: false
-  xy: 516, 406
-  size: 158, 225
-  orig: 158, 225
-  offset: 0, 0
-  index: -1
-monster_attack2
-  rotate: false
-  xy: 676, 449
-  size: 148, 224
-  orig: 148, 224
-  offset: 0, 0
-  index: -1
-snake_slither2
+snake_dead2
   rotate: false
   xy: 1, 1
   size: 270, 107
   orig: 270, 107
   offset: 0, 0
   index: -1
+monster_walk1
+  rotate: false
+  xy: 817, 780
+  size: 176, 221
+  orig: 176, 221
+  offset: 0, 0
+  index: -1
+monster_attack6
+  rotate: false
+  xy: 354, 382
+  size: 159, 226
+  orig: 159, 226
+  offset: 0, 0
+  index: -1
+monster_attack4
+  rotate: false
+  xy: 515, 401
+  size: 158, 225
+  orig: 158, 225
+  offset: 0, 0
+  index: -1
+monster_attack2
+  rotate: false
+  xy: 675, 444
+  size: 148, 224
+  orig: 148, 224
+  offset: 0, 0
+  index: -1
 monster_attack5
   rotate: false
-  xy: 817, 782
+  xy: 825, 555
   size: 149, 223
   orig: 149, 223
   offset: 0, 0
   index: -1
-monster_attack3
+snake_slither1
   rotate: false
-  xy: 826, 560
-  size: 140, 220
-  orig: 140, 220
+  xy: 354, 273
+  size: 270, 107
+  orig: 270, 107
+  offset: 0, 0
+  index: -1
+snake_slither2
+  rotate: false
+  xy: 349, 164
+  size: 270, 107
+  orig: 270, 107
   offset: 0, 0
   index: -1
 snake_slither3
   rotate: false
-  xy: 347, 296
+  xy: 349, 55
   size: 270, 107
   orig: 270, 107
   offset: 0, 0
   index: -1
 snake_slither4
   rotate: false
-  xy: 346, 187
+  xy: 675, 335
   size: 270, 107
   orig: 270, 107
   offset: 0, 0
   index: -1
 snake_slither5
   rotate: false
-  xy: 346, 78
+  xy: 626, 226
   size: 270, 107
   orig: 270, 107
   offset: 0, 0
   index: -1
-bat1
+crab_dead1
   rotate: false
-  xy: 826, 515
-  size: 96, 43
-  orig: 96, 43
+  xy: 825, 489
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
-bat2
+crab_dead2
   rotate: false
-  xy: 826, 470
-  size: 96, 43
-  orig: 96, 43
+  xy: 621, 160
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
-bat3
+bat_dead2
   rotate: false
-  xy: 676, 404
-  size: 96, 43
-  orig: 96, 43
-  offset: 0, 0
-  index: -1
-bat4
-  rotate: false
-  xy: 826, 425
-  size: 96, 43
-  orig: 96, 43
-  offset: 0, 0
-  index: -1
-bat5
-  rotate: false
-  xy: 924, 515
-  size: 96, 43
-  orig: 96, 43
+  xy: 621, 110
+  size: 96, 48
+  orig: 96, 48
   offset: 0, 0
   index: -1

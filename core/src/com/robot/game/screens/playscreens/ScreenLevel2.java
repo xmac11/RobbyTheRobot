@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
@@ -24,6 +25,7 @@ import static com.robot.game.util.constants.Constants.*;
 public class ScreenLevel2 extends PlayScreen {
 
     private Array<Parallax> parallaxWaters = new Array<>();
+    private Sprite instrctions;
 
     public ScreenLevel2(RobotGame game) {
         super(game, game.getAssets().tiledMapAssets.tiledMapLevel2, 2);
@@ -32,6 +34,13 @@ public class ScreenLevel2 extends PlayScreen {
     @Override
     public void show() {
         Gdx.app.log("ScreenLevel2", "show");
+
+        // instructions
+        if(!onAndroid) {
+            this.instrctions = new Sprite(assets.mainMenuAssets.instructions);
+            instrctions.setSize(instrctions.getWidth() / 2 / PPM, instrctions.getHeight() / 2 / PPM);
+            instrctions.setPosition(32 / PPM, 64 / PPM);
+        }
 
         // create tiled objects
         super.layersObjectArray = new Array<>();
@@ -64,7 +73,6 @@ public class ScreenLevel2 extends PlayScreen {
 
         // create ray handler (box2d lights)
         super.rayHandler = new RayHandler(world);
-//        rayHandler.setAmbientLight(1);
         rayHandler.setShadows(false);
         super.pointLight = new PointLight(rayHandler, 10, Color.CYAN, 48 / PPM, 0, 0);
 
@@ -138,9 +146,15 @@ public class ScreenLevel2 extends PlayScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // render map
         mapRenderer.render();
 
         batch.begin();
+
+        // render instructions
+        if(!onAndroid) {
+            instrctions.draw(batch);
+        }
 
         // render common elements (interactive platforms, robot, enemies, collectables, feedbackRenderer)
         super.commonRendering(delta);
@@ -224,6 +238,7 @@ public class ScreenLevel2 extends PlayScreen {
         laserHandler.setToNull();
         punchHandler.setToNull();
         parallaxWaters = null;
+        instrctions = null;
         Gdx.app.log("ScreenLevel2", "Objects were set to null");
     }
 
