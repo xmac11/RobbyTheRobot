@@ -40,7 +40,6 @@ public class Hud implements Disposable {
 
     // Pause panel
     private Stage stage;
-    private Image pausePanel;
     private TextButton toResumeButton;
     private TextButton toMenuButton;
     private BitmapFont pauseFont;
@@ -73,7 +72,7 @@ public class Hud implements Disposable {
         // pause panel
         this.stage = new Stage(hudViewport, playScreen.getGame().getBatch());
         this.pauseFont = assets.panelFontAssets.panelFont;
-        this.pausePanel = new Image(assets.pausePanelAssets.pausePanel);
+        Image pausePanel = new Image(assets.pausePanelAssets.pausePanel);
         pausePanel.setSize(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2);
         pausePanel.setPosition(hudViewport.getWorldWidth() / 2 - pausePanel.getWidth() / 2, hudViewport.getWorldHeight() / 2 - pausePanel.getHeight() / 2);
 

@@ -19,7 +19,6 @@ import com.robot.game.util.checkpoints.CheckpointData;
 import com.robot.game.util.checkpoints.FileSaver;
 
 import static com.robot.game.util.constants.Constants.*;
-import static com.robot.game.util.constants.Constants.PPM;
 
 public class SelectLevelScreen extends ScreenAdapter {
 

@@ -30,7 +30,6 @@ public class RobCaptcha extends ScreenAdapter {
     private BitmapFont font;
 
     private Stage stage;
-    private Image captchaPanel;
     private Image clickCaptcha;
     private TextButton returnButton;
     private Sprite checkSprite;
@@ -53,12 +52,12 @@ public class RobCaptcha extends ScreenAdapter {
         this.stage = new Stage(viewport, game.getBatch());
 
         // image
-        this.captchaPanel = new Image(game.getAssets().mainMenuAssets.robCaptcha);
+        Image captchaPanel = new Image(game.getAssets().mainMenuAssets.robCaptcha);
         captchaPanel.setSize(captchaPanel.getWidth() / 2 / PPM, captchaPanel.getHeight() / 2 / PPM); // was drawn twice the actual size for better resolution
         captchaPanel.setPosition(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, Align.center);
 
         // create buttons
-        createButtons();
+        createButtons(captchaPanel);
 
         // add listeners
         addListeners();
@@ -113,7 +112,7 @@ public class RobCaptcha extends ScreenAdapter {
         }
     }
 
-    private void createButtons() {
+    private void createButtons(Image captchaPanel) {
         // click button
         this.clickCaptcha = new Image(game.getAssets().mainMenuAssets.clickCaptcha);
         clickCaptcha.setSize(clickCaptcha.getWidth() / 2 / PPM, clickCaptcha.getHeight() / 2 / PPM);

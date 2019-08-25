@@ -31,7 +31,6 @@ public class MenuScreen extends ScreenAdapter {
 
     private Stage stage;
     private Viewport viewport;
-    private BitmapFont titleFont;
     private BitmapFont font;
 
     private int selection;
@@ -56,7 +55,7 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.app.log("MenuScreen", "show");
 
         this.viewport = new FitViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
-        this.titleFont = assets.panelBigFontAssets.panelBigFont;
+        BitmapFont titleFont = assets.panelBigFontAssets.panelBigFont;
 
         this.font = assets.panelFontAssets.panelFont;
 
