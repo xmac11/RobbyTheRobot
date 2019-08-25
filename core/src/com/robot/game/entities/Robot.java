@@ -388,6 +388,12 @@ public class Robot {
     private void processInputLaserAndPunching() {
         // shoot laser
         if(Gdx.input.isKeyJustPressed(Input.Keys.F) || playScreen.getAndroidController().isShootClicked()) {
+
+            // if on android, un-flag shooting
+            if(playScreen.isOnAndroid()) {
+                playScreen.getAndroidController().setShootClicked(false);
+            }
+
             // if no ammo, return
             if(checkpointData.getAmmo() == 0)
                 return;
@@ -398,11 +404,6 @@ public class Robot {
 
             // decrease ammo
             checkpointData.decreaseAmmo();
-
-            // if on android, un-flag shooting
-            if(playScreen.isOnAndroid()) {
-                playScreen.getAndroidController().setShootClicked(false);
-            }
         }
 
         // punch
