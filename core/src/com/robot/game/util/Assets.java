@@ -494,12 +494,14 @@ public class Assets {
         public final TextureRegion greenBar;
         public final TextureRegion redBar;
         public final TextureRegion lives;
+        public final TextureRegion lives_ammo;
 
         private HudAssets(TextureAtlas atlas) {
             this.frame = atlas.findRegion("frame");
             this.greenBar = atlas.findRegion("green");
             this.redBar = atlas.findRegion("red");
             this.lives = atlas.findRegion("lives");
+            this.lives_ammo = atlas.findRegion("lives_ammo");
         }
     }
 

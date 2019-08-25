@@ -27,6 +27,7 @@ public class Hud implements Disposable {
 
     private PlayScreen playScreen;
     private CheckpointData checkpointData;
+    private int levelID;
     private Viewport hudViewport;
     private TextureRegion frame;
     private TextureRegion greenBar;
@@ -49,6 +50,7 @@ public class Hud implements Disposable {
 
     public Hud(PlayScreen playScreen) {
         this.playScreen = playScreen;
+        this.levelID = playScreen.getLevelID();
         Assets assets = playScreen.getGame().getAssets();
         this.checkpointData = playScreen.getGame().getCheckpointData();
         this.hudViewport = new ExtendViewport(SCREEN_WIDTH / PPM, SCREEN_HEIGHT / PPM);
@@ -56,7 +58,7 @@ public class Hud implements Disposable {
         this.frame = assets.hudAssets.frame;
         this.greenBar = assets.hudAssets.greenBar;
         this.redBar = assets.hudAssets.redBar;
-        this.lives = assets.hudAssets.lives;
+        this.lives = levelID == 1 ? assets.hudAssets.lives : assets.hudAssets.lives_ammo;
         this.hudFont = assets.hudFontAssets.hudFont;
         this.hpFont = assets.hpFontAssets.hpFont;
 
@@ -172,23 +174,45 @@ public class Hud implements Disposable {
                 false);
 
         // draw lives image
-        batch.draw(lives,
-                hudViewport.getWorldWidth() - (PADDING + 2.2f * LIVES_WIDTH) / PPM,
-                hudViewport.getWorldHeight() - (PADDING + LIVES_HEIGHT) / PPM,
-                LIVES_WIDTH / PPM,
-                LIVES_HEIGHT / PPM);
+        if(levelID == 1) {
+            batch.draw(lives,
+                    hudViewport.getWorldWidth() - (PADDING + 2.2f * LIVES_WIDTH) / PPM,
+                    hudViewport.getWorldHeight() - (PADDING + LIVES_HEIGHT) / PPM,
+                    LIVES_WIDTH / PPM,
+                    LIVES_HEIGHT / PPM);
+        }
+        // else draw lives_ammo image
+        else {
+            batch.draw(lives,
+                    hudViewport.getWorldWidth() - (PADDING + 2.2f * LIVES_WIDTH) / PPM,
+                    hudViewport.getWorldHeight() - (PADDING + 2.04f * LIVES_HEIGHT) / PPM,
+                    LIVES_WIDTH / PPM,
+                    2.04f * LIVES_HEIGHT / PPM);
+        }
 
-        // draw lives loadingScreenFont (label)
+        // draw lives (label)
         hudFont.setColor(Color.WHITE);
         hudFont.draw(batch,
-                "x" + checkpointData.getLives(),
+                "x" + Math.max(checkpointData.getLives(), 0),
                 hudViewport.getWorldWidth() - PADDING / PPM - livesGlyphLayout.width / 2,
                 hudViewport.getWorldHeight() - PADDING / PPM - livesGlyphLayout.height / 2,
-                /*LIVES_WIDTH / PPM*/0,
+                0,
                 Align.center,
                 false);
+
+        // draw ammo (label)
+        if(levelID > 1) {
+            hudFont.draw(batch,
+                    "x" + checkpointData.getAmmo(),
+                    hudViewport.getWorldWidth() - PADDING / PPM - livesGlyphLayout.width / 2,
+                    hudViewport.getWorldHeight() - 2 * PADDING / PPM - 2 * livesGlyphLayout.height,
+                    0,
+                    Align.center,
+                    false);
+        }
         batch.end();
 
+        // if paused, update and draw the pause panel
         if(playScreen.isPaused()) {
             this.update();
 

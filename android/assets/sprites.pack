@@ -503,6 +503,20 @@ trampoline2
   orig: 128, 128
   offset: 0, 0
   index: -1
+lives_ammo
+  rotate: false
+  xy: 901, 253
+  size: 90, 216
+  orig: 90, 216
+  offset: 0, 0
+  index: -1
+lives
+  rotate: false
+  xy: 897, 145
+  size: 90, 106
+  orig: 90, 106
+  offset: 0, 0
+  index: -1
 green
   rotate: false
   xy: 235, 23
@@ -510,18 +524,18 @@ green
   orig: 157, 32
   offset: 0, 0
   index: -1
-lives
-  rotate: false
-  xy: 901, 363
-  size: 90, 106
-  orig: 90, 106
-  offset: 0, 0
-  index: -1
 red
   rotate: false
   xy: 394, 23
   size: 157, 32
   orig: 157, 32
+  offset: 0, 0
+  index: -1
+crab1
+  rotate: false
+  xy: 897, 79
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
 bat2
@@ -554,37 +568,9 @@ bat5
   index: -1
 bat_dead1
   rotate: false
-  xy: 901, 313
+  xy: 897, 29
   size: 96, 48
   orig: 96, 48
-  offset: 0, 0
-  index: -1
-crab1
-  rotate: false
-  xy: 897, 247
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab2
-  rotate: false
-  xy: 897, 181
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab3
-  rotate: false
-  xy: 897, 115
-  size: 96, 64
-  orig: 96, 64
-  offset: 0, 0
-  index: -1
-crab4
-  rotate: false
-  xy: 897, 49
-  size: 96, 64
-  orig: 96, 64
   offset: 0, 0
   index: -1
 
@@ -765,7 +751,7 @@ snake_dead2
   orig: 270, 107
   offset: 0, 0
   index: -1
-crab_dead1
+crab2
   rotate: false
   xy: 452, 583
   size: 96, 64
@@ -807,7 +793,7 @@ snake_slither1
   orig: 270, 107
   offset: 0, 0
   index: -1
-crab_dead2
+crab3
   rotate: false
   xy: 273, 136
   size: 96, 64
@@ -821,11 +807,11 @@ monster_attack6
   orig: 159, 226
   offset: 0, 0
   index: -1
-bat_dead2
+crab4
   rotate: false
-  xy: 618, 371
-  size: 96, 48
-  orig: 96, 48
+  xy: 618, 355
+  size: 96, 64
+  orig: 96, 64
   offset: 0, 0
   index: -1
 snake_slither2
@@ -847,6 +833,27 @@ monster_attack5
   xy: 779, 113
   size: 149, 223
   orig: 149, 223
+  offset: 0, 0
+  index: -1
+crab_dead1
+  rotate: false
+  xy: 817, 47
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+crab_dead2
+  rotate: false
+  xy: 915, 47
+  size: 96, 64
+  orig: 96, 64
+  offset: 0, 0
+  index: -1
+bat_dead2
+  rotate: false
+  xy: 1, 21
+  size: 96, 48
+  orig: 96, 48
   offset: 0, 0
   index: -1
 

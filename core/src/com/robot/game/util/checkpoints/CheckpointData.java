@@ -11,6 +11,7 @@ public class CheckpointData {
     private int health;
     private int lives;
     private int score;
+    private int ammo;
     private Vector2 spawnLocation;
     private boolean hasTorch;
 
@@ -114,6 +115,18 @@ public class CheckpointData {
         this.levelID = levelID;
     }
 
+    public int getAmmo() {
+        return ammo;
+    }
+
+    public void setAmmo(int ammo) {
+        this.ammo = ammo;
+    }
+
+    public void decreaseAmmo() {
+        ammo = Math.max(--ammo, 0);
+    }
+
     public boolean isGameCompleted() {
         return gameCompleted;
     }
@@ -133,6 +146,7 @@ public class CheckpointData {
         health = 100;
         lives = 3;
         score = 0;
+        ammo = 6;
         hasTorch = false;
     }
 

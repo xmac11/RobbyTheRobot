@@ -377,6 +377,7 @@ public class Robot {
             Gdx.app.log("Robot","UP key pressed in robot class -> climbTimer was set");
         }
 
+        // check for laser or punching input
         if(levelID > 1) {
             processInputLaserAndPunching();
         }
@@ -387,9 +388,16 @@ public class Robot {
     private void processInputLaserAndPunching() {
         // shoot laser
         if(Gdx.input.isKeyJustPressed(Input.Keys.F) || playScreen.getAndroidController().isShootClicked()) {
+            // if no ammo, return
+            if(checkpointData.getAmmo() == 0)
+                return;
+
             playScreen.getLaserHandler().startRayCast();
             this.shootingLaser = true;
             this.elapsedAnim = 0;
+
+            // decrease ammo
+            checkpointData.decreaseAmmo();
 
             // if on android, un-flag shooting
             if(playScreen.isOnAndroid()) {

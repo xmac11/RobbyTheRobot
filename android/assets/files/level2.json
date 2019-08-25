@@ -2671,8 +2671,65 @@
                  "type":"",
                  "visible":true,
                  "width":32,
-                 "x":4688,
+                 "x":4680,
                  "y":640
+                }, 
+                {
+                 "height":16,
+                 "id":304,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"endX",
+                         "type":"float",
+                         "value":4784
+                        }, 
+                        {
+                         "name":"endY",
+                         "type":"float",
+                         "value":-1
+                        }, 
+                        {
+                         "name":"enemy",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"facing",
+                         "type":"string",
+                         "value":"right"
+                        }, 
+                        {
+                         "name":"snake",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"startX",
+                         "type":"float",
+                         "value":4592
+                        }, 
+                        {
+                         "name":"startY",
+                         "type":"float",
+                         "value":-1
+                        }, 
+                        {
+                         "name":"vX",
+                         "type":"float",
+                         "value":-1.5
+                        }, 
+                        {
+                         "name":"vY",
+                         "type":"float",
+                         "value":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":4680,
+                 "y":832
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2764,7 +2821,7 @@
          "y":0
         }],
  "nextlayerid":51,
- "nextobjectid":304,
+ "nextobjectid":305,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",
