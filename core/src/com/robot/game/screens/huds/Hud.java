@@ -85,6 +85,7 @@ public class Hud implements Disposable {
         // add listeners to buttons
         addListeners();
 
+        // add actors
         stage.addActor(pausePanel);
         stage.addActor(toMenuButton);
         stage.addActor(toResumeButton);
@@ -210,10 +211,12 @@ public class Hud implements Disposable {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = pauseFont;
 
+        // resume button
         this.toResumeButton = new TextButton("RESUME", style);
-        toResumeButton.setPosition(resumeGlyph.width, resumeGlyph.height);
+        toResumeButton.setSize(resumeGlyph.width, resumeGlyph.height);
         toResumeButton.setPosition(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2, Align.center);
 
+        // menu button
         this.toMenuButton = new TextButton("MENU", style);
         toMenuButton.setSize(menuGlyph.width, menuGlyph.height);
         toMenuButton.setPosition(hudViewport.getWorldWidth() / 2, hudViewport.getWorldHeight() / 2 - 48 / PPM, Align.center);

@@ -25,6 +25,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private RobotGame game;
     private Assets assets;
+    private boolean gameCompleted;
 
     private Stage stage;
     private Viewport menuScreenViewport;
@@ -35,6 +36,7 @@ public class MenuScreen extends ScreenAdapter {
 
     private Array<TextButton> buttons;
     private int playIndex;
+    private int selectLevelIndex;
     private int storyIndex;
     private int tutorialIndex;
     private int exitIndex;
@@ -42,6 +44,7 @@ public class MenuScreen extends ScreenAdapter {
     public MenuScreen(RobotGame game) {
         this.game = game;
         this.assets = game.getAssets();
+        this.gameCompleted = game.getCheckpointData().isGameCompleted();
         this.buttons = new Array<>();
     }
 
@@ -125,7 +128,7 @@ public class MenuScreen extends ScreenAdapter {
     private void createButtons() {
         // play GlyphLayout
         GlyphLayout playGlyph = new GlyphLayout();
-        playGlyph.setText(font, "PLAY");
+        playGlyph.setText(font, gameCompleted ? "RESUME GAME" : "PLAY");
 
         // story GlyphLayout
         GlyphLayout storyGlyph = new GlyphLayout();
@@ -139,6 +142,10 @@ public class MenuScreen extends ScreenAdapter {
         GlyphLayout exitGlyph = new GlyphLayout();
         exitGlyph.setText(font, "EXIT");
 
+        // selectLevel GlyphLayout
+        GlyphLayout selectLevelGlyph = new GlyphLayout();
+        selectLevelGlyph.setText(font, "NEW GAME");
+
         // add font to style
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = font;
@@ -146,12 +153,22 @@ public class MenuScreen extends ScreenAdapter {
         int index = 0;
 
         // play button
-        TextButton playButton = new TextButton("PLAY", style);
+        TextButton playButton = new TextButton(gameCompleted ? "RESUME GAME" : "PLAY", style);
         playButton.setSize(playGlyph.width, playGlyph.height);
         playButton.setPosition(menuScreenViewport.getWorldWidth() / 2, menuScreenViewport.getWorldHeight() / 2, Align.center);
         buttons.add(playButton);
         this.playIndex = index++;
         Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
+
+        // select level button
+        if(gameCompleted) {
+            TextButton selectLevelButton = new TextButton("NEW GAME", style);
+            selectLevelButton.setSize(selectLevelGlyph.width, selectLevelGlyph.height);
+            selectLevelButton.setPosition(menuScreenViewport.getWorldWidth() / 2, buttons.get(index-1).getY() - 32 / PPM, Align.center);
+            buttons.add(selectLevelButton);
+            this.selectLevelIndex = index++;
+            Gdx.app.log("MenuScreen", "selectLevelIndex = " + selectLevelIndex);
+        }
 
         // story button
         TextButton storyButton = new TextButton("STORY", style);
@@ -196,6 +213,24 @@ public class MenuScreen extends ScreenAdapter {
                 selection = playIndex;
             }
         });
+
+        // select level button
+        if(gameCompleted) {
+            buttons.get(selectLevelIndex).addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.log("MenuScreen", "Clicked SELECT LEVEL button");
+                    selection = selectLevelIndex;
+                    handleSelection();
+                }
+
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    Gdx.app.log("MenuScreen", "Entered SELECT LEVEL button");
+                    selection = selectLevelIndex;
+                }
+            });
+        }
 
         // story button
         buttons.get(storyIndex).addListener(new ClickListener() {
@@ -256,6 +291,10 @@ public class MenuScreen extends ScreenAdapter {
         if(selection == playIndex) {
             Gdx.app.log("MenuScreen", "PLAY was selected. Switching to RobCaptcha screen");
             game.setScreen(new RobCaptcha(game));
+        }
+        else if(selection == selectLevelIndex) {
+            Gdx.app.log("MenuScreen", "SELECT LEVEL was selected.");
+            game.setScreen(new SelectLevelScreen(game));
         }
         else if(selection == storyIndex) {
             Gdx.app.log("MenuScreen", "STORY was selected.");

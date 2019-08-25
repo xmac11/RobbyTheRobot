@@ -19,6 +19,9 @@ public class CheckpointData {
     private boolean secondCheckpointActivated;
     private boolean thirdCheckpointActivated;
 
+    // game completed
+    private boolean gameCompleted;
+
     public int getHealth() {
         return health;
     }
@@ -109,6 +112,14 @@ public class CheckpointData {
 
     public void setLevelID(int levelID) {
         this.levelID = levelID;
+    }
+
+    public boolean isGameCompleted() {
+        return gameCompleted;
+    }
+
+    public void setGameCompleted(boolean gameCompleted) {
+        this.gameCompleted = gameCompleted;
     }
 
     public void setCheckpointsToFalse() {

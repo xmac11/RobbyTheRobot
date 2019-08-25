@@ -227,6 +227,10 @@ public class ScreenLevel3 extends PlayScreen {
             // reset data
             checkpointData.setDefaultRobotData();
             checkpointData.setDefaultLevelData(3);
+            checkpointData.setGameCompleted(true);
+
+            // save game data
+            FileSaver.saveCheckpointData(checkpointData);
 
             // load game completed assets
             game.getAssets().loadGameCompletedAssets();

@@ -124,9 +124,12 @@ public class RobCaptcha extends ScreenAdapter {
         // return GlyphLayout
         GlyphLayout returnGlyph = new GlyphLayout();
         returnGlyph.setText(font, "RETURN");
+
         // add font to style
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = font;
+
+        // return button
         this.returnButton = new TextButton("RETURN", style);
         returnButton.setSize(returnGlyph.width, returnGlyph.height);
         returnButton.setPosition(viewport.getWorldWidth() / 2 + captchaPanel.getWidth() / 2.5f, viewport.getWorldHeight() / 2 - captchaPanel.getHeight() / 1.3f, Align.center);
@@ -167,9 +170,8 @@ public class RobCaptcha extends ScreenAdapter {
                 Gdx.app.log("RobCaptcha", "Exited RETURN button");
                 returnButton.getLabel().setColor(238f / 255, 232f / 255, 170f / 255, 1); // white
             }
-
-
         });
+
         Gdx.app.log("RobCaptcha", "Listeners were added to buttons");
     }
 
