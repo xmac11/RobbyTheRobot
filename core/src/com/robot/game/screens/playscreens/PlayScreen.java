@@ -731,7 +731,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         }
         // robot died and has no remaining lives
         else {
-            Gdx.app.log("PlayScreen", "Player died, no more lives left :(");
+            Gdx.app.log("PlayScreen", "Player died, no more lives left");
 
             // keep track of score because it will be reset to zero
             this.scoreOnGameEnd = checkpointData.getScore();
@@ -798,7 +798,7 @@ public abstract class PlayScreen extends ScreenAdapter {
                     try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                     System.gc();
                 }
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
             // start level1
@@ -832,7 +832,7 @@ public abstract class PlayScreen extends ScreenAdapter {
                     try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                     System.gc();
                 }
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
             // start level2
@@ -870,7 +870,7 @@ public abstract class PlayScreen extends ScreenAdapter {
                     try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                     System.gc();
                 }
-                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted + "!!!");
+                Gdx.app.log("PlayScreen", "collectedItems.json deleted = " + deleted);
             }
 
             // start level3

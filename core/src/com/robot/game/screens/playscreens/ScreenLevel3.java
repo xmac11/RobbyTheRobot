@@ -218,7 +218,6 @@ public class ScreenLevel3 extends PlayScreen {
                     try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                     System.gc();
                 }
-                System.out.println(deleted + "!!!!!!!!!");
                 Gdx.app.log("ScreenLevel3", "collectedItems.json deleted = " + deleted);
             }
 

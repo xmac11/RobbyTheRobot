@@ -321,7 +321,6 @@ public class ScreenLevel1 extends PlayScreen {
             if(FileSaver.getCollectedItemsFile().exists()) {
                 FileSaver.resetSpawningOfCollectables(levelID);
                 boolean deleted = FileSaver.getCollectedItemsFile().delete();
-                System.out.println(deleted + "!!!!!!!!!");
                 Gdx.app.log("ScreenLevel1", "collectedItems.json deleted = " + deleted);
             }
 

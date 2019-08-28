@@ -118,7 +118,7 @@ public class SelectLevelScreen extends ScreenAdapter {
                 try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                 System.gc();
             }
-            Gdx.app.log("SelectLevelScreen", "collectedItems.json deleted = " + deleted + "!!!");
+            Gdx.app.log("SelectLevelScreen", "collectedItems.json deleted = " + deleted);
         }
 
         // switch to RobCaptcha

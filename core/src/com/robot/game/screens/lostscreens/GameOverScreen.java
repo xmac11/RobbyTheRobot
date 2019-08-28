@@ -263,7 +263,6 @@ public class GameOverScreen extends ScreenAdapter {
                 try { Thread.sleep(50); } catch (InterruptedException e) { e.printStackTrace(); }
                 System.gc();
             }
-            System.out.println(deleted + "!!!!!!!!!");
             Gdx.app.log("GameOverScreen", "collectedItems.json deleted = " + deleted);
         }
     }
