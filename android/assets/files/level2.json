@@ -2048,6 +2048,38 @@
                  "width":20,
                  "x":2200,
                  "y":720
+                }, 
+                {
+                 "height":22,
+                 "id":305,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"collectable",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"fullHeal",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"powerup",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
+                         "name":"shouldSpawn",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":20,
+                 "x":3712,
+                 "y":184
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2821,7 +2853,7 @@
          "y":0
         }],
  "nextlayerid":51,
- "nextobjectid":305,
+ "nextobjectid":306,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.2.4",

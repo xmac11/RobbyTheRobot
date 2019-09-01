@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="346" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="51" nextobjectid="305">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="346" height="64" tilewidth="16" tileheight="16" infinite="0" nextlayerid="51" nextobjectid="306">
  <tileset firstgid="1" source="Caribbean_2D.tsx"/>
  <tileset firstgid="17" source="tiles_l2_final.tsx"/>
  <imagelayer id="38" name="Background">
@@ -469,6 +469,14 @@
   <object id="303" x="2200" y="720" width="20" height="16">
    <properties>
     <property name="collectable" value=""/>
+    <property name="shouldSpawn" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="305" x="3712" y="184" width="20" height="22">
+   <properties>
+    <property name="collectable" value=""/>
+    <property name="fullHeal" type="bool" value="false"/>
+    <property name="powerup" value=""/>
     <property name="shouldSpawn" type="bool" value="true"/>
    </properties>
   </object>

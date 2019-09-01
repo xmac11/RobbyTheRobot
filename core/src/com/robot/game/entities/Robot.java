@@ -387,7 +387,7 @@ public class Robot {
 
     private void processInputLaserAndPunching() {
         // shoot laser
-        if(Gdx.input.isKeyJustPressed(Input.Keys.F) || playScreen.getAndroidController().isShootClicked()) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.S) || playScreen.getAndroidController().isShootClicked()) {
 
             // if on android, un-flag shooting
             if(playScreen.isOnAndroid()) {
@@ -407,7 +407,7 @@ public class Robot {
         }
 
         // punch
-        if(Gdx.input.isKeyJustPressed(Input.Keys.G) || playScreen.getAndroidController().isPunchClicked()) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.D) || playScreen.getAndroidController().isPunchClicked()) {
             punching = true;
             this.elapsedAnim = 0;
             playScreen.getPunchHandler().startRayCast();
