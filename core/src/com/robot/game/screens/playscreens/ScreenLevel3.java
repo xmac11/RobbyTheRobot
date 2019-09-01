@@ -181,8 +181,10 @@ public class ScreenLevel3 extends PlayScreen {
             this.checkIfLevelComplete();
         }
 
-        //if(DEBUG_ON)
-        super.toggleDebugLevels();
+        // debug keys for moving between levels
+        if(DEBUG_KEYS_ON) {
+            super.toggleDebugLevels();
+        }
     }
 
     @Override

@@ -671,7 +671,7 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     protected void processGameStateInput() {
         // return to menu screen with ESC
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if(DEBUG_KEYS_ON && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             escapePressed = true;
             Gdx.app.log("PlayScreen", "escapePressed = true");
         }
@@ -761,16 +761,13 @@ public abstract class PlayScreen extends ScreenAdapter {
         game.setScreen(new MenuScreen(game));
     }
 
+    // debug keys for moving between levels
     protected void toggleDebugLevels() {
         // toggle damage on/off
         if(Gdx.input.isKeyJustPressed(Input.Keys.N)) {
             setDamageON(!damageON);
         }
-        // deletes checkpoint and collected items files
-        /*if(Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            this.wipeOutData();
-        }*/
-        //level1
+        // switch to level1
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_1)) {
             Gdx.app.log("PlayScreen", "Level 1 was set from debug keys");
 
@@ -805,7 +802,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             dispose();
             game.setScreen(new ScreenLevel1(game));
         }
-        // level 2
+        // switch to level 2
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_2)) {
             Gdx.app.log("PlayScreen", "Level 2 was set from debug keys");
             // stop muisc
@@ -840,7 +837,7 @@ public abstract class PlayScreen extends ScreenAdapter {
             game.setScreen(new ScreenLevel2(game));
         }
 
-        // level3
+        // switch to level3
         else if(Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_3)) {
             Gdx.app.log("PlayScreen", "Level 3 was set from debug keys");
             // stop muisc

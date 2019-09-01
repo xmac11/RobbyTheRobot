@@ -31,8 +31,9 @@ public class DebugCamera {
     public void update(float delta) {
 
         // reverse boolean when 'C' is pressed
-        if(/*DEBUG_ON && */Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+        if(DEBUG_KEYS_ON && Gdx.input.isKeyJustPressed(Input.Keys.C)) {
             following = !following;
+            Gdx.app.log("DebugCamera", "following = " + following);
         }
 
         // if following, follow robot, else move camera according to input

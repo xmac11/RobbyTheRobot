@@ -120,10 +120,11 @@ public class ScreenLevel2 extends PlayScreen {
         // check for mute or ESC
         super.processGameStateInput();
 
-        //// Debug keys for checkpoints ////
 
-        //if(DEBUG_ON)
-        this.toggleDebugCheckpoints();
+        // debug keys for moving between checkpoints of level 2
+        if(DEBUG_KEYS_ON) {
+            this.toggleDebugCheckpointsL2();
+        }
 
         // handle checkpoints
         this.handleCheckpoints();
@@ -211,8 +212,10 @@ public class ScreenLevel2 extends PlayScreen {
             this.checkIfLevelComplete();
         }
 
-        //if(DEBUG_ON)
-        super.toggleDebugLevels();
+        // debug keys for moving between levels
+        if(DEBUG_KEYS_ON) {
+            super.toggleDebugLevels();
+        }
     }
 
     @Override
@@ -290,9 +293,9 @@ public class ScreenLevel2 extends PlayScreen {
         }
     }
 
-    // Debug keys for checkpoints
+    // Debug keys for checkpoints of level 2
 
-    private void toggleDebugCheckpoints() {
+    private void toggleDebugCheckpointsL2() {
         if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
             Gdx.app.log("ScreenLevel2", "Checkpoints reset");
             // reset level data
