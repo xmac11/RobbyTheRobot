@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
-import com.robot.game.util.checkpoints.CheckpointData;
+import com.robot.game.Assets;
+import com.robot.game.checkpoints.CheckpointData;
 
 import static com.robot.game.util.constants.Constants.*;
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.robot.game.entities.abstractEnemies.Enemy;
-import com.robot.game.util.Assets;
+import com.robot.game.Assets;
 
 import static com.robot.game.util.constants.Constants.*;
 

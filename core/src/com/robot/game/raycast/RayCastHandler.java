@@ -1,4 +1,4 @@
-package com.robot.game.util.raycast;
+package com.robot.game.raycast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -8,7 +8,7 @@ import com.robot.game.entities.Monster;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
+import com.robot.game.Assets;
 import com.robot.game.util.staticMethods.StaticMethods;
 
 import static com.robot.game.util.constants.Constants.WALL_JUMPING_PROPERTY;

@@ -1,4 +1,4 @@
-package com.robot.game.util;
+package com.robot.game;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;

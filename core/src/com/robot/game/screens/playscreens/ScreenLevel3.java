@@ -10,9 +10,9 @@ import com.badlogic.gdx.utils.Array;
 import com.robot.game.RobotGame;
 import com.robot.game.screens.GameCompletedScreen;
 import com.robot.game.util.constants.Enums;
-import com.robot.game.util.checkpoints.FileSaver;
-import com.robot.game.util.raycast.LaserHandler;
-import com.robot.game.util.raycast.PunchHandler;
+import com.robot.game.checkpoints.FileSaver;
+import com.robot.game.raycast.LaserHandler;
+import com.robot.game.raycast.PunchHandler;
 
 import static com.robot.game.util.constants.Constants.*;
 

@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.*;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
-import com.robot.game.util.Damaging;
+import com.robot.game.Assets;
+import com.robot.game.interfaces.Damaging;
 import com.robot.game.util.staticMethods.StaticMethods;
 
 import static com.robot.game.util.constants.Constants.*;

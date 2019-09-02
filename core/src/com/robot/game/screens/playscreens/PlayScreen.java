@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.robot.game.Assets;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
@@ -45,10 +46,10 @@ import com.robot.game.screens.menuscreens.MenuScreen;
 import com.robot.game.screens.huds.FeedbackRenderer;
 import com.robot.game.screens.huds.Hud;
 import com.robot.game.util.*;
-import com.robot.game.util.checkpoints.CheckpointData;
-import com.robot.game.util.checkpoints.FileSaver;
-import com.robot.game.util.raycast.LaserHandler;
-import com.robot.game.util.raycast.PunchHandler;
+import com.robot.game.checkpoints.CheckpointData;
+import com.robot.game.checkpoints.FileSaver;
+import com.robot.game.raycast.LaserHandler;
+import com.robot.game.raycast.PunchHandler;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -259,11 +260,6 @@ public abstract class PlayScreen extends ScreenAdapter {
         // set input processor
         Gdx.input.setInputProcessor(onAndroid ? androidController.getStage() : null);
     }
-
-    /*@Override
-    public void show() {
-
-    }*/
 
     public abstract void checkIfLevelComplete();
 

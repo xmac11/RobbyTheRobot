@@ -1,4 +1,4 @@
-package com.robot.game.util;
+package com.robot.game.interfaces;
 
 public interface Damaging {
 

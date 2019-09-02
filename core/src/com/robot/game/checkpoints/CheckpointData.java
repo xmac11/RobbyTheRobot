@@ -1,4 +1,4 @@
-package com.robot.game.util.checkpoints;
+package com.robot.game.checkpoints;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;

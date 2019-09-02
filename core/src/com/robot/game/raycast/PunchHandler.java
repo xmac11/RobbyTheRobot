@@ -1,4 +1,4 @@
-package com.robot.game.util.raycast;
+package com.robot.game.raycast;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;

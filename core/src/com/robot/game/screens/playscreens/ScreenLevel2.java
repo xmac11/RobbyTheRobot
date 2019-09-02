@@ -16,9 +16,9 @@ import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
 import com.robot.game.interactiveObjects.spikes.JointHandler;
-import com.robot.game.util.checkpoints.FileSaver;
-import com.robot.game.util.raycast.LaserHandler;
-import com.robot.game.util.raycast.PunchHandler;
+import com.robot.game.checkpoints.FileSaver;
+import com.robot.game.raycast.LaserHandler;
+import com.robot.game.raycast.PunchHandler;
 
 import static com.robot.game.util.constants.Constants.*;
 

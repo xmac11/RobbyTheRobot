@@ -18,7 +18,7 @@ import com.robot.game.entities.crab.CrabPatrolling;
 import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
-import com.robot.game.util.Damaging;
+import com.robot.game.interfaces.Damaging;
 
 import static com.robot.game.util.constants.Constants.*;
 import static com.robot.game.util.constants.Enums.Facing;

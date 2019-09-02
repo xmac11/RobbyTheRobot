@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Damaging;
+import com.robot.game.interfaces.Damaging;
 
 import static com.robot.game.util.constants.Constants.*;
 

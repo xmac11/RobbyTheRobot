@@ -10,8 +10,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
-import com.robot.game.util.Damaging;
+import com.robot.game.Assets;
+import com.robot.game.interfaces.Damaging;
 
 public abstract class Enemy implements Damaging {
 

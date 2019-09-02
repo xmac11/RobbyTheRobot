@@ -9,9 +9,8 @@ import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.screens.playscreens.ScreenLevel1;
 import com.robot.game.screens.playscreens.ScreenLevel2;
 import com.robot.game.screens.playscreens.ScreenLevel3;
-import com.robot.game.util.Assets;
-import com.robot.game.util.checkpoints.CheckpointData;
-import com.robot.game.util.checkpoints.FileSaver;
+import com.robot.game.checkpoints.CheckpointData;
+import com.robot.game.checkpoints.FileSaver;
 
 public class RobotGame extends Game {
 

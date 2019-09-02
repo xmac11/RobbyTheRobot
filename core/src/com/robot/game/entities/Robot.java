@@ -12,10 +12,10 @@ import com.robot.game.camera.ShakeEffect;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
+import com.robot.game.Assets;
 import com.robot.game.util.ContactManager;
-import com.robot.game.util.checkpoints.CheckpointData;
-import com.robot.game.util.raycast.MyRayCastCallback;
+import com.robot.game.checkpoints.CheckpointData;
+import com.robot.game.raycast.MyRayCastCallback;
 
 import static com.robot.game.util.constants.Constants.*;
 import static com.robot.game.util.constants.Enums.Facing;

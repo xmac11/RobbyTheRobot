@@ -10,8 +10,8 @@ import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.Robot;
 import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
-import com.robot.game.util.Assets;
-import com.robot.game.util.Damaging;
+import com.robot.game.Assets;
+import com.robot.game.interfaces.Damaging;
 import com.robot.game.util.staticMethods.StaticMethods;
 
 import static com.robot.game.util.constants.Constants.*;

@@ -9,7 +9,7 @@ import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
 import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
-import com.robot.game.util.checkpoints.FileSaver;
+import com.robot.game.checkpoints.FileSaver;
 
 import static com.robot.game.util.constants.Constants.*;
 

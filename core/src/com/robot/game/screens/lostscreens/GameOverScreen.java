@@ -24,9 +24,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.robot.game.RobotGame;
 import com.robot.game.screens.menuscreens.MenuScreen;
 import com.robot.game.screens.playscreens.PlayScreen;
-import com.robot.game.util.Assets;
-import com.robot.game.util.checkpoints.CheckpointData;
-import com.robot.game.util.checkpoints.FileSaver;
+import com.robot.game.Assets;
+import com.robot.game.checkpoints.CheckpointData;
+import com.robot.game.checkpoints.FileSaver;
 
 import static com.robot.game.util.constants.Constants.*;
 
