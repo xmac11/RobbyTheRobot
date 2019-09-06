@@ -13,9 +13,9 @@ import com.robot.game.util.staticMethods.StaticMethods;
 import static com.robot.game.util.constants.Constants.*;
 
 
-public class Monster extends EnemySeekAI {
+public class MonsterSeekAI extends EnemySeekAI {
 
-    public Monster(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
+    public MonsterSeekAI(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, fixtureDef, object);
         body.createFixture(fixtureDef).setUserData(this);
 

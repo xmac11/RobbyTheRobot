@@ -8,6 +8,7 @@ import com.robot.game.entities.Fish;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemySeekAI;
+import com.robot.game.interactiveObjects.platforms.Elevator;
 import com.robot.game.interactiveObjects.spikes.Spike;
 import com.robot.game.interactiveObjects.Trampoline;
 import com.robot.game.interactiveObjects.collectables.Collectable;
@@ -30,9 +31,10 @@ public class ContactManager implements ContactListener {
 
     @Override
     public void beginContact(Contact contact) {
-        // Get the two fixtures that contact
+        // Get the two fixtures that are in contact
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+        // Get the normal (unit) vector
         Vector2 normal = contact.getWorldManifold().getNormal();
 
         if(fixA == null || fixB == null) return;
@@ -43,6 +45,7 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet in contact with " + fixA.getUserData() + " or " + fixB.getUserData());
         }
 
+        // Bitwise OR the category bits of the the two fixtures in contact
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch(collisionID) {
@@ -180,28 +183,21 @@ public class ContactManager implements ContactListener {
 
         // if onPlatform flag was set
         if(onPlatform) {
-            if(interactivePlatform instanceof FallingPlatform)
-                robotFallingPlatBegin(robot, (FallingPlatform) interactivePlatform);
 
-            else if(interactivePlatform instanceof MovingPlatform)
-                robotMovingPlatBegin(robot, (MovingPlatform) interactivePlatform);
-        }
-    }
+            // set flag that robot is on platform
+            robot.setOnInteractivePlatform(interactivePlatform, true);
 
-    // robot - falling platform collision begins
-    private void robotFallingPlatBegin(Robot robot, FallingPlatform fallingPlatform) {
-        fallingPlatform.setFlagToMove(true);
-        robot.setOnInteractivePlatform(fallingPlatform, true);
-    }
+            if(interactivePlatform instanceof FallingPlatform) {
+                ((FallingPlatform) interactivePlatform).setFlagToMove(true);
+            }
+            else if(interactivePlatform instanceof Elevator) {
+                Elevator elevator = (Elevator) interactivePlatform;
 
-    // robot - moving platform collision begins
-    private void robotMovingPlatBegin(Robot robot, MovingPlatform movingPlatform) {
-
-        robot.setOnInteractivePlatform(movingPlatform, true);
-
-        // if platform is waiting and has not been already stopped, move it
-        if(movingPlatform.isWaiting() && !movingPlatform.isStopped()) {
-            movingPlatform.movePlatform();
+                // if platform has not been already stopped, move it
+                if(!elevator.isStopped()) {
+                    elevator.movePlatform();
+                }
+            }
         }
     }
 
@@ -307,33 +303,38 @@ public class ContactManager implements ContactListener {
             // play hurt sound
             robot.playSoundEffect();
 
-            // set enemy to be a sensor
-            if(enemy.getBody().getFixtureList().size != 0) {
-                enemy.getBody().getFixtureList().first().setSensor(true);
-            }
-            Gdx.app.log("ContactManager", "Enemy sensor = TRUE");
-
-            // if enemy is an EnemyArriveAI (dynamic body) turn off gravity, since it is now a sensor
-            if(enemy instanceof EnemySeekAI) {
-                enemy.getBody().setGravityScale(0);
-                Gdx.app.log("ContactManager", "Gravity was turned off for the " + enemy.getClass());
-            }
-
-            // decrease robot's health
-            StaticMethods.decreaseHealth(robot, enemy);
-
-            //add enemy (damaging object) to HashMap in order to render the damage incurred (if robot is not dead)
-            if(robot.getCheckpointData().getHealth() > 0) {
-                robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
-            }
-
-            // make it flicker
-            robot.setFlicker(true);
-
-            // shake camera
-            robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
-            Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
+            // robot hit by enemy
+            robotHitByEnemy(robot, enemy);
         }
+    }
+
+    private void robotHitByEnemy(Robot robot, Enemy enemy) {
+        // set enemy to be a sensor
+        if(enemy.getBody().getFixtureList().size != 0) {
+            enemy.getBody().getFixtureList().first().setSensor(true);
+        }
+        Gdx.app.log("ContactManager", "Enemy sensor = TRUE");
+
+        // if enemy is an EnemyArriveAI (dynamic body) turn off gravity, since it is now a sensor
+        if(enemy instanceof EnemySeekAI) {
+            enemy.getBody().setGravityScale(0);
+            Gdx.app.log("ContactManager", "Gravity was turned off for the " + enemy.getClass());
+        }
+
+        // decrease robot's health
+        StaticMethods.decreaseHealth(robot, enemy);
+
+        //add enemy (damaging object) to HashMap in order to render the damage incurred (if robot is not dead)
+        if(robot.getCheckpointData().getHealth() > 0) {
+            robot.getPlayScreen().getFeedbackRenderer().getDamageFromHitToDraw().put(enemy, 1f);
+        }
+
+        // make it flicker
+        robot.setFlicker(true);
+
+        // shake camera
+        robot.getShakeEffect().shake(HIT_SHAKE_INTENSITY, HIT_SHAKE_TIME);
+        Gdx.app.log("ContactManager", "Robot health " + robot.getCheckpointData().getHealth() + "%");
     }
 
     private void robotCollectableBegin(Fixture fixA, Fixture fixB) {
@@ -604,6 +605,7 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet ended contact with " + fixA.getUserData() + " or " + fixB.getUserData());
         }
 
+        // Bitwise OR the category bits of the the two fixtures in contact
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
         switch(collisionID) {
@@ -758,39 +760,27 @@ public class ContactManager implements ContactListener {
         // Get the two fixtures that contact
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
+        // Get the normal (unit) vector
         Vector2 normal = contact.getWorldManifold().getNormal();
 
+        // Bitwise OR the category bits of the the two fixtures in contact
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-        switch(collisionID) {
-
-            // robot - enemy
-            case ROBOT_CATEGORY | ENEMY_CATEGORY:
-                System.out.println("this");
-                Robot robot;
-                Enemy enemy;
-
-                if(fixA.getUserData() instanceof Robot) {
-                    robot = (Robot) fixA.getUserData();
-                    enemy = (Enemy) fixB.getUserData();
-
-                    // robot was hit by enemy
-                    if(normal.y >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2)) {
-                        contact.setEnabled(false);
-                        Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
-                    }
+        // robot - enemy
+        if (collisionID == (ROBOT_CATEGORY | ENEMY_CATEGORY)) {
+            if (fixA.getUserData() instanceof Robot) {
+                // robot was hit by enemy
+                if (normal.y >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2)) {
+                    contact.setEnabled(false);
+                    Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
                 }
-                else {
-                    robot = (Robot) fixB.getUserData();
-                    enemy = (Enemy) fixA.getUserData();
-
-                    // robot was hit by enemy
-                    if(normal.y <= -1/Math.sqrt(2) || normal.x >= 1/Math.sqrt(2) || normal.x <= -1/Math.sqrt(2)) {
-                        contact.setEnabled(false);
-                        Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
-                    }
+            } else {
+                // robot was hit by enemy
+                if (normal.y <= -1 / Math.sqrt(2) || normal.x >= 1 / Math.sqrt(2) || normal.x <= -1 / Math.sqrt(2)) {
+                    contact.setEnabled(false);
+                    Gdx.app.log("ContactManager", "Robot-Enemy contact was disabled in presolve()");
                 }
-                break;
+            }
         }
     }
 

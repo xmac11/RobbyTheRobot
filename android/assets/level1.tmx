@@ -61,16 +61,14 @@
   </object>
   <object id="120" x="2784" y="432" width="32" height="8">
    <properties>
+    <property name="elevator" value=""/>
     <property name="endX" type="float" value="3024"/>
     <property name="endY" type="float" value="-1"/>
     <property name="interactivePlatform" value=""/>
-    <property name="moving" value=""/>
-    <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="-1"/>
     <property name="vX" type="float" value="3"/>
     <property name="vY" type="float" value="0"/>
-    <property name="waiting" type="bool" value="true"/>
    </properties>
   </object>
   <object id="151" x="3200" y="96" width="48" height="8">
@@ -138,16 +136,14 @@
   </object>
   <object id="168" x="1408" y="192" width="48" height="8">
    <properties>
+    <property name="elevator" value=""/>
     <property name="endX" type="float" value="-1"/>
     <property name="endY" type="float" value="1000"/>
     <property name="interactivePlatform" value=""/>
-    <property name="moving" value=""/>
-    <property name="shouldStop" type="bool" value="true"/>
     <property name="startX" type="float" value="-1"/>
     <property name="startY" type="float" value="88"/>
     <property name="vX" type="float" value="0"/>
     <property name="vY" type="float" value="-2.5"/>
-    <property name="waiting" type="bool" value="true"/>
    </properties>
   </object>
   <object id="207" x="1488" y="240">

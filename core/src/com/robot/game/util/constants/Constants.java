@@ -6,7 +6,7 @@ public final class Constants {
 
     // Debug keys
     public static final boolean DEBUG_ON = false;
-    public static final boolean DEBUG_KEYS_ON = false;
+    public static final boolean DEBUG_KEYS_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;
@@ -68,13 +68,10 @@ public final class Constants {
     public static final short TRAMPOLINE_MASK = ROBOT_CATEGORY;
     public static final short ENEMY_PROJECTILE_MASK = ROBOT_CATEGORY;
     public static final short CHASE_SENSOR_MASK = ENEMY_CATEGORY;
-    public static final short TORCH_LIGHT_MASK = GROUND_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY /*| ROBOT_CATEGORY*/;
-    public static final short DEBUG_MASK = GROUND_CATEGORY | LADDER_CATEGORY | INTERACTIVE_PLATFORM_CATEGORY;
 
     // Robot
 
         // Dimensions
-    public static final float ROBOT_RADIUS = 16;
     public static final float ROBOT_BODY_WIDTH = 18;
     public static final float ROBOT_BODY_HEIGHT = 50;
     public static final float ROBOT_OFFSET_X = 35;
@@ -82,17 +79,13 @@ public final class Constants {
     public static final float ROBOT_SPRITE_WIDTH = ROBOT_BODY_WIDTH + ROBOT_OFFSET_X;
     public static final float ROBOT_SPRITE_HEIGHT = ROBOT_BODY_HEIGHT + ROBOT_OFFSET_Y;
 
-        // Spike respawn locations
-//    public static final Vector2 SPIKE_RESPAWN_1 = new Vector2(1120 / PPM, 336 / PPM);
-
         // Sensor feet
     public static final float ROBOT_FEET_WIDTH = ROBOT_BODY_WIDTH - 0.5f;
     public static final float ROBOT_FEET_HEIGHT = 4;
 
         // Movement
-    public static final float ROBOT_MAX_HOR_SPEED = 5;
+    public static final float ROBOT_MAX_SPEED = 5;
     public static final float BREAK_GROUND_FACTOR = 0.96f;
-    //public static final float BREAK_AIR_FACTOR = 0.99f;
     public static final float ROBOT_CLIMB_SPEED = 3;
     public static final float ROBOT_JUMP_SPEED = 5;
     public static final float ROBOT_JUMP_TIMER = 0.2f;

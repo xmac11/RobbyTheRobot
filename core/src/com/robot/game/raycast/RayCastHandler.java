@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
-import com.robot.game.entities.Monster;
+import com.robot.game.entities.MonsterSeekAI;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.screens.playscreens.PlayScreen;
@@ -34,10 +34,11 @@ public abstract class RayCastHandler {
         this.assets = playScreen.getAssets();
         this.robot = playScreen.getRobot();
         this.world = playScreen.getWorld();
-        this.callback = robot.getCallback();
+        // create ray cast callback
+        this.callback = new MyRayCastCallback();
     }
 
-    public abstract void startRayCast();
+    public abstract void executeRayCast();
     public abstract void determineRayPoints();
 
     protected void resolveRayCast(float impulseX, float impulseY) {
@@ -61,7 +62,7 @@ public abstract class RayCastHandler {
             Gdx.app.log("RayCastHandler", "Enemy sensor = FALSE");
 
             // if enemy is a Monster (dynamic body) turn gravity back on
-            if(enemy instanceof Monster && enemy.getBody().getGravityScale() == 0) {
+            if(enemy instanceof MonsterSeekAI && enemy.getBody().getGravityScale() == 0) {
                 enemy.getBody().setGravityScale(1);
                 Gdx.app.log("RayCastHandler", "Gravity was turned back on for the Monster");
             }

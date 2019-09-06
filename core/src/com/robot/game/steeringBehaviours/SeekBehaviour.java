@@ -11,7 +11,7 @@ public class SeekBehaviour {
     private Body body;
     private boolean isDynamicBody;
     private float maxLinearVelocity;
-    private Vector2 desired = new Vector2();
+    private Vector2 desiredVelocity = new Vector2();
 
     public SeekBehaviour(Body body, float maxLinearVelocity) {
         this.body = body;
@@ -21,14 +21,14 @@ public class SeekBehaviour {
 
     public void seek(Vector2 target) {
         // vector from position to target
-        desired.set(target);                    // Vector2 desired = target.cpy().sub(body.getPosition());
-        desired.sub(body.getPosition());
+        desiredVelocity.set(target);                    // Vector2 desiredVelocity = target.cpy().sub(body.getPosition());
+        desiredVelocity.sub(body.getPosition());
 
         // scale to maximum linear velocity
-        desired.setLength(maxLinearVelocity);
+        desiredVelocity.setLength(maxLinearVelocity);
 
         // steering = desired velocity - current velocity
-        Vector2 steering = desired.sub(body.getLinearVelocity());
+        Vector2 steering = desiredVelocity.sub(body.getLinearVelocity());
 
         if(isDynamicBody) {
             float newVelocityX = MathUtils.clamp(body.getLinearVelocity().x + steering.x, -2, 2);
@@ -40,7 +40,7 @@ public class SeekBehaviour {
     }
 
     public void setToNull() {
-        desired = null;
+        desiredVelocity = null;
         Gdx.app.log("SeekBehaviour", "Objects were set to null");
     }
 }

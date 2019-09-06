@@ -24,6 +24,7 @@ import com.robot.game.interactiveObjects.collectables.Food;
 import com.robot.game.interactiveObjects.collectables.Collectable;
 import com.robot.game.interactiveObjects.collectables.PowerUp;
 import com.robot.game.interactiveObjects.ladder.Ladder;
+import com.robot.game.interactiveObjects.platforms.Elevator;
 import com.robot.game.interactiveObjects.platforms.FallingPlatform;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
@@ -36,10 +37,6 @@ import static com.robot.game.util.constants.Constants.*;
 
 
 public class ObjectParser {
-
-    int rectangles = 0;
-    int polylines = 0;
-    int polygons = 0;
 
     private PlayScreen playScreen;
     private World world;
@@ -66,7 +63,6 @@ public class ObjectParser {
             createTiledObjects(objects);
 
         createJoints();
-        System.out.println("Rectangles: " + rectangles + ", polylines: " + polylines + ", polygons: " + polygons);
     }
 
     private void createTiledObjects(MapObjects objects) {
@@ -80,7 +76,6 @@ public class ObjectParser {
             determineBodyType(object, bodyDef, fixtureDef);
 
             if(object instanceof RectangleMapObject) {
-                rectangles++;
 
                 Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
 
@@ -102,7 +97,6 @@ public class ObjectParser {
                 polygonShape.dispose();
             }
             else if(object instanceof PolylineMapObject) {
-                polylines++;
 
                 body = world.createBody(bodyDef);
                 Shape shape = createPolyline((PolylineMapObject) object);
@@ -114,19 +108,6 @@ public class ObjectParser {
 
                 shape.dispose();
             }
-            /*else if(object instanceof PolygonMapObject) {
-                polygons++;
-
-                body = world.createBody(bodyDef);
-                Shape shape = createPolygon((PolygonMapObject) object);
-
-                // create fixture
-                fixtureDef.shape = shape;
-                assignFilterBits(fixtureDef, object);
-                createFixture(body, fixtureDef, object);
-
-                shape.dispose();
-            }*/
             else continue;
         }
     }
@@ -142,7 +123,7 @@ public class ObjectParser {
             bodyDef.fixedRotation = true;
             fixtureDef.density = 1;
         }
-        else if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY) || object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)
+        else if(object.getProperties().containsKey(INTERACTIVE_PLATFORM_PROPERTY)
                 || object.getProperties().containsKey(ENEMY_PROPERTY)) { // all other enemies are Kinematic bodies
             bodyDef.type = BodyDef.BodyType.KinematicBody;
         }
@@ -164,22 +145,6 @@ public class ObjectParser {
 
         return chainShape;
     }
-
-    /*private ChainShape createPolygon(PolygonMapObject polygon) {
-        float[] vertices =  polygon.getPolygon().getTransformedVertices();
-        float[] worldVertices = new float[vertices.length + 2]; // +2 to close the polyline
-
-        for(int i = 0; i < worldVertices.length-2; i++) {
-            worldVertices[i] = vertices[i] / PPM;
-        }
-        worldVertices[vertices.length] = vertices[0] / PPM;
-        worldVertices[vertices.length + 1] = vertices[1] / PPM;
-
-        ChainShape chainShape = new ChainShape();
-        chainShape.createChain(worldVertices);
-
-        return chainShape;
-    }*/
 
     // assign filter bits to bodies
     private void assignFilterBits(FixtureDef fixtureDef, MapObject object) {
@@ -246,9 +211,13 @@ public class ObjectParser {
             if(object.getProperties().containsKey(FALLING_PLATFORM_PROPERTY)) {
                 this.interactivePlatforms.add(new FallingPlatform(playScreen, body, fixtureDef, object));
             }
-            // create moving platform
+            // create moving platforms
             else if(object.getProperties().containsKey(MOVING_PLATFORM_PROPERTY)) {
                 this.interactivePlatforms.add(new MovingPlatform(playScreen, body, fixtureDef, object));
+            }
+            // create elevators
+            else {
+                this.interactivePlatforms.add(new Elevator(playScreen, body, fixtureDef, object));
             }
         }
         // create enemies
@@ -276,7 +245,7 @@ public class ObjectParser {
 
             // create monsters
             else if(object.getProperties().containsKey(MONSTER_PROPERTY))
-                this.enemies.add(new Monster(playScreen, body, fixtureDef, object));
+                this.enemies.add(new MonsterSeekAI(playScreen, body, fixtureDef, object));
 
             // create snakes
             else if(object.getProperties().containsKey(SNAKE_PROPERTY)) {

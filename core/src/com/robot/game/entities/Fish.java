@@ -45,7 +45,7 @@ public class Fish extends Enemy {
             checkIfShouldAttack(delta);
         }
         // if the fish is not dead (therefore attacking) and reaches its initial position with negative velocity, stop it
-        else if(!dead /*&& attacking*/ && body.getPosition().y - initialPosition.y < 1f / PPM && body.getLinearVelocity().y < 0) {
+        else if(!dead && body.getPosition().y - initialPosition.y < 1f / PPM && body.getLinearVelocity().y < 0) {
             body.setLinearVelocity(0, 0);
             body.setTransform(initialPosition, 0);
             body.setGravityScale(0);

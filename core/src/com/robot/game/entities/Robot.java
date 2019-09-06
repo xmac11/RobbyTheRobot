@@ -9,13 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.robot.game.camera.ShakeEffect;
+import com.robot.game.interactiveObjects.platforms.Elevator;
 import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.platforms.MovingPlatform;
 import com.robot.game.screens.playscreens.PlayScreen;
 import com.robot.game.Assets;
 import com.robot.game.util.ContactManager;
 import com.robot.game.checkpoints.CheckpointData;
-import com.robot.game.raycast.MyRayCastCallback;
 
 import static com.robot.game.util.constants.Constants.*;
 import static com.robot.game.util.constants.Enums.Facing;
@@ -57,9 +57,8 @@ public class Robot {
     private float coyoteTimer;
     private float climbTimer;
 
-    //CONSTANT SPEED
-    //    private final Vector2 ROBOT_IMPULSE;
-    private Vector2 temp = new Vector2();
+    // movement
+    private Vector2 tempImpulse = new Vector2();
 
     // interactive platforms
     private InteractivePlatform interactivePlatform;
@@ -77,9 +76,6 @@ public class Robot {
     private boolean isWallJumping;
     private int direction;
     private Vector2 tempWallJumpingImpulse = new Vector2();
-
-    // ray cast callback
-    private MyRayCastCallback callback;
 
     // cave torch
     private boolean hasTorch;
@@ -100,24 +96,16 @@ public class Robot {
         this.hasTorch = checkpointData.hasTorch();
         createRobotB2d();
 
-//        this.robotSprite = new Sprite(assets.robotAssets.atlasRegion);
         this.robotSprite = new Sprite(assets.robotAssets.robotIdleWithGun);
 
         robotSprite.setSize(ROBOT_SPRITE_WIDTH / PPM, ROBOT_SPRITE_HEIGHT / PPM);
-
-        // create ray cast callback
-        this.callback = new MyRayCastCallback();
-
-        //Gdx.input.setInputProcessor(this);
     }
 
     private void createRobotB2d() {
         // create body
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //2520, 200 before second ladder // 2840, 160 on second ladder // 2790, 400 for multiple plats
-        bodyDef.position.set(checkpointData.getSpawnLocation() /*80 / PPM, 80 / PPM*/ /*272 / PPM, 512 / PPM */ /*1152 / PPM, 512 / PPM */ /*1136 / PPM, 300 / PPM*/  /*500 / PPM, 110 / PPM*/ /*1056 / PPM, 110 / PPM*/ /*1900 / PPM, 110 / PPM*/ /*2410 / PPM, 784 / PPM*/ /*3416 / PPM, 780 / PPM*/
-                /*4350 / PPM, 736 / PPM*/ /*4448 / PPM, 130 / PPM*/); // 32, 160 for starting // 532, 160 for ladder // 800, 384 after ladder //1092, 384 or 1500, 390 for moving platform
+        bodyDef.position.set(checkpointData.getSpawnLocation());
         bodyDef.fixedRotation = true;
         bodyDef.linearDamping = 0.0f;
         this.body = world.createBody(bodyDef);
@@ -132,7 +120,7 @@ public class Robot {
         fixtureDef.friction = 0.4f;
         fixtureDef.density = 1.0f;
         fixtureDef.filter.categoryBits = ROBOT_CATEGORY;
-        fixtureDef.filter.maskBits = ROBOT_MASK /*NOTHING_MASK*/;
+        fixtureDef.filter.maskBits = ROBOT_MASK;
         this.body.createFixture(fixtureDef).setUserData(this);
 
         // sensor feet
@@ -235,11 +223,6 @@ public class Robot {
 
     private void processInput(float delta) {
 
-        // CONSTANT SPEED
-        //        temp.x = ROBOT_IMPULSE.x; // reset every frame
-        //        temp.y = ROBOT_IMPULSE.y;
-
-        // CONSTANT SPEED OR GRADUAL ACCELERATION
         float currentVelocity = body.getLinearVelocity().x;
 
         // Moving right
@@ -248,13 +231,9 @@ public class Robot {
                 setFacing(RIGHT);
             }
 
-            // GRADUAL ACCELERATION
-            float targetVelocity = Math.min(body.getLinearVelocity().x + 0.1f, ROBOT_MAX_HOR_SPEED);
-            temp.x = body.getMass() * (targetVelocity - currentVelocity);
-
-            // CONSTANT SPEED OR GRADUAL ACCELERATION
-            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
-            //            body.applyLinearImpulse(new Vector2(body.getMass() * (ROBOT_MAX_HOR_SPEED - currentVelocity), 0), body.getWorldCenter(), true); // slow
+            float targetVelocity = Math.min(currentVelocity + 0.1f, ROBOT_MAX_SPEED);
+            tempImpulse.x = body.getMass() * (targetVelocity - currentVelocity);
+            body.applyLinearImpulse(tempImpulse, body.getWorldCenter(), true);
         }
 
         // Moving left
@@ -265,34 +244,22 @@ public class Robot {
 
             // this is for the case of the horizontally moving platform that will stop under the ladder
             // since the normal impulse applied is not sufficient to move the player when the platform is moving to the right, so a special case is included
-            if(isOnInteractivePlatform && interactivePlatform instanceof MovingPlatform && ((MovingPlatform)interactivePlatform).shouldStop() && interactivePlatform.getvX() != 0) {
+            if(isOnInteractivePlatform && interactivePlatform instanceof Elevator && interactivePlatform.getvX() != 0) {
                 body.applyLinearImpulse(LEFT_IMPULSE_ON_MOVING_PLATFORM, body.getWorldCenter(), true);
             }
             else {
-                // GRADUAL ACCELERATION
-                float targetVelocity = Math.max(body.getLinearVelocity().x - 0.1f, -ROBOT_MAX_HOR_SPEED);
-                temp.x = body.getMass() * (targetVelocity - currentVelocity);
-                body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+                float targetVelocity = Math.max(currentVelocity - 0.1f, -ROBOT_MAX_SPEED);
+                tempImpulse.x = body.getMass() * (targetVelocity - currentVelocity);
+                body.applyLinearImpulse(tempImpulse, body.getWorldCenter(), true);
             }
-
-            // CONSTANT SPEED
-            //            body.applyLinearImpulse(temp.scl(-1).sub(body.getMass() * currentVelocity, 0), body.getWorldCenter(), true);
-            //            body.applyLinearImpulse(new Vector2(body.getMass() * (-ROBOT_MAX_HOR_SPEED-currentVelocity), 0), body.getWorldCenter(), true); // slow
-
         }
 
         // left-right keys released -> if body is moving on the ground, break
-        else if(body.getLinearVelocity().x != 0 /*&& contactManager.getFootContactCounter() != 0*/ && !isOnInteractivePlatform) {
+        else if(body.getLinearVelocity().x != 0 && !isOnInteractivePlatform) {
             float targetVelocity = body.getLinearVelocity().x * BREAK_GROUND_FACTOR;
-            temp.x = body.getMass() * (targetVelocity - currentVelocity);
-            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
+            tempImpulse.x = body.getMass() * (targetVelocity - currentVelocity);
+            body.applyLinearImpulse(tempImpulse, body.getWorldCenter(), true);
         }
-        // left-right keys released -> if body is moving in the air, break
-        /*else if(body.getLinearVelocity().x != 0 && contactManager.getFootContactCounter() == 0 && !isOnInteractivePlatform) {
-            float targetVelocity = body.getLinearVelocity().x * BREAK_AIR_FACTOR;
-            temp.x = body.getMass() * (targetVelocity - currentVelocity);
-            body.applyLinearImpulse(temp, body.getWorldCenter(), true);
-        }*/
 
         // Jumping
         /* I use three timers:
@@ -381,8 +348,6 @@ public class Robot {
         if(levelID > 1) {
             processInputLaserAndPunching();
         }
-
-        //        System.out.println(body.getLinearVelocity().x);
     }
 
     private void processInputLaserAndPunching() {
@@ -398,7 +363,7 @@ public class Robot {
             if(checkpointData.getAmmo() == 0)
                 return;
 
-            playScreen.getLaserHandler().startRayCast();
+            playScreen.getLaserHandler().executeRayCast();
             this.shootingLaser = true;
             this.elapsedAnim = 0;
 
@@ -410,7 +375,7 @@ public class Robot {
         if(Gdx.input.isKeyJustPressed(Input.Keys.D) || playScreen.getAndroidController().isPunchClicked()) {
             punching = true;
             this.elapsedAnim = 0;
-            playScreen.getPunchHandler().startRayCast();
+            playScreen.getPunchHandler().executeRayCast();
 
             // if on android, un-flag punching
             if(playScreen.isOnAndroid()) {
@@ -431,7 +396,6 @@ public class Robot {
         else {
             // interpolate alpha value between 0 and 1 using sin(x)
             robotSprite.draw(batch, (float) Math.abs(Math.sin(alpha)));
-            //System.out.println(Math.abs(Math.sin(alpha)));
             alpha += delta * 20;
 
             // if elapsed flicker time has exceeded 1 second, stop flickering and reset variables to zero
@@ -696,10 +660,6 @@ public class Robot {
         this.direction = direction;
     }
 
-    public MyRayCastCallback getCallback() {
-        return callback;
-    }
-
     public Facing getFacing() {
         return facing;
     }
@@ -738,10 +698,9 @@ public class Robot {
         robotSprite = null;
         contactManager = null;
         shakeEffect = null;
-        temp = null;
+        tempImpulse = null;
         interactivePlatform = null;
         tempWallJumpingImpulse = null;
-        callback = null;
         playScreen = null;
         Gdx.app.log("Robot", "Objects were set to null");
     }

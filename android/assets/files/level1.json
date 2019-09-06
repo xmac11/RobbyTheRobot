@@ -232,6 +232,11 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"elevator",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"endX",
                          "type":"float",
                          "value":3024
@@ -245,16 +250,6 @@
                          "name":"interactivePlatform",
                          "type":"string",
                          "value":""
-                        }, 
-                        {
-                         "name":"moving",
-                         "type":"string",
-                         "value":""
-                        }, 
-                        {
-                         "name":"shouldStop",
-                         "type":"bool",
-                         "value":true
                         }, 
                         {
                          "name":"startX",
@@ -275,11 +270,6 @@
                          "name":"vY",
                          "type":"float",
                          "value":0
-                        }, 
-                        {
-                         "name":"waiting",
-                         "type":"bool",
-                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
@@ -553,6 +543,11 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"elevator",
+                         "type":"string",
+                         "value":""
+                        }, 
+                        {
                          "name":"endX",
                          "type":"float",
                          "value":-1
@@ -566,16 +561,6 @@
                          "name":"interactivePlatform",
                          "type":"string",
                          "value":""
-                        }, 
-                        {
-                         "name":"moving",
-                         "type":"string",
-                         "value":""
-                        }, 
-                        {
-                         "name":"shouldStop",
-                         "type":"bool",
-                         "value":true
                         }, 
                         {
                          "name":"startX",
@@ -596,11 +581,6 @@
                          "name":"vY",
                          "type":"float",
                          "value":-2.5
-                        }, 
-                        {
-                         "name":"waiting",
-                         "type":"bool",
-                         "value":true
                         }],
                  "rotation":0,
                  "type":"",

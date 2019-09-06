@@ -30,7 +30,6 @@ public abstract class InteractivePlatform {
         this.body = body;
         this.vX = (float) object.getProperties().get("vX");
         this.vY = (float) object.getProperties().get("vY");
-        //body.setActive(false);
 
         this.width = (float) object.getProperties().get("width");
         this.height = (float) object.getProperties().get("height");

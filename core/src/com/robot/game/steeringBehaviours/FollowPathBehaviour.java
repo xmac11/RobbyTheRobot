@@ -18,7 +18,7 @@ public class FollowPathBehaviour {
     private int targetIndex;
     private Vector2 target = new Vector2();
     private boolean onPath;
-    private boolean pathReached;
+    private boolean pathJustReached;
     private boolean initialTargetSet;
 
     private Vector2 start = new Vector2(), end = new Vector2(); // for the line currently examined
@@ -37,26 +37,23 @@ public class FollowPathBehaviour {
     }
 
     public void follow() {
-        Vector2 predicted = body.getLinearVelocity();
-        predicted.setLength(16 / PPM);
-
-        Vector2 predictedPosition = body.getPosition().add(predicted);
-
         float distance;
         float minDistance = Float.POSITIVE_INFINITY;
 
         // check if we are on the path
         if(!onPath && isPointOnPath(body.getPosition())) {
             onPath = true;
-            pathReached = true;
+            pathJustReached = true;
         }
 
         if(!onPath && !initialTargetSet) {
 
+            // loop through the path’s waypoints
             for(int i = 0; i < wayPoints.size - 1; i++) {
 
+                // set the start and end point of segment
                 start.set(wayPoints.get(i));
-                end.set( wayPoints.get(i+1));
+                end.set(wayPoints.get(i+1));
 
                 // check if swapping is needed
                 if(start.x > end.x || start.y > end.y) {
@@ -66,15 +63,15 @@ public class FollowPathBehaviour {
                 }
 
                 // calculate projection
-                Vector2 projection = calculateProjection(predictedPosition, start, end);
+                Vector2 projection = calculateProjection(body.getPosition(), start, end);
 
                 // if projection is not on the path, set the vertex closest to the body as the projection
                 if(!isPointOnLine(projection, start, end)) {
                     projection.set(body.getPosition().dst(start) < body.getPosition().dst(end) ? start : end);
                 }
 
-                // calculate distance between predicted position and projection
-                distance = predictedPosition.dst(projection);
+                // calculate distance between body's position and projection
+                distance = body.getPosition().dst(projection);
                 // if distance is less than the min distance so far
                 if(distance < minDistance) {
                     minDistance = distance;
@@ -89,7 +86,7 @@ public class FollowPathBehaviour {
         }
 
         // if the path is reached for the first time, determine next closest vertex
-        if(pathReached) {
+        if(pathJustReached) {
             int closestIndex = 0;
             float minDistanceToVertex = Float.POSITIVE_INFINITY;
 
@@ -100,14 +97,14 @@ public class FollowPathBehaviour {
                 }
             }
             targetIndex = (closestIndex + determineNextPoint()) % 4; // finds in which 'quadrant' we are and returns 0 or 1
-            pathReached = false;
+            pathJustReached = false;
         }
 
         // if we are not on the path, seek the target
         if(!onPath) {
             seekBehaviour.seek(target);
         }
-        // else if wer are on the path
+        // else if we are on the path
         else {
             // if we reach have not reached the target, seek it
             if(!waypointReached(wayPoints.get(targetIndex))) {

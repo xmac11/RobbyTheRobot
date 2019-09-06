@@ -15,7 +15,7 @@ public class PunchHandler extends RayCastHandler {
     }
 
     @Override
-    public void startRayCast() {
+    public void executeRayCast() {
         rayCastActive = true;
 
         // determine start and end points of the ray
@@ -43,7 +43,6 @@ public class PunchHandler extends RayCastHandler {
             }
         }
 
-
         // determine action depending on the result of the raycast
         super.resolveRayCast(PUNCH_IMPULSE_X + Math.abs(robot.getBody().getLinearVelocity().x) / 2, PUNCH_IMPULSE_Y);
     }
@@ -65,6 +64,7 @@ public class PunchHandler extends RayCastHandler {
         }
     }
 
+    // method is used only on debug mode
     public void render(ShapeRenderer shapeRenderer) {
         // draw rectangle line
         if(rayCastActive) {
