@@ -14,20 +14,21 @@ import static com.robot.game.util.constants.Constants.*;
 
 public class FallingPipe implements Damaging {
 
+    private FallingPipeSpawner fallingPipeSpawner;
     private Sprite sprite;
     private PlayScreen playScreen;
     private Assets assets;
     private World world;
     private Body body;
-//    private Sprite pipeSprite;
     private boolean cache;
 
     private boolean flagToSleep;
     private boolean flagToCancelVelocity;
     private boolean flagToChangeCategory;
 
-    public FallingPipe(PlayScreen playScreen, boolean cache) {
-        this.playScreen = playScreen;
+    public FallingPipe(FallingPipeSpawner fallingPipeSpawner, boolean cache) {
+        this.fallingPipeSpawner = fallingPipeSpawner;
+        this.playScreen = fallingPipeSpawner.getPlayScreen();
         this.assets = playScreen.getAssets();
         this.world = playScreen.getWorld();
         this.cache = cache;
@@ -72,7 +73,6 @@ public class FallingPipe implements Damaging {
         FixtureDef fixtureDef = new FixtureDef();
 
         PolygonShape recShape = new PolygonShape();
-//        recShape.setAsBox(PIPE_WIDTH / 2 / PPM, PIPE_HEIGHT / 2 / PPM);
         recShape.set(PIPE_VERTICES);
         fixtureDef.shape = recShape;
 

@@ -4,12 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
-import com.robot.game.interactiveObjects.fallingPipes.FallingPipe;
-import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
 import com.robot.game.checkpoints.FileSaver;
+import com.robot.game.interactiveObjects.fallingPipes.FallingPipeSpawner;
 
 import static com.robot.game.util.constants.Constants.*;
 
@@ -48,12 +46,7 @@ public class ScreenLevel1 extends PlayScreen {
         // creates objectParser, interactivePlatforms, enemies and collectables
         super.createCommonObjectLayers();
 
-        // create falling pipes and cache 5 pipes
-        super.fallingPipes = new DelayedRemovalArray<>();
-        for(int i = 0; i < 5; i++) {
-            fallingPipes.add(new FallingPipe(this, true));
-        }
-        // create falling pipe handler
+        // create falling pipe spawner
         this.fallingPipeSpawner = new FallingPipeSpawner(this);
 
         // create parallax
@@ -79,12 +72,7 @@ public class ScreenLevel1 extends PlayScreen {
         parallaxBackground.update(delta);
         parallaxBarrels.update(delta);
 
-        // update falling pipes
-        for(FallingPipe fallingPipe: fallingPipes) {
-            fallingPipe.update(delta);
-        }
-
-        // handle earthquake
+        // update earthquake and falling pipes
         fallingPipeSpawner.update(delta);
 
         // check for mute or ESC
@@ -142,9 +130,7 @@ public class ScreenLevel1 extends PlayScreen {
         super.commonRendering(delta);
 
         // render falling pipes
-        for(FallingPipe fallingPipe: fallingPipes) {
-            fallingPipe.draw(batch);
-        }
+        fallingPipeSpawner.draw(batch);
 
         // render feedback
         // This has to be done within the game's viewport and not the hud's, since the position of the bodies are needed.
@@ -192,9 +178,6 @@ public class ScreenLevel1 extends PlayScreen {
     private void setToNull() {
         parallaxBackground.setToNull();
         parallaxBarrels.setToNull();
-        for(FallingPipe fallingPipe: fallingPipes) {
-            fallingPipe.setToNull();
-        }
         fallingPipeSpawner.setToNull();
 
         backgroundWallLayer = null;

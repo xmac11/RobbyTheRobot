@@ -1,6 +1,7 @@
 package com.robot.game.interactiveObjects.fallingPipes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.camera.ShakeEffect;
@@ -25,15 +26,30 @@ public class FallingPipeSpawner {
     public FallingPipeSpawner(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
-        this.fallingPipes = playScreen.getFallingPipes();
         this.shakeEffect = playScreen.getShakeEffect();
+
+        this.fallingPipes = new DelayedRemovalArray<>();
+        createInitialPipes();
+    }
+
+    private void createInitialPipes() {
+        for(int i = 0; i < 5; i++) {
+            fallingPipes.add(new FallingPipe(this, true));
+        }
     }
 
     public void update(float delta) {
+        // update falling pipes
+        for(FallingPipe fallingPipe: fallingPipes) {
+            fallingPipe.update(delta);
+        }
+
+        // check for earthquake
         if(!earthquakeHappened && !pipesStartedFalling && !pipesDisabled) {
             checkForEarthquake();
         }
 
+        // if earthquake happened, spawn pipes when appropriate
         if(earthquakeHappened) {
             // activate cached pipes
             for(FallingPipe fallingPipe : fallingPipes) {
@@ -60,8 +76,15 @@ public class FallingPipeSpawner {
                     shakeEffect.shake(EARTH_SHAKE_INTENSITY, EARTH_SHAKE_TIME / 10);
                 }
 
-                fallingPipes.add(new FallingPipe(playScreen, false));
+                fallingPipes.add(new FallingPipe(this, false));
             }
+        }
+    }
+
+    public void draw(SpriteBatch batch) {
+        // render falling pipes
+        for(FallingPipe fallingPipe: fallingPipes) {
+            fallingPipe.draw(batch);
         }
     }
 
@@ -95,9 +118,16 @@ public class FallingPipeSpawner {
         }
     }
 
+    public PlayScreen getPlayScreen() {
+        return playScreen;
+    }
+
     public void setToNull() {
-        robot = null;
+        for(FallingPipe fallingPipe: fallingPipes) {
+            fallingPipe.setToNull();
+        }
         fallingPipes = null;
+        robot = null;
         shakeEffect = null;
         playScreen = null;
         Gdx.app.log("FallingPipeSpawner", "Objects were set to null");

@@ -1,6 +1,8 @@
 package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.entities.Robot;
 import com.robot.game.screens.playscreens.PlayScreen;
 
@@ -10,6 +12,7 @@ public class TankBallSpawner {
 
     private PlayScreen playScreen;
     private Robot robot;
+    private DelayedRemovalArray<TankBall> tankBalls;
     private TankBallPool tankBallPool;
 
     private boolean tankActivated;
@@ -20,6 +23,9 @@ public class TankBallSpawner {
     public TankBallSpawner(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
+
+        // create tankballs
+        this.tankBalls = new DelayedRemovalArray<>();
 
         // create pool
         this.tankBallPool = new TankBallPool(this);
@@ -37,6 +43,18 @@ public class TankBallSpawner {
         // if it is activated, handle spawning
         if(tankActivated) {
             handleSpawning(delta);
+        }
+
+        // update tank balls
+        for(TankBall tankBall: tankBalls) {
+            tankBall.update(delta);
+        }
+    }
+
+    public void draw(SpriteBatch batch) {
+        // render tankballs
+        for(TankBall tankBall: tankBalls) {
+            tankBall.draw(batch);
         }
     }
 
@@ -77,7 +95,7 @@ public class TankBallSpawner {
             tankBall.getBody().applyLinearImpulse(TANKBALL_IMPULSE, tankBall.getBody().getWorldCenter(), true);
 
             // add it to array
-            playScreen.getTankBalls().add(tankBall);
+            tankBalls.add(tankBall);
 
             this.tankElapsed = 0;
             Gdx.app.log("TankBallSpawner", "New tank ball was created");
@@ -91,11 +109,19 @@ public class TankBallSpawner {
         return playScreen;
     }
 
+    public DelayedRemovalArray<TankBall> getTankBalls() {
+        return tankBalls;
+    }
+
     public TankBallPool getTankBallPool() {
         return tankBallPool;
     }
 
     public void setToNull() {
+        for(TankBall tankBall: tankBalls) {
+            tankBall.setToNull();
+        }
+        tankBalls = null;
         robot = null;
         tankBallPool = null;
         playScreen = null;

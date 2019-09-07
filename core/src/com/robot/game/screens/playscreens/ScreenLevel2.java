@@ -8,13 +8,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
 import com.robot.game.checkpoints.FileSaver;
 import com.robot.game.interactiveObjects.spikes.JointHandler;
 import com.robot.game.interactiveObjects.spikes.MovingSpike;
-import com.robot.game.interactiveObjects.tankBalls.TankBall;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
 import com.robot.game.raycast.LaserHandler;
 import com.robot.game.raycast.PunchHandler;
@@ -66,8 +64,6 @@ public class ScreenLevel2 extends PlayScreen {
         super.punchHandler = new PunchHandler(this);
 
         // create tank balls, pool and spawner
-        super.tankBalls = new DelayedRemovalArray<>();
-        //super.tankBallPool = new TankBallPool(this);
         super.tankBallSpawner = new TankBallSpawner(this);
 
         // create ray handler (box2d lights)
@@ -107,11 +103,6 @@ public class ScreenLevel2 extends PlayScreen {
         // update tank ball spawner
         tankBallSpawner.update(delta);
         //System.out.println("active " + tankBalls.size + ", free " + tankBallPool.getFree());
-
-        // update tank balls
-        for(TankBall tankBall: tankBalls) {
-            tankBall.update(delta);
-        }
 
         // update prismatic joints of moving spikes
         jointHandler.update(delta);
@@ -167,10 +158,8 @@ public class ScreenLevel2 extends PlayScreen {
         // render trampoline
         trampoline.draw(batch);
 
-        // render fireballs
-        for(TankBall tankBall: tankBalls) {
-            tankBall.draw(batch);
-        }
+        // render tankballs
+        tankBallSpawner.draw(batch);
 
         // render moving spikes (joint handler renders the stick)
         jointHandler.draw(batch);
@@ -232,9 +221,6 @@ public class ScreenLevel2 extends PlayScreen {
         jointHandler.setToNull();
         for(MovingSpike movingSpike: movingSpikes) {
             movingSpike.setToNull();
-        }
-        for(TankBall tankBall: tankBalls) {
-            tankBall.setToNull();
         }
         tankBallSpawner.setToNull();
         laserHandler.setToNull();

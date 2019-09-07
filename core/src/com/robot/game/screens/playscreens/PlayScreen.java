@@ -135,8 +135,7 @@ public abstract class PlayScreen extends ScreenAdapter {
     // trampoline
     protected Trampoline trampoline;
 
-    // tank balls
-    protected DelayedRemovalArray<TankBall> tankBalls;
+    // tank ball spawner
     protected TankBallSpawner tankBallSpawner;
 
     // Hud
@@ -405,14 +404,12 @@ public abstract class PlayScreen extends ScreenAdapter {
         ladderClimbHandler = null;
         interactivePlatforms = null;
         enemies = null;
-        fallingPipes = null;
         feedbackRenderer = null;
         camera = null;
         viewport = null;
         debugCamera = null;
         collectables = null;
         trampoline = null;
-        tankBalls = null;
         tankBallSpawner = null;
         hud = null;
         laserHandler = null;
@@ -456,10 +453,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     public Viewport getViewport() {
         return viewport;
-    }
-
-    public DelayedRemovalArray<FallingPipe> getFallingPipes() {
-        return fallingPipes;
     }
 
     public ShakeEffect getShakeEffect() {
@@ -517,14 +510,6 @@ public abstract class PlayScreen extends ScreenAdapter {
     public int getLevelID() {
         return levelID;
     }
-
-    public DelayedRemovalArray<TankBall> getTankBalls() {
-        return tankBalls;
-    }
-
-    /*public TankBallPool getTankBallPool() {
-        return tankBallPool;
-    }*/
 
     public LaserHandler getLaserHandler() {
         return laserHandler;
@@ -637,7 +622,7 @@ public abstract class PlayScreen extends ScreenAdapter {
         if(Gdx.input.isKeyJustPressed(Input.Keys.P) || androidController.isPauseClicked()) {
             setPaused(!paused);
 
-            // update boolean for tiled animation
+            // u boolean for tiled animation
             mapRenderer.setMapAnimationActive(!mapRenderer.isMapAnimationActive());
 
             // update input processor

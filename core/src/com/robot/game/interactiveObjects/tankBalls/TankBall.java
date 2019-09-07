@@ -68,7 +68,7 @@ public class TankBall implements Damaging, Pool.Poolable {
             world.destroyBody(body);
             Gdx.app.log("TankBall", "Body destroyed");
 
-            playScreen.getTankBalls().removeValue(this, false); // false in order to use .equals()
+            tankBallSpawner.getTankBalls().removeValue(this, false); // false in order to use .equals()
             Gdx.app.log("TankBall", "TankBall was removed from array");
 
             tankBallSpawner.getTankBallPool().free(this);
