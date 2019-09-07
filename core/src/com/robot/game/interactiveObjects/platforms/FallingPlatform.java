@@ -15,7 +15,6 @@ public class FallingPlatform extends InteractivePlatform {
     private float elapsed;
     private boolean flagToMove;
     private boolean destroyed;
-    private boolean toggle;
 
     public FallingPlatform(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         super(playScreen, body, object);
@@ -40,12 +39,6 @@ public class FallingPlatform extends InteractivePlatform {
                 flagToMove = false;
             }
             else {
-                /*if(toggle)
-                    body.setLinearVelocity(3, 3);
-                else
-                    body.setLinearVelocity(-3, -3);
-
-                toggle = !toggle;*/
                 elapsed = (TimeUtils.nanoTime() - startTime) * MathUtils.nanoToSec;
             }
         }

@@ -79,7 +79,7 @@ public class MovingSpike extends Spike {
         else {
             sprite.setPosition(body.getPosition().x - 64f / 2 / PPM, body.getPosition().y - 32f / 2 / PPM);
         }
-
+        // draw moving spike
         sprite.draw(batch);
     }
 
@@ -134,6 +134,10 @@ public class MovingSpike extends Spike {
 
     public float getAttackPeriod() {
         return attackPeriod;
+    }
+
+    public boolean shouldAttack() {
+        return timeElapsed >= attackPeriod;
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.robot.game.screens.playscreens.PlayScreen;
 import static com.robot.game.util.constants.Constants.*;
 
 public class TankBallSpawner {
+
     private PlayScreen playScreen;
     private Robot robot;
     private TankBallPool tankBallPool;
@@ -19,7 +20,9 @@ public class TankBallSpawner {
     public TankBallSpawner(PlayScreen playScreen) {
         this.playScreen = playScreen;
         this.robot = playScreen.getRobot();
-        this.tankBallPool = playScreen.getTankBallPool();
+
+        // create pool
+        this.tankBallPool = new TankBallPool(this);
     }
 
     public void update(float delta) {
@@ -82,6 +85,14 @@ public class TankBallSpawner {
         else {
             this.tankElapsed += delta;
         }
+    }
+
+    public PlayScreen getPlayScreen() {
+        return playScreen;
+    }
+
+    public TankBallPool getTankBallPool() {
+        return tankBallPool;
     }
 
     public void setToNull() {

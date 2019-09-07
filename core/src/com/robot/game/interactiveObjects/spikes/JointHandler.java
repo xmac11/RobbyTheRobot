@@ -97,16 +97,15 @@ public class JointHandler {
             }
 
             // if spike is in balance position for more than 'n' seconds and is not attacking, reset timer and start attacking
-            if(movingSpike.isInBalancePosition() && movingSpike.getTimeElapsed() >= movingSpike.getAttackPeriod() && !movingSpike.isAttacking()) {
+            if(movingSpike.isInBalancePosition() && movingSpike.shouldAttack() && !movingSpike.isAttacking()) {
                 jointKey.setLimits(0, movingSpike.getUpperTranslationB());
                 movingSpike.setTimeElapsed(0);
                 movingSpike.setAttacking(true);
             }
-            // else if spike is not attacking (meaning it should be moving upwards) lerp upper limit towards pointA
+            // else if spike is not attacking (meaning it should be moving balance position), lerp upper limit towards pointA
             else if(!movingSpike.isAttacking()){
                 jointKey.setLimits(0, Math.max(movingSpike.getUpperTranslationA(), jointKey.getUpperLimit() - 0.1f));
             }
-
         }
     }
 
@@ -140,7 +139,7 @@ public class JointHandler {
 
                 movingSpike.getStickSpirte().setPosition(jointKey.getBodyA().getPosition().x - width / 2 , (y1 + y2) / 2 - height / 2);
             }
-
+            // render the joint (stick)
             movingSpike.getStickSpirte().draw(batch);
         }
     }

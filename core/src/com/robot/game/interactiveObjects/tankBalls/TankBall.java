@@ -16,6 +16,7 @@ import static com.robot.game.util.constants.Constants.*;
 
 public class TankBall implements Damaging, Pool.Poolable {
 
+    private TankBallSpawner tankBallSpawner;
     private Sprite sprite;
     private PlayScreen playScreen;
     private Robot robot;
@@ -27,8 +28,9 @@ public class TankBall implements Damaging, Pool.Poolable {
     private float explosionElapsed;
     private Vector2 explosionPosition = new Vector2();
 
-    public TankBall(PlayScreen playScreen) {
-        this.playScreen = playScreen;
+    public TankBall(TankBallSpawner tankBallSpawner) {
+        this.tankBallSpawner = tankBallSpawner;
+        this.playScreen = tankBallSpawner.getPlayScreen();
         this.robot = playScreen.getRobot();
         this.world = playScreen.getWorld();
 
@@ -69,9 +71,8 @@ public class TankBall implements Damaging, Pool.Poolable {
             playScreen.getTankBalls().removeValue(this, false); // false in order to use .equals()
             Gdx.app.log("TankBall", "TankBall was removed from array");
 
-            playScreen.getTankBallPool().free(this);
+            tankBallSpawner.getTankBallPool().free(this);
             Gdx.app.log("TankBall", "TankBall was freed back into the pool");
-
         }
     }
 

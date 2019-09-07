@@ -1,19 +1,17 @@
 package com.robot.game.interactiveObjects.tankBalls;
 
 import com.badlogic.gdx.utils.Pool;
-import com.robot.game.screens.playscreens.PlayScreen;
 
 public class TankBallPool extends Pool<TankBall> {
 
-    private PlayScreen playScreen;
+    private TankBallSpawner tankBallSpawner;
 
-    public TankBallPool(PlayScreen playScreen) {
-        this.playScreen = playScreen;
+    public TankBallPool(TankBallSpawner tankBallSpawner) {
+        this.tankBallSpawner = tankBallSpawner;
     }
 
     @Override
     protected TankBall newObject() {
-        return new TankBall(playScreen);
+        return new TankBall(tankBallSpawner);
     }
-
 }

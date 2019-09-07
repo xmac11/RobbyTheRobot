@@ -180,6 +180,7 @@ public class Robot {
         }
 
         // handle wall jumping
+        // if robot is wall jumping and foot contacts > 0, turn off wall jumping
         if(isWallJumping && contactManager.getFootContactCounter() > 0) {
             setWallJumping(false);
         }
@@ -675,7 +676,7 @@ public class Robot {
 
     public void setState(State state) {
         this.state = state;
-//        Gdx.app.log("Robot", "State = " + state);
+        //Gdx.app.log("Robot", "State = " + state);
     }
 
     public boolean hasTorch() {

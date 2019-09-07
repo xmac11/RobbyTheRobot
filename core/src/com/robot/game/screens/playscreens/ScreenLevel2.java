@@ -11,12 +11,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.Parallax;
+import com.robot.game.checkpoints.FileSaver;
+import com.robot.game.interactiveObjects.spikes.JointHandler;
 import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
-import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
-import com.robot.game.interactiveObjects.spikes.JointHandler;
-import com.robot.game.checkpoints.FileSaver;
 import com.robot.game.raycast.LaserHandler;
 import com.robot.game.raycast.PunchHandler;
 
@@ -68,7 +67,7 @@ public class ScreenLevel2 extends PlayScreen {
 
         // create tank balls, pool and spawner
         super.tankBalls = new DelayedRemovalArray<>();
-        super.tankBallPool = new TankBallPool(this);
+        //super.tankBallPool = new TankBallPool(this);
         super.tankBallSpawner = new TankBallSpawner(this);
 
         // create ray handler (box2d lights)

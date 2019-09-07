@@ -15,21 +15,11 @@ public class Spike implements Damaging {
     protected PlayScreen playScreen;
     protected Body body;
     private boolean mightWalk;
-    private Vector2 respawnLocation;
 
     public Spike(PlayScreen playScreen, Body body, FixtureDef fixtureDef, MapObject object) {
         this.playScreen = playScreen;
         this.body = body;
         this.mightWalk = (boolean) object.getProperties().get("mightWalk");
-
-        /*if(mightWalk) {
-            int respawnID = (int) object.getProperties().get("respawnID");
-
-            switch(respawnID) {
-                case 1:
-                    this.respawnLocation = SPIKE_RESPAWN_1;
-            }
-        }*/
 
         body.createFixture(fixtureDef).setUserData(this);
     }
@@ -41,10 +31,6 @@ public class Spike implements Damaging {
 
     public boolean mightBeWalked() {
         return mightWalk;
-    }
-
-    public Vector2 getRespawnLocation() {
-        return respawnLocation;
     }
 
     public void setToNull() {

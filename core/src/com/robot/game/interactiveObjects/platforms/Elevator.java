@@ -39,10 +39,10 @@ public class Elevator extends MovingPlatform {
         Gdx.app.log("Elevator", "Platform stopped");
 
         // for the case of the 'elevator' in the cave, in order for the robot to stop with it
-        if(!horizontal && playScreen.getRobot().isOnInteractivePlatform()) {
+        /*if(!horizontal && playScreen.getRobot().isOnInteractivePlatform()) {
             playScreen.getRobot().getBody().setLinearVelocity(playScreen.getRobot().getBody().getLinearVelocity().x, 0);
             Gdx.app.log("Elevator", "Robot stopped with vertically moving platform");
-        }
+        }*/
     }
 
     public boolean isStopped() {

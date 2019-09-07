@@ -113,6 +113,7 @@ public class ObjectParser {
     }
 
     private void determineBodyType(MapObject object, BodyDef bodyDef, FixtureDef fixtureDef) {
+        // fish
         if(object.getProperties().containsKey(FISH_PROPERTY)) {
             bodyDef.type = BodyDef.BodyType.DynamicBody;
             bodyDef.gravityScale = 0;

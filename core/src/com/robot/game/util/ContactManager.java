@@ -239,7 +239,6 @@ public class ContactManager implements ContactListener {
 
             robot.setFlicker(true);
             robot.setWalkingOnSpikes(true);
-//            robot.getCheckpointData().setSpawnLocation(spike.getRespawnLocation());
         }
 
         // make it flicker
@@ -447,11 +446,9 @@ public class ContactManager implements ContactListener {
 
         if(fixA.getUserData() instanceof FallingPipe) {
             fallingPipe = (FallingPipe) fixA.getUserData();
-//            StaticMethods.setMaskBit(fixA, NOTHING_MASK);
         }
         else {
             fallingPipe = (FallingPipe) fixB.getUserData();
-//            StaticMethods.setMaskBit(fixB, NOTHING_MASK);
         }
         fallingPipe.setFlagToChangeCategory(true);
         fallingPipe.setFlagToSleep(true);

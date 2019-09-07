@@ -26,6 +26,8 @@ import com.robot.game.Assets;
 import com.robot.game.RobotGame;
 import com.robot.game.camera.DebugCamera;
 import com.robot.game.camera.ShakeEffect;
+import com.robot.game.checkpoints.CheckpointData;
+import com.robot.game.checkpoints.FileSaver;
 import com.robot.game.entities.Robot;
 import com.robot.game.entities.abstractEnemies.Enemy;
 import com.robot.game.entities.abstractEnemies.EnemyPathFollowingAI;
@@ -38,18 +40,18 @@ import com.robot.game.interactiveObjects.platforms.InteractivePlatform;
 import com.robot.game.interactiveObjects.spikes.JointHandler;
 import com.robot.game.interactiveObjects.spikes.MovingSpike;
 import com.robot.game.interactiveObjects.tankBalls.TankBall;
-import com.robot.game.interactiveObjects.tankBalls.TankBallPool;
 import com.robot.game.interactiveObjects.tankBalls.TankBallSpawner;
+import com.robot.game.raycast.LaserHandler;
+import com.robot.game.raycast.PunchHandler;
+import com.robot.game.screens.huds.FeedbackRenderer;
+import com.robot.game.screens.huds.Hud;
 import com.robot.game.screens.lostscreens.GameOverScreen;
 import com.robot.game.screens.lostscreens.LostLifeScreen;
 import com.robot.game.screens.menuscreens.MenuScreen;
-import com.robot.game.screens.huds.FeedbackRenderer;
-import com.robot.game.screens.huds.Hud;
-import com.robot.game.util.*;
-import com.robot.game.checkpoints.CheckpointData;
-import com.robot.game.checkpoints.FileSaver;
-import com.robot.game.raycast.LaserHandler;
-import com.robot.game.raycast.PunchHandler;
+import com.robot.game.util.AndroidController;
+import com.robot.game.util.ContactManager;
+import com.robot.game.util.MyOrthogonalTiledMapRenderer;
+import com.robot.game.util.ObjectParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -135,7 +137,6 @@ public abstract class PlayScreen extends ScreenAdapter {
 
     // tank balls
     protected DelayedRemovalArray<TankBall> tankBalls;
-    protected TankBallPool tankBallPool;
     protected TankBallSpawner tankBallSpawner;
 
     // Hud
@@ -412,7 +413,6 @@ public abstract class PlayScreen extends ScreenAdapter {
         collectables = null;
         trampoline = null;
         tankBalls = null;
-        tankBallPool = null;
         tankBallSpawner = null;
         hud = null;
         laserHandler = null;
@@ -522,9 +522,9 @@ public abstract class PlayScreen extends ScreenAdapter {
         return tankBalls;
     }
 
-    public TankBallPool getTankBallPool() {
+    /*public TankBallPool getTankBallPool() {
         return tankBallPool;
-    }
+    }*/
 
     public LaserHandler getLaserHandler() {
         return laserHandler;
