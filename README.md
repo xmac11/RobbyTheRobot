@@ -4,7 +4,7 @@
 2. Extract the zip file. The content of the directory should be:
 ```bash
 RobbyTheRobotJar |	
-	             |-	json-simple-1.1.1.jar
+	         |-	json-simple-1.1.1.jar
                  |-	RobotGame.jar
 ```
 3. Double click RobotGame.jar to start the game.
