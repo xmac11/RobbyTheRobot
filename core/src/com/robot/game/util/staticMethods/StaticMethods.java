@@ -90,11 +90,6 @@ public class StaticMethods {
         enemy.setFlagToKill();
         enemy.setFlagToChangeMask(true);
 
-        // if following a path, disable it
-        if(enemy instanceof EnemyPathFollowingAI) {
-            //((EnemyPathFollowingAI) enemy).getFollowPath().setEnabled(false);
-        }
-
         // stop enemy
         enemy.getBody().setLinearVelocity(0, 0);
 

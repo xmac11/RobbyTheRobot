@@ -6,7 +6,7 @@ public final class Constants {
 
     // Debug keys
     public static final boolean DEBUG_ON = false;
-    public static final boolean DEBUG_KEYS_ON = false;
+    public static final boolean DEBUG_KEYS_ON = true;
 
     // Screen - Camera
     public static final float SCREEN_WIDTH = 768;

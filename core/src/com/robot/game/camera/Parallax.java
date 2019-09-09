@@ -44,7 +44,7 @@ public class Parallax {
     }
 
     public void update(float delta) {
-        // background water moves independently with robot's velocity
+        // water which moves independently with robot's velocity
         if(!bindWithRobot && waterFlow) {
             srcX += 1;
         }

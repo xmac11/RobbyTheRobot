@@ -24,11 +24,9 @@ public class FileSaver {
 
     /** Saves the game data needed for checkpoints to a json file */
     public static void saveCheckpointData(CheckpointData checkpointData) {
-//        if(checkpointData != null) {
-            json.setOutputType(JsonWriter.OutputType.json);
-            checkPointFile.writeString(json.prettyPrint(checkpointData), false);
-            Gdx.app.log("FileSaver", "Checkpoint data saved");
-//        }
+        json.setOutputType(JsonWriter.OutputType.json);
+        checkPointFile.writeString(json.prettyPrint(checkpointData), false);
+        Gdx.app.log("FileSaver", "Checkpoint data saved");
     }
 
     /** Reads the json file containing checkpoints data and returns the data as a class instance */
@@ -58,12 +56,14 @@ public class FileSaver {
             jsonArray = new JSONArray();
         }
 
-        for(Object object: collectedItems) {
+       // loop through all new collected items and add them to the JSONArray as well
+       for(Object object: collectedItems) {
             jsonArray.add(object);
-        }
+       }
 
-        collectedItemsFile.writeString(json.prettyPrint(jsonArray.toString()), false);
-        Gdx.app.log("FileSaver", "collectedItems.json was saved");
+       // save file
+       collectedItemsFile.writeString(json.prettyPrint(jsonArray.toString()), false);
+       Gdx.app.log("FileSaver", "collectedItems.json was saved");
     }
 
     /** When the robot dies and has no more lives, this method reads the saved file of collected items
@@ -73,6 +73,7 @@ public class FileSaver {
         // read the file with collected items and store them in a JSONArray
         JSONArray jsonArray = loadCollectedItemsFile();
 
+        // loop through all objects stored in the JSONArray and reset their spawning
         for(Object object: jsonArray) {
             JSONObject obj = (JSONObject) object;
             FileSaver.resetSpawningOfCollectable((long) obj.get("id"), levelID);
