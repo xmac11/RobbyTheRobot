@@ -10,6 +10,8 @@ import com.robot.game.entities.Robot;
 
 import static com.robot.game.util.constants.Constants.*;
 
+/*Inspired from https://www.udacity.com/course/how-to-make-a-platformer-using-libgdx--ud406 */
+
 public class DebugCamera {
 
     private PlayScreen playScreen;

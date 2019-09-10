@@ -13,6 +13,8 @@ import com.robot.game.screens.playscreens.PlayScreen;
 
 import static com.robot.game.util.constants.Constants.*;
 
+/*Implementation was inspire from https://www.youtube.com/watch?v=z4Vqkp_ve3I */
+
 public class AndroidController {
 
     private RobotGame game;

@@ -224,6 +224,8 @@ public class Robot {
 
     private void processInput(float delta) {
 
+        /*Player movement was adapted from : https://www.iforce2d.net/b2dtut/constant-speed */
+
         float currentVelocity = body.getLinearVelocity().x;
 
         // Moving right
@@ -263,6 +265,7 @@ public class Robot {
         }
 
         // Jumping
+        // Inspired from https://www.youtube.com/watch?v=vFsJIrm2btU
         /* I use three timers:
          *  jumpTimer is used to enable jumping if not having landed yet.
          *  It is reduced by "delta" at every frame.
@@ -395,7 +398,7 @@ public class Robot {
         }
         // else if flickering
         else {
-            // interpolate alpha value between 0 and 1 using sin(x)
+            // interpolate alpha value between 0 and 1 using sin(x) - adapted from https://gamedev.stackexchange.com/questions/150504/how-to-make-a-sprite-blink-with-libgdx
             robotSprite.draw(batch, (float) Math.abs(Math.sin(alpha)));
             alpha += delta * 20;
 

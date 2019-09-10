@@ -45,6 +45,7 @@ public class ContactManager implements ContactListener {
             Gdx.app.log("ContactManager", "Foot contacts " + footContactCounter + " -> Feet in contact with " + fixA.getUserData() + " or " + fixB.getUserData());
         }
 
+        /* Technique adapted from https://www.youtube.com/playlist?list=PLZm85UZQLd2SXQzsF-a0-pPF6IWDDdrXt */
         // Bitwise OR the category bits of the the two fixtures in contact
         int collisionID = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 

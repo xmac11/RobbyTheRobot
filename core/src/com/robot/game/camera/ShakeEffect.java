@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/* Adapted from https://gamedev.stackexchange.com/questions/163662/how-to-make-shake-effect-on-camera-in-libgdx */
 public class ShakeEffect {
 
     private float startTime;
