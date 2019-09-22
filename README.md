@@ -38,4 +38,28 @@ RobbyTheRobotExe |
 - [gdx-texturepacker](https://code.google.com/archive/p/libgdx-texturepacker-gui/) - Sprite Sheet Creator
 - [JSON.simple](https://code.google.com/archive/p/json-simple/) - Java toolkit for JSON
 
+### Game Mechanics
+<table border="0">
+ <tr>
+    <td>• Shooting lasers</td>
+    <td>• Punching</td>
+ </tr>
+<tr>
+    <td>• Climbing ladders and ropes</td>
+    <td>• Moving platforms / Falling platforms / Elevators</td>
+ </tr>	
+<tr>
+    <td>• Falling projectiles</td>
+    <td>• Fire-shooting tanks</td>
+ </tr>
+<tr>
+    <td>• Wall jumping</td>
+    <td>• Moving spikes</td>
+ </tr>
+<tr>
+    <td>• Trampolines</td>
+    <td>• Collectables and power-ups</td>
+ </tr>	
+</table>
+
 #### [Credits](https://www.dropbox.com/s/8y1m1bnifxjadyp/game_credits.pdf?dl=0)
