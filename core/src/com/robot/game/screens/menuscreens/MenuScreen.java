@@ -41,6 +41,7 @@ public class MenuScreen extends ScreenAdapter {
     private int selectLevelIndex;
     private int storyIndex;
     private int tutorialIndex;
+    private int creditIndex;
     private int exitIndex;
 
     public MenuScreen(RobotGame game) {
@@ -149,6 +150,10 @@ public class MenuScreen extends ScreenAdapter {
         GlyphLayout tutorialGlyph = new GlyphLayout();
         tutorialGlyph.setText(font, "TUTORIAL");
 
+        // credits GlyphLayout
+        GlyphLayout creditsGlyph = new GlyphLayout();
+        creditsGlyph.setText(font, "CREDITS");
+
         // exit GlyphLayout
         GlyphLayout exitGlyph = new GlyphLayout();
         exitGlyph.setText(font, "EXIT");
@@ -166,7 +171,7 @@ public class MenuScreen extends ScreenAdapter {
         // play button
         TextButton playButton = new TextButton(gameCompleted ? "RESUME GAME" : "PLAY", style);
         playButton.setSize(playGlyph.width, playGlyph.height);
-        playButton.setPosition(background.getX() + 1.2f * background.getWidth(), background.getY() + 0.8f * background.getHeight(), Align.left);
+        playButton.setPosition(background.getX() + 1.2f * background.getWidth(), background.getY() + 0.9f * background.getHeight(), Align.left);
         buttons.add(playButton);
         this.playIndex = index++;
         Gdx.app.log("MenuScreen", "playIndex = " + playIndex);
@@ -196,6 +201,14 @@ public class MenuScreen extends ScreenAdapter {
         buttons.add(tutorialButton);
         this.tutorialIndex = index++;
         Gdx.app.log("MenuScreen", "tutorialIndex = " + tutorialIndex);
+
+        // credits button
+        TextButton creditsButton = new TextButton("CREDITS", style);
+        creditsButton.setSize(creditsGlyph.width, creditsGlyph.height);
+        creditsButton.setPosition(buttons.get(index-1).getX() + 16 / PPM, buttons.get(index-1).getY() -  32 / PPM, Align.left);
+        buttons.add(creditsButton);
+        this.creditIndex = index++;
+        Gdx.app.log("MenuScreen", "creditIndex = " + creditIndex);
 
         // exit button
         TextButton exitButton = new TextButton("EXIT", style);
@@ -275,6 +288,22 @@ public class MenuScreen extends ScreenAdapter {
             }
         });
 
+        // credits button
+        buttons.get(creditIndex).addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("MenuScreen", "Clicked CREDITS button");
+                selection = creditIndex;
+                handleSelection();
+            }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                Gdx.app.log("MenuScreen", "Entered CREDITS button");
+                selection = creditIndex;
+            }
+        });
+
         // exit button
         buttons.get(exitIndex).addListener(new ClickListener() {
             @Override
@@ -296,27 +325,35 @@ public class MenuScreen extends ScreenAdapter {
 
     private void handleSelection() {
         // first dispose
-        this.dispose();
 
         // then handle selection
         if(selection == playIndex) {
             Gdx.app.log("MenuScreen", "PLAY was selected. Switching to RobCaptcha screen");
+            this.dispose();
             game.setScreen(new RobCaptcha(game));
         }
         else if(selection == selectLevelIndex) {
             Gdx.app.log("MenuScreen", "SELECT LEVEL was selected.");
+            this.dispose();
             game.setScreen(new SelectLevelScreen(game));
         }
         else if(selection == storyIndex) {
             Gdx.app.log("MenuScreen", "STORY was selected.");
+            this.dispose();
             game.setScreen(new StoryScreen(game));
         }
         else if(selection == tutorialIndex) {
             Gdx.app.log("MenuScreen", "TUTORIAL was selected.");
+            this.dispose();
             game.setScreen(new TutorialScreen(game));
+        }
+        else if(selection == creditIndex) {
+            Gdx.app.log("MenuScreen", "CREDITS was selected.");
+            Gdx.net.openURI("https://www.dropbox.com/s/8y1m1bnifxjadyp/game_credits.pdf?dl=0");
         }
         else if(selection == exitIndex) {
             Gdx.app.log("MenuScreen", "EXIT was selected");
+            this.dispose();
             Gdx.app.exit();
         }
     }

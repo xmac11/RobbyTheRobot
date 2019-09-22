@@ -114,9 +114,6 @@ public abstract class PlayScreen extends ScreenAdapter {
     // enemies
     protected DelayedRemovalArray<Enemy> enemies;
 
-    // falling pipes
-    protected DelayedRemovalArray<FallingPipe> fallingPipes;
-
     // feedback renderer
     protected FeedbackRenderer feedbackRenderer;
 
@@ -619,10 +616,10 @@ public abstract class PlayScreen extends ScreenAdapter {
     }
 
     protected void checkPauseOrResume() {
-        if(Gdx.input.isKeyJustPressed(Input.Keys.P) || androidController.isPauseClicked()) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.P) || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || androidController.isPauseClicked()) {
             setPaused(!paused);
 
-            // u boolean for tiled animation
+            // update boolean for tiled animation
             mapRenderer.setMapAnimationActive(!mapRenderer.isMapAnimationActive());
 
             // update input processor
