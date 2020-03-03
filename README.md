@@ -38,6 +38,8 @@ RobbyTheRobotExe |
 - [gdx-texturepacker](https://code.google.com/archive/p/libgdx-texturepacker-gui/) - Sprite Sheet Creator
 - [JSON.simple](https://code.google.com/archive/p/json-simple/) - Java toolkit for JSON
 
+##### Note: For academic purposes the steering behaviors were implemented from scratch. If anyone is interested in the [gdxAI](https://github.com/libgdx/gdx-ai) framework, an [implementation](https://github.com/xmac11/RobbyTheRobot/tree/0a035b2448bd3f8cd2ab81cc9a623f9d4e15530a/core/src/com/robot/game/entities/abstractEnemies) of the [Arrive](https://github.com/libgdx/gdx-ai/wiki/Steering-Behaviors#arrive) and the [FollowPath](https://github.com/libgdx/gdx-ai/wiki/Steering-Behaviors#path-following) steering behaviors can be found in an [older commit](https://github.com/xmac11/RobbyTheRobot/tree/0a035b2448bd3f8cd2ab81cc9a623f9d4e15530a).
+
 ### Game Mechanics
 <table border="0">
  <tr>
